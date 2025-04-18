@@ -1,0 +1,108 @@
+---
+title: Webhooks
+---
+
+Webhooks allow your system to automatically receive real-time updates from Bullring Finance when specific events occur. You can register a webhook URL to listen for event notifications and trigger your own workflows.
+
+---
+
+## How It Works
+
+When an event occurs, Bullring Finance sends an HTTP `POST` request to your registered URL with a JSON payload describing the event. Your endpoint must return a `2xx` status code to acknowledge receipt.
+
+All webhook requests are signed using a shared secret. You should verify the request signature before processing.
+
+---
+
+## Registering a Webhook
+
+To register a webhook, use the following endpoint:
+
+```http
+POST /api/v1/ramp/subaccount/webhook
+```
+
+### Sample Payload
+```json
+{
+  "url": "https://yourdomain.com/webhooks/payment"
+}
+```
+
+You can manage, update, or remove webhooks via the API.
+
+---
+
+## Supported Events
+
+### 🔐 Subaccount Status
+Event: `subaccount.status`
+
+Triggered when a subaccount’s verification or onboarding status changes.
+
+```json
+{
+  "event": "subaccount.status",
+  "subaccountId": "abc123",
+  "status": "approved",
+  "timestamp": "2025-04-17T16:45:00Z"
+}
+```
+
+---
+
+### 💸 Payment Status
+Event: `payment.status`
+
+Triggered when a customer’s crypto payment status changes (e.g., from pending → confirmed).
+
+```json
+{
+  "event": "payment.status",
+ "lightningInvoice": "lnbcrt3432554u1p5qzdf8pp5kah7y7z5qhhpuhjh80mlcky3ny0hfdyyamw4zqqqt84tgaf367qsdqdd45kc6eq0qsrycqzzsxqyz5vqrzjq0n975ww9s4x08gu2txxqptg2ksxmn90lg6ex765epg93w6kecmg6df83dt0yuep75qqqqlgqqqqqqgq2qsp5736wkkllumqc4xqfpftnztfj7a2duklf3w02wuw3l82fec4g5txq9qxpqysgqfracazaudfnvyjumlz9f8q08qyjx9g27ppvflg6r8ey3uxqjpqn3ylcgy9kaak5759yd342s33626m0kphcymgtw9ynjqfc334sdghcpuq2w9t",
+    "paymentId": "67f112b3-6c66-4538-aecc-e7d86fc62451",
+    "paymentHash": null,
+    "paymentRequestAmount": "200000.00",
+    "paymentRequestCurrency": "brl",
+    "invoiceCurrency": "usdt",
+    "invoiceAmount": 3432554,
+    "status": "paid",
+    "note": "milk x 2",
+    "createdAt": "2025-04-17T17:06:47.212Z",
+    "updatedAt": "2025-04-17T17:30:52.315Z"
+}
+```
+
+---
+
+### 🏦 Withdrawal Status
+Event: `withdrawal.status`
+
+Triggered when a fiat payout is initiated or completed.
+
+```json
+{
+  "event": "payment.status",
+  "withdrawal_id": "wd_456789",
+  "withdrawalId": "e621be9b-031a-4655-a7cf-98aadb2875cc",
+  "payoutAmountDueInCrypto": "85.06",
+  "payoutAmountDueCurrency": "usdt",
+  "payoutDueTime": "2025-04-18 17:00",
+  "status": "COMPLETED",
+  "bankAccountId": null,
+  "paymentRequestCurrency": "brl",
+  "amountStoreReceives": "496.5",
+  "createdAt": "2025-04-17T17:06:47.212Z",
+  "updatedAt": "2025-04-17T21:53:29.961Z"
+}
+```
+
+---
+
+## Signature Verification (coming soon)
+A HMAC-SHA256 signature header will be added to all webhook requests. You should verify the request using your shared secret to ensure authenticity.
+
+---
+
+Need help? Contact us at [dev@bullring.finance](mailto:dev@bullring.finance)
+

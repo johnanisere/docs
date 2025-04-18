@@ -1,0 +1,153 @@
+---
+title: Withdrawal
+---
+
+## Withdrawing To Bank
+
+This guide walks through everything needed to set up a merchant for fiat payouts after receiving crypto payments via Bullring Finance.
+
+> 🧠 Note: You can start accepting payments **immediately after store registration**. However, to withdraw to bank account, the store must first complete verification and add their pix key.
+
+---
+
+### Step 1: Complete KYB Verification
+
+Get the KYB form URL for the store:
+
+```http
+GET /v1/ramp/subaccount/{id}/kyb
+```
+
+**Sample Response:**
+```json
+{
+  "formUrl": "https://forms.kycaid.com/2cfed1d30d8b4447b018c2d8b4748d129493"
+}
+```
+
+Once the form is completed, you'll receive a webhook event like:
+
+```json
+{
+  "event": "subaccount.status",
+  "data": {
+    "status": "verified"
+  }
+}
+```
+
+Wait until the store status is `verified` before proceeding.
+
+---
+
+### Step 2: Add Store’s Pix Key
+
+To receive fiat payouts, the merchant must register their Pix key:
+
+```http
+POST /v1/ramp/subaccount/{id}/banks?accountId={accountId}
+```
+
+**Body:**
+```json
+{
+  "brlAccount": {
+    "pixKey": "667.136.083-96"
+  }
+}
+```
+
+**Sample Response:**
+```json
+{
+  "id": "449eca18-9c77-472c-9e82-b08a18637759",
+  "name": "Hugo Gonzalez"
+}
+```
+
+This verifies and associates the bank account with the store.
+
+---
+
+### Step 3: Set Payout Schedule (Optional)
+
+You can configure daily automatic withdrawal times:
+
+```http
+POST /v1/ramp/subaccount/{id}/withdrawal-schedule
+```
+
+**Body:**
+```json
+{
+  "dailyPayoutTime": "15:00"
+}
+```
+
+**Sample Response:**
+```json
+"Withdrawal schedule set successfully."
+```
+
+---
+
+### Step 4: Trigger a Withdrawal
+
+To manually withdraw available crypto (converted to fiat) to the registered bank account:
+
+```http
+POST /v1/ramp/subaccount/{id}/withdrawals
+```
+
+**Sample Response:**
+```json
+ok
+```
+
+---
+
+### Step 5: Monitor Status via Webhook
+
+Bullring will notify your webhook when a withdrawal is processed:
+
+```json
+{
+  "event": "withdrawal.status",
+  "data": {
+    "status": "completed",
+    "amount": "496.50",
+    "currency": "BRL"
+  }
+}
+```
+
+You can also poll:
+```http
+GET /v1/ramp/subaccount/{id}/withdrawals
+```
+
+Or check a specific withdrawal:
+```http
+GET /v1/ramp/subaccount/{id}/withdrawals/{withdrawalId}
+```
+
+**Sample Response (Single Withdrawal):**
+```json
+{
+  "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
+  "payoutAmountDueInCrypto": "85.06",
+  "payoutAmountDueCurrency": "usdt",
+  "payoutDueTime": "2025-04-18 17:00",
+  "status": "COMPLETED",
+  "bankAccountId": null,
+  "paymentRequestCurrency": "brl",
+  "amountStoreReceives": "496.5",
+  "createdAt": "2025-04-17T17:06:47.212Z",
+  "updatedAt": "2025-04-17T21:53:29.961Z"
+}
+```
+
+---
+
+That’s it! Your verified store can now receive fiat payouts 🚀
+

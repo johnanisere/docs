@@ -17,59 +17,30 @@
             "group": "Get Started",
             "pages": [
               "introduction",
-              "quickstart",
-              "development"
-            ]
-          },
-          {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              "authentication",
+              "environment",
+              "webhook",
+              "payment",
+              "withdrawal"
             ]
           }
         ]
       },
       {
         "tab": "API Reference",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          },
-          {
-            "group": "Endpoint Examples",
-            "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
-            ]
-          }
-        ]
+        "openapi": "api-reference/openapi.json"
       }
     ],
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
           "anchor": "Community",
-          "href": "https://mintlify.com/community",
+          "href": "https://join.slack.com/t/bullringfinan-dof3933/shared_invite/zt-34057x3jm-mPsTyEXYFIxGAuSJYV0zsg",
           "icon": "slack"
         },
         {
           "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "href": "https://blog.bullring.finance",
           "icon": "newspaper"
         }
       ]
