@@ -9,28 +9,6 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
-      {
-        "tab": "Guides",
-        "groups": [
-          {
-            "group": "Get Started",
-            "pages": [
-              "introduction",
-              "authentication",
-              "environment",
-              "webhook",
-              "payment",
-              "withdrawal"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "api-reference/openapi.json"
-      }
-    ],
     "global": {
       "anchors": [
         {
@@ -44,7 +22,59 @@
           "icon": "newspaper"
         }
       ]
-    }
+    },
+    "languages": [
+      {
+        "language": "en",
+        "tabs": [
+          {
+            "tab": "Guides",
+            "groups": [
+              {
+                "group": "Get Started",
+                "pages": [
+                  "en/introduction",
+                  "en/authentication",
+                  "en/environment",
+                  "en/webhook",
+                  "en/payment",
+                  "en/withdrawal"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API Reference",
+            "openapi": "api-reference/openapi.json"
+          }
+        ]
+      },
+      {
+        "language": "pt",
+        "tabs": [
+          {
+            "tab": "Guias",
+            "groups": [
+              {
+                "group": "Primeiros Passos",
+                "pages": [
+                  "pt/introduction",
+                  "pt/authentication",
+                  "pt/environment",
+                  "pt/webhook",
+                  "pt/payment",
+                  "pt/withdrawal"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Referência da API",
+            "openapi": "api-reference/openapi.json"
+          }
+        ]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",

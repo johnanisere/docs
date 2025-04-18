@@ -1,0 +1,41 @@
+---
+title: Authentication
+---
+
+To access Bullring Finance APIs, you must authenticate every request using an API key. This key ensures your application is verified and authorized to interact with the platform.
+
+---
+
+## Get Your API Key
+
+1. Reach out to the [Bullring Team](mailto:developer@bullring.finance) to be onboarded
+2. Log in to the Bullring Dashboard
+2. Navigate to **Developers → API Keys**
+3. Click **Generate Key** for either **staging** or **production**
+4. Copy and store your key securely — it won’t be shown again
+
+Each environment has its own unique key. Use the **staging key** for testing and the **production key** for live transactions.
+
+---
+
+## Authentication Header
+
+All requests to both environments **must** include your API key in the following header:
+
+```http
+x-api-key: YOUR_API_KEY
+```
+
+If your request does not include a valid key, it will be rejected with a `401 Unauthorized` response.
+
+---
+
+## Best Practices
+
+- 🔒 Never expose your API key in frontend code
+- 🔁 Rotate your API keys periodically for added security
+- 👀 Monitor usage in the Bullring Dashboard
+
+---
+
+Need help? Reach out to [developer@bullring.finance](mailto:developer@bullring.finance)
