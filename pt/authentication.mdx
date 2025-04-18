@@ -1,0 +1,44 @@
+---
+title: Autenticação
+category: Referência da API
+---
+
+## Autenticação da API
+
+Para acessar as APIs da Bullring Finance, você deve autenticar todas as requisições usando uma chave de API. Essa chave garante que sua aplicação esteja verificada e autorizada a interagir com a plataforma.
+
+---
+
+## Obtenha sua Chave de API
+
+1. Entre em contato com a [Equipe da Bullring](mailto:developer@bullring.finance) para ser onboardado
+2. Acesse o Painel da Bullring
+3. Vá para **Desenvolvedores → Chaves de API**
+4. Clique em **Gerar Chave** para o ambiente de **homologação** ou **produção**
+5. Copie e armazene sua chave com segurança — ela não será exibida novamente
+
+Cada ambiente possui uma chave única. Use a **chave de homologação** para testes e a **chave de produção** para transações reais.
+
+---
+
+## Cabeçalho de Autenticação
+
+Todas as requisições para ambos os ambientes **devem** incluir sua chave de API no seguinte cabeçalho:
+
+```http
+x-api-key: SUA_CHAVE_DE_API
+```
+
+Se sua requisição não incluir uma chave válida, ela será rejeitada com a resposta `401 Unauthorized`.
+
+---
+
+## Boas Práticas
+
+- 🔒 Nunca exponha sua chave de API no código do frontend
+- 🔁 Rotacione suas chaves de API periodicamente para maior segurança
+- 👀 Monitore o uso no Painel da Bullring
+
+---
+
+Precisa de ajuda? Fale com [developer@bullring.finance](mailto:developer@bullring.finance)

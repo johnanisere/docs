@@ -1,0 +1,152 @@
+---
+title: Saque
+---
+
+## Realizando Saque para Conta Bancária
+
+Este guia mostra todas as etapas necessárias para configurar um comerciante para receber saques em reais após aceitar pagamentos em cripto com a Bullring Finance.
+
+> 🧠 Nota: Você pode começar a aceitar pagamentos **imediatamente após o registro do comerciante**. No entanto, para sacar para uma conta bancária, o comerciante deve primeiro concluir a verificação e adicionar sua chave Pix.
+
+---
+
+### Etapa 1: Concluir Verificação KYB
+
+Obtenha a URL do formulário KYB usando o endpoint [kyb](/api-reference/verification/get-kyb-url):
+
+```http
+GET /v1/ramp/subaccount/{id}/kyb
+```
+
+**Resposta de exemplo:**
+```json
+{
+  "formUrl": "https://forms.kycaid.com/2cfed1d30d8b4447b018c2d8b4748d129493"
+}
+```
+
+Após o preenchimento do formulário, você receberá um evento webhook como:
+
+```json
+{
+  "event": "subaccount.status",
+  "data": {
+    "status": "verified"
+  }
+}
+```
+
+Espere até que o status do comerciante seja `verified` antes de prosseguir.
+
+---
+
+### Etapa 2: Adicionar Chave Pix do Comerciante
+
+Para receber saques em reais, o comerciante deve [registrar sua chave Pix](/api-reference/bank/verify-pix-key):
+
+```http
+POST /v1/ramp/subaccount/{id}/banks?accountId={accountId}
+```
+
+**Corpo:**
+```json
+{
+  "brlAccount": {
+    "pixKey": "667.136.083-96"
+  }
+}
+```
+
+**Resposta de exemplo:**
+```json
+{
+  "id": "449eca18-9c77-472c-9e82-b08a18637759",
+  "name": "Hugo Gonzalez"
+}
+```
+
+Isso verifica e associa a conta bancária ao comerciante.
+
+---
+
+### Etapa 3: Definir Agenda de Saques (Opcional)
+
+Você pode [configurar horários de saque automático diário](/api-reference/withdrawals/set-daily-withdrawal-schedule):
+
+```http
+POST /v1/ramp/subaccount/{id}/withdrawal-schedule
+```
+
+**Corpo:**
+```json
+{
+  "dailyPayoutTime": "15:00"
+}
+```
+
+**Resposta de exemplo:**
+```json
+"Withdrawal schedule set successfully."
+```
+
+---
+
+### Etapa 4: Iniciar um Saque
+
+Para [sacar](/api-reference/withdrawals/initiate-withdrawal) manualmente o saldo disponível (convertido para reais) para a conta bancária registrada:
+
+```http
+POST /v1/ramp/subaccount/{id}/withdrawals
+```
+
+**Resposta de exemplo:**
+```json
+ok
+```
+
+---
+
+### Etapa 5: Monitorar Status via Webhook
+
+A Bullring notificará seu webhook quando um saque for processado:
+
+```json
+{
+  "event": "withdrawal.status.completed",
+  "data": {
+    "status": "completed",
+    "amount": "496.50",
+    "currency": "BRL"
+  }
+}
+```
+
+Você também pode consultar:
+```http
+GET /v1/ramp/subaccount/{id}/withdrawals
+```
+
+Ou verificar um saque específico:
+```http
+GET /v1/ramp/subaccount/{id}/withdrawals/{withdrawalId}
+```
+
+**Resposta de exemplo (Saque Único):**
+```json
+{
+  "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
+  "payoutAmountDueInCrypto": "85.06",
+  "payoutAmountDueCurrency": "usdt",
+  "payoutDueTime": "2025-04-18 17:00",
+  "status": "completed",
+  "bankAccountId": null,
+  "paymentRequestCurrency": "brl",
+  "amountStoreReceives": "496.5",
+  "createdAt": "2025-04-17T17:06:47.212Z",
+  "updatedAt": "2025-04-17T21:53:29.961Z"
+}
+```
+
+---
+
+Pronto! Seu comerciante verificado agora pode receber saques em reais 🚀
