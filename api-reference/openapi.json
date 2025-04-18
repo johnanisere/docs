@@ -352,6 +352,7 @@
             "name": "accountId",
             "required": true,
             "in": "query",
+            "description": "Id (UUID) returned from verifing Pix key",
             "schema": {
               "type": "string"
             }
