@@ -2,17 +2,17 @@
 title: Payment
 ---
 
-## Creating a Payment for a New Store (Subaccount)
+## Creating a Payment for a New Merchant (Subaccount)
 
 This guide outlines the steps to start accepting crypto payments for a new merchant using Bullring Finance.
 
-> 💡 Note: You can start creating payment requests **immediately after store registration**. However, the store must complete verification and register a Pix key before any withdrawal can occur. See the [Withdrawal Flow](/withdrawal) for details.
+> 💡 Note: You can start creating payment requests **immediately after merchant registration**. However, the merchant must complete verification and register a Pix key before any withdrawal can occur. See the [Withdrawal Flow](/withdrawal) for details.
 
 ---
 
-### Step 1: Register a New Store
+### Step 1: Register a New Merchant
 
-Send a request to the `Create Subaccount` endpoint to register the merchant by their email.
+Send a request to the [`Create Subaccount`](/api-reference/subaccount/create-merchant) endpoint to register the merchant by their email.
 
 ```http
 POST /v1/ramp/subaccount
@@ -37,7 +37,7 @@ POST /v1/ramp/subaccount
 
 ### Step 2: Create a Payment Request
 
-Once the store is registered, you can immediately begin generating invoices.
+Once the merchant is registered, you can immediately begin generating invoices by calling the [`Create Payment`](/api-reference/payments/create-payment) endpoint.
 
 ```http
 POST /v1/ramp/subaccount/{id}/payments

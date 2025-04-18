@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Bullring Finance ",
+    "description": "Connecting businesses to crypto-paying customers.",
     "license": {
       "name": "MIT"
     },
@@ -26,8 +26,8 @@
   "paths": {
     "/v1/ramp/subaccount": {
       "post": {
-        "summary": "Create store",
-        "description": "Register a new store with email",
+        "summary": "Create merchant",
+        "description": "Register a new merchant with email",
         "parameters": [],
         "requestBody": {
           "required": true,
@@ -41,7 +41,7 @@
         },
         "responses": {
           "201": {
-            "description": "Store successfully registered",
+            "description": "merchant successfully registered",
             "content": {
               "application/json": {
                 "schema": {
@@ -66,8 +66,8 @@
       },
       "get": {
         "operationId": "RampController_findAll",
-        "summary": "Get all stores",
-        "description": "Retrieves a paginated list of all subaccounts associated with the authenticated parent store.",
+        "summary": "Get all merchants",
+        "description": "Retrieves a paginated list of all subaccounts associated with the authenticated parent merchant.",
         "parameters": [
           {
             "name": "limit",
@@ -120,7 +120,7 @@
             "description": "Unauthorized."
           },
           "403": {
-            "description": "Forbidden - user is not a parent store."
+            "description": "Forbidden - user is not a parent merchant."
           }
         },
         "tags": [
@@ -136,7 +136,7 @@
     "/v1/ramp/subaccount/{id}": {
       "get": {
         "operationId": "RampController_findOne",
-        "summary": "Get one store by ID",
+        "summary": "Get one merchant by ID",
         "description": "Retrieves the details of a single subaccount using its UUID.",
         "parameters": [
           {
@@ -156,11 +156,47 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Subaccount"
+                  "$ref": "#/components/schemas/SubaccountOne"
                 },
                 "example": {
-                  "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-                  "email": "johnanisere+0013@bullring.finance"
+                  "id": "051d89ee-223c-409b-8fcc-9aea92ad9307",
+                  "name": null,
+                  "email": "johnanisere+0012@bullring.finance",
+                  "phone": null,
+                  "country": null,
+                  "stateProvinceRegion": null,
+                  "subscriptions": [
+                    {
+                      "isActive": true,
+                      "plan": {
+                        "id": "7b338eab-831c-4b89-9d13-4aa987ed58f6",
+                        "name": "Lightning Basic",
+                        "fixedAmount": "0.10",
+                        "fixedAmountCurrency": "usd",
+                        "percentageRate": "0.7000",
+                        "billingType": "per_transaction",
+                        "features": {
+                          "cloud": "cloud-based POS",
+                          "rewards": "Customer rewards and automated marketing",
+                          "support": "24/7 Support",
+                          "installation": "dedicated installation & training"
+                        },
+                        "isActive": true,
+                        "description": "The perfect system to start your business and streamline operations. Includes standard POS software.",
+                        "createdAt": "2025-02-09T18:19:16.401Z",
+                        "updatedAt": "2025-02-09T18:19:16.401Z",
+                        "deletedAt": null
+                      }
+                    }
+                  ],
+                  "city": null,
+                  "postalCode": null,
+                  "address": null,
+                  "createdAt": "2025-04-17T15:15:11.712Z",
+                  "updatedAt": "2025-04-18T03:05:14.248Z",
+                  "preferredCurrency": "brl",
+                  "balance": 0,
+                  "withdrawalMinimum": 1
                 }
               }
             }
@@ -300,7 +336,7 @@
       "post": {
         "operationId": "RampController_addBank",
         "summary": "Add Pix Key",
-        "description": "Verifies a Pix key",
+        "description": "Merchant must first verify a Pix key before adding it to their subaccount. This endpoint is used to add a verified Pix key.",
         "parameters": [
           {
             "name": "id",
@@ -424,7 +460,7 @@
       "get": {
         "operationId": "RampController_getAllPayments",
         "summary": "Get all payments",
-        "description": "Retrieve all payments for a specific store",
+        "description": "Retrieve all payments for a specific merchant",
         "parameters": [
           {
             "name": "id",
@@ -1012,6 +1048,149 @@
         "required": [
           "formUrl"
         ]
+      },
+      "SubaccountOne": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "country": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "stateProvinceRegion": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "subscriptions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "isActive": {
+                  "type": "boolean"
+                },
+                "plan": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "fixedAmount": {
+                      "type": "string"
+                    },
+                    "fixedAmountCurrency": {
+                      "type": "string"
+                    },
+                    "percentageRate": {
+                      "type": "string"
+                    },
+                    "billingType": {
+                      "type": "string"
+                    },
+                    "features": {
+                      "type": "object",
+                      "properties": {
+                        "cloud": {
+                          "type": "string"
+                        },
+                        "rewards": {
+                          "type": "string"
+                        },
+                        "support": {
+                          "type": "string"
+                        },
+                        "installation": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "isActive": {
+                      "type": "boolean"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "deletedAt": {
+                      "type": [
+                        "string",
+                        "null"
+                      ],
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "city": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "postalCode": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "preferredCurrency": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "withdrawalMinimum": {
+            "type": "number"
+          }
+        }
       },
       "Subaccount": {
         "type": "object",

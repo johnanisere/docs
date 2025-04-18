@@ -2,10 +2,15 @@
 title: Webhooks
 ---
 
+## Webhook Events
+
 Webhooks allow your system to automatically receive real-time updates from Bullring Finance when specific events occur. You can register a webhook URL to listen for event notifications and trigger your own workflows.
 
----
+Bullring Finance can notify your server in real time about changes to subaccount status, payment confirmations, and withdrawal progress.
 
+To start receiving webhooks, register your endpoint via your Dashboard or the [Webhook API](/api-reference/webhook/add-webhook).
+
+---
 ## How It Works
 
 When an event occurs, Bullring Finance sends an HTTP `POST` request to your registered URL with a JSON payload describing the event. Your endpoint must return a `2xx` status code to acknowledge receipt.
@@ -14,95 +19,115 @@ All webhook requests are signed using a shared secret. You should verify the req
 
 ---
 
-## Registering a Webhook
+### Subaccount Events
 
-To register a webhook, use the following endpoint:
+- `subaccount.status.created`
+- `subaccount.status.approved`
+- `subaccount.status.declined`
+- `subaccount.status.review`
 
-```http
-POST /api/v1/ramp/subaccount/webhook
-```
-
-### Sample Payload
-```json
-{
-  "url": "https://yourdomain.com/webhooks/payment"
-}
-```
-
-You can manage, update, or remove webhooks via the API.
+These events are triggered when a new store (subaccount) is created or goes through KYB review stages.
 
 ---
 
-## Supported Events
+### Payment Events
 
-### 🔐 Subaccount Status
-Event: `subaccount.status`
+- `payment.status.paid`
+- `payment.status.unpaid`
 
-Triggered when a subaccount’s verification or onboarding status changes.
-
-```json
-{
-  "event": "subaccount.status",
-  "subaccountId": "abc123",
-  "status": "approved",
-  "timestamp": "2025-04-17T16:45:00Z"
-}
-```
+These events notify you when an invoice is paid or expires without being paid.
 
 ---
 
-### 💸 Payment Status
-Event: `payment.status`
+### Withdrawal Events
 
-Triggered when a customer’s crypto payment status changes (e.g., from pending → confirmed).
+- `withdrawal.status.not_initiated`
+- `withdrawal.status.in_progress`
+- `withdrawal.status.completed`
+- `withdrawal.status.failed`
+
+These events allow you to track the status of your store’s fiat payouts.
+
+---
+
+### Webhook Payload Format
+
+Each webhook will be sent as a POST request to your registered endpoint with the following structure:
 
 ```json
 {
-  "event": "payment.status",
- "lightningInvoice": "lnbcrt3432554u1p5qzdf8pp5kah7y7z5qhhpuhjh80mlcky3ny0hfdyyamw4zqqqt84tgaf367qsdqdd45kc6eq0qsrycqzzsxqyz5vqrzjq0n975ww9s4x08gu2txxqptg2ksxmn90lg6ex765epg93w6kecmg6df83dt0yuep75qqqqlgqqqqqqgq2qsp5736wkkllumqc4xqfpftnztfj7a2duklf3w02wuw3l82fec4g5txq9qxpqysgqfracazaudfnvyjumlz9f8q08qyjx9g27ppvflg6r8ey3uxqjpqn3ylcgy9kaak5759yd342s33626m0kphcymgtw9ynjqfc334sdghcpuq2w9t",
-    "paymentId": "67f112b3-6c66-4538-aecc-e7d86fc62451",
-    "paymentHash": null,
-    "paymentRequestAmount": "200000.00",
-    "paymentRequestCurrency": "brl",
-    "invoiceCurrency": "usdt",
-    "invoiceAmount": 3432554,
-    "status": "paid",
-    "note": "milk x 2",
-    "createdAt": "2025-04-17T17:06:47.212Z",
-    "updatedAt": "2025-04-17T17:30:52.315Z"
+  "event": "event.name",
+  "data": {
+    "...": "event-specific payload"
+  }
 }
 ```
 
 ---
 
-### 🏦 Withdrawal Status
-Event: `withdrawal.status`
+### Example Payloads
 
-Triggered when a fiat payout is initiated or completed.
-
+#### Subaccount Event: `subaccount.status.created`
 ```json
 {
-  "event": "payment.status",
-  "withdrawal_id": "wd_456789",
-  "withdrawalId": "e621be9b-031a-4655-a7cf-98aadb2875cc",
-  "payoutAmountDueInCrypto": "85.06",
-  "payoutAmountDueCurrency": "usdt",
-  "payoutDueTime": "2025-04-18 17:00",
-  "status": "COMPLETED",
-  "bankAccountId": null,
-  "paymentRequestCurrency": "brl",
-  "amountStoreReceives": "496.5",
-  "createdAt": "2025-04-17T17:06:47.212Z",
-  "updatedAt": "2025-04-17T21:53:29.961Z"
+  "event": "subaccount.status.created",
+  "data": {
+    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
+    "email": "merchant@example.com",
+    "status": "created"
+  }
 }
 ```
 
----
+#### Subaccount Event: `subaccount.status.approved`
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
+    "status": "approved"
+  }
+}
+```
 
-## Signature Verification (coming soon)
-A HMAC-SHA256 signature header will be added to all webhook requests. You should verify the request using your shared secret to ensure authenticity.
+#### Payment Event: `payment.status.paid`
+```json
+{
+  "event": "payment.status.paid",
+  "data": {
+    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
+    "amount": 1000,
+    "currency": "brl",
+    "status": "paid"
+  }
+}
+```
 
----
+#### Payment Event: `payment.status.unpaid`
+```json
+{
+  "event": "payment.status.unpaid",
+  "data": {
+    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
+    "amount": 1000,
+    "currency": "brl",
+    "status": "unpaid"
+  }
+}
+```
 
-Need help? Contact us at [developer@bullring.finance](mailto:developer@bullring.finance)
+#### Withdrawal Event: `withdrawal.status.completed`
+```json
+{
+  "event": "withdrawal.status.completed",
+  "data": {
+    "id": "449eca18-9c77-472c-9e82-b08a18637759",
+    "status": "completed",
+    "amount": "496.50",
+    "currency": "BRL"
+  }
+}
+```
+
+Make sure your server is prepared to respond with a `2xx` status code to acknowledge receipt.
 

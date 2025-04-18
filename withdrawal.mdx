@@ -6,13 +6,13 @@ title: Withdrawal
 
 This guide walks through everything needed to set up a merchant for fiat payouts after receiving crypto payments via Bullring Finance.
 
-> 🧠 Note: You can start accepting payments **immediately after store registration**. However, to withdraw to bank account, the store must first complete verification and add their pix key.
+> 🧠 Note: You can start accepting payments **immediately after merchant registration**. However, to withdraw to bank account, the merchant must first complete verification and add their pix key.
 
 ---
 
 ### Step 1: Complete KYB Verification
 
-Get the KYB form URL for the store:
+Get the KYB form URL for the merchant using the [kyb](/api-reference/verification/get-kyb-url) endpoint:
 
 ```http
 GET /v1/ramp/subaccount/{id}/kyb
@@ -36,13 +36,13 @@ Once the form is completed, you'll receive a webhook event like:
 }
 ```
 
-Wait until the store status is `verified` before proceeding.
+Wait until the merchant status is `verified` before proceeding.
 
 ---
 
-### Step 2: Add Store’s Pix Key
+### Step 2: Add Merchant’s Pix Key
 
-To receive fiat payouts, the merchant must register their Pix key:
+To receive fiat payouts, the merchant must [register their Pix key](/api-reference/bank/verify-pix-key):
 
 ```http
 POST /v1/ramp/subaccount/{id}/banks?accountId={accountId}
@@ -65,13 +65,13 @@ POST /v1/ramp/subaccount/{id}/banks?accountId={accountId}
 }
 ```
 
-This verifies and associates the bank account with the store.
+This verifies and associates the bank account with the merchant.
 
 ---
 
 ### Step 3: Set Payout Schedule (Optional)
 
-You can configure daily automatic withdrawal times:
+You can [configure daily automatic withdrawal](/api-reference/withdrawals/set-daily-withdrawal-schedule) times:
 
 ```http
 POST /v1/ramp/subaccount/{id}/withdrawal-schedule
@@ -93,7 +93,7 @@ POST /v1/ramp/subaccount/{id}/withdrawal-schedule
 
 ### Step 4: Trigger a Withdrawal
 
-To manually withdraw available crypto (converted to fiat) to the registered bank account:
+To manually [withdraw](/api-reference/withdrawals/initiate-withdrawal) available balance (converted to fiat) to the registered bank account:
 
 ```http
 POST /v1/ramp/subaccount/{id}/withdrawals
@@ -149,5 +149,5 @@ GET /v1/ramp/subaccount/{id}/withdrawals/{withdrawalId}
 
 ---
 
-That’s it! Your verified store can now receive fiat payouts 🚀
+That’s it! Your verified merchant can now receive fiat payouts 🚀
 
