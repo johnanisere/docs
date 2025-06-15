@@ -17,6 +17,70 @@ Quando um evento ocorre, a Bullring Finance envia uma requisição HTTP `POST` p
 
 Todas as requisições de webhook são assinadas com um segredo compartilhado. Você deve verificar a assinatura da requisição antes de processar.
 
+
+### Verificando a assinatura
+
+Todas as requisições de webhook do Bullring incluirão um cabeçalho com a chave `X-BULLRING-SIGNATURE`, que contém o timestamp e um hash assinado no formato:
+```json
+X-BULLRING-SIGNATURE: t={timestamp},v1={hash_string}
+```
+Um exemplo de cabeçalho seria:
+```json
+{
+  ...
+  X-BULLRING-SIGNATURE: "t=1492774577,v1=ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3,",
+  ...
+}
+```
+
+Para verificar a assinatura:
+
+- Obtenha o valor do cabeçalho `X-BULLRING-SIGNATURE`.
+
+- Divida a string por `,`.
+
+- Em seguida, divida cada parte por `=`.
+
+- Extraia o valor no índice 1 de cada parte.
+
+No exemplo acima, você obteria:
+
+```
+timestamp     // 1492774577
+hashString    // ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3
+
+```
+
+Para verificar a assinatura, crie um hash usando:
+
+- O timestamp extraído
+
+- O payload da requisição (corpo)
+
+- O segredo (disponível no seu painel do Bullring após criar um webhook)
+
+Depois compare o hash gerado com o hash recebido usando igualdade `==`.
+
+Como o Bullring utiliza o algoritmo de hash SHA256 com codificação base64, veja abaixo como verificar a assinatura usando Node.js:
+
+```javascript Verification Example
+
+import { createHmac } from "crypto";
+
+const receivedHash = hashString;
+const payload = JSON.stringify({ ... }); // The request body
+const key = "your_secret_key"; // From dashboard
+
+const hash = createHmac("sha256", key)
+  .update(`${timestamp},${payload}`)
+  .digest("base64");
+
+const isVerified = receivedHash === hash;
+
+```
+
+Atenção ao uso da vírgula `,` entre o timestamp e o payload `${timestamp},${payload}` ao criar o hash.
+
 ---
 
 ### Eventos de Subconta
