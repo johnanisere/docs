@@ -17,6 +17,69 @@ When an event occurs, Bullring Finance sends an HTTP `POST` request to your regi
 
 All webhook requests are signed using a shared secret. You should verify the request signature before processing.
 
+### Verifying signature
+
+All webhook requests from Bullring will include a header key X-BULLRING-SIGNATURE, which contains the timestamp and a signed hash string in the format:
+```json
+X-BULLRING-SIGNATURE: t={timestamp},v1={hash_string}
+```
+A sample example of a header would be:
+```json
+{
+  ...
+  X-BULLRING-SIGNATURE: "t=1492774577,v1=ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3,",
+  ...
+}
+```
+
+To verify the signature:
+
+- Get the value of the `X-BULLRING-SIGNATURE` header.
+
+- Split the string by `,`.
+
+- Then, split each part by `=`.
+
+- Extract the value at index 1 from each.
+
+From the example above, you would get:
+
+```
+timestamp     // 1492774577
+hashString    // ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3
+
+```
+
+To verify the signature, create a hash using:
+
+- The extracted timestamp
+
+- The request payload (body)
+
+- The secret (available on your Bullring dashboard after creating a webhook)
+
+Then compare the generated hash with the received hash with equality `==`.
+
+Since Bullring uses the SHA256 hashing algorithm with base64 encoding, here’s how to verify the signature using Node.js:
+
+```javascript Verification Example
+
+import { createHmac } from "crypto";
+
+const receivedHash = hashString;
+const payload = JSON.stringify({ ... }); // The request body
+const key = "your_secret_key"; // From dashboard
+
+const hash = createHmac("sha256", key)
+  .update(`${timestamp},${payload}`)
+  .digest("base64");
+
+const isVerified = receivedHash === hash;
+
+```
+
+Take note of the `,` between the timestamp and the payload `${timestamp},${payload}` when creating the hash.
+
 ---
 
 ### Subaccount Events
