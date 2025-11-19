@@ -21,7 +21,7 @@
       "description": "Operations related to user accounts."
     },
     {
-      "name": "Accounts > Verification",
+      "name": "Verification",
       "description": "Endpoints for account verification, including KYC and KYB processes."
     },
     {
@@ -132,7 +132,7 @@
     "/v1/ramp/accounts/{accountId}/kyb": {
       "post": {
         "tags": [
-          "Accounts > Verification"
+          "Verification"
         ],
         "summary": "Tier Two KYB/C",
         "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification.",
@@ -171,7 +171,7 @@
     "/v1/ramp/accounts/{accountId}/verification/tier-one": {
       "post": {
         "tags": [
-          "Accounts > Verification"
+          "Verification"
         ],
         "summary": "NGN Tier One Verification",
         "description": "Submit information for Tier One verification for NGN accounts.",
