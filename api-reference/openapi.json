@@ -1,543 +1,905 @@
-openapi: 3.0.0
-info:
-  title: Bullring Finance API
-  description: The Bullring Finance API allows you to build powerful cross-border payment solutions.
-  version: 1.0.0
-servers:
-  - url: https://api.bullring.finance
-    description: Production Server
-  - url: https://api.sandbox.bullring.finance
-    description: Sandbox Server
-components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-    apikeyAuth:
-      type: http
-      scheme: apikey
-security:
-  - apikeyAuth: []
-tags:
-  - name: accounts
-  - name: accounts > verification
-  - name: banking
-  - name: banking > deposits
-  - name: banking > withdrawals
-  - name: banking > recipients
-  - name: banking > rates
-  - name: banking > fees
-paths:
-  /v1/ramp/accounts/{accountId}/kyb:
-    post:
-      tags:
-        - accounts > verification
-      summary: tier two kyb/c
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                verificationType: individual
-      parameters:
-        - name: x-api-key
-          in: header
-          schema:
-            type: string
-          example: '{{xapikey}}'
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/accounts/{accountId}/verification/tier-one:
-    post:
-      tags:
-        - accounts > verification
-      summary: NGN one verification
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                first_name: john
-                last_name: don
-                date_of_birth: 24-05-1983
-                identification_number: '12345678902'
-                address:
-                  street: 13, muilli street
-                  city: ikeja
-                  state: lagos
-                  postal_code: '100001'
-                  country: NG
-                phone:
-                  phone_country_code: '+234'
-                  phone_number: '8144194590'
-      parameters:
-        - name: x-api-key
-          in: header
-          schema:
-            type: string
-          example: '{{xapikey}}'
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/accounts:
-    post:
-      tags:
-        - accounts
-      summary: create
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                email: johnanisere+0012357490i@bullring.finance
-      parameters:
-        - name: x-api-key
-          in: header
-          schema:
-            type: string
-          example: '{{xapikey}}'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    get:
-      tags:
-        - accounts
-      summary: get all
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-          example: '1'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/accounts/{accountId}:
-    get:
-      tags:
-        - accounts
-      summary: get one
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/banking/channels:
-    get:
-      tags:
-        - banking > deposits
-      summary: channels
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/deposits:
-    post:
-      tags:
-        - banking > deposits
-      summary: NGN deposit request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                channelId: ngn-channel-id-bullring-finance
-                source:
-                  accountType: bank
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    get:
-      tags:
-        - banking > deposits
-      summary: list all deposits
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/deposits/lightning:
-    post:
-      tags:
-        - banking > deposits
-      summary: lightning deposits
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                amount: 10000
-                currency: usd
-                note: payment
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/deposits/crypto/SOL-DEVNET:
-    get:
-      tags:
-        - banking > deposits
-      summary: onchain deposit
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/deposits/simulate:
-    post:
-      tags:
-        - banking > deposits
-      summary: simulate NGN deposit
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                currency: NGN
-                amount: 100000000000
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/withdrawals:
-    post:
-      tags:
-        - banking > withdrawals
-      summary: withdraw NGN
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                account_id: '0062881117'
-                amount: '100'
-                currency: NGN
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    get:
-      tags:
-        - banking > withdrawals
-      summary: get all withdrawals
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/withdrawals//all-balance:
-    post:
-      tags:
-        - banking > withdrawals
-      summary: withdraw all USD
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                external_account_id: f556899a-eea7-4a18-b9e8-6346823a9b06
-                currency: USD
-                wire_message: Payment for services
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/withdrawals/stablecoin:
-    post:
-      tags:
-        - banking > withdrawals
-      summary: withdraw stablecoin
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                amount: '12'
-                stablecoin: usdt
-                chain: ethereum
-                address: '0x22ccb74a200d7b8094b72482edd46e23cbf3af37'
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/withdrawals/all-balance:
-    post:
-      tags:
-        - banking > withdrawals
-      summary: withdraw all NGN
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                account_id: '0062881117'
-                currency: NGN
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/withdrawals/9aeb160d-ace3-4f42-b7f9-be38650b4b22:
-    get:
-      tags:
-        - banking > withdrawals
-      summary: get one withdrawal
-      security:
-        - bearerAuth: []
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/recipients:
-    post:
-      tags:
-        - banking > recipients
-      summary: add EUR recipient
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                currency: EUR
-                account_owner_name: John Doe
-                bank_name: Bank of America
-                account_number: GB26PRTC00998500671076
-                bic: BANKGB2L
-                country: GBR
-                account_owner_type: individual
-                first_name: John
-                last_name: Doe
-                business_name: Acme Inc.
-                email: john@example.com
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-    get:
-      tags:
-        - banking > recipients
-      summary: get all receipients
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/banking/brl/validate:
-    post:
-      tags:
-        - banking > recipients
-      summary: validate BRL recipient
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                currency: BRL
-                pix_key: 667.136.083-96
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/banking/ngn/validate:
-    post:
-      tags:
-        - banking > recipients
-      summary: validate NGN recipient
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              example:
-                accountNumber: '0062881117'
-                bankCode: '270'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/ramp/{accountId}/banking/recipients/27c44186-5cc7-4c74-b7c7-ab16b762f260:
-    get:
-      tags:
-        - banking > recipients
-      summary: get one recipients
-      parameters:
-        - name: accountId
-          in: path
-          schema:
-            type: string
-          required: true
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/banking/rate:
-    get:
-      tags:
-        - banking > rates
-      summary: rate conversion
-      parameters:
-        - name: from
-          in: query
-          schema:
-            type: string
-          example: usdc
-        - name: to
-          in: query
-          schema:
-            type: string
-          example: usd
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
-  /v1/banking/withdrawal/fee:
-    get:
-      tags:
-        - banking > fees
-      summary: deposit fees
-      parameters:
-        - name: currency
-          in: query
-          schema:
-            type: string
-          example: ngn
-        - name: amount
-          in: query
-          schema:
-            type: number
-          example: '0.99'
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json: {}
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Bullring Finance API",
+    "description": "The Bullring Finance API allows you to build powerful cross-border payment solutions.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.bullring.finance",
+      "description": "Production Server"
+    },
+    {
+      "url": "https://api.sandbox.bullring.finance",
+      "description": "Sandbox Server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      },
+      "apikeyAuth": {
+        "type": "http",
+        "scheme": "apikey"
+      }
+    }
+  },
+  "security": [
+    {
+      "apikeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Accounts",
+      "description": "Operations related to user accounts."
+    },
+    {
+      "name": "Accounts > Verification",
+      "description": "Endpoints for account verification, including KYC and KYB processes."
+    },
+    {
+      "name": "Banking",
+      "description": "Core banking functionalities."
+    },
+    {
+      "name": "Banking > Deposits",
+      "description": "Endpoints for handling deposits into accounts."
+    },
+    {
+      "name": "Banking > Withdrawals",
+      "description": "Endpoints for handling withdrawals from accounts."
+    },
+    {
+      "name": "Banking > Recipients",
+      "description": "Manage payment recipients for withdrawals."
+    },
+    {
+      "name": "Banking > Rates",
+      "description": "Endpoints for currency conversion rates."
+    },
+    {
+      "name": "Banking > Fees",
+      "description": "Endpoints for checking transaction fees."
+    }
+  ],
+  "paths": {
+    "/v1/ramp/accounts/{accountId}/kyb": {
+      "post": {
+        "tags": [
+          "Accounts > Verification"
+        ],
+        "summary": "Tier Two KYB/C",
+        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "verificationType": "individual"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{xapikey}}"
+          },
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/accounts/{accountId}/verification/tier-one": {
+      "post": {
+        "tags": [
+          "Accounts > Verification"
+        ],
+        "summary": "NGN Tier One Verification",
+        "description": "Submit information for Tier One verification for NGN accounts.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "first_name": "john",
+                "last_name": "don",
+                "date_of_birth": "24-05-1983",
+                "identification_number": "12345678902",
+                "address": {
+                  "street": "13, muilli street",
+                  "city": "ikeja",
+                  "state": "lagos",
+                  "postal_code": "100001",
+                  "country": "NG"
+                },
+                "phone": {
+                  "phone_country_code": "+234",
+                  "phone_number": "8144194590"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{xapikey}}"
+          },
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/accounts": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create Account",
+        "description": "Create a new user account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "email": "johnanisere+0012357490i@bullring.finance"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            },
+            "example": "{{xapikey}}"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get All Accounts",
+        "description": "Retrieve a paginated list of all user accounts.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/accounts/{accountId}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get Account",
+        "description": "Retrieve the details of a specific account using its ID.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/banking/channels": {
+      "get": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "Get Deposit Channels",
+        "description": "Retrieve a list of available deposit channels.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/deposits": {
+      "post": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "Request NGN Deposit",
+        "description": "Initiate an NGN deposit request for a specific account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "channelId": "ngn-channel-id-bullring-finance",
+                "source": {
+                  "accountType": "bank"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "List All Deposits",
+        "description": "Retrieve a list of all deposits for a specific account.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/deposits/lightning": {
+      "post": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "Lightning Deposit",
+        "description": "Create a lightning invoice for a deposit.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "amount": 10000,
+                "currency": "usd",
+                "note": "payment"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/deposits/crypto/SOL-DEVNET": {
+      "get": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "Onchain Deposit Address",
+        "description": "Get a deposit address for SOL on the Solana Devnet.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/deposits/simulate": {
+      "post": {
+        "tags": [
+          "Banking > Deposits"
+        ],
+        "summary": "Simulate NGN Deposit",
+        "description": "Simulate a deposit in NGN for testing purposes in the sandbox environment.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currency": "NGN",
+                "amount": 100000000000
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/withdrawals": {
+      "post": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Withdraw NGN",
+        "description": "Initiate a withdrawal of NGN from a user's account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "account_id": "0062881117",
+                "amount": "100",
+                "currency": "NGN"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Get All Withdrawals",
+        "description": "Retrieve a list of all withdrawals for a specific account.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/withdrawals/all-balance": {
+      "post": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Withdraw Full Balance",
+        "description": "Withdraw the entire balance of a specified currency from a user's account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "examples": {
+                "USD": {
+                  "summary": "Withdraw Full USD Balance",
+                  "value": {
+                    "external_account_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "currency": "USD",
+                    "wire_message": "Payment for services"
+                  }
+                },
+                "NGN": {
+                  "summary": "Withdraw Full NGN Balance",
+                  "value": {
+                    "account_id": "0062881117",
+                    "currency": "NGN"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/withdrawals/stablecoin": {
+      "post": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Withdraw Stablecoin",
+        "description": "Withdraw funds as a stablecoin to a specified address.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "amount": "12",
+                "stablecoin": "usdt",
+                "chain": "ethereum",
+                "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/withdrawals/{withdrawalId}": {
+      "get": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Get One Withdrawal",
+        "description": "Retrieve the details of a single withdrawal by its ID.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "withdrawalId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "9aeb160d-ace3-4f42-b7f9-be38650b4b22"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/recipients": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Add EUR Recipient",
+        "description": "Add a new EUR recipient for withdrawals.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currency": "EUR",
+                "account_owner_name": "John Doe",
+                "bank_name": "Bank of America",
+                "account_number": "GB26PRTC00998500671076",
+                "bic": "BANKGB2L",
+                "country": "GBR",
+                "account_owner_type": "individual",
+                "first_name": "John",
+                "last_name": "Doe",
+                "business_name": "Acme Inc.",
+                "email": "john@example.com"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Get All Recipients",
+        "description": "Retrieve a list of all recipients for the account.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/brl/validate": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Validate BRL Recipient",
+        "description": "Validate the details of a BRL recipient.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currency": "BRL",
+                "pix_key": "667.136.083-96"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/ngn/validate": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Validate NGN Recipient",
+        "description": "Validate the details of an NGN recipient.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "accountNumber": "0062881117",
+                "bankCode": "270"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{accountId}/banking/recipients/{recipientId}": {
+      "get": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Get One Recipient",
+        "description": "Retrieve the details of a single recipient by their ID.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "recipientId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "27c44186-5cc7-4c74-b7c7-ab16b762f260"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/rate": {
+      "get": {
+        "tags": [
+          "Banking > Rates"
+        ],
+        "summary": "Rate Conversion",
+        "description": "Get the conversion rate between two currencies.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "usdc"
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "usd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/withdrawal/fee": {
+      "get": {
+        "tags": [
+          "Banking > Fees"
+        ],
+        "summary": "Get Withdrawal Fee",
+        "description": "Calculate the fee for a withdrawal.",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "example": "ngn"
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "example": "0.99"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
