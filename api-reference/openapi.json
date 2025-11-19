@@ -21,15 +21,16 @@
         "type": "http",
         "scheme": "bearer"
       },
-      "apikeyAuth": {
-        "type": "http",
-        "scheme": "apikey"
+      "x-api-key": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
       }
     }
   },
   "security": [
     {
-      "apikeyAuth": []
+      "x-api-key": []
     }
   ],
   "tags": [
@@ -67,6 +68,89 @@
     }
   ],
   "paths": {
+    "/v1/ramp/accounts": {
+      "post": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Create Account",
+        "description": "Create a new user account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "email": "johnanisere+0012357490i@bullring.finance"
+              }
+            }
+          }
+        },
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get All Accounts",
+        "description": "Retrieve a paginated list of all user accounts.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "1"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/accounts/{accountId}": {
+      "get": {
+        "tags": [
+          "Accounts"
+        ],
+        "summary": "Get Account",
+        "description": "Retrieve the details of a specific account using its ID.",
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/accounts/{accountId}/kyb": {
       "post": {
         "tags": [
@@ -88,16 +172,8 @@
         },
         "parameters": [
           {
-            "name": "x-api-key",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{xapikey}}"
-          },
-          {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -148,108 +224,10 @@
           }
         },
         "parameters": [
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{xapikey}}"
-          },
+          
           {
             "name": "accountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/accounts": {
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Create Account",
-        "description": "Create a new user account.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {
-                "email": "johnanisere+0012357490i@bullring.finance"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "x-api-key",
-            "in": "header",
-            "schema": {
-              "type": "string"
-            },
-            "example": "{{xapikey}}"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Get All Accounts",
-        "description": "Retrieve a paginated list of all user accounts.",
-        "parameters": [
-          {
-            "name": "page",
             "in": "query",
-            "schema": {
-              "type": "integer"
-            },
-            "example": "1"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/accounts/{accountId}": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "summary": "Get Account",
-        "description": "Retrieve the details of a specific account using its ID.",
-        "parameters": [
-          {
-            "name": "accountId",
-            "in": "path",
             "schema": {
               "type": "string"
             },
@@ -308,7 +286,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -333,7 +311,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -374,7 +352,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -401,7 +379,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -441,7 +419,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -482,7 +460,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -507,7 +485,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -560,7 +538,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -602,7 +580,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -634,7 +612,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -642,7 +620,7 @@
           },
           {
             "name": "withdrawalId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string",
               "example": "9aeb160d-ace3-4f42-b7f9-be38650b4b22"
@@ -692,7 +670,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -717,7 +695,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -804,7 +782,7 @@
         "parameters": [
           {
             "name": "accountId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string"
             },
@@ -812,7 +790,7 @@
           },
           {
             "name": "recipientId",
-            "in": "path",
+            "in": "query",
             "schema": {
               "type": "string",
               "example": "27c44186-5cc7-4c74-b7c7-ab16b762f260"
