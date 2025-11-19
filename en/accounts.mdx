@@ -1,0 +1,39 @@
+---
+title: Accounts
+description: "Managing your accounts on Bullring Finance"
+---
+
+In Bullring Finance, an "account" represents a business or individual that can send and receive payments. Each account is isolated and has its own balances, transactions, and settings. This guide will walk you through the process of creating and managing accounts using our API.
+
+## Creating an Account
+
+To create a new account, you need to make a `POST` request to the `/v1/ramp/accounts` endpoint. The only required field is the `email` of the account holder.
+
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/accounts \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "email": "customer@example.com"
+  }'
+```
+
+The API will respond with an `accountId` for the newly created account. You should store this ID to perform future actions on behalf of the account.
+
+## Retrieving an Account
+
+To get the details of a specific account, you can use the `GET /v1/ramp/accounts/{accountId}` endpoint.
+
+```bash
+curl https://api.bullring.finance/v1/ramp/accounts/YOUR_ACCOUNT_ID \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+## Listing All Accounts
+
+You can also retrieve a list of all accounts associated with your API key. This is useful for administrative purposes.
+
+```bash
+curl https://api.bullring.finance/v1/ramp/accounts \
+  -H "x-api-key: YOUR_API_KEY"
+```

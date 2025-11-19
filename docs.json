@@ -35,10 +35,28 @@
                 "pages": [
                   "en/introduction",
                   "en/authentication",
-                  "en/environment",
-                  "en/webhook",
-                  "en/payment",
-                  "en/withdrawal"
+                  "en/environments"
+                ]
+              },
+              {
+                "group": "Core Concepts",
+                "pages": [
+                  "en/accounts",
+                  "en/multi-currency"
+                ]
+              },
+              {
+                "group": "Payments",
+                "pages": [
+                  "en/making-payments",
+                  "en/receiving-payments"
+                ]
+              },
+              {
+                "group": "Use Cases",
+                "pages": [
+                  "en/invoicing",
+                  "en/payroll"
                 ]
               }
             ]

@@ -1,0 +1,62 @@
+---
+title: Making Payments
+description: "Sending payments to anyone, anywhere"
+---
+
+With Bullring Finance, you can easily send payments to bank accounts, crypto wallets, and other Bullring accounts. This guide provides an overview of the payment process and how to use our API to initiate transactions.
+
+## Adding a Recipient
+
+Before you can send a payment, you need to add a recipient. A recipient can be a bank account, a crypto address, or another Bullring account.
+
+To add a BRL recipient via Pix:
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/recipients \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "currency": "BRL",
+    "pix_key": "71719844194"
+  }'
+```
+
+To add an NGN recipient:
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/recipients \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "account_number": "0062881117",
+    "bank_code": "270",
+    "currency": "NGN"
+  }'
+```
+
+## Sending a Payment
+
+Once you have added a recipient, you can initiate a payment using the `/v1/ramp/{accountId}/banking/withdrawals` endpoint.
+
+To send a BRL payment:
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/withdrawals \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "account_id": "71719844194",
+    "amount": "10",
+    "currency": "BRL"
+  }'
+```
+
+To send a stablecoin payment:
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/withdrawals/stablecoin \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "amount": "12",
+    "stablecoin": "usdt",
+    "chain": "ethereum",
+    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+  }'
+```

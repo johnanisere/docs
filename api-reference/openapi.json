@@ -1,2662 +1,543 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "title": "Bullring Finance ",
-    "description": "Connecting businesses to crypto-paying customers.",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "https://staging-api.bullring.finance",
-      "description": "Staging Environment (for testing)"
-    },
-    {
-      "url": "https://api.bullring.finance",
-      "description": "Production Environment (live payments)"
-    }
-  ],
-  "security": [
-    {
-      "x-api-key": []
-    }
-  ],
-  "paths": {
-    "/v1/ramp/subaccount": {
-      "post": {
-        "summary": "Create merchant",
-        "description": "Register a new merchant with email",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterSubaccountStoreDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "merchant successfully registered",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubaccountResponse"
-                },
-                "example": {
-                  "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-                  "email": "johnanisere+0013@bullring.finance"
-                }
-              }
-            }
-          }
-        },
-        "tags": [
-          "Subaccount"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      },
-      "get": {
-        "operationId": "RampController_findAll",
-        "summary": "Get all merchants",
-        "description": "Retrieves a paginated list of all subaccounts associated with the authenticated parent merchant.",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "description": "Number of items per page",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "required": false,
-            "description": "Page number for pagination",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of subaccounts.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedSubaccountList"
-                },
-                "example": {
-                  "data": [
-                    {
-                      "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-                      "email": "johnanisere+0013@bullring.finance"
-                    },
-                    {
-                      "id": "cd9a2eb1-aeee-4c91-a3d4-87d3ff4f2e7b",
-                      "email": "johnanisere+0014@bullring.finance"
-                    }
-                  ],
-                  "meta": {
-                    "page": 1,
-                    "limit": 10,
-                    "total": 2
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - user is not a parent merchant."
-          }
-        },
-        "tags": [
-          "Subaccount"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}": {
-      "get": {
-        "operationId": "RampController_findOne",
-        "summary": "Get one merchant by ID",
-        "description": "Retrieves the details of a single subaccount using its UUID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Subaccount details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SubaccountOne"
-                },
-                "example": {
-                  "id": "051d89ee-223c-409b-8fcc-9aea92ad9307",
-                  "name": null,
-                  "email": "johnanisere+0012@bullring.finance",
-                  "phone": null,
-                  "country": null,
-                  "stateProvinceRegion": null,
-                  "subscriptions": [
-                    {
-                      "isActive": true,
-                      "plan": {
-                        "id": "7b338eab-831c-4b89-9d13-4aa987ed58f6",
-                        "name": "Lightning Basic",
-                        "fixedAmount": "0.10",
-                        "fixedAmountCurrency": "usd",
-                        "percentageRate": "0.7000",
-                        "billingType": "per_transaction",
-                        "features": {
-                          "cloud": "cloud-based POS",
-                          "rewards": "Customer rewards and automated marketing",
-                          "support": "24/7 Support",
-                          "installation": "dedicated installation & training"
-                        },
-                        "isActive": true,
-                        "description": "The perfect system to start your business and streamline operations. Includes standard POS software.",
-                        "createdAt": "2025-02-09T18:19:16.401Z",
-                        "updatedAt": "2025-02-09T18:19:16.401Z",
-                        "deletedAt": null
-                      }
-                    }
-                  ],
-                  "city": null,
-                  "postalCode": null,
-                  "address": null,
-                  "createdAt": "2025-04-17T15:15:11.712Z",
-                  "updatedAt": "2025-04-18T03:05:14.248Z",
-                  "preferredCurrency": "brl",
-                  "balance": 0,
-                  "withdrawalMinimum": 1
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Subaccount"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/kyb": {
-      "get": {
-        "operationId": "RampController_kyc",
-        "summary": "Get KYB url",
-        "description": "Get the KYB verification url of a subaccount and share with them to fill out their details.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Kyb url details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/KybUrlResponse"
-                },
-                "example": {
-                  "formUrl": "https://forms.kycaid.com/2cfed1d30d8b4447b018c2d8b4748d129493"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Verification"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/banks": {
-      "put": {
-        "operationId": "RampController_addBank",
-        "summary": "Verify Pix Key",
-        "description": "Verifies a Pix key",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBankDetailsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Bank account verified successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BankDetailsResponse"
-                },
-                "example": {
-                  "id": "449eca18-9c77-472c-9e82-b08a18637759",
-                  "name": "Hugo Gonzalez"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Bank"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      },
-      "post": {
-        "operationId": "RampController_addBank",
-        "summary": "Add Pix Key",
-        "description": "Merchant must first verify a Pix key before adding it to their subaccount. This endpoint is used to add a verified Pix key.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "accountId",
-            "required": true,
-            "in": "query",
-            "description": "Id (UUID) returned from verifing Pix key",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBankDetailsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Bank account verified successfully",
-            "content": {
-              "application/json": {
-                "example": "ok"
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Bank"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/payments": {
-      "post": {
-        "operationId": "RampController_createPayments",
-        "summary": "Create payment",
-        "description": "Create a new invoice to receive a crypto payment.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreatePaymentDto"
-              },
-              "example": {
-                "amount": 1000,
-                "currency": "brl",
-                "note": "Milk x 5"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Payment created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Payments"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      },
-      "get": {
-        "operationId": "RampController_getAllPayments",
-        "summary": "Get all payments",
-        "description": "Retrieve all payments for a specific merchant",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of payments retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PaymentResponse"
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Payments"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/payments/{paymentId}": {
-      "get": {
-        "operationId": "RampController_getOnePayment",
-        "summary": "Get one payment by ID",
-        "description": "Retrieve details of a specific payment by ID.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "paymentId",
-            "in": "path",
-            "required": true,
-            "description": "Payment ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Payment details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaymentResponse"
-                },
-                "example": {
-                  "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
-                  "lightningInvoice": "lnbcrt17171u1p5qr8k8pp5...",
-                  "paymentHash": null,
-                  "paymentRequestAmount": 1000,
-                  "paymentRequestCurrency": "brl",
-                  "invoiceCurrency": "usdt",
-                  "invoiceAmount": 17171,
-                  "status": "unpaid",
-                  "note": "Milk x 5",
-                  "createdAt": "2025-04-18T00:37:27.445Z",
-                  "updatedAt": "2025-04-18T00:37:27.445Z"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Invoice not found."
-          }
-        },
-        "tags": [
-          "Payments"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/withdrawals": {
-      "post": {
-        "operationId": "RampController_createWithdrawal",
-        "summary": "Initiate withdrawal",
-        "description": "Initiate a withdrawal to the linked bank account in fiat currency",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Withdrawal request created successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WithdrawalResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Withdrawals"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      },
-      "get": {
-        "operationId": "RampController_getAllWithdrawals",
-        "summary": "Get all withdrawals",
-        "description": "Retrieve a list of all withdrawals associated with a subaccount",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of withdrawals retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedWithdrawalResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Withdrawals"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/withdrawals/{withdrawalId}": {
-      "get": {
-        "operationId": "RampController_getOneWithdrawal",
-        "summary": "Get one withdrawal by ID",
-        "description": "Retrieve the details of a specific withdrawal request",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          },
-          {
-            "name": "withdrawalId",
-            "in": "path",
-            "required": true,
-            "description": "Withdrawal ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Withdrawal retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/WithdrawalResponse"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Withdrawal not found."
-          }
-        },
-        "tags": [
-          "Withdrawals"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/{id}/withdrawal-schedule": {
-      "post": {
-        "operationId": "RampController_setDailyPayout",
-        "summary": "Set daily withdrawal schedule",
-        "description": "Configures the daily time at which withdrawal to the subaccount bank account should be executed automatically.",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Subaccount ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateStoreDto"
-              },
-              "example": {
-                "dailyPayoutTime": "15:00"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Withdrawal schedule set successfully."
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Withdrawals"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/webhook": {
-      "post": {
-        "operationId": "RampController_addWebhook",
-        "summary": "Add Webhook",
-        "description": "Registers a webhook URL to receive specific event notifications (e.g., payment.status, withdrawal.status) for a subaccount.",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateWebhookDto"
-              },
-              "example": {
-                "url": "https://merchant.com/webhooks"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Webhook registered successfully."
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount not found."
-          }
-        },
-        "tags": [
-          "Webhook"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    },
-    "/v1/ramp/subaccount/webhook/{webhookId}": {
-      "delete": {
-        "operationId": "RampController_deleteWebhook",
-        "summary": "Delete Webhook",
-        "description": "Removes a registered webhook for a specific event from a subaccount.",
-        "parameters": [
-          {
-            "name": "webhookId",
-            "in": "path",
-            "required": true,
-            "description": "Webhook ID (UUID)",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Webhook deleted successfully (no content)."
-          },
-          "401": {
-            "description": "Unauthorized."
-          },
-          "403": {
-            "description": "Forbidden - not authorized to access this subaccount."
-          },
-          "404": {
-            "description": "Subaccount or webhook not found."
-          }
-        },
-        "tags": [
-          "Webhook"
-        ],
-        "security": [
-          {
-            "x-api-key": []
-          }
-        ]
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "CreateWebhookDto": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://merchant.com/webhooks"
-          }
-        },
-        "required": [
-          "url",
-          "events"
-        ]
-      },
-      "WithdrawalResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "payoutAmountDueInCrypto": {
-            "type": "string",
-            "example": "85.06"
-          },
-          "payoutAmountDueCurrency": {
-            "type": "string",
-            "example": "usdt"
-          },
-          "payoutDueTime": {
-            "type": "string",
-            "example": "2025-04-18 17:00"
-          },
-          "status": {
-            "type": "string",
-            "example": "completed"
-          },
-          "bankAccountId": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "example": null
-          },
-          "paymentRequestCurrency": {
-            "type": "string",
-            "example": "brl"
-          },
-          "amountStoreReceives": {
-            "type": "string",
-            "example": "496.5"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "PaginatedWithdrawalResponse": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/WithdrawalResponse"
-            }
-          },
-          "meta": {
-            "type": "object",
-            "properties": {
-              "page": {
-                "type": "integer",
-                "example": 1
-              },
-              "limit": {
-                "type": "integer",
-                "example": 10
-              },
-              "total": {
-                "type": "integer",
-                "example": 3
-              }
-            }
-          }
-        }
-      },
-      "PaymentResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e"
-          },
-          "lightningInvoice": {
-            "type": "string",
-            "example": "lnbcrt17171u1p5qr8k8pp5..."
-          },
-          "paymentHash": {
-            "type": [
-              "string",
-              "null"
-            ],
-            "example": null
-          },
-          "paymentRequestAmount": {
-            "type": "number",
-            "example": 1000
-          },
-          "paymentRequestCurrency": {
-            "type": "string",
-            "example": "brl"
-          },
-          "invoiceCurrency": {
-            "type": "string",
-            "example": "usdt"
-          },
-          "invoiceAmount": {
-            "type": "number",
-            "example": 17171
-          },
-          "status": {
-            "type": "string",
-            "example": "unpaid"
-          },
-          "note": {
-            "type": "string",
-            "example": "Milk x 5"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "required": [
-          "id",
-          "lightningInvoice",
-          "paymentRequestAmount",
-          "status"
-        ]
-      },
-      "BankDetailsResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "449eca18-9c77-472c-9e82-b08a18637759"
-          },
-          "name": {
-            "type": "string",
-            "example": "Hugo Gonzalez"
-          }
-        },
-        "required": [
-          "id",
-          "name"
-        ]
-      },
-      "KybUrlResponse": {
-        "type": "object",
-        "properties": {
-          "formUrl": {
-            "type": "string",
-            "format": "uri",
-            "example": "https://forms.kycaid.com/2cfed1d30d8b4447b018c2d8b4748d129493"
-          }
-        },
-        "required": [
-          "formUrl"
-        ]
-      },
-      "SubaccountOne": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid"
-          },
-          "name": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "email": {
-            "type": "string"
-          },
-          "phone": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "country": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "stateProvinceRegion": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "subscriptions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "isActive": {
-                  "type": "boolean"
-                },
-                "plan": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string"
-                    },
-                    "name": {
-                      "type": "string"
-                    },
-                    "fixedAmount": {
-                      "type": "string"
-                    },
-                    "fixedAmountCurrency": {
-                      "type": "string"
-                    },
-                    "percentageRate": {
-                      "type": "string"
-                    },
-                    "billingType": {
-                      "type": "string"
-                    },
-                    "features": {
-                      "type": "object",
-                      "properties": {
-                        "cloud": {
-                          "type": "string"
-                        },
-                        "rewards": {
-                          "type": "string"
-                        },
-                        "support": {
-                          "type": "string"
-                        },
-                        "installation": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "isActive": {
-                      "type": "boolean"
-                    },
-                    "description": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "updatedAt": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "deletedAt": {
-                      "type": [
-                        "string",
-                        "null"
-                      ],
-                      "format": "date-time"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "city": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "postalCode": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "address": {
-            "type": [
-              "string",
-              "null"
-            ]
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "preferredCurrency": {
-            "type": "string"
-          },
-          "balance": {
-            "type": "number"
-          },
-          "withdrawalMinimum": {
-            "type": "number"
-          }
-        }
-      },
-      "Subaccount": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "47a79c3d-9a2b-4998-898b-8eb7fad01526"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "johnanisere+0013@bullring.finance"
-          }
-        },
-        "required": [
-          "id",
-          "email"
-        ]
-      },
-      "PaginationMeta": {
-        "type": "object",
-        "properties": {
-          "page": {
-            "type": "integer",
-            "example": 1
-          },
-          "limit": {
-            "type": "integer",
-            "example": 10
-          },
-          "total": {
-            "type": "integer",
-            "example": 2
-          }
-        }
-      },
-      "PaginatedSubaccountList": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Subaccount"
-            }
-          },
-          "meta": {
-            "$ref": "#/components/schemas/PaginationMeta"
-          }
-        }
-      },
-      "SubaccountResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "format": "uuid",
-            "example": "47a79c3d-9a2b-4998-898b-8eb7fad01526"
-          },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "johnanisere+0013@bullring.finance"
-          }
-        },
-        "required": [
-          "id",
-          "email"
-        ]
-      },
-      "PingResponseDto": {
-        "type": "object",
-        "properties": {
-          "message": {
-            "type": "string",
-            "description": "Server health status message",
-            "example": "ping!"
-          }
-        },
-        "required": [
-          "message"
-        ]
-      },
-      "User": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "registrations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "id",
-          "email",
-          "registrations"
-        ]
-      },
-      "Event": {
-        "type": "object",
-        "properties": {
-          "user": {
-            "$ref": "#/components/schemas/User"
-          },
-          "type": {
-            "type": "string"
-          },
-          "tenantId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "user",
-          "type",
-          "tenantId"
-        ]
-      },
-      "RegisterStoreDto": {
-        "type": "object",
-        "properties": {
-          "event": {
-            "$ref": "#/components/schemas/Event"
-          }
-        },
-        "required": [
-          "event"
-        ]
-      },
-      "CreateApiKeyDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the API key"
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the API key"
-          },
-          "permission": {
-            "type": "string",
-            "description": "Permission level for this API key",
-            "enum": [
-              "read_only",
-              "manage_invoices",
-              "manage_subscriptions",
-              "manage_settings",
-              "full_access"
-            ],
-            "default": "read_only"
-          },
-          "expiresAt": {
-            "type": "string",
-            "description": "Expiration date for the API key (ISO format)",
-            "example": "2025-12-31T23:59:59Z"
-          },
-          "ipRestrictions": {
-            "type": "string",
-            "description": "Comma-separated list of IP addresses or CIDR ranges that can use this API key",
-            "example": "192.168.1.1,10.0.0.0/24"
-          }
-        },
-        "required": [
-          "name"
-        ]
-      },
-      "ValidateTotpDto": {
-        "type": "object",
-        "properties": {
-          "code": {
-            "type": "string",
-            "description": "TOTP code from the authenticator app",
-            "example": "123456"
-          }
-        },
-        "required": [
-          "code"
-        ]
-      },
-      "CreatePlanDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "fixedAmount": {
-            "type": "number"
-          },
-          "fixedAmountCurrency": {
-            "type": "string"
-          },
-          "percentageRate": {
-            "type": "number"
-          },
-          "billingType": {
-            "type": "string",
-            "enum": [
-              "monthly",
-              "yearly",
-              "per_transaction",
-              "monthly_per_transaction",
-              "yearly_per_transaction"
-            ]
-          },
-          "features": {
-            "type": "object"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "description": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "fixedAmountCurrency",
-          "billingType",
-          "isActive"
-        ]
-      },
-      "PlanResponseDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "fixedAmount": {
-            "type": "number"
-          },
-          "fixedAmountCurrency": {
-            "type": "string"
-          },
-          "percentageRate": {
-            "type": "number"
-          },
-          "billingType": {
-            "type": "string",
-            "enum": [
-              "monthly",
-              "yearly",
-              "per_transaction",
-              "monthly_per_transaction",
-              "yearly_per_transaction"
-            ]
-          },
-          "features": {
-            "type": "object"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "description": {
-            "type": "string"
-          },
-          "id": {
-            "type": "string"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "deletedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "name",
-          "fixedAmountCurrency",
-          "billingType",
-          "isActive",
-          "id",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "RefereeBenefitsDto": {
-        "type": "object",
-        "properties": {
-          "freeMonths": {
-            "type": "number"
-          },
-          "discountRate": {
-            "type": "number"
-          },
-          "processingFeeDiscount": {
-            "type": "number"
-          },
-          "hardwareDiscount": {
-            "type": "number"
-          }
-        }
-      },
-      "QualificationCriteriaDto": {
-        "type": "object",
-        "properties": {
-          "minTransactions": {
-            "type": "number"
-          },
-          "minProcessingVolume": {
-            "type": "number"
-          }
-        }
-      },
-      "CreateReferralCampaignDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "targetUserType": {
-            "type": "string",
-            "enum": [
-              "store",
-              "end_user"
-            ]
-          },
-          "rewardType": {
-            "type": "string",
-            "enum": [
-              "fixed",
-              "percentage",
-              "mixed"
-            ]
-          },
-          "startDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "endDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "signupReward": {
-            "type": "number"
-          },
-          "rewardCurrency": {
-            "type": "string"
-          },
-          "transactionRewardRate": {
-            "type": "number"
-          },
-          "refereeBenefits": {
-            "$ref": "#/components/schemas/RefereeBenefitsDto"
-          },
-          "rewardDurationMonths": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "maxReferrals": {
-            "type": "number"
-          },
-          "qualificationCriteria": {
-            "$ref": "#/components/schemas/QualificationCriteriaDto"
-          }
-        },
-        "required": [
-          "name",
-          "targetUserType",
-          "rewardType",
-          "startDate",
-          "endDate",
-          "rewardCurrency",
-          "refereeBenefits",
-          "rewardDurationMonths",
-          "isActive",
-          "qualificationCriteria"
-        ]
-      },
-      "ReferralCampaignResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "targetUserType": {
-            "type": "string",
-            "enum": [
-              "store",
-              "end_user"
-            ]
-          },
-          "rewardType": {
-            "type": "string",
-            "enum": [
-              "fixed",
-              "percentage",
-              "mixed"
-            ]
-          },
-          "startDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "endDate": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "signupReward": {
-            "type": "number"
-          },
-          "rewardCurrency": {
-            "type": "string"
-          },
-          "transactionRewardRate": {
-            "type": "number"
-          },
-          "refereeBenefits": {
-            "$ref": "#/components/schemas/RefereeBenefitsDto"
-          },
-          "rewardDurationMonths": {
-            "type": "number"
-          },
-          "isActive": {
-            "type": "boolean"
-          },
-          "maxReferrals": {
-            "type": "number"
-          },
-          "qualificationCriteria": {
-            "$ref": "#/components/schemas/QualificationCriteriaDto"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updatedAt": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "name",
-          "targetUserType",
-          "rewardType",
-          "startDate",
-          "endDate",
-          "signupReward",
-          "rewardCurrency",
-          "transactionRewardRate",
-          "refereeBenefits",
-          "rewardDurationMonths",
-          "isActive",
-          "maxReferrals",
-          "qualificationCriteria",
-          "createdAt",
-          "updatedAt"
-        ]
-      },
-      "Plan": {
-        "type": "object",
-        "properties": {}
-      },
-      "CreateSubscriptionDto": {
-        "type": "object",
-        "properties": {
-          "planId": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "planId"
-        ]
-      },
-      "SubscriptionResponseDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string"
-          },
-          "plan": {
-            "$ref": "#/components/schemas/PlanResponseDto"
-          }
-        },
-        "required": [
-          "id",
-          "plan"
-        ]
-      },
-      "RefreshTokenDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "Store": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateStoreDto": {
-        "type": "object",
-        "properties": {
-          "dailyPayoutTime": {
-            "type": "string",
-            "description": "Daily payout time in 24-hour format (HH:MM) or \"off\"",
-            "example": "15:00"
-          }
-        },
-        "required": [
-          "dailyPayoutTime"
-        ]
-      },
-      "KYBStoreDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "LocaleDto": {
-        "type": "object",
-        "properties": {
-          "locale": {
-            "type": "string"
-          }
-        }
-      },
-      "InitiationVia": {
-        "type": "object",
-        "properties": {
-          "paymentHash": {
-            "type": "string",
-            "description": "Lightning payment hash",
-            "example": "3bfad0c8e0a06baa6d6d3f614d6add36f551228fd5de43f6e38515592979363e"
-          },
-          "pubkey": {
-            "type": "string",
-            "description": "Lightning node public key",
-            "example": "03864ef025fde8fb587d989186ce6a4a186895ee44a926bfc370e2c366597a3f8f"
-          },
-          "type": {
-            "type": "string",
-            "description": "Payment initiation type",
-            "enum": [
-              "lightning"
-            ],
-            "example": "lightning"
-          }
-        },
-        "required": [
-          "paymentHash",
-          "pubkey",
-          "type"
-        ]
-      },
-      "SettlementDisplayPrice": {
-        "type": "object",
-        "properties": {
-          "base": {
-            "type": "string",
-            "description": "Base price",
-            "example": "1.00"
-          },
-          "displayCurrency": {
-            "type": "string",
-            "description": "Display currency code",
-            "example": "USD"
-          },
-          "offset": {
-            "type": "string",
-            "description": "Price offset",
-            "example": "0.00"
-          },
-          "walletCurrency": {
-            "type": "string",
-            "description": "Wallet currency code",
-            "example": "BTC"
-          }
-        },
-        "required": [
-          "base",
-          "displayCurrency",
-          "offset",
-          "walletCurrency"
-        ]
-      },
-      "SettlementVia": {
-        "type": "object",
-        "properties": {
-          "revealedPreImage": {
-            "type": "string",
-            "description": "Revealed preimage for the lightning payment",
-            "example": "1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
-          },
-          "type": {
-            "type": "string",
-            "description": "Settlement type",
-            "enum": [
-              "lightning"
-            ],
-            "example": "lightning"
-          }
-        },
-        "required": [
-          "revealedPreImage",
-          "type"
-        ]
-      },
-      "Transaction": {
-        "type": "object",
-        "properties": {
-          "createdAt": {
-            "type": "string",
-            "description": "Transaction creation timestamp",
-            "example": "2024-03-15T10:30:00Z"
-          },
-          "externalId": {
-            "type": "string",
-            "description": "External transaction identifier",
-            "example": "ext_123456789"
-          },
-          "id": {
-            "type": "string",
-            "description": "Internal transaction identifier",
-            "example": "txn_123456789"
-          },
-          "initiationVia": {
-            "description": "Payment initiation details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/InitiationVia"
-              }
-            ]
-          },
-          "memo": {
-            "type": "string",
-            "description": "Transaction memo/description",
-            "example": "Payment for coffee"
-          },
-          "settlementAmount": {
-            "type": "number",
-            "description": "Settlement amount in smallest unit",
-            "example": 100000
-          },
-          "settlementCurrency": {
-            "type": "string",
-            "description": "Settlement currency code",
-            "example": "BTC"
-          },
-          "settlementDisplayAmount": {
-            "type": "string",
-            "description": "Formatted settlement amount",
-            "example": "0.001 BTC"
-          },
-          "settlementDisplayFee": {
-            "type": "string",
-            "description": "Formatted settlement fee",
-            "example": "0.0001 BTC"
-          },
-          "settlementDisplayPrice": {
-            "description": "Settlement price details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SettlementDisplayPrice"
-              }
-            ]
-          },
-          "settlementFee": {
-            "type": "number",
-            "description": "Settlement fee in smallest unit",
-            "example": 1000
-          },
-          "settlementVia": {
-            "description": "Settlement details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SettlementVia"
-              }
-            ]
-          },
-          "status": {
-            "type": "string",
-            "description": "Transaction status",
-            "enum": [
-              "success",
-              "pending",
-              "failed"
-            ],
-            "example": "success"
-          },
-          "walletId": {
-            "type": "string",
-            "description": "Wallet identifier",
-            "example": "wallet_123456789"
-          }
-        },
-        "required": [
-          "createdAt",
-          "externalId",
-          "id",
-          "initiationVia",
-          "memo",
-          "settlementAmount",
-          "settlementCurrency",
-          "settlementDisplayAmount",
-          "settlementDisplayFee",
-          "settlementDisplayPrice",
-          "settlementFee",
-          "settlementVia",
-          "status",
-          "walletId"
-        ]
-      },
-      "LightningNotificationEvent": {
-        "type": "object",
-        "properties": {
-          "accountId": {
-            "type": "string",
-            "description": "Account identifier",
-            "example": "acc_123456789"
-          },
-          "eventType": {
-            "type": "string",
-            "description": "Type of lightning event",
-            "enum": [
-              "receive.lightning",
-              "send.lightning"
-            ],
-            "example": "receive.lightning"
-          },
-          "transaction": {
-            "description": "Transaction details",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Transaction"
-              }
-            ]
-          },
-          "walletId": {
-            "type": "string",
-            "description": "Wallet identifier",
-            "example": "wallet_123456789"
-          }
-        },
-        "required": [
-          "accountId",
-          "eventType",
-          "transaction",
-          "walletId"
-        ]
-      },
-      "CreatePaymentDto": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "example": 1000
-          },
-          "currency": {
-            "type": "string",
-            "example": "brl"
-          },
-          "note": {
-            "type": "string",
-            "example": "Milk x 5"
-          }
-        },
-        "required": [
-          "amount",
-          "currency"
-        ]
-      },
-      "State": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "description": "Name of the state or equivalent subdivision",
-            "example": "California"
-          },
-          "alpha3Code": {
-            "type": "string",
-            "description": "Fictional alpha-3 code for the state",
-            "example": "USA-CAL"
-          },
-          "isoCode": {
-            "type": "string",
-            "description": "ISO 3166-2 subdivision code",
-            "example": "CA"
-          }
-        },
-        "required": [
-          "name",
-          "alpha3Code",
-          "isoCode"
-        ]
-      },
-      "Country": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string",
-            "description": "Name of the country",
-            "example": "United States"
-          },
-          "alpha3Code": {
-            "type": "string",
-            "description": "ISO 3166-1 alpha-3 code for the country",
-            "example": "USA"
-          },
-          "alpha2Code": {
-            "type": "string",
-            "description": "ISO 3166-1 alpha-2 code for the country",
-            "example": "US"
-          },
-          "currencyCode": {
-            "type": "string",
-            "description": "Currency code",
-            "example": "USD"
-          },
-          "states": {
-            "description": "List of states or equivalent subdivisions",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/State"
-            }
-          }
-        },
-        "required": [
-          "country",
-          "alpha3Code",
-          "alpha2Code",
-          "currencyCode",
-          "states"
-        ]
-      },
-      "CreateBankDetailsDto": {
-        "type": "object",
-        "properties": {
-          "brlAccount": {
-            "type": "object",
-            "properties": {
-              "pixKey": {
-                "type": "string",
-                "example": "667.136.083-96"
-              }
-            },
-            "required": [
-              "pixKey"
-            ]
-          }
-        },
-        "required": [
-          "brlAccount"
-        ]
-      },
-      "RegisterSubaccountStoreDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "email"
-        ]
-      },
-      "CreateStoreDto": {
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          },
-          "code": {
-            "type": "string"
-          },
-          "phone": {
-            "type": "string"
-          },
-          "expoPushToken": {
-            "type": "string"
-          },
-          "referralCode": {
-            "type": "string"
-          },
-          "totp": {
-            "type": "string"
-          },
-          "requireTotpForLogin": {
-            "type": "boolean"
-          }
-        },
-        "required": [
-          "email"
-        ]
-      },
-      "AuthResponseDto": {
-        "type": "object",
-        "properties": {}
-      },
-      "DigitalPresenceDto": {
-        "type": "object",
-        "properties": {
-          "website": {
-            "type": "string",
-            "example": "https://website.com"
-          },
-          "menuUrl": {
-            "type": "string",
-            "example": "https://website.com/menu"
-          },
-          "bookingUrl": {
-            "type": "string",
-            "example": "https://opentable.com/restaurant"
-          },
-          "socialMedia": {
-            "type": "object",
-            "example": {
-              "instagram": "https://instagram.com/restaurant",
-              "facebook": "https://facebook.com/restaurant"
-            }
-          }
-        }
-      },
-      "TypeSpecificInfoDto": {
-        "type": "object",
-        "properties": {
-          "cuisineTypes": {
-            "example": [
-              "Italian",
-              "Mediterranean"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "dietaryOptions": {
-            "example": [
-              "Vegan",
-              "Gluten-Free"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "seatingCapacity": {
-            "type": "number",
-            "example": 100
-          },
-          "hasOutdoorSeating": {
-            "type": "boolean",
-            "example": true
-          },
-          "servesAlcohol": {
-            "type": "boolean",
-            "example": true
-          },
-          "productCategories": {
-            "example": [
-              "Electronics",
-              "Computers"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "hasPhysicalStore": {
-            "type": "boolean",
-            "example": true
-          },
-          "serviceTypes": {
-            "example": [
-              "Repair",
-              "Installation"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "requiresBooking": {
-            "type": "boolean",
-            "example": true
-          },
-          "mobileService": {
-            "type": "boolean",
-            "example": true
-          },
-          "acceptsReturns": {
-            "type": "boolean",
-            "example": true
-          },
-          "genre": {
-            "type": "string",
-            "example": "opera"
-          },
-          "genres": {
-            "example": [
-              "Jazz",
-              "Blues"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "hasLiveEvents": {
-            "type": "boolean",
-            "example": true
-          },
-          "venueCapacity": {
-            "type": "boolean",
-            "example": true
-          },
-          "hasTicketing": {
-            "type": "boolean",
-            "example": true
-          },
-          "familyFriendly": {
-            "type": "boolean",
-            "example": true
-          },
-          "ageRestricted": {
-            "type": "boolean",
-            "example": true
-          },
-          "specialties": {
-            "example": [
-              "orthopedics",
-              "opthamology"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "acceptsInsurance": {
-            "type": "boolean",
-            "example": true
-          },
-          "emergencyService": {
-            "type": "boolean",
-            "example": true
-          },
-          "requiresAppointment": {
-            "type": "boolean",
-            "example": true
-          },
-          "businessType": {
-            "type": "string",
-            "example": "plumbing"
-          },
-          "customServices": {
-            "type": "boolean",
-            "example": true
-          },
-          "specializedEquipment": {
-            "type": "boolean",
-            "example": true
-          }
-        }
-      },
-      "DeliveryDto": {
-        "type": "object",
-        "properties": {
-          "isAvailable": {
-            "type": "boolean",
-            "example": true
-          },
-          "radius": {
-            "type": "number",
-            "example": 5
-          },
-          "minimumOrder": {
-            "type": "number",
-            "example": 10
-          },
-          "providers": {
-            "example": [
-              "Uber Eats",
-              "Deliveroo"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "isAvailable"
-        ]
-      },
-      "BookingDto": {
-        "type": "object",
-        "properties": {
-          "isAvailable": {
-            "type": "boolean",
-            "example": true
-          },
-          "provider": {
-            "type": "string",
-            "example": "OpenTable"
-          },
-          "providerUrl": {
-            "type": "string",
-            "example": "https://opentable.com/restaurant"
-          },
-          "requiresDeposit": {
-            "type": "boolean",
-            "example": false
-          }
-        },
-        "required": [
-          "isAvailable"
-        ]
-      },
-      "CreateMerchantDto": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "restaurant",
-              "retail",
-              "service",
-              "entertainment",
-              "healthcare",
-              "other"
-            ],
-            "example": "restaurant"
-          },
-          "name": {
-            "type": "string",
-            "example": "Bella Italia"
-          },
-          "description": {
-            "type": "string",
-            "example": "Authentic Italian Restaurant in downtown"
-          },
-          "secondaryColor": {
-            "type": "string",
-            "example": "#FF5733"
-          },
-          "categories": {
-            "example": [
-              "Italian",
-              "Restaurant",
-              "Fine Dining"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "keywords": {
-            "example": [
-              "pasta",
-              "pizza",
-              "wine"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "amenities": {
-            "type": "object",
-            "example": {
-              "wifi": true,
-              "parking": false
-            }
-          },
-          "isVerified": {
-            "type": "boolean",
-            "example": true,
-            "default": false
-          },
-          "location": {
-            "type": "object",
-            "example": {
-              "type": "Point",
-              "coordinates": [
-                -73.935242,
-                40.73061
-              ]
-            }
-          },
-          "address": {
-            "type": "string",
-            "example": "123 Main St"
-          },
-          "city": {
-            "type": "string",
-            "example": "New York"
-          },
-          "state": {
-            "type": "string",
-            "example": "NY"
-          },
-          "country": {
-            "type": "string",
-            "example": "USA"
-          },
-          "postalCode": {
-            "type": "string",
-            "example": "10001"
-          },
-          "phone": {
-            "type": "string",
-            "example": "+1 212-555-0123"
-          },
-          "email": {
-            "type": "string",
-            "example": "contact@restaurant.com"
-          },
-          "digitalPresence": {
-            "$ref": "#/components/schemas/DigitalPresenceDto"
-          },
-          "businessHours": {
-            "type": "object"
-          },
-          "features": {
-            "example": [
-              "WiFi",
-              "Outdoor Seating"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "typeSpecificInfo": {
-            "$ref": "#/components/schemas/TypeSpecificInfoDto"
-          },
-          "acceptedPayments": {
-            "type": "array",
-            "example": [
-              "LIGHTNING",
-              "CARD"
-            ],
-            "items": {
-              "type": "string",
-              "enum": [
-                "LIGHTNING",
-                "CASH",
-                "CARD"
-              ]
-            }
-          },
-          "photos": {
-            "example": [
-              "https://photos.com/1.jpg"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "logoUrl": {
-            "type": "string",
-            "example": "https://photos.com/logo.jpg"
-          },
-          "delivery": {
-            "$ref": "#/components/schemas/DeliveryDto"
-          },
-          "booking": {
-            "$ref": "#/components/schemas/BookingDto"
-          }
-        },
-        "required": [
-          "type",
-          "name",
-          "description",
-          "categories",
-          "location",
-          "acceptedPayments"
-        ]
-      },
-      "Merchant": {
-        "type": "object",
-        "properties": {}
-      },
-      "UpdateMerchantDto": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "restaurant",
-              "retail",
-              "service",
-              "entertainment",
-              "healthcare",
-              "other"
-            ],
-            "example": "restaurant"
-          },
-          "name": {
-            "type": "string",
-            "example": "Bella Italia"
-          },
-          "description": {
-            "type": "string",
-            "example": "Authentic Italian Restaurant in downtown"
-          },
-          "secondaryColor": {
-            "type": "string",
-            "example": "#FF5733"
-          },
-          "categories": {
-            "example": [
-              "Italian",
-              "Restaurant",
-              "Fine Dining"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "keywords": {
-            "example": [
-              "pasta",
-              "pizza",
-              "wine"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "amenities": {
-            "type": "object",
-            "example": {
-              "wifi": true,
-              "parking": false
-            }
-          },
-          "isVerified": {
-            "type": "boolean",
-            "example": true,
-            "default": false
-          },
-          "location": {
-            "type": "object",
-            "example": {
-              "type": "Point",
-              "coordinates": [
-                -73.935242,
-                40.73061
-              ]
-            }
-          },
-          "address": {
-            "type": "string",
-            "example": "123 Main St"
-          },
-          "city": {
-            "type": "string",
-            "example": "New York"
-          },
-          "state": {
-            "type": "string",
-            "example": "NY"
-          },
-          "country": {
-            "type": "string",
-            "example": "USA"
-          },
-          "postalCode": {
-            "type": "string",
-            "example": "10001"
-          },
-          "phone": {
-            "type": "string",
-            "example": "+1 212-555-0123"
-          },
-          "email": {
-            "type": "string",
-            "example": "contact@restaurant.com"
-          },
-          "digitalPresence": {
-            "$ref": "#/components/schemas/DigitalPresenceDto"
-          },
-          "businessHours": {
-            "type": "object"
-          },
-          "features": {
-            "example": [
-              "WiFi",
-              "Outdoor Seating"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "typeSpecificInfo": {
-            "$ref": "#/components/schemas/TypeSpecificInfoDto"
-          },
-          "acceptedPayments": {
-            "type": "array",
-            "example": [
-              "LIGHTNING",
-              "CARD"
-            ],
-            "items": {
-              "type": "string",
-              "enum": [
-                "LIGHTNING",
-                "CASH",
-                "CARD"
-              ]
-            }
-          },
-          "photos": {
-            "example": [
-              "https://photos.com/1.jpg"
-            ],
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "logoUrl": {
-            "type": "string",
-            "example": "https://photos.com/logo.jpg"
-          },
-          "delivery": {
-            "$ref": "#/components/schemas/DeliveryDto"
-          },
-          "booking": {
-            "$ref": "#/components/schemas/BookingDto"
-          },
-          "status": {
-            "type": "string",
-            "example": "active"
-          },
-          "rating": {
-            "type": "string",
-            "example": "0.00"
-          },
-          "numberOfRatings": {
-            "type": "number",
-            "example": 0
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      },
-      "x-api-key": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "x-api-key"
-      }
-    }
-  }
-}
+openapi: 3.0.0
+info:
+  title: Bullring Finance API
+  description: The Bullring Finance API allows you to build powerful cross-border payment solutions.
+  version: 1.0.0
+servers:
+  - url: https://api.bullring.finance
+    description: Production Server
+  - url: https://api.sandbox.bullring.finance
+    description: Sandbox Server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+    apikeyAuth:
+      type: http
+      scheme: apikey
+security:
+  - apikeyAuth: []
+tags:
+  - name: accounts
+  - name: accounts > verification
+  - name: banking
+  - name: banking > deposits
+  - name: banking > withdrawals
+  - name: banking > recipients
+  - name: banking > rates
+  - name: banking > fees
+paths:
+  /v1/ramp/accounts/{accountId}/kyb:
+    post:
+      tags:
+        - accounts > verification
+      summary: tier two kyb/c
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                verificationType: individual
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: '{{xapikey}}'
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/accounts/{accountId}/verification/tier-one:
+    post:
+      tags:
+        - accounts > verification
+      summary: NGN one verification
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                first_name: john
+                last_name: don
+                date_of_birth: 24-05-1983
+                identification_number: '12345678902'
+                address:
+                  street: 13, muilli street
+                  city: ikeja
+                  state: lagos
+                  postal_code: '100001'
+                  country: NG
+                phone:
+                  phone_country_code: '+234'
+                  phone_number: '8144194590'
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: '{{xapikey}}'
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/accounts:
+    post:
+      tags:
+        - accounts
+      summary: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                email: johnanisere+0012357490i@bullring.finance
+      parameters:
+        - name: x-api-key
+          in: header
+          schema:
+            type: string
+          example: '{{xapikey}}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - accounts
+      summary: get all
+      parameters:
+        - name: page
+          in: query
+          schema:
+            type: integer
+          example: '1'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/accounts/{accountId}:
+    get:
+      tags:
+        - accounts
+      summary: get one
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/banking/channels:
+    get:
+      tags:
+        - banking > deposits
+      summary: channels
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/deposits:
+    post:
+      tags:
+        - banking > deposits
+      summary: NGN deposit request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                channelId: ngn-channel-id-bullring-finance
+                source:
+                  accountType: bank
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - banking > deposits
+      summary: list all deposits
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/deposits/lightning:
+    post:
+      tags:
+        - banking > deposits
+      summary: lightning deposits
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: 10000
+                currency: usd
+                note: payment
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/deposits/crypto/SOL-DEVNET:
+    get:
+      tags:
+        - banking > deposits
+      summary: onchain deposit
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/deposits/simulate:
+    post:
+      tags:
+        - banking > deposits
+      summary: simulate NGN deposit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currency: NGN
+                amount: 100000000000
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/withdrawals:
+    post:
+      tags:
+        - banking > withdrawals
+      summary: withdraw NGN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                account_id: '0062881117'
+                amount: '100'
+                currency: NGN
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - banking > withdrawals
+      summary: get all withdrawals
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/withdrawals//all-balance:
+    post:
+      tags:
+        - banking > withdrawals
+      summary: withdraw all USD
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                external_account_id: f556899a-eea7-4a18-b9e8-6346823a9b06
+                currency: USD
+                wire_message: Payment for services
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/withdrawals/stablecoin:
+    post:
+      tags:
+        - banking > withdrawals
+      summary: withdraw stablecoin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                amount: '12'
+                stablecoin: usdt
+                chain: ethereum
+                address: '0x22ccb74a200d7b8094b72482edd46e23cbf3af37'
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/withdrawals/all-balance:
+    post:
+      tags:
+        - banking > withdrawals
+      summary: withdraw all NGN
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                account_id: '0062881117'
+                currency: NGN
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/withdrawals/9aeb160d-ace3-4f42-b7f9-be38650b4b22:
+    get:
+      tags:
+        - banking > withdrawals
+      summary: get one withdrawal
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/recipients:
+    post:
+      tags:
+        - banking > recipients
+      summary: add EUR recipient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currency: EUR
+                account_owner_name: John Doe
+                bank_name: Bank of America
+                account_number: GB26PRTC00998500671076
+                bic: BANKGB2L
+                country: GBR
+                account_owner_type: individual
+                first_name: John
+                last_name: Doe
+                business_name: Acme Inc.
+                email: john@example.com
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+    get:
+      tags:
+        - banking > recipients
+      summary: get all receipients
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/banking/brl/validate:
+    post:
+      tags:
+        - banking > recipients
+      summary: validate BRL recipient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                currency: BRL
+                pix_key: 667.136.083-96
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/banking/ngn/validate:
+    post:
+      tags:
+        - banking > recipients
+      summary: validate NGN recipient
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                accountNumber: '0062881117'
+                bankCode: '270'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/ramp/{accountId}/banking/recipients/27c44186-5cc7-4c74-b7c7-ab16b762f260:
+    get:
+      tags:
+        - banking > recipients
+      summary: get one recipients
+      parameters:
+        - name: accountId
+          in: path
+          schema:
+            type: string
+          required: true
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/banking/rate:
+    get:
+      tags:
+        - banking > rates
+      summary: rate conversion
+      parameters:
+        - name: from
+          in: query
+          schema:
+            type: string
+          example: usdc
+        - name: to
+          in: query
+          schema:
+            type: string
+          example: usd
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /v1/banking/withdrawal/fee:
+    get:
+      tags:
+        - banking > fees
+      summary: deposit fees
+      parameters:
+        - name: currency
+          in: query
+          schema:
+            type: string
+          example: ngn
+        - name: amount
+          in: query
+          schema:
+            type: number
+          example: '0.99'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+

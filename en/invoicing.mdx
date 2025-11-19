@@ -1,0 +1,43 @@
+---
+title: Invoicing
+description: "Creating and managing invoices for international clients"
+---
+
+Bullring Finance simplifies international invoicing by allowing you to request payments in various currencies. While our API does not have a dedicated invoicing object, you can easily create invoice-like functionality by combining our payment request features.
+
+## Creating a Payment Request
+
+To "invoice" a client, you can generate a payment request. For crypto payments, this can be a Lightning invoice or a static address for a specific cryptocurrency.
+
+### Lightning Invoice
+
+You can generate a Lightning invoice for a specific amount. The client can then pay this invoice using any Lightning-enabled wallet.
+
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/deposits/lightning \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "amount": 10000,
+    "currency": "usd",
+    "note": "Invoice #123"
+  }'
+```
+
+### On-Chain Address
+
+Alternatively, you can provide the client with a deposit address for a specific cryptocurrency.
+
+```bash
+curl https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/deposits/crypto/SOL-DEVNET \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+## Tracking Payments
+
+You can track the status of incoming payments by listening to webhook events or by polling the list deposits endpoint. When a payment is received, the funds will be automatically added to the corresponding currency balance in your account.
+
+```bash
+curl https://api.bullring.finance/v1/ramp/YOUR_ACCOUNT_ID/banking/deposits \
+  -H "x-api-key: YOUR_API_KEY"
+```
