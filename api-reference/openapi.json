@@ -57,7 +57,15 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "email"
+                ]
               },
               "example": {
                 "email": "johnanisere+0012357490i@bullring.finance"
@@ -76,20 +84,22 @@
                   "properties": {
                     "id": {
                       "type": "string",
-                      "description": "Unique identifier for the subaccount"
+                      "format": "uuid",
+                      "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc"
                     },
                     "email": {
                       "type": "string",
-                      "description": "Email address of the subaccount"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "Current status of the subaccount"
+                      "format": "email",
+                      "example": "johnanisere+0013@bullring.finance"
                     }
-                  }
+                  },
+                  "required": [
+                    "id",
+                    "email"
+                  ]
                 },
                 "example": {
-                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
                   "email": "johnanisere+0012357490i@bullring.finance",
                   "status": "created"
                 }
@@ -103,7 +113,7 @@
           "Subaccounts"
         ],
         "summary": "Get All Subaccounts",
-        "description": "Retrieve a paginated list of all user subaccounts.",
+        "description": "Retrieve a paginated list of all user subaccounts for a particular account.",
         "parameters": [
           {
             "name": "page",
@@ -130,10 +140,12 @@
                         "properties": {
                           "id": {
                             "type": "string",
+                            "format": "uuid",
                             "description": "Unique identifier for the subaccount"
                           },
                           "email": {
                             "type": "string",
+                            "format": "email",
                             "description": "Email address of the subaccount"
                           },
                           "balance": {
@@ -207,6 +219,72 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Account not found"
+                }
+              }
+            }
           }
         }
       }
@@ -223,9 +301,12 @@
             "name": "subaccountId",
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
             },
-            "required": true
+            "required": true,
+            "description": "The unique identifier of the subaccount"
           }
         ],
         "responses": {
@@ -238,10 +319,12 @@
                   "properties": {
                     "id": {
                       "type": "string",
+                      "format": "uuid",
                       "description": "Unique identifier for the subaccount"
                     },
                     "email": {
                       "type": "string",
+                      "format": "email",
                       "description": "Email address of the subaccount"
                     },
                     "balance": {
@@ -273,55 +356,69 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/ramp/subaccount/{subaccountId}/kyb": {
-      "post": {
-        "tags": [
-          "Verification"
-        ],
-        "summary": "Tier Two KYB/C",
-        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {
-                "verificationType": "individual"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Verification process initiated successfully",
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "formUrl": {
-                      "type": "string",
-                      "description": "URL to the verification form"
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
                 }
               }
             }
@@ -335,42 +432,136 @@
           "Verification"
         ],
         "summary": "Tier One Verification",
-        "description": "Submit information for Tier One verification for NGN or BRL subaccounts.",
+        "description": "Submit information for Tier One verification for NGN or BRL subaccounts. The request body format varies based on the subaccount's currency.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "title": "Nigeria",
+                    "description": "Nigeria (NGN) Tier One Verification",
+                    "properties": {
+                      "first_name": {
+                        "type": "string",
+                        "example": "john"
+                      },
+                      "last_name": {
+                        "type": "string",
+                        "example": "don"
+                      },
+                      "date_of_birth": {
+                        "type": "string",
+                        "example": "24-05-1983"
+                      },
+                      "identification_number": {
+                        "type": "string",
+                        "example": "12345678902"
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street": {
+                            "type": "string",
+                            "example": "13, muilli street"
+                          },
+                          "city": {
+                            "type": "string",
+                            "example": "ikeja"
+                          },
+                          "state": {
+                            "type": "string",
+                            "example": "lagos"
+                          },
+                          "postal_code": {
+                            "type": "string",
+                            "example": "100001"
+                          },
+                          "country": {
+                            "type": "string",
+                            "example": "NG"
+                          }
+                        },
+                        "required": ["street", "city", "state", "postal_code", "country"]
+                      },
+                      "phone": {
+                        "type": "object",
+                        "properties": {
+                          "phone_country_code": {
+                            "type": "string",
+                            "example": "+234"
+                          },
+                          "phone_number": {
+                            "type": "string",
+                            "example": "8144194590"
+                          }
+                        },
+                        "required": ["phone_country_code", "phone_number"]
+                      }
+                    },
+                    "required": ["first_name", "last_name", "date_of_birth", "identification_number", "address", "phone"]
+                  },
+                  {
+                    "type": "object",
+                    "title": "Brazil",
+                    "description": "Brazil (BRL) Tier One Verification",
+                    "properties": {
+                      "cpfNumber": {
+                        "type": "string",
+                        "description": "Brazilian CPF number for individual verification",
+                        "example": "12345678909"
+                      },
+                      "cnpjNumber": {
+                        "type": "string",
+                        "description": "Brazilian CNPJ number for business verification (optional, use either cpfNumber or cnpjNumber)"
+                      }
+                    }
+                  }
+                ]
               },
-              "example": {
-                "first_name": "john",
-                "last_name": "don",
-                "date_of_birth": "24-05-1983",
-                "identification_number": "12345678902",
-                "address": {
-                  "street": "13, muilli street",
-                  "city": "ikeja",
-                  "state": "lagos",
-                  "postal_code": "100001",
-                  "country": "NG"
+              "examples": {
+                "Nigeria": {
+                  "summary": "Nigeria (NGN) Tier One Verification Request",
+                  "value": {
+                    "first_name": "john",
+                    "last_name": "don",
+                    "date_of_birth": "24-05-1983",
+                    "identification_number": "12345678902",
+                    "address": {
+                      "street": "13, muilli street",
+                      "city": "ikeja",
+                      "state": "lagos",
+                      "postal_code": "100001",
+                      "country": "NG"
+                    },
+                    "phone": {
+                      "phone_country_code": "+234",
+                      "phone_number": "8144194590"
+                    }
+                  }
                 },
-                "phone": {
-                  "phone_country_code": "+234",
-                  "phone_number": "8144194590"
+                "Brazil": {
+                  "summary": "Brazil (BRL) Tier One Verification Request",
+                  "value": {
+                    "cpfNumber": "12345678909"
+                  }
                 }
               }
             }
           }
         },
         "parameters": [
-          
           {
             "name": "subaccountId",
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
             },
-            "required": true
+            "required": true,
+            "description": "The unique identifier of the subaccount"
           }
         ],
         "responses": {
@@ -410,18 +601,18 @@
                 },
                 "examples": {
                   "Nigeria": {
-                    "summary": "Nigeria (NGN) Tier One Verification",
+                    "summary": "Nigeria (NGN) Tier One Verification Response",
                     "value": {
-                      "storeId": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                      "storeId": "c625ca4e-b125-47fd-b090-7c63f51c1630",
                       "status": "approved",
                       "verified": true,
-                      "verificationId": "tier1_verification_ngn_1763596770153_nj6pmk",
-                      "processingTimeMs": 5,
-                      "createdAt": "2025-11-19T23:59:30.158Z"
+                      "verificationId": "tier1_verification_ngn_1763593659002_m0w0no",
+                      "processingTimeMs": 6,
+                      "createdAt": "2025-11-19T23:07:39.008Z"
                     }
                   },
                   "Brazil": {
-                    "summary": "Brazil (BRL) Tier One Verification",
+                    "summary": "Brazil (BRL) Tier One Verification Response",
                     "value": {
                       "verificationId": "tier1_verification_1763596769729_ugxoky",
                       "storeId": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
@@ -431,6 +622,204 @@
                       "createdAt": "2025-11-19T23:59:29.764Z"
                     }
                   }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/subaccount/{subaccountId}/kyb": {
+      "post": {
+        "tags": [
+          "Verification"
+        ],
+        "summary": "Tier Two KYB/C",
+        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "verificationType": {
+                    "type": "string",
+                    "enum": ["individual", "business"],
+                    "description": "Type of verification to perform",
+                    "example": "individual"
+                  }
+                },
+                "required": ["verificationType"]
+              },
+              "example": {
+                "verificationType": "individual"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Verification process initiated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "formUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "URL to the verification form where the user can complete their KYB/KYC verification"
+                    }
+                  },
+                  "required": ["formUrl"]
+                },
+                "example": {
+                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
                 }
               }
             }
