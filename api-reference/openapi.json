@@ -2346,18 +2346,92 @@
         "tags": [
           "Banking > Withdrawals"
         ],
-        "summary": "Withdraw NGN",
-        "description": "Initiate a withdrawal of NGN from a user's subaccount.",
+        "summary": "Withdraw Fiat",
+        "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "title": "USD",
+                    "type": "object",
+                    "properties": {
+                      "external_account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["USD"] },
+                      "wire_message": { "type": "string" }
+                    },
+                    "required": ["external_account_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "BRL",
+                    "type": "object",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["BRL"] }
+                    },
+                    "required": ["account_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "EUR",
+                    "type": "object",
+                    "properties": {
+                      "external_account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["EUR"] },
+                      "sepa_message": { "type": "string" }
+                    },
+                    "required": ["external_account_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "NGN",
+                    "type": "object",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["NGN"] }
+                    },
+                    "required": ["account_id", "amount", "currency"]
+                  }
+                ]
               },
-              "example": {
-                "account_id": "0062881117",
-                "amount": "100",
-                "currency": "NGN"
+              "examples": {
+                "USD": {
+                  "summary": "USD Withdrawal",
+                  "value": {
+                    "external_account_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "amount": "1",
+                    "currency": "USD",
+                    "wire_message": "Payment for services"
+                  }
+                },
+                "BRL": {
+                  "summary": "BRL Withdrawal",
+                  "value": {
+                    "account_id": "667.136.083-96",
+                    "amount": "10",
+                    "currency": "BRL"
+                  }
+                },
+                "EUR": {
+                  "summary": "EUR Withdrawal",
+                  "value": {
+                    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+                    "amount": "1",
+                    "currency": "EUR",
+                    "sepa_message": "Payment for services"
+                  }
+                },
+                "NGN": {
+                  "summary": "NGN Withdrawal",
+                  "value": {
+                    "account_id": "0062881117",
+                    "amount": "100",
+                    "currency": "NGN"
+                  }
+                }
               }
             }
           }
@@ -2401,7 +2475,81 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedWithdrawals"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
+                      "amount": "12.00000000",
+                      "currency": "USD",
+                      "status": "pending",
+                      "created_at": "2025-11-20T08:26:07.432Z",
+                      "protocol": "erc20",
+                      "description": null,
+                      "chain": "ETH",
+                      "local_currency": "usdt",
+                      "local_amount": "12",
+                      "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                      "tx_hash": null,
+                      "destination_tag": null,
+                      "fee_amount": "1.08000000",
+                      "fee_currency": "USD",
+                      "rate": 1,
+                      "gross_amount": 13.08,
+                      "destination_address": "0x***37"
+                    }
+                  ],
+                  "count": 1,
+                  "page": 1,
+                  "limit": 10,
+                  "totalPages": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
             }
           }
         }
@@ -2418,7 +2566,56 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "title": "USD Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "external_account_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["USD"] },
+                      "wire_message": { "type": "string" }
+                    },
+                    "required": ["external_account_id", "currency"]
+                  },
+                  {
+                    "title": "Stablecoin Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "currency": { "type": "string", "enum": ["USDC", "USDT"] },
+                      "chain": { "type": "string", "enum": ["ethereum", "polygon", "solana", "stellar", "tron"] },
+                      "address": { "type": "string" }
+                    },
+                    "required": ["currency", "chain", "address"]
+                  },
+                  {
+                    "title": "EUR Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "external_account_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["EUR"] },
+                      "sepa_message": { "type": "string" }
+                    },
+                    "required": ["external_account_id", "currency"]
+                  },
+                  {
+                    "title": "BRL Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["BRL"] }
+                    },
+                    "required": ["account_id", "currency"]
+                  },
+                  {
+                    "title": "NGN Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["NGN"] }
+                    },
+                    "required": ["account_id", "currency"]
+                  }
+                ]
               },
               "examples": {
                 "USD": {
@@ -2427,6 +2624,29 @@
                     "external_account_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "currency": "USD",
                     "wire_message": "Payment for services"
+                  }
+                },
+                "Stablecoin": {
+                  "summary": "Withdraw Full Stablecoin Balance",
+                  "value": {
+                    "currency": "USDC",
+                    "chain": "ethereum",
+                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+                  }
+                },
+                "EUR": {
+                  "summary": "Withdraw Full EUR Balance",
+                  "value": {
+                    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+                    "currency": "EUR",
+                    "sepa_message": "Payment for services"
+                  }
+                },
+                "BRL": {
+                  "summary": "Withdraw Full BRL Balance",
+                  "value": {
+                    "account_id": "71719844194",
+                    "currency": "BRL"
                   }
                 },
                 "NGN": {
@@ -2454,7 +2674,160 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Withdrawal of full balance initiated successfully"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Get All Withdrawals",
+        "description": "Retrieve a list of all withdrawals for a specific subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedWithdrawals"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
+                      "amount": "12.00000000",
+                      "currency": "USD",
+                      "status": "pending",
+                      "created_at": "2025-11-20T08:26:07.432Z",
+                      "protocol": "erc20",
+                      "description": null,
+                      "chain": "ETH",
+                      "local_currency": "usdt",
+                      "local_amount": "12",
+                      "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                      "tx_hash": null,
+                      "destination_tag": null,
+                      "fee_amount": "1.08000000",
+                      "fee_currency": "USD",
+                      "rate": 1,
+                      "gross_amount": 13.08,
+                      "destination_address": "0x***37"
+                    }
+                  ],
+                  "count": 1,
+                  "page": 1,
+                  "limit": 10,
+                  "totalPages": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
             }
           }
         }
@@ -2471,7 +2844,40 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "string"
+                  },
+                  "stablecoin": {
+                    "type": "string",
+                    "enum": [
+                      "usdt",
+                      "usdc"
+                    ],
+                    "description": "usdt or usdc"
+                  },
+                  "chain": {
+                    "type": "string",
+                    "enum": [
+                      "ethereum",
+                      "polygon",
+                      "solana",
+                      "stellar",
+                      "tron"
+                    ],
+                    "description": "ethereum, polygon, solana, stellar, or tron"
+                  },
+                  "address": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "stablecoin",
+                  "chain",
+                  "address"
+                ]
               },
               "example": {
                 "amount": "12",
@@ -2496,7 +2902,144 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "protocol": {
+                      "type": "string"
+                    },
+                    "fee_amount": {
+                      "type": "number"
+                    },
+                    "fee_currency": {
+                      "type": "string"
+                    },
+                    "chain": {
+                      "type": "string"
+                    },
+                    "destination_address": {
+                      "type": "string"
+                    },
+                    "local_amount": {
+                      "type": "string"
+                    },
+                    "local_currency": {
+                      "type": "string"
+                    },
+                    "tx_hash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "gross_amount": {
+                      "type": "number"
+                    },
+                    "rate": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "08936301-4656-493d-9394-0e2320cf75d1",
+                  "amount": "12",
+                  "currency": "USDT",
+                  "status": "pending",
+                  "created_at": "2025-11-20T08:53:56.636Z",
+                  "protocol": "erc20",
+                  "fee_amount": 1.08,
+                  "fee_currency": "USD",
+                  "chain": "ETH",
+                  "destination_address": "0x***37",
+                  "local_amount": "12",
+                  "local_currency": "usdt",
+                  "tx_hash": null,
+                  "gross_amount": 13.08,
+                  "rate": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
@@ -2537,7 +3080,158 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "protocol": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "chain": {
+                      "type": "string"
+                    },
+                    "local_currency": {
+                      "type": "string"
+                    },
+                    "local_amount": {
+                      "type": "string"
+                    },
+                    "destinationAddress": {
+                      "type": "string"
+                    },
+                    "tx_hash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "destination_tag": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "fee_amount": {
+                      "type": "string"
+                    },
+                    "fee_currency": {
+                      "type": "string"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "gross_amount": {
+                      "type": "number"
+                    },
+                    "destination_address": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
+                  "amount": "12.00000000",
+                  "currency": "USD",
+                  "status": "pending",
+                  "created_at": "2025-11-20T08:26:07.432Z",
+                  "protocol": "erc20",
+                  "description": null,
+                  "chain": "ETH",
+                  "local_currency": "usdt",
+                  "local_amount": "12",
+                  "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                  "tx_hash": null,
+                  "destination_tag": null,
+                  "fee_amount": "1.08000000",
+                  "fee_currency": "USD",
+                  "rate": 1,
+                  "gross_amount": 13.08,
+                  "destination_address": "0x***37"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Withdrawal not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Withdrawal not found"
+                }
+              }
             }
           }
         }
@@ -2785,6 +3479,136 @@
     }
   },
   "components": {
+    "schemas": {
+      "WithdrawalDetails": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "protocol": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string"
+          },
+          "local_currency": {
+            "type": "string"
+          },
+          "local_amount": {
+            "type": "string"
+          },
+          "destinationAddress": {
+            "type": "string"
+          },
+          "tx_hash": {
+            "type": "string",
+            "nullable": true
+          },
+          "destination_tag": {
+            "type": "string",
+            "nullable": true
+          },
+          "fee_amount": {
+            "type": "string"
+          },
+          "fee_currency": {
+            "type": "string"
+          },
+          "rate": {
+            "type": "number"
+          },
+          "gross_amount": {
+            "type": "number"
+          },
+          "destination_address": {
+            "type": "string"
+          }
+        }
+      },
+      "PaginatedWithdrawals": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WithdrawalDetails"
+            }
+          },
+          "count": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "limit": {
+            "type": "integer"
+          },
+          "totalPages": {
+            "type": "integer"
+          }
+        }
+      },
+      "StablecoinWithdrawalResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "amount": { "type": "string" },
+          "currency": { "type": "string" },
+          "status": { "type": "string" },
+          "created_at": { "type": "string", "format": "date-time" },
+          "protocol": { "type": "string" },
+          "fee_amount": { "type": "number" },
+          "fee_currency": { "type": "string" },
+          "chain": { "type": "string" },
+          "destination_address": { "type": "string" },
+          "local_amount": { "type": "string" },
+          "local_currency": { "type": "string" },
+          "tx_hash": { "type": "string", "nullable": true },
+          "gross_amount": { "type": "number" },
+          "rate": { "type": "number" }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "path": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
