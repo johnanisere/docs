@@ -838,7 +838,491 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "object",
+                    "properties": {
+                      "channels": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "max": {
+                              "type": "integer"
+                            },
+                            "min": {
+                              "type": "integer"
+                            },
+                            "currency": {
+                              "type": "string"
+                            },
+                            "countryCurrency": {
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "feeLocal": {
+                              "type": "integer"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "vendorId": {
+                              "type": "string"
+                            },
+                            "country": {
+                              "type": "string"
+                            },
+                            "feeUSD": {
+                              "type": "integer"
+                            },
+                            "channelType": {
+                              "type": "string"
+                            },
+                            "rampType": {
+                              "type": "string"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "apiStatus": {
+                              "type": "string"
+                            },
+                            "settlementType": {
+                              "type": "string"
+                            },
+                            "estimatedSettlementTime": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "max",
+                            "min",
+                            "currency",
+                            "countryCurrency",
+                            "status",
+                            "feeLocal",
+                            "createdAt",
+                            "vendorId",
+                            "country",
+                            "feeUSD",
+                            "channelType",
+                            "rampType",
+                            "updatedAt",
+                            "apiStatus",
+                            "settlementType",
+                            "estimatedSettlementTime"
+                          ]
+                        }
+                      },
+                      "networks": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "country": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            },
+                            "accountNumberType": {
+                              "type": "string"
+                            },
+                            "countryAccountNumberType": {
+                              "type": "string"
+                            },
+                            "channelIds": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            },
+                            "code": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            },
+                            "updatedAt": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "status",
+                            "country",
+                            "currency",
+                            "accountNumberType",
+                            "countryAccountNumberType",
+                            "channelIds",
+                            "code",
+                            "createdAt",
+                            "updatedAt"
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      "channels",
+                      "networks"
+                    ]
+                  }
+                },
+                "example": {
+                  "USDC": {
+                    "channels": [
+                      {
+                        "id": "usdc-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 0,
+                        "currency": "USDC",
+                        "countryCurrency": "USUSDC",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "usdc-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "crypto",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      }
+                    ],
+                    "networks": [
+                      {
+                        "id": "eth-sepolia-network-id-bullring-finance",
+                        "name": "Ethereum Sepolia",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "USDC",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "usdc-channel-id-bullring-finance"
+                        ],
+                        "code": "ETH-SEPOLIA",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      },
+                      {
+                        "id": "sol-devnet-network-id-bullring-finance",
+                        "name": "Solana Devnet",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "USDC",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "usdc-channel-id-bullring-finance"
+                        ],
+                        "code": "SOL-DEVNET",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      }
+                    ]
+                  },
+                  "USDT": {
+                    "channels": [
+                      {
+                        "id": "usdt-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 0,
+                        "currency": "USDT",
+                        "countryCurrency": "USUSDT",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "usdt-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "crypto",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      }
+                    ],
+                    "networks": [
+                      {
+                        "id": "eth-sepolia-network-id-bullring-finance",
+                        "name": "Ethereum Sepolia",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "USDT",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "usdt-channel-id-bullring-finance"
+                        ],
+                        "code": "ETH-SEPOLIA",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      },
+                      {
+                        "id": "sol-devnet-network-id-bullring-finance",
+                        "name": "Solana Devnet",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "USDT",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "usdt-channel-id-bullring-finance"
+                        ],
+                        "code": "SOL-DEVNET",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      }
+                    ]
+                  },
+                  "BTC": {
+                    "channels": [
+                      {
+                        "id": "btc-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 0,
+                        "currency": "BTC",
+                        "countryCurrency": "USBTC",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "btc-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "lightning",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      }
+                    ],
+                    "networks": [
+                      {
+                        "id": "bitcoin-network-id-bullring-finance",
+                        "name": "Lightning Network",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "BTC",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "btc-channel-id-bullring-finance"
+                        ],
+                        "code": "BTC",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      }
+                    ]
+                  },
+                  "NGN": {
+                    "channels": [
+                      {
+                        "id": "ngn-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 0,
+                        "currency": "NGN",
+                        "countryCurrency": "USNGN",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "ngn-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "bank",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      },
+                      {
+                        "id": "ngn-otc-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 0,
+                        "currency": "NGN",
+                        "countryCurrency": "USNGN",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "ngn-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "otc",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      }
+                    ],
+                    "networks": [
+                      {
+                        "id": "ngn-network-id-bullring-finance",
+                        "name": "Bank",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "NGN",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "ngn-channel-id-bullring-finance"
+                        ],
+                        "code": "NGN",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      },
+                      {
+                        "id": "ngn-otc-network-id-bullring-finance",
+                        "name": "OTC (Over The Counter)",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "NGN",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "ngn-otc-channel-id-bullring-finance"
+                        ],
+                        "code": "NGN",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      }
+                    ]
+                  },
+                  "ZMW": {
+                    "channels": [
+                      {
+                        "id": "zmw-channel-id-bullring-finance",
+                        "max": 1500000000000000000,
+                        "min": 5000,
+                        "currency": "ZMW",
+                        "countryCurrency": "USZMW",
+                        "status": "active",
+                        "feeLocal": 0,
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "vendorId": "zmw-vendor-id-bullring-finance",
+                        "country": "US",
+                        "feeUSD": 0,
+                        "channelType": "otc",
+                        "rampType": "deposit",
+                        "updatedAt": "2025-11-20T01:47:04.519Z",
+                        "apiStatus": "active",
+                        "settlementType": "instant",
+                        "estimatedSettlementTime": 60
+                      }
+                    ],
+                    "networks": [
+                      {
+                        "id": "zmw-network-id-bullring-finance",
+                        "name": "OTC (Over The Counter)",
+                        "status": "active",
+                        "country": "US",
+                        "currency": "ZMW",
+                        "accountNumberType": "address",
+                        "countryAccountNumberType": "address",
+                        "channelIds": [
+                          "zmw-channel-id-bullring-finance"
+                        ],
+                        "code": "ZMW",
+                        "createdAt": "2025-11-20T01:47:04.519Z",
+                        "updatedAt": "2025-11-20T01:47:04.519Z"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Account not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Account not found"
+                }
+              }
             }
           }
         }
@@ -849,18 +1333,161 @@
         "tags": [
           "Banking > Deposits"
         ],
-        "summary": "Request NGN Deposit",
-        "description": "Initiate an NGN deposit request for a specific subaccount.",
+        "summary": "Request Fiat Deposit",
+        "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency (NGN, ZMW, USD, BRL).",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "title": "NGN Deposit",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "accountType": {
+                            "type": "string",
+                            "enum": [
+                              "bank"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "accountType"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "source"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "ZMW Deposit",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "accountType": {
+                            "type": "string",
+                            "enum": [
+                              "bank"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "accountType"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "source"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "USD Deposit",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "source": {
+                        "type": "object",
+                        "properties": {
+                          "accountType": {
+                            "type": "string",
+                            "enum": [
+                              "bank"
+                            ]
+                          },
+                          "accountNumber": {
+                            "type": "string"
+                          },
+                          "networkId": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "accountType",
+                          "accountNumber",
+                          "networkId"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "amount",
+                      "source"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "BRL Deposit",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "amount"
+                    ]
+                  }
+                ]
               },
-              "example": {
-                "channelId": "ngn-channel-id-bullring-finance",
-                "source": {
-                  "accountType": "bank"
+              "examples": {
+                "NGN": {
+                  "summary": "NGN Deposit Request",
+                  "value": {
+                    "channelId": "ngn-channel-id-bullring-finance",
+                    "source": {
+                      "accountType": "bank"
+                    }
+                  }
+                },
+                "ZMW": {
+                  "summary": "ZMW Deposit Request",
+                  "value": {
+                    "channelId": "zmw-channel-id-bullring-finance",
+                    "source": {
+                      "accountType": "bank"
+                    }
+                  }
+                },
+                "USD": {
+                  "summary": "USD Deposit Request",
+                  "value": {
+                    "channelId": "usd-channel-id-bullring-finance",
+                    "amount": 1000,
+                    "source": {
+                      "accountType": "bank",
+                      "accountNumber": "+260977123456",
+                      "networkId": "20823163-f55c-4fa5-8cdb-d59c5289a137"
+                    }
+                  }
+                },
+                "BRL": {
+                  "summary": "BRL Deposit Request",
+                  "value": {
+                    "channelId": "brl-channel-id-bullring-finance",
+                    "amount": 100
+                  }
                 }
               }
             }
@@ -880,7 +1507,177 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "title": "BRL Deposit Response",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "localAmount": {
+                          "type": "number"
+                        },
+                        "localCurrency": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "bankInfo": {
+                          "type": "object",
+                          "properties": {
+                            "qr_code_payload": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "rate": {
+                          "type": "number"
+                        },
+                        "expiresAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "createdAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "Other Fiat Deposit Response",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "BRL": {
+                    "summary": "BRL Deposit Response",
+                    "value": {
+                      "id": "24f1be59ff0a4d80bfc146dd6e26fc51",
+                      "status": "pending",
+                      "amount": 100,
+                      "localAmount": 529,
+                      "localCurrency": "BRL",
+                      "currency": "USD",
+                      "country": "BRA",
+                      "bankInfo": {
+                        "qr_code_payload": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/f9bdab28a91c448cb50fc8857670d0d45204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***630463B1"
+                      },
+                      "rate": 5.29,
+                      "expiresAt": "2025-11-20T02:48:23.000Z",
+                      "createdAt": "2025-11-20T02:45:55.042Z"
+                    }
+                  },
+                  "NGN": {
+                    "summary": "NGN Deposit Response",
+                    "value": {
+                      "status": "pending",
+                      "message": "Deposit initiated"
+                    }
+                  },
+                  "ZMW": {
+                    "summary": "ZMW Deposit Response",
+                    "value": {
+                      "status": "pending",
+                      "message": "Deposit initiated"
+                    }
+                  },
+                  "USD": {
+                    "summary": "USD Deposit Response",
+                    "value": {
+                      "status": "pending",
+                      "message": "Deposit initiated"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
