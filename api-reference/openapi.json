@@ -2976,6 +2976,68 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "number"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "stack": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "statusCode",
+                    "timestamp",
+                    "path",
+                    "error",
+                    "message"
+                  ]
+                },
+                "examples": {
+                  "InsufficientFunds": {
+                    "summary": "Insufficient Funds",
+                    "value": {
+                      "statusCode": 400,
+                      "timestamp": "2025-11-20T20:37:49.137Z",
+                      "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/withdrawals/stablecoin",
+                      "error": "Error",
+                      "message": "Insufficient balance: have 0 USD, need 13.08 USD",
+                      "stack": "HttpException: Insufficient balance: have 0 USD, need 13.08 USD\n    at BankingService.createStablecoinWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:1360:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                    }
+                  },
+                  "InvalidAddress": {
+                    "summary": "Invalid Address",
+                    "value": {
+                      "statusCode": 400,
+                      "timestamp": "2025-11-20T20:52:37.185Z",
+                      "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/withdrawals/stablecoin",
+                      "error": "Bad Request",
+                      "message": "Invalid blockchain address format",
+                      "stack": "BadRequestException: Bad Request Exception\n    at ValidationPipe.exceptionFactory (/usr/src/app/node_modules/@nestjs/common/pipes/validation.pipe.js:99:20)\n    at ValidationPipe.transform (/usr/src/app/node_modules/@nestjs/common/pipes/validation.pipe.js:72:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async resolveParamValue (/usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:147:23)\n    at async Promise.all (index 0)\n    at async pipesFn (/usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:150:13)\n    at async /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:37:30"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Unauthorized - Invalid or missing API key",
             "content": {
