@@ -1702,7 +1702,203 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "amount": {
+                            "type": "string"
+                          },
+                          "localAmount": {
+                            "type": "string"
+                          },
+                          "currency": {
+                            "type": "string"
+                          },
+                          "localCurrency": {
+                            "type": "string"
+                          },
+                          "fee": {
+                            "type": "string"
+                          },
+                          "feeCurrency": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "country": {
+                            "type": "string"
+                          },
+                          "rate": {
+                            "type": "string"
+                          },
+                          "expiresAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "bankInfo": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "qr_code_payload": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "reference": {
+                            "type": "string"
+                          },
+                          "channelId": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "24f1be59-ff0a-4d80-bfc1-46dd6e26fc51",
+                      "status": "completed",
+                      "amount": "100.00000000",
+                      "localAmount": "529.00000000",
+                      "currency": "USD",
+                      "localCurrency": "BRL",
+                      "fee": "0.00000000",
+                      "feeCurrency": null,
+                      "country": "BRA",
+                      "rate": "5.2900",
+                      "expiresAt": "2025-11-20T02:48:23.000Z",
+                      "createdAt": "2025-11-20T02:45:55.042Z",
+                      "bankInfo": {
+                        "name": "PIX",
+                        "qr_code_payload": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/f9bdab28a91c448cb50fc8857670d0d45204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***63044B88"
+                      },
+                      "reference": "24f1be59ff0a4d80bfc146dd6e26fc51",
+                      "channelId": "brl-channel-id-bullring-finance"
+                    },
+                    {
+                      "id": "50e61499-9ada-4784-b631-afdce55d2a7f",
+                      "status": "completed",
+                      "amount": "100.00000000",
+                      "localAmount": "529.00000000",
+                      "currency": "USD",
+                      "localCurrency": "BRL",
+                      "fee": "0.00000000",
+                      "feeCurrency": null,
+                      "country": "BRA",
+                      "rate": "5.2900",
+                      "expiresAt": "2025-11-20T01:49:35.000Z",
+                      "createdAt": "2025-11-20T01:47:06.742Z",
+                      "bankInfo": {
+                        "name": "PIX",
+                        "qr_code_payload": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/0eed3f8b1dab40c983405b48478dde9b5204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***63044B88"
+                      },
+                      "reference": "50e614999ada4784b631afdce55d2a7f",
+                      "channelId": "brl-channel-id-bullring-finance"
+                    }
+                  ],
+                  "count": 2,
+                  "page": 1,
+                  "limit": 20,
+                  "totalPages": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
@@ -1719,7 +1915,27 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number"
+                  },
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "usd",
+                      "brl"
+                    ],
+                    "description": "\"usd\" or \"brl\""
+                  },
+                  "note": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "amount",
+                  "currency"
+                ]
               },
               "example": {
                 "amount": 10000,
@@ -1740,10 +1956,143 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "lightningInvoice": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "paymentHash": {
+                      "type": "string"
+                    },
+                    "paymentRequestAmount": {
+                      "type": "number"
+                    },
+                    "paymentRequestCurrency": {
+                      "type": "string"
+                    },
+                    "invoiceCurrency": {
+                      "type": "string"
+                    },
+                    "cpf": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "isLiquidationInvoice": {
+                      "type": "boolean"
+                    },
+                    "invoiceAmount": {
+                      "type": "number"
+                    },
+                    "rate": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "note": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                },
+                "example": {
+                  "lightningInvoice": "lntbs108323630n1p53uucupp5t0gdtpxe6frf8mvpuqqtdvjjkym3v6jk9lf06e0yudm0ww6gghyqdqvwpshjmt9de6qcqzpuxqzfvsp5cdgqvnrq3zy0m36tpqt9q4f5tk24fxkanjx20cdw4tc5229kq30q9qxpqysgqpzh62y0hm0829aedfdv25sy3s2vxevk8dsjrkhh4yjc04nhdyke8g0343k703j7qg8uuwfq49u2kl55hcl4qztnddhh0t6j8txlnnnqpgd9q7g",
+                  "id": "5567cac1-d7bc-4b0d-980d-8c2453dc952c",
+                  "paymentHash": "5bd0d584d9d24693ed81e000b6b252b137166a562fd2fd65e4e376f73b4845c8",
+                  "paymentRequestAmount": 10000,
+                  "paymentRequestCurrency": "usd",
+                  "invoiceCurrency": "stablesats",
+                  "cpf": null,
+                  "isLiquidationInvoice": false,
+                  "invoiceAmount": 1000000,
+                  "rate": "1",
+                  "status": "unpaid",
+                  "note": "payment",
+                  "createdAt": "2025-11-20T01:47:08.282Z",
+                  "updatedAt": "2025-11-20T01:47:08.282Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
@@ -1770,7 +2119,93 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "network": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
+                  "network": "bitcoin",
+                  "currency": "BTC"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
@@ -1787,7 +2222,19 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "currency",
+                  "amount"
+                ]
               },
               "example": {
                 "currency": "NGN",
@@ -1810,7 +2257,85 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Deposit successful"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
             }
           }
         }
