@@ -29,12 +29,12 @@
       "description": "Endpoints for handling deposits into subaccounts."
     },
     {
-      "name": "Banking > Withdrawals",
-      "description": "Endpoints for handling withdrawals from subaccounts."
-    },
-    {
       "name": "Banking > Recipients",
       "description": "Manage payment recipients for withdrawals."
+    },
+    {
+      "name": "Banking > Withdrawals",
+      "description": "Endpoints for handling withdrawals from subaccounts."
     },
     {
       "name": "Banking > Rates",
@@ -107,7 +107,146 @@
             }
           }
         }
-      },
+      }
+    },
+    "/v1/ramp/subaccount/{subaccountId}": {
+      "get": {
+        "tags": [
+          "Subaccounts"
+        ],
+        "summary": "Get Subaccount",
+        "description": "Retrieve the details of a specific subaccount using its ID.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Unique identifier for the subaccount"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "Email address of the subaccount"
+                    },
+                    "balance": {
+                      "type": "string",
+                      "description": "Subaccount balance"
+                    },
+                    "balanceCurrency": {
+                      "type": "string",
+                      "description": "Currency of the balance"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the subaccount"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Subaccount creation timestamp"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                  "email": "johnanisere+0012357490i@bullring.finance",
+                  "balance": "0.00000000",
+                  "balanceCurrency": "USD",
+                  "status": "approved",
+                  "createdAt": "2025-11-19T23:59:29.241Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/subaccounts": {
       "get": {
         "tags": [
           "Subaccounts"
@@ -282,143 +421,6 @@
                 "example": {
                   "error": "Not Found",
                   "message": "Account not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/subaccount/{subaccountId}": {
-      "get": {
-        "tags": [
-          "Subaccounts"
-        ],
-        "summary": "Get Subaccount",
-        "description": "Retrieve the details of a specific subaccount using its ID.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
-            },
-            "required": true,
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "Unique identifier for the subaccount"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "description": "Email address of the subaccount"
-                    },
-                    "balance": {
-                      "type": "string",
-                      "description": "Subaccount balance"
-                    },
-                    "balanceCurrency": {
-                      "type": "string",
-                      "description": "Currency of the balance"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "Current status of the subaccount"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Subaccount creation timestamp"
-                    }
-                  }
-                },
-                "example": {
-                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
-                  "email": "johnanisere+0012357490i@bullring.finance",
-                  "balance": "0.00000000",
-                  "balanceCurrency": "USD",
-                  "status": "approved",
-                  "createdAt": "2025-11-19T23:59:29.241Z"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Insufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found - Subaccount not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Not Found",
-                  "message": "Subaccount not found"
                 }
               }
             }
@@ -1334,7 +1336,7 @@
           "Banking > Deposits"
         ],
         "summary": "Request Fiat Deposit",
-        "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency (NGN, ZMW, USD, BRL).",
+        "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency (NGN, ZMW, USD, BRL). All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1374,6 +1376,9 @@
                       "channelId": {
                         "type": "string"
                       },
+                      "amount": {
+                        "type": "number"
+                      },
                       "source": {
                         "type": "object",
                         "properties": {
@@ -1391,6 +1396,7 @@
                     },
                     "required": [
                       "channelId",
+                      "amount",
                       "source"
                     ]
                   },
@@ -1465,6 +1471,7 @@
                   "summary": "ZMW Deposit Request",
                   "value": {
                     "channelId": "zmw-channel-id-bullring-finance",
+                    "amount": 100,
                     "source": {
                       "accountType": "bank"
                     }
@@ -1474,7 +1481,6 @@
                   "summary": "USD Deposit Request",
                   "value": {
                     "channelId": "usd-channel-id-bullring-finance",
-                    "amount": 1000,
                     "source": {
                       "accountType": "bank",
                       "accountNumber": "+260977123456",
@@ -1687,7 +1693,7 @@
           "Banking > Deposits"
         ],
         "summary": "List All Deposits",
-        "description": "Retrieve a list of all deposits for a specific subaccount.",
+        "description": "Retrieve a list of all deposits for a specific subaccount. All deposit requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -1910,7 +1916,7 @@
           "Banking > Deposits"
         ],
         "summary": "Lightning Deposit",
-        "description": "Create a lightning invoice for a deposit.",
+        "description": "Create a lightning invoice for a deposit. All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2104,7 +2110,7 @@
           "Banking > Deposits"
         ],
         "summary": "Onchain Deposit Address",
-        "description": "Get a deposit address for SOL on the Solana Devnet.",
+        "description": "Get a deposit address for SOL on the Solana Devnet. All deposit requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2217,7 +2223,7 @@
           "Banking > Deposits"
         ],
         "summary": "Simulate NGN Deposit",
-        "description": "Simulate a deposit in NGN for testing purposes in the sandbox environment.",
+        "description": "Simulate a deposit in NGN for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2341,13 +2347,183 @@
         }
       }
     },
+    "/v1/ramp/{subaccountId}/banking/recipients": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Add EUR Recipient",
+        "description": "Add a new EUR recipient for withdrawals. All withdrawal requests require approved KYC.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currency": "EUR",
+                "account_owner_name": "John Doe",
+                "bank_name": "Bank of America",
+                "account_number": "GB26PRTC00998500671076",
+                "bic": "BANKGB2L",
+                "country": "GBR",
+                "account_owner_type": "individual",
+                "first_name": "John",
+                "last_name": "Doe",
+                "business_name": "Acme Inc.",
+                "email": "john@example.com"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Get All Recipients",
+        "description": "Retrieve a list of all recipients for the subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/brl/validate": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Validate BRL Recipient",
+        "description": "Validate the details of a BRL recipient. All withdrawal requests require approved KYC.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "currency": "BRL",
+                "pix_key": "667.136.083-96"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/ngn/validate": {
+      "post": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Validate NGN Recipient",
+        "description": "Validate the details of an NGN recipient. All withdrawal requests require approved KYC.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {
+                "accountNumber": "0062881117",
+                "bankCode": "270"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/recipients/{recipientId}": {
+      "get": {
+        "tags": [
+          "Banking > Recipients"
+        ],
+        "summary": "Get One Recipient",
+        "description": "Retrieve the details of a single recipient by their ID. All withdrawal requests require approved KYC.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "recipientId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "example": "27c44186-5cc7-4c74-b7c7-ab16b762f260"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/withdrawals": {
       "post": {
         "tags": [
           "Banking > Withdrawals"
         ],
         "summary": "Withdraw Fiat",
-        "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency.",
+        "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2460,7 +2636,7 @@
           "Banking > Withdrawals"
         ],
         "summary": "Get All Withdrawals",
-        "description": "Retrieve a list of all withdrawals for a specific subaccount.",
+        "description": "Retrieve a list of all withdrawals for a specific subaccount. All withdrawal requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2561,7 +2737,7 @@
           "Banking > Withdrawals"
         ],
         "summary": "Withdraw Full Balance",
-        "description": "Withdraw the entire balance of a specified currency from a user's subaccount.",
+        "description": "Withdraw the entire balance of a specified currency from a user's subaccount. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2738,7 +2914,7 @@
           "Banking > Withdrawals"
         ],
         "summary": "Get All Withdrawals",
-        "description": "Retrieve a list of all withdrawals for a specific subaccount.",
+        "description": "Retrieve a list of all withdrawals for a specific subaccount. All withdrawal requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2839,7 +3015,7 @@
           "Banking > Withdrawals"
         ],
         "summary": "Withdraw Stablecoin",
-        "description": "Withdraw funds as a stablecoin to a specified address.",
+        "description": "Withdraw funds as a stablecoin to a specified address. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -3113,12 +3289,7 @@
           "Banking > Withdrawals"
         ],
         "summary": "Get One Withdrawal",
-        "description": "Retrieve the details of a single withdrawal by its ID.",
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ],
+        "description": "Retrieve the details of a single withdrawal by its ID. All withdrawal requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -3299,183 +3470,13 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/recipients": {
-      "post": {
-        "tags": [
-          "Banking > Recipients"
-        ],
-        "summary": "Add EUR Recipient",
-        "description": "Add a new EUR recipient for withdrawals.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {
-                "currency": "EUR",
-                "account_owner_name": "John Doe",
-                "bank_name": "Bank of America",
-                "account_number": "GB26PRTC00998500671076",
-                "bic": "BANKGB2L",
-                "country": "GBR",
-                "account_owner_type": "individual",
-                "first_name": "John",
-                "last_name": "Doe",
-                "business_name": "Acme Inc.",
-                "email": "john@example.com"
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Banking > Recipients"
-        ],
-        "summary": "Get All Recipients",
-        "description": "Retrieve a list of all recipients for the subaccount.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/banking/brl/validate": {
-      "post": {
-        "tags": [
-          "Banking > Recipients"
-        ],
-        "summary": "Validate BRL Recipient",
-        "description": "Validate the details of a BRL recipient.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {
-                "currency": "BRL",
-                "pix_key": "667.136.083-96"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/banking/ngn/validate": {
-      "post": {
-        "tags": [
-          "Banking > Recipients"
-        ],
-        "summary": "Validate NGN Recipient",
-        "description": "Validate the details of an NGN recipient.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {
-                "accountNumber": "0062881117",
-                "bankCode": "270"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/{subaccountId}/banking/recipients/{recipientId}": {
-      "get": {
-        "tags": [
-          "Banking > Recipients"
-        ],
-        "summary": "Get One Recipient",
-        "description": "Retrieve the details of a single recipient by their ID.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          },
-          {
-            "name": "recipientId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "example": "27c44186-5cc7-4c74-b7c7-ab16b762f260"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {}
-            }
-          }
-        }
-      }
-    },
     "/v1/banking/rate": {
       "get": {
         "tags": [
           "Banking > Rates"
         ],
         "summary": "Rate Conversion",
-        "description": "Get the conversion rate between two currencies.",
+        "description": "Get the conversion rate between two currencies. All withdrawal requests require approved KYC.",
         "parameters": [
           {
             "name": "from",
@@ -3510,7 +3511,7 @@
           "Banking > Fees"
         ],
         "summary": "Get Withdrawal Fee",
-        "description": "Calculate the fee for a withdrawal.",
+        "description": "Calculate the fee for a withdrawal. All withdrawal requests require approved KYC.",
         "parameters": [
           {
             "name": "currency",
