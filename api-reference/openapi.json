@@ -11,26 +11,26 @@
       "description": "Production Server"
     },
     {
-      "url": "https://api.sandbox.bullring.finance",
+      "url": "https://staging-api.bullring.finance",
       "description": "Sandbox Server"
     }
   ],
   "tags": [
     {
-      "name": "Accounts",
-      "description": "Operations related to user accounts."
+      "name": "Subaccounts",
+      "description": "Operations related to user subaccounts."
     },
     {
       "name": "Verification",
-      "description": "Endpoints for account verification, including KYC and KYB processes."
+      "description": "Endpoints for subaccount verification, including KYC and KYB processes."
     },
     {
       "name": "Banking > Deposits",
-      "description": "Endpoints for handling deposits into accounts."
+      "description": "Endpoints for handling deposits into subaccounts."
     },
     {
       "name": "Banking > Withdrawals",
-      "description": "Endpoints for handling withdrawals from accounts."
+      "description": "Endpoints for handling withdrawals from subaccounts."
     },
     {
       "name": "Banking > Recipients",
@@ -46,13 +46,13 @@
     }
   ],
   "paths": {
-    "/v1/ramp/accounts": {
+    "/v1/ramp/subaccount": {
       "post": {
         "tags": [
-          "Accounts"
+          "Subaccounts"
         ],
-        "summary": "Create Account",
-        "description": "Create a new user account.",
+        "summary": "Create Subaccount",
+        "description": "Create a new user subaccount.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -67,20 +67,43 @@
         },
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Subaccount created successfully",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier for the subaccount"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email address of the subaccount"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the subaccount"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                  "email": "johnanisere+0012357490i@bullring.finance",
+                  "status": "created"
+                }
+              }
             }
           }
         }
       },
       "get": {
         "tags": [
-          "Accounts"
+          "Subaccounts"
         ],
-        "summary": "Get All Accounts",
-        "description": "Retrieve a paginated list of all user accounts.",
+        "summary": "Get All Subaccounts",
+        "description": "Retrieve a paginated list of all user subaccounts.",
         "parameters": [
           {
             "name": "page",
@@ -96,22 +119,108 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "description": "Unique identifier for the subaccount"
+                          },
+                          "email": {
+                            "type": "string",
+                            "description": "Email address of the subaccount"
+                          },
+                          "balance": {
+                            "type": "string",
+                            "description": "Subaccount balance"
+                          },
+                          "balanceCurrency": {
+                            "type": "string",
+                            "description": "Currency of the balance"
+                          },
+                          "status": {
+                            "type": "string",
+                            "description": "Current status of the subaccount"
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "description": "Subaccount creation timestamp"
+                          }
+                        }
+                      }
+                    },
+                    "meta": {
+                      "type": "object",
+                      "properties": {
+                        "total": {
+                          "type": "integer",
+                          "description": "Total number of subaccounts"
+                        },
+                        "page": {
+                          "type": "integer",
+                          "description": "Current page number"
+                        },
+                        "limit": {
+                          "type": "integer",
+                          "description": "Number of items per page"
+                        },
+                        "pages": {
+                          "type": "integer",
+                          "description": "Total number of pages"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                      "email": "johnanisere+0012357490i@bullring.finance",
+                      "balance": "0.00000000",
+                      "balanceCurrency": "USD",
+                      "status": "approved",
+                      "createdAt": "2025-11-19T23:59:29.241Z"
+                    },
+                    {
+                      "id": "c625ca4e-b125-47fd-b090-7c63f51c1630",
+                      "email": "johnanisere+0012357490i@bullring.finance",
+                      "balance": "0.00000000",
+                      "balanceCurrency": "USD",
+                      "status": "approved",
+                      "createdAt": "2025-11-19T23:01:16.333Z"
+                    }
+                  ],
+                  "meta": {
+                    "total": 5,
+                    "page": 1,
+                    "limit": 10,
+                    "pages": 1
+                  }
+                }
+              }
             }
           }
         }
       }
     },
-    "/v1/ramp/accounts/{accountId}": {
+    "/v1/ramp/subaccount/{subaccountId}": {
       "get": {
         "tags": [
-          "Accounts"
+          "Subaccounts"
         ],
-        "summary": "Get Account",
-        "description": "Retrieve the details of a specific account using its ID.",
+        "summary": "Get Subaccount",
+        "description": "Retrieve the details of a specific subaccount using its ID.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -123,13 +232,52 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "Unique identifier for the subaccount"
+                    },
+                    "email": {
+                      "type": "string",
+                      "description": "Email address of the subaccount"
+                    },
+                    "balance": {
+                      "type": "string",
+                      "description": "Subaccount balance"
+                    },
+                    "balanceCurrency": {
+                      "type": "string",
+                      "description": "Currency of the balance"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the subaccount"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Subaccount creation timestamp"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                  "email": "johnanisere+0012357490i@bullring.finance",
+                  "balance": "0.00000000",
+                  "balanceCurrency": "USD",
+                  "status": "approved",
+                  "createdAt": "2025-11-19T23:59:29.241Z"
+                }
+              }
             }
           }
         }
       }
     },
-    "/v1/ramp/accounts/{accountId}/kyb": {
+    "/v1/ramp/subaccount/{subaccountId}/kyb": {
       "post": {
         "tags": [
           "Verification"
@@ -150,7 +298,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -159,22 +307,35 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Verification process initiated successfully",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "formUrl": {
+                      "type": "string",
+                      "description": "URL to the verification form"
+                    }
+                  }
+                },
+                "example": {
+                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                }
+              }
             }
           }
         }
       }
     },
-    "/v1/ramp/accounts/{accountId}/verification/tier-one": {
+    "/v1/ramp/subaccount/{subaccountId}/verification/tier-one": {
       "post": {
         "tags": [
           "Verification"
         ],
-        "summary": "NGN Tier One Verification",
-        "description": "Submit information for Tier One verification for NGN accounts.",
+        "summary": "Tier One Verification",
+        "description": "Submit information for Tier One verification for NGN or BRL subaccounts.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -204,7 +365,7 @@
         "parameters": [
           
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -213,10 +374,65 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Verification completed successfully",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "verificationId": {
+                      "type": "string",
+                      "description": "Unique identifier for the verification"
+                    },
+                    "storeId": {
+                      "type": "string",
+                      "description": "Subaccount ID"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Verification status"
+                    },
+                    "verified": {
+                      "type": "boolean",
+                      "description": "Whether the verification was successful"
+                    },
+                    "processingTimeMs": {
+                      "type": "integer",
+                      "description": "Time taken to process the verification in milliseconds"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Verification creation timestamp"
+                    }
+                  }
+                },
+                "examples": {
+                  "Nigeria": {
+                    "summary": "Nigeria (NGN) Tier One Verification",
+                    "value": {
+                      "storeId": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                      "status": "approved",
+                      "verified": true,
+                      "verificationId": "tier1_verification_ngn_1763596770153_nj6pmk",
+                      "processingTimeMs": 5,
+                      "createdAt": "2025-11-19T23:59:30.158Z"
+                    }
+                  },
+                  "Brazil": {
+                    "summary": "Brazil (BRL) Tier One Verification",
+                    "value": {
+                      "verificationId": "tier1_verification_1763596769729_ugxoky",
+                      "storeId": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+                      "status": "APPROVED",
+                      "verified": true,
+                      "processingTimeMs": 35,
+                      "createdAt": "2025-11-19T23:59:29.764Z"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -239,13 +455,13 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/deposits": {
+    "/v1/ramp/{subaccountId}/banking/deposits": {
       "post": {
         "tags": [
           "Banking > Deposits"
         ],
         "summary": "Request NGN Deposit",
-        "description": "Initiate an NGN deposit request for a specific account.",
+        "description": "Initiate an NGN deposit request for a specific subaccount.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -263,7 +479,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -285,10 +501,10 @@
           "Banking > Deposits"
         ],
         "summary": "List All Deposits",
-        "description": "Retrieve a list of all deposits for a specific account.",
+        "description": "Retrieve a list of all deposits for a specific subaccount.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -306,7 +522,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/deposits/lightning": {
+    "/v1/ramp/{subaccountId}/banking/deposits/lightning": {
       "post": {
         "tags": [
           "Banking > Deposits"
@@ -329,7 +545,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -347,7 +563,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/deposits/crypto/SOL-DEVNET": {
+    "/v1/ramp/{subaccountId}/banking/deposits/crypto/SOL-DEVNET": {
       "get": {
         "tags": [
           "Banking > Deposits"
@@ -356,7 +572,7 @@
         "description": "Get a deposit address for SOL on the Solana Devnet.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -374,7 +590,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/deposits/simulate": {
+    "/v1/ramp/{subaccountId}/banking/deposits/simulate": {
       "post": {
         "tags": [
           "Banking > Deposits"
@@ -396,7 +612,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -414,13 +630,13 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/withdrawals": {
+    "/v1/ramp/{subaccountId}/banking/withdrawals": {
       "post": {
         "tags": [
           "Banking > Withdrawals"
         ],
         "summary": "Withdraw NGN",
-        "description": "Initiate a withdrawal of NGN from a user's account.",
+        "description": "Initiate a withdrawal of NGN from a user's subaccount.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -437,7 +653,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -459,10 +675,10 @@
           "Banking > Withdrawals"
         ],
         "summary": "Get All Withdrawals",
-        "description": "Retrieve a list of all withdrawals for a specific account.",
+        "description": "Retrieve a list of all withdrawals for a specific subaccount.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -480,13 +696,13 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/withdrawals/all-balance": {
+    "/v1/ramp/{subaccountId}/banking/withdrawals/all-balance": {
       "post": {
         "tags": [
           "Banking > Withdrawals"
         ],
         "summary": "Withdraw Full Balance",
-        "description": "Withdraw the entire balance of a specified currency from a user's account.",
+        "description": "Withdraw the entire balance of a specified currency from a user's subaccount.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -515,7 +731,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -533,7 +749,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/withdrawals/stablecoin": {
+    "/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin": {
       "post": {
         "tags": [
           "Banking > Withdrawals"
@@ -557,7 +773,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -575,7 +791,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/withdrawals/{withdrawalId}": {
+    "/v1/ramp/{subaccountId}/banking/withdrawals/{withdrawalId}": {
       "get": {
         "tags": [
           "Banking > Withdrawals"
@@ -589,7 +805,7 @@
         ],
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -616,7 +832,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/recipients": {
+    "/v1/ramp/{subaccountId}/banking/recipients": {
       "post": {
         "tags": [
           "Banking > Recipients"
@@ -647,7 +863,7 @@
         },
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -669,10 +885,10 @@
           "Banking > Recipients"
         ],
         "summary": "Get All Recipients",
-        "description": "Retrieve a list of all recipients for the account.",
+        "description": "Retrieve a list of all recipients for the subaccount.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
@@ -750,7 +966,7 @@
         }
       }
     },
-    "/v1/ramp/{accountId}/banking/recipients/{recipientId}": {
+    "/v1/ramp/{subaccountId}/banking/recipients/{recipientId}": {
       "get": {
         "tags": [
           "Banking > Recipients"
@@ -759,7 +975,7 @@
         "description": "Retrieve the details of a single recipient by their ID.",
         "parameters": [
           {
-            "name": "accountId",
+            "name": "subaccountId",
             "in": "path",
             "schema": {
               "type": "string"
