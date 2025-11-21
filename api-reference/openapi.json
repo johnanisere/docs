@@ -1671,7 +1671,7 @@
                 "oneOf": [
                   {
                     "type": "object",
-                    "title": "NGN Deposit",
+                    "title": "NGN",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1698,7 +1698,7 @@
                   },
                   {
                     "type": "object",
-                    "title": "ZMW Deposit",
+                    "title": "ZMW",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1729,7 +1729,7 @@
                   },
                   {
                     "type": "object",
-                    "title": "USD Deposit",
+                    "title": "USD",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1768,7 +1768,7 @@
                   },
                   {
                     "type": "object",
-                    "title": "BRL Deposit",
+                    "title": "BRL",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1837,12 +1837,112 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Deposit initiated successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "oneOf": [
+                    {
+                      "type": "object",
+                      "title": "USD Deposit Response",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "localAmount": {
+                          "type": "number"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": "number"
+                        },
+                        "localCurrency": {
+                          "type": "string"
+                        },
+                        "bankInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "bankBeneficiaryName": {
+                              "type": "string"
+                            },
+                            "bankName": {
+                              "type": "string"
+                            },
+                            "bankAddress": {
+                              "type": "string"
+                            },
+                            "bankRoutingNumber": {
+                              "type": "string"
+                            },
+                            "bankAccountNumber": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "channelId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "NGN Deposit Response",
+                      "properties": {
+                        "status": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        },
+                        "rate": {
+                          "type": "number"
+                        },
+                        "localCurrency": {
+                          "type": "string"
+                        },
+                        "bankInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "bankBeneficiaryName": {
+                              "type": "string"
+                            },
+                            "bankName": {
+                              "type": "string"
+                            },
+                            "bankAddress": {
+                              "type": "string"
+                            },
+                            "bankRoutingNumber": {
+                              "type": "string"
+                            },
+                            "bankAccountNumber": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "channelId": {
+                          "type": "string"
+                        }
+                      }
+                    },
                     {
                       "type": "object",
                       "title": "BRL Deposit Response",
@@ -1888,59 +1988,66 @@
                           "format": "date-time"
                         }
                       }
-                    },
-                    {
-                      "type": "object",
-                      "title": "Other Fiat Deposit Response",
-                      "properties": {
-                        "status": {
-                          "type": "string"
-                        },
-                        "message": {
-                          "type": "string"
-                        }
-                      }
                     }
                   ]
                 },
                 "examples": {
-                  "BRL": {
-                    "summary": "BRL Deposit Response",
+                  "USD": {
+                    "summary": "USD Deposit Response",
                     "value": {
-                      "id": "24f1be59ff0a4d80bfc146dd6e26fc51",
                       "status": "pending",
-                      "amount": 100,
-                      "localAmount": 529,
-                      "localCurrency": "BRL",
+                      "amount": 1000,
+                      "localAmount": 1000,
                       "currency": "USD",
-                      "country": "BRA",
+                      "country": "US",
+                      "rate": 1,
+                      "localCurrency": "USD",
                       "bankInfo": {
-                        "qr_code_payload": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/f9bdab28a91c448cb50fc8857670d0d45204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***630463B1"
+                        "id": "85ebbb73-f7cd-47b7-9112-d5b06428cac9",
+                        "bankBeneficiaryName": "Dafe Aror",
+                        "bankName": "Bank of Nowhere",
+                        "bankAddress": "1800 North Pole St., Orlando, FL 32801",
+                        "bankRoutingNumber": "101019644",
+                        "bankAccountNumber": "900843098394"
                       },
-                      "rate": 5.29,
-                      "expiresAt": "2025-11-20T02:48:23.000Z",
-                      "createdAt": "2025-11-20T02:45:55.042Z"
+                      "channelId": "usd-channel-id-bullring-finance"
                     }
                   },
                   "NGN": {
                     "summary": "NGN Deposit Response",
                     "value": {
                       "status": "pending",
-                      "message": "Deposit initiated"
+                      "currency": "NGN",
+                      "country": "NG",
+                      "rate": 1,
+                      "localCurrency": "NGN",
+                      "bankInfo": {
+                        "id": "9805dc88-b78b-4515-ab13-60f63924a565",
+                        "bankBeneficiaryName": "Dameon O\"Hara",
+                        "bankName": "Maplerad",
+                        "bankAddress": "N/A",
+                        "bankRoutingNumber": "N/A",
+                        "bankAccountNumber": "8595061826"
+                      },
+                      "channelId": "ngn-channel-id-bullring-finance"
                     }
                   },
-                  "ZMW": {
-                    "summary": "ZMW Deposit Response",
+                  "BRL": {
+                    "summary": "BRL Deposit Response",
                     "value": {
+                      "id": "7ae3dc77746f4302aa67eb009b1c3c18",
                       "status": "pending",
-                      "message": "Deposit initiated"
-                    }
-                  },
-                  "USD": {
-                    "summary": "USD Deposit Response",
-                    "value": {
-                      "status": "pending",
-                      "message": "Deposit initiated"
+                      "amount": 100,
+                      "localAmount": 536,
+                      "localCurrency": "BRL",
+                      "currency": "USD",
+                      "country": "BRA",
+                      "bankInfo": {
+                        "qr_code_payload": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/e0e2832c91114135b38de3961037dbe45204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***6304BA28"
+                      },
+                      "rate": 5.36,
+                      "expiresAt": "2025-11-21T15:32:04.000Z",
+                      "createdAt": "2025-11-21T15:29:35.164Z"
                     }
                   }
                 }
@@ -2436,7 +2543,7 @@
         "tags": [
           "Banking > Deposits"
         ],
-        "summary": "Onchain Deposit Address",
+        "summary": "Onchain Deposit",
         "description": "Get a deposit address for a specified blockchain network. All deposit requests require approved KYC.",
         "parameters": [
           {
