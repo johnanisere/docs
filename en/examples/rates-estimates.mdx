@@ -1,0 +1,40 @@
+---
+title: "Pre-Transaction Estimates"
+description: "Calculate rates and fees before transacting."
+---
+
+## Overview
+Provide users with transparent quotes for deposits and withdrawals.
+
+## 1. Get Exchange Rate
+**Endpoint:** `GET /v1/banking/rate`
+
+Fetch the current rate between two currencies (e.g., USDC to NGN).
+
+```javascript
+// Pseudo-code
+const rateData = await bullring.getRate({
+  from: "usdc",
+  to: "ngn"
+});
+// rateData.rate = 1500.00
+```
+
+## 2. Calculate Fee
+**Endpoint:** `GET /v1/banking/withdrawal/fee` or `GET /v1/banking/deposit/fee`
+
+Estimate the fee for a specific amount.
+
+```javascript
+// Pseudo-code
+const feeData = await bullring.getWithdrawalFee({
+  currency: "ngn",
+  amount: 100000
+});
+
+// Display breakdown:
+// Amount: 100,000
+// Fee: feeData.netAmount (or specific fee field)
+// Total to Receive: feeData.grossAmount
+```
+

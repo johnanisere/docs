@@ -7,6 +7,12 @@
     "light": "#07C983",
     "dark": "#15803D"
   },
+  "contextual": {
+    "options": [
+      "copy",
+      "view"
+    ]
+  },
   "favicon": "/favicon.svg",
   "navigation": {
     "global": {
@@ -28,17 +34,23 @@
         "language": "en",
         "tabs": [
           {
-            "tab": "Guides",
+            "tab": "Get Started",
             "groups": [
               {
                 "group": "Get Started",
                 "pages": [
                   "en/introduction",
                   "en/authentication",
-                  "en/environment",
-                  "en/webhook",
-                  "en/payment",
-                  "en/withdrawal"
+                  "en/environments"
+                ]
+              },
+              {
+                "group": "Core Concepts",
+                "pages": [
+                  "en/accounts",
+                  "en/multi-currency",
+                  "en/making-payments",
+                  "en/receiving-payments"
                 ]
               }
             ]
@@ -46,6 +58,29 @@
           {
             "tab": "API Reference",
             "openapi": "api-reference/openapi.json"
+          },
+          {
+            "tab": "Examples",
+            "groups": [
+              {
+                "group": "Common Patterns",
+                "pages": [
+                  "en/examples/onboarding",
+                  "en/examples/fiat-on-ramp",
+                  "en/examples/beneficiaries",
+                  "en/examples/crypto-treasury",
+                  "en/examples/rates-estimates"
+                ]
+              },
+              {
+                "group": "Use Cases",
+                "pages": [
+                  "en/examples/remittance",
+                  "en/examples/mass-payouts",
+                  "en/examples/crypto-off-ramp"
+                ]
+              }
+            ]
           }
         ]
       },

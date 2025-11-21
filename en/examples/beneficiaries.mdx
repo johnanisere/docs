@@ -1,0 +1,55 @@
+---
+title: "Beneficiaries & Payouts"
+description: "Manage recipients and send payouts."
+---
+
+## Overview
+Securely add external bank accounts and send funds to them.
+
+## 1. Validate Recipient Details
+**Endpoint:** `POST /v1/banking/{currency}/validate`
+
+Verify account details before adding them (e.g., Validate PIX key or NGN account number).
+
+```javascript
+// Pseudo-code
+const isValid = await bullring.validateRecipient({
+  currency: "NGN",
+  accountNumber: "0062881117",
+  bankCode: "270"
+});
+
+if (!isValid) throw Error("Invalid account details");
+```
+
+## 2. Create Recipient
+**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/recipients`
+
+Save the validated details as a recipient.
+
+```javascript
+// Pseudo-code
+const recipient = await bullring.createRecipient(subaccountId, {
+  currency: "NGN",
+  account_number: "0062881117",
+  account_owner_name: "John Doe",
+  bank_code: "270",
+  bank_name: "Access Bank",
+  country: "NG"
+});
+```
+
+## 3. Initiate Withdrawal (Payout)
+**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/withdrawals`
+
+Send funds to the created recipient.
+
+```javascript
+// Pseudo-code
+const withdrawal = await bullring.createWithdrawal(subaccountId, {
+  account_id: recipient.account_id, // Use the ID from the recipient creation
+  amount: "5000",
+  currency: "NGN"
+});
+```
+
