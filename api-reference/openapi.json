@@ -702,7 +702,7 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two (Managed)",
+        "summary": "Tier Two (Form)",
         "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
         "requestBody": {
           "content": {
@@ -829,131 +829,326 @@
         }
       }
     },
-    "/v1/ramp/subaccount/{subaccountId}/kyb/{whitelabelId}": {
+    "/v1/kyc/customers/{verificationId}/submit": {
       "post": {
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two (Whitelabel)",
-        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
+        "summary": "Tier Two (API)",
+        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification.",
+        "parameters": [
+          {
+            "name": "verificationId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the verification"
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
                 "properties": {
-                  "verificationType": {
+                  "id": {
                     "type": "string",
-                    "enum": ["individual", "business"],
-                    "description": "Type of verification to perform",
-                    "example": "individual"
+                    "format": "uuid"
+                  },
+                  "signed_agreement_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "has_accepted_terms_of_service": {
+                    "type": "boolean"
+                  },
+                  "capabilities": {
+                    "type": "object",
+                    "properties": {
+                      "payin_crypto": {
+                        "type": "string"
+                      },
+                      "payout_crypto": {
+                        "type": "string"
+                      },
+                      "payin_fiat": {
+                        "type": "string"
+                      },
+                      "payout_fiat": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "requirements_due": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "rejection_reasons": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "future_requirements_due": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "endorsements": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "status": {
+                          "type": "string"
+                        },
+                        "additional_requirements": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    }
+                  },
+                  "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "updated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "bridgeCustomerId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "lastSubmissionAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "submissionCount": {
+                    "type": "integer"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "individual",
+                      "business"
+                    ]
+                  },
+                  "first_name": {
+                    "type": "string"
+                  },
+                  "middle_name": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "last_name": {
+                    "type": "string"
+                  },
+                  "phone": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "object",
+                    "properties": {
+                      "street_line_1": {
+                        "type": "string"
+                      },
+                      "street_line_2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "state": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "birth_date": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "account_purpose": {
+                    "type": "string"
+                  },
+                  "account_purpose_other": {
+                    "type": "string",
+                    "nullable": true
+                  },
+                  "employment_status": {
+                    "type": "string"
+                  },
+                  "expected_monthly_payments_usd": {
+                    "type": "string"
+                  },
+                  "acting_as_intermediary": {
+                    "type": "boolean"
+                  },
+                  "most_recent_occupation": {
+                    "type": "string"
+                  },
+                  "source_of_funds": {
+                    "type": "string"
+                  },
+                  "identifying_information": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "issuing_country": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        },
+                        "image_front": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "image_back": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "store_id": {
+                    "type": "string",
+                    "format": "uuid"
                   }
-                },
-                "required": ["verificationType"]
+                }
               },
               "example": {
-                "verificationType": "individual"
+                "id": "8e1984e4-6e5f-4bea-a79f-03d321b051be",
+                "signed_agreement_id": "b88347e6-f0c9-4dce-810e-f65301412b7b",
+                "status": "active",
+                "email": "demo123@mail.com",
+                "has_accepted_terms_of_service": true,
+                "capabilities": {
+                  "payin_crypto": "pending",
+                  "payout_crypto": "pending",
+                  "payin_fiat": "pending",
+                  "payout_fiat": "pending"
+                },
+                "requirements_due": [],
+                "rejection_reasons": [],
+                "future_requirements_due": [],
+                "endorsements": [
+                  {
+                    "name": "base",
+                    "status": "approved",
+                    "additional_requirements": null
+                  },
+                  {
+                    "name": "sepa",
+                    "status": "approved",
+                    "additional_requirements": null
+                  }
+                ],
+                "created_at": "2025-11-21T15:14:16.208Z",
+                "updated_at": "2025-11-21T15:18:49.043Z",
+                "bridgeCustomerId": "790e9944-49f8-45b3-ac60-b605f13a07db",
+                "lastSubmissionAt": "2025-11-21T15:18:49.039Z",
+                "submissionCount": 1,
+                "type": "individual",
+                "first_name": "Dafe",
+                "middle_name": null,
+                "last_name": "Aror",
+                "phone": "+234 8012345678",
+                "address": {
+                  "street_line_1": "9 Karimu Street",
+                  "street_line_2": "",
+                  "city": "Lagos",
+                  "state": "LA",
+                  "postal_code": "105102",
+                  "country": "NGA"
+                },
+                "birth_date": "1993-01-24",
+                "account_purpose": "payments_to_friends_or_family_abroad",
+                "account_purpose_other": null,
+                "employment_status": "employed",
+                "expected_monthly_payments_usd": "FROM_5000_TO_9999",
+                "acting_as_intermediary": false,
+                "most_recent_occupation": "ACCOUNTANT_AND_AUDITOR",
+                "source_of_funds": "inheritance",
+                "identifying_information": [
+                  {
+                    "type": "passport",
+                    "issuing_country": "NGA",
+                    "number": "12345678909",
+                    "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738198/verification/2025-11-21/t2fgqlxesqigmm0qfvbi.png",
+                    "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738205/verification/2025-11-21/n0slzbkhxreppmqew4yd.png"
+                  }
+                ],
+                "store_id": "a3b53d4d-7a47-4e53-bfdd-74f9630248d4"
               }
             }
           }
         },
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
-            },
-            "required": true,
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
         "responses": {
           "201": {
-            "description": "Verification process initiated successfully",
+            "description": "Success",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "formUrl": {
-                      "type": "string",
-                      "format": "uri",
-                      "description": "URL to the verification form where the user can complete their KYB/KYC verification"
-                    }
-                  },
-                  "required": ["formUrl"]
+                  "type": "object"
                 },
-                "example": {
-                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                "example": {}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
           "401": {
-            "description": "Unauthorized - Invalid or missing API key",
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
           },
           "403": {
-            "description": "Forbidden - Insufficient permissions",
+            "description": "Forbidden",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found - Subaccount not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Not Found",
-                  "message": "Subaccount not found"
+                  "$ref": "#/components/schemas/ErrorResponse"
                 }
               }
             }
