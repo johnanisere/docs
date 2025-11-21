@@ -2352,26 +2352,240 @@
         "tags": [
           "Banking > Recipients"
         ],
-        "summary": "Add EUR Recipient",
-        "description": "Add a new EUR recipient for withdrawals. All withdrawal requests require approved KYC.",
+        "summary": "Add Fiat Recipient",
+        "description": "Add a new fiat recipient for withdrawals. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "oneOf": [
+                  {
+                    "title": "BRL",
+                    "type": "object",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "BRL"
+                        ]
+                      },
+                      "pix_key": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "pix_key"
+                    ]
+                  },
+                  {
+                    "title": "NGN",
+                    "type": "object",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "NGN"
+                        ]
+                      },
+                      "account_number": {
+                        "type": "string"
+                      },
+                      "account_owner_name": {
+                        "type": "string"
+                      },
+                      "bank_code": {
+                        "type": "string"
+                      },
+                      "bank_name": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "account_number",
+                      "account_owner_name",
+                      "bank_code",
+                      "bank_name",
+                      "country"
+                    ]
+                  },
+                  {
+                    "title": "USD",
+                    "type": "object",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "USD"
+                        ]
+                      },
+                      "account_owner_name": {
+                        "type": "string"
+                      },
+                      "bank_name": {
+                        "type": "string"
+                      },
+                      "account_number": {
+                        "type": "string"
+                      },
+                      "routing_number": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street_line_1": {
+                            "type": "string"
+                          },
+                          "street_line_2": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "postal_code": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "street_line_1",
+                          "city",
+                          "state",
+                          "postal_code",
+                          "country"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "account_owner_name",
+                      "bank_name",
+                      "account_number",
+                      "routing_number",
+                      "country",
+                      "address"
+                    ]
+                  },
+                  {
+                    "title": "EUR",
+                    "type": "object",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "EUR"
+                        ]
+                      },
+                      "account_owner_name": {
+                        "type": "string"
+                      },
+                      "bank_name": {
+                        "type": "string"
+                      },
+                      "account_number": {
+                        "type": "string"
+                      },
+                      "bic": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      },
+                      "account_owner_type": {
+                        "type": "string"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      },
+                      "business_name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "account_owner_name",
+                      "bank_name",
+                      "account_number",
+                      "bic",
+                      "country",
+                      "account_owner_type"
+                    ]
+                  }
+                ]
               },
-              "example": {
-                "currency": "EUR",
-                "account_owner_name": "John Doe",
-                "bank_name": "Bank of America",
-                "account_number": "GB26PRTC00998500671076",
-                "bic": "BANKGB2L",
-                "country": "GBR",
-                "account_owner_type": "individual",
-                "first_name": "John",
-                "last_name": "Doe",
-                "business_name": "Acme Inc.",
-                "email": "john@example.com"
+              "examples": {
+                "BRL": {
+                  "summary": "BRL recipient example",
+                  "value": {
+                    "currency": "BRL",
+                    "pix_key": "71719844194"
+                  }
+                },
+                "NGN": {
+                  "summary": "NGN recipient example",
+                  "value": {
+                    "account_number": "0062881117",
+                    "account_owner_name": "Test Account",
+                    "bank_code": "270",
+                    "bank_name": "Access Bank Nigeria Plc",
+                    "country": "NG",
+                    "currency": "NGN"
+                  }
+                },
+                "USD": {
+                  "summary": "USD recipient example",
+                  "value": {
+                    "currency": "USD",
+                    "account_owner_name": "John Doe",
+                    "bank_name": "Bank of America",
+                    "account_number": "123456789013",
+                    "routing_number": "111000025",
+                    "country": "USA",
+                    "address": {
+                      "street_line_1": "123 Main St",
+                      "street_line_2": "Apt 4B",
+                      "city": "New York",
+                      "state": "NY",
+                      "postal_code": "10001",
+                      "country": "USA"
+                    }
+                  }
+                },
+                "EUR": {
+                  "summary": "EUR recipient example",
+                  "value": {
+                    "currency": "EUR",
+                    "account_owner_name": "John Doe",
+                    "bank_name": "Bank of America",
+                    "account_number": "GB26PRTC00998500671076",
+                    "bic": "BANKGB2L",
+                    "country": "GBR",
+                    "account_owner_type": "individual",
+                    "first_name": "John",
+                    "last_name": "Doe",
+                    "business_name": "Acme Inc.",
+                    "email": "john@example.com"
+                  }
+                }
               }
             }
           }
@@ -2388,9 +2602,89 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful fiat recipient creation",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "account_owner_name": { "type": "string" },
+                    "active": { "type": "boolean" },
+                    "currency": { "type": "string" },
+                    "is_verified": { "type": "boolean" },
+                    "account_id": { "type": "string" }
+                  }
+                },
+                "example": {
+                  "id": "0bf68a2a-72e1-4846-82a6-c9023efd9907",
+                  "account_owner_name": "Hugo Gonzalez",
+                  "active": true,
+                  "currency": "BRL",
+                  "is_verified": false,
+                  "account_id": "667.136.083-96"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-20T21:53:30.125Z",
+                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients",
+                  "error": "Error",
+                  "message": "Failed to validate PIX key. Please check and try again.",
+                  "stack": "HttpException: Failed to validate PIX key. Please check and try again.\n    at BankingService.addBrlBankAccount (/usr/src/app/dist/src/banking/banking.service.js:334:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
             }
           }
         }
@@ -2415,7 +2709,52 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": { "type": "string" },
+                      "bank_name": { "type": "string" },
+                      "account_owner_name": { "type": "string" },
+                      "last_4": { "type": "string" },
+                      "active": { "type": "boolean" },
+                      "account_id": { "type": "string" },
+                      "currency": { "type": "string" }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "id": "f4725e12-466f-49fd-89bd-899635f3f7f6",
+                    "bank_name": "Access Bank Nigeria Plc",
+                    "account_owner_name": "Test Account",
+                    "last_4": "1117",
+                    "active": true,
+                    "account_id": "0062881117",
+                    "currency": "NGN"
+                  }
+                ]
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "timestamp": "2025-11-20T21:53:34.527Z",
+                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients/eb56fd66-a251-4371-99be-34a243171f3c",
+                  "error": "Error",
+                  "message": "Bank account not found",
+                  "stack": "HttpException: Bank account not found\n    at BankingService.getBankAccount (/usr/src/app/dist/src/banking/banking.service.js:474:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
             }
           }
         }
@@ -2432,7 +2771,22 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "enum": [
+                      "BRL"
+                    ]
+                  },
+                  "pix_key": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "currency",
+                  "pix_key"
+                ]
               },
               "example": {
                 "currency": "BRL",
@@ -2443,9 +2797,81 @@
         },
         "responses": {
           "200": {
-            "description": "Successful response",
+            "description": "Successful validation",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "currency": { "type": "string" },
+                    "pix_key": { "type": "string" }
+                  }
+                },
+                "example": {
+                  "currency": "BRL",
+                  "pix_key": "667.136.083-96"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-20T21:53:30.125Z",
+                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients",
+                  "error": "Error",
+                  "message": "Failed to validate PIX key. Please check and try again.",
+                  "stack": "HttpException: Failed to validate PIX key. Please check and try again.\n    at BankingService.addBrlBankAccount (/usr/src/app/dist/src/banking/banking.service.js:334:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
             }
           }
         }
@@ -2475,7 +2901,61 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "accountNumber": { "type": "string" },
+                    "bankCode": { "type": "string" }
+                  }
+                },
+                "example": {
+                  "accountNumber": "0062881117",
+                  "bankCode": "270"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
+                }
+              }
             }
           }
         }
@@ -2511,7 +2991,46 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "account_owner_name": { "type": "string" },
+                    "bank_name": { "type": "string" },
+                    "active": { "type": "boolean" },
+                    "currency": { "type": "string" },
+                    "is_verified": { "type": "boolean" },
+                    "account_id": { "type": "string" }
+                  }
+                },
+                "example": {
+                  "id": "27c44186-5cc7-4c74-b7c7-ab16b762f260",
+                  "account_owner_name": "Hugo Gonzalez",
+                  "active": true,
+                  "currency": "BRL",
+                  "is_verified": true,
+                  "account_id": "667.136.083-96"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "timestamp": "2025-11-20T21:53:34.527Z",
+                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients/eb56fd66-a251-4371-99be-34a243171f3c",
+                  "error": "Error",
+                  "message": "Bank account not found",
+                  "stack": "HttpException: Bank account not found\n    at BankingService.getBankAccount (/usr/src/app/dist/src/banking/banking.service.js:474:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
             }
           }
         }
