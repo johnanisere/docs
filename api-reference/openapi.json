@@ -433,7 +433,7 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier One Verification",
+        "summary": "Tier One",
         "description": "Submit information for Tier One verification for NGN or BRL subaccounts. The request body format varies based on the subaccount's currency.",
         "requestBody": {
           "content": {
@@ -702,7 +702,139 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two KYB/C",
+        "summary": "Tier Two (Managed)",
+        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "verificationType": {
+                    "type": "string",
+                    "enum": ["individual", "business"],
+                    "description": "Type of verification to perform",
+                    "example": "individual"
+                  }
+                },
+                "required": ["verificationType"]
+              },
+              "example": {
+                "verificationType": "individual"
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Verification process initiated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "formUrl": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "URL to the verification form where the user can complete their KYB/KYC verification"
+                    }
+                  },
+                  "required": ["formUrl"]
+                },
+                "example": {
+                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/subaccount/{subaccountId}/kyb/{whitelabelId}": {
+      "post": {
+        "tags": [
+          "Verification"
+        ],
+        "summary": "Tier Two (Whitelabel)",
         "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
         "requestBody": {
           "content": {
