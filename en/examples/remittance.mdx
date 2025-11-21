@@ -1,0 +1,35 @@
+---
+title: "Cross-Border Remittance"
+description: "Receive local currency, hold USD, pay out globally."
+---
+
+## Scenario
+An exporter in Nigeria needs to receive NGN from local customers, convert it to USD to hedge against devaluation, and later pay suppliers in Europe (EUR).
+
+## Workflow
+
+### 1. Receive Funds (NGN)
+Use the **Fiat On-Ramp** pattern.
+- Endpoint: `POST /v1/ramp/{id}/banking/deposits`
+- Currency: `NGN`
+- Result: Subaccount balance credited in USD (auto-conversion).
+
+### 2. Hold Funds
+Funds sit safely in the subaccount in USD. No API action needed.
+
+### 3. Pay Supplier (EUR)
+Use the **Beneficiaries & Payouts** pattern.
+- Create Recipient (EUR): `POST /v1/ramp/{id}/banking/recipients`
+  - Bank details: IBAN, SWIFT/BIC.
+- Withdraw: `POST /v1/ramp/{id}/banking/withdrawals`
+  - Currency: `EUR`
+  - Source: USD balance is converted to EUR at the time of withdrawal.
+
+```javascript
+// Pseudo-code Summary
+await depositNGN(subaccount, amount);
+// ... time passes ...
+const recipient = await createEURRecipient(subaccount, ibanDetails);
+await withdrawEUR(subaccount, recipient.id, invoiceAmount);
+```
+

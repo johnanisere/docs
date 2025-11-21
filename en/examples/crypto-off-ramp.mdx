@@ -1,0 +1,36 @@
+---
+title: "Instant Crypto Off-Ramp"
+description: "Convert crypto to cash instantly."
+---
+
+## Scenario
+A user wants to sell Bitcoin or USDC and receive cash in their local bank account (e.g., Brazil PIX) immediately.
+
+## Workflow
+
+### 1. Generate Deposit Address
+- **Bitcoin:** `POST /v1/ramp/{id}/banking/deposits/lightning`
+- **USDC:** `GET /v1/ramp/{id}/banking/deposits/crypto/SOL-MAINNET-BETA`
+
+### 2. Monitor for Deposit
+Wait for the deposit to be confirmed and credited to the subaccount USD balance.
+
+### 3. Instant Withdrawal
+Trigger a withdrawal to the user's pre-registered local bank account.
+
+```javascript
+// Pseudo-code
+// 1. Get Deposit
+const invoice = await createLightningInvoice(subId, 50); // $50 worth
+
+// 2. Listen for completion (Polling or Webhook)
+await waitForDeposit(invoice.id);
+
+// 3. Payout to PIX
+await bullring.createWithdrawal(subId, {
+  account_id: userPixRecipientId,
+  amount: "50", // USD equivalent to withdraw
+  currency: "BRL" // Target currency
+});
+```
+

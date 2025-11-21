@@ -1,0 +1,37 @@
+---
+title: "Crypto & Stablecoin Treasury"
+description: "Manage crypto deposits and liquidity."
+---
+
+## Overview
+Accept stablecoins (USDC/USDT) or Bitcoin directly into subaccounts.
+
+## 1. Generate On-Chain Address
+**Endpoint:** `GET /v1/ramp/{subaccountId}/banking/deposits/crypto/{network}`
+
+Get a deposit address for a specific blockchain (e.g., Ethereum, Solana).
+
+```javascript
+// Pseudo-code
+const ethAddress = await bullring.getCryptoAddress(subaccountId, "ETH-MAINNET");
+const solAddress = await bullring.getCryptoAddress(subaccountId, "SOL-MAINNET-BETA");
+
+// Display addresses to user
+```
+
+## 2. Create Lightning Invoice
+**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/deposits/lightning`
+
+Create a Bitcoin Lightning invoice for instant, low-cost funding.
+
+```javascript
+// Pseudo-code
+const invoice = await bullring.createLightningInvoice(subaccountId, {
+  amount: 1000, // sats or currency equivalent based on implementation
+  currency: "usd", // invoicing currency
+  note: "Top up"
+});
+
+// Display invoice.lightningInvoice (BOLT11)
+```
+
