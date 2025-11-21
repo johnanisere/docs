@@ -2104,13 +2104,13 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/deposits/crypto/SOL-DEVNET": {
+    "/v1/ramp/{subaccountId}/banking/deposits/crypto/{onchainNetwork}": {
       "get": {
         "tags": [
           "Banking > Deposits"
         ],
         "summary": "Onchain Deposit Address",
-        "description": "Get a deposit address for SOL on the Solana Devnet. All deposit requests require approved KYC.",
+        "description": "Get a deposit address for a specified blockchain network. All deposit requests require approved KYC.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2119,6 +2119,21 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "name": "onchainNetwork",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "ETH-MAINNET",
+                "SOL-MAINNET-BETA",
+                "ETH-SEPOLIA",
+                "SOL-DEVNET"
+              ]
+            },
+            "required": true,
+            "description": "The blockchain network.\n\n**Production:** `ETH-MAINNET`, `SOL-MAINNET-BETA`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
           }
         ],
         "responses": {
@@ -2129,21 +2144,72 @@
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "id": {
+                      "type": "string"
+                    },
                     "address": {
                       "type": "string"
                     },
-                    "network": {
+                    "chain": {
                       "type": "string"
                     },
                     "currency": {
+                      "type": "string"
+                    },
+                    "addressTag": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
                       "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "address": "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa",
-                  "network": "bitcoin",
-                  "currency": "BTC"
+                  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+                  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+                  "chain": "ETH-SEPOLIA",
+                  "currency": "USDC",
+                  "addressTag": null,
+                  "createdAt": "2025-11-21T11:17:42.575Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid network",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    },
+                    "stack": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-21T11:16:54.232Z",
+                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/deposits/crypto/poly",
+                  "error": "Error",
+                  "message": "Invalid chain for current environment.",
+                  "stack": "HttpException: Invalid chain for current environment.\n    at RampController.storeChainAddress (/usr/src/app/dist/src/stores/ramp.controller.js:125:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
                 }
               }
             }
