@@ -4001,7 +4001,15 @@
             "name": "from",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "usdc"
           },
@@ -4009,7 +4017,15 @@
             "name": "to",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "usd"
           }
@@ -4018,7 +4034,61 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "example": {
+                  "from": "usdc",
+                  "to": "usd",
+                  "rate": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "message": "Invalid currency",
+                  "error": "Bad Request"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden resource",
+                  "error": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found",
+                  "error": "Not Found"
+                }
+              }
             }
           }
         }
@@ -4036,7 +4106,15 @@
             "name": "currency",
             "in": "query",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "ngn"
           },
@@ -4053,7 +4131,178 @@
           "200": {
             "description": "Successful response",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeCalculationResponse"
+                },
+                "example": {
+                  "amount": 1.01,
+                  "currency": "USD",
+                  "percentage": 0.007,
+                  "flatFee": 1,
+                  "originalAmount": 0.99,
+                  "netAmount": 1,
+                  "grossAmount": 2
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-21T00:41:55.962Z",
+                  "path": "/v1/banking/withdrawal/fee?currency=ngnn&amount=0.99",
+                  "error": "Bad Request",
+                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW",
+                  "stack": "BadRequestException: Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW\n    at BankingController.calculateWithdrawalFee (/usr/src/app/dist/src/banking/banking.controller.js:68:19)\n    at /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:38:29\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden resource",
+                  "error": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found",
+                  "error": "Not Found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/banking/deposit/fee": {
+      "get": {
+        "tags": [
+          "Banking > Fees"
+        ],
+        "summary": "Get Deposit Fee",
+        "description": "Calculate the fee for a deposit.",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
+            },
+            "example": "ngn"
+          },
+          {
+            "name": "amount",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "example": "0.99"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeeCalculationResponse"
+                },
+                "example": {
+                  "amount": 0,
+                  "currency": "NGN",
+                  "percentage": 0.005,
+                  "flatFee": 0,
+                  "originalAmount": 0.99,
+                  "netAmount": 0.99,
+                  "grossAmount": 0.99
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-21T00:41:55.962Z",
+                  "path": "/v1/banking/withdrawal/fee?currency=ngnn&amount=0.99",
+                  "error": "Bad Request",
+                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW",
+                  "stack": "BadRequestException: Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW\n    at BankingController.calculateWithdrawalFee (/usr/src/app/dist/src/banking/banking.controller.js:68:19)\n    at /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:38:29\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 401,
+                  "message": "Unauthorized",
+                  "error": "Unauthorized"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 403,
+                  "message": "Forbidden resource",
+                  "error": "Forbidden"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found",
+                  "error": "Not Found"
+                }
+              }
             }
           }
         }
@@ -4167,6 +4416,18 @@
           "tx_hash": { "type": "string", "nullable": true },
           "gross_amount": { "type": "number" },
           "rate": { "type": "number" }
+        }
+      },
+      "FeeCalculationResponse": {
+        "type": "object",
+        "properties": {
+          "amount": { "type": "number" },
+          "currency": { "type": "string" },
+          "percentage": { "type": "number" },
+          "flatFee": { "type": "number" },
+          "originalAmount": { "type": "number" },
+          "netAmount": { "type": "number" },
+          "grossAmount": { "type": "number" }
         }
       },
       "ErrorResponse": {
