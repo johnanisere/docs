@@ -3642,10 +3642,88 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successful response",
+          "201": {
+            "description": "Withdrawal initiated successfully",
             "content": {
-              "application/json": {}
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
+                      "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "protocol": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "local_currency": {
+                      "type": "string"
+                    },
+                    "local_amount": {
+                      "type": "number"
+                    },
+                    "destinationAddress": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "tx_hash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "destination_tag": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "fee_amount": {
+                      "type": "string"
+                    },
+                    "fee_currency": {
+                      "type": "string"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "gross_amount": {
+                      "type": "number"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+                  "amount": "1",
+                  "currency": "USD",
+                  "status": "pending",
+                  "created_at": "2025-11-21T15:59:09.341Z",
+                  "protocol": "wire",
+                  "description": "Payment for services",
+                  "local_currency": "USD",
+                  "local_amount": 1,
+                  "destinationAddress": null,
+                  "tx_hash": null,
+                  "destination_tag": null,
+                  "fee_amount": "15.01",
+                  "fee_currency": "USD",
+                  "rate": 1,
+                  "gross_amount": 16.01
+                }
+              }
             }
           }
         }
@@ -3866,20 +3944,86 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "message": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "amount": {
                       "type": "string"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "protocol": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "local_currency": {
+                      "type": "string"
+                    },
+                    "local_amount": {
+                      "type": "number"
+                    },
+                    "destinationAddress": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "tx_hash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "destination_tag": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "fee_amount": {
+                      "type": "string"
+                    },
+                    "fee_currency": {
+                      "type": "string"
+                    },
+                    "rate": {
+                      "type": "number"
+                    },
+                    "gross_amount": {
+                      "type": "number"
                     }
                   }
                 },
                 "example": {
-                  "message": "Withdrawal of full balance initiated successfully"
+                  "id": "11b7cec5-25a1-4076-ad21-707c6d92ac88",
+                  "amount": "167.7",
+                  "currency": "USD",
+                  "status": "pending",
+                  "created_at": "2025-11-21T16:22:05.325Z",
+                  "protocol": "wire",
+                  "description": "Payment for services",
+                  "local_currency": "USD",
+                  "local_amount": 167.7,
+                  "destinationAddress": null,
+                  "tx_hash": null,
+                  "destination_tag": null,
+                  "fee_amount": "16.17",
+                  "fee_currency": "USD",
+                  "rate": 1,
+                  "gross_amount": 183.87
                 }
               }
             }
