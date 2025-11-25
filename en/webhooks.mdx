@@ -1,0 +1,139 @@
+---
+title: Webhooks
+description: Listen for real-time updates on your account activity
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+## Subaccount Events
+
+Notifications related to subaccount status changes.
+
+### Subaccount Approved
+```json
+{
+    "data": {
+        "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
+        "email": "user@example.com",
+        "status": "approved"
+    },
+    "event": "subaccount.status.approved"
+}
+```
+
+### Subaccount Created
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "created"
+    },
+    "event": "subaccount.status.created"
+}
+```
+
+### Subaccount Declined
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "declined"
+    },
+    "event": "subaccount.status.declined"
+}
+```
+
+### Subaccount In Review
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "review"
+    },
+    "event": "subaccount.status.review"
+}
+```
+
+## Deposit Events
+
+Notifications for when funds are received.
+
+### Deposit Paid
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "completed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.paid"
+}
+```
+
+### Deposit Unpaid
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "failed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.unpaid"
+}
+```
+
+## Withdrawal Events
+
+Notifications for outgoing payment status updates.
+
+### Withdrawal Failed
+```json
+{
+    "data": {
+        "id": "8c8785ea-5c8b-4461-bc83-97b9e6f4a21e",
+        "fee": "0.03000000",
+        "asset": "BRL",
+        "amount": 3.75,
+        "status": "failed",
+        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
+        "currency": "USD",
+        "protocol": "pix",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
+        "createdAt": "2025-11-24T12:35:09.887Z"
+    },
+    "event": "withdrawal.status.failed"
+}
+```
+
+### Withdrawal Completed
+```json
+{
+    "data": {
+        "id": "12da9555-f846-476d-bf64-210122908f9c",
+        "fee": "0.12000000",
+        "asset": "BRL",
+        "amount": 16.47,
+        "status": "complete",
+        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
+        "currency": "USD",
+        "protocol": "pix",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
+        "createdAt": "2025-11-24T14:30:39.466Z"
+    },
+    "event": "withdrawal.status.completed"
+}
+```
+

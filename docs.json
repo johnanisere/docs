@@ -42,7 +42,8 @@
                   "en/introduction",
                   "en/supported-currencies",
                   "en/authentication",
-                  "en/environments"
+                  "en/environments",
+                  "en/webhooks"
                 ]
               },
               {
