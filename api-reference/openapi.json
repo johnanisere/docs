@@ -3766,6 +3766,28 @@
                       "currency": { "type": "string", "enum": ["NGN"] }
                     },
                     "required": ["account_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "ZMW",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["ZMW"] }
+                    },
+                    "required": ["account_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "GHS",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "account_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["GHS"] }
+                    },
+                    "required": ["account_id", "amount", "currency"]
                   }
                 ]
               },
@@ -3802,6 +3824,22 @@
                     "account_id": "0062881117",
                     "amount": "100",
                     "currency": "NGN"
+                  }
+                },
+                "ZMW": {
+                  "summary": "ZMW Withdrawal",
+                  "value": {
+                    "account_id": "+260241234568",
+                    "amount": "3",
+                    "currency": "ZMW"
+                  }
+                },
+                "GHS": {
+                  "summary": "GHS Withdrawal",
+                  "value": {
+                    "account_id": "+233241234567",
+                    "amount": "10",
+                    "currency": "GHS"
                   }
                 }
               }
@@ -3879,26 +3917,87 @@
                     },
                     "gross_amount": {
                       "type": "number"
+                    },
+                    "net_amount": {
+                      "type": "number"
                     }
                   }
                 },
+                "examples": {
+                  "USD": {
+                    "summary": "USD Withdrawal Response",
+                    "value": {
+                      "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+                      "amount": "1",
+                      "currency": "USD",
+                      "status": "pending",
+                      "created_at": "2025-11-21T15:59:09.341Z",
+                      "protocol": "wire",
+                      "description": "Payment for services",
+                      "local_currency": "USD",
+                      "local_amount": 1,
+                      "destinationAddress": null,
+                      "tx_hash": null,
+                      "destination_tag": null,
+                      "fee_amount": "15.01",
+                      "fee_currency": "USD",
+                      "rate": 1,
+                      "gross_amount": 16.01
+                    }
+                  },
+                  "GHS": {
+                    "summary": "GHS Withdrawal Response",
+                    "value": {
+                      "id": "52ee4cb9-aa5a-463d-a5c4-32b748c0e9b3",
+                      "amount": "10",
+                      "currency": "USD",
+                      "status": "processing",
+                      "created_at": "2025-11-25T13:00:37.970Z",
+                      "protocol": "mobile_money",
+                      "description": null,
+                      "local_currency": "GHS",
+                      "local_amount": 109.55,
+                      "destinationAddress": null,
+                      "tx_hash": null,
+                      "destination_tag": null,
+                      "fee_amount": "0.12",
+                      "fee_currency": "USD",
+                      "rate": 11.088,
+                      "net_amount": 9.88
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
                 "example": {
-                  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
-                  "amount": "1",
-                  "currency": "USD",
-                  "status": "pending",
-                  "created_at": "2025-11-21T15:59:09.341Z",
-                  "protocol": "wire",
-                  "description": "Payment for services",
-                  "local_currency": "USD",
-                  "local_amount": 1,
-                  "destinationAddress": null,
-                  "tx_hash": null,
-                  "destination_tag": null,
-                  "fee_amount": "15.01",
-                  "fee_currency": "USD",
-                  "rate": 1,
-                  "gross_amount": 16.01
+                  "statusCode": 400,
+                  "timestamp": "2025-11-25T12:49:22.586Z",
+                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/withdrawals",
+                  "error": "Error",
+                  "message": "Invalid phone number format for ZM",
+                  "stack": "HttpException: Invalid phone number format for ZM\n    at BankingService.processMobileMoneyWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:2164:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async BankingService.createWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:953:44)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "message": "Not Found"
                 }
               }
             }
@@ -4517,6 +4616,162 @@
                 "example": {
                   "error": "Not Found",
                   "message": "Subaccount not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/offramp/initiate": {
+      "post": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Withdraw Crypto",
+        "description": "Initiate a crypto(in BTC) withdrawal via offramp.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "bankAccountId": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "bankAccountId",
+                  "amount"
+                ]
+              },
+              "example": {
+                "bankAccountId": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                "amount": 88
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Lightning invoice generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string" },
+                        "lightningInvoice": { "type": "string" },
+                        "lightningInvoiceId": { "type": "string" },
+                        "targetAmount": { "type": "number" },
+                        "targetCurrency": { "type": "string" },
+                        "lightningAmount": { "type": "number" },
+                        "lightningCurrency": { "type": "string" },
+                        "exchangeRate": { "type": "number" },
+                        "lightningFee": { "type": "number" },
+                        "withdrawalFee": { "type": "number" },
+                        "targetAmountReceivable": { "type": "number" },
+                        "totalFees": { "type": "number" },
+                        "bankAccount": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "bankName": { "type": "string", "nullable": true },
+                            "accountId": { "type": "string" },
+                            "currency": { "type": "string" }
+                          }
+                        },
+                        "expiresAt": { "type": "string", "nullable": true },
+                        "status": { "type": "string" },
+                        "createdAt": { "type": "string" }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+                    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
+                    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
+                    "targetAmount": 88,
+                    "targetCurrency": "brl",
+                    "lightningAmount": 1656,
+                    "lightningCurrency": "stablesats",
+                    "exchangeRate": 0.18822915501882292,
+                    "lightningFee": 0,
+                    "withdrawalFee": 0.64,
+                    "targetAmountReceivable": 87.34,
+                    "totalFees": 0.64,
+                    "bankAccount": {
+                      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                      "bankName": null,
+                      "accountId": "667.136.083-96",
+                      "currency": "BRL"
+                    },
+                    "expiresAt": null,
+                    "status": "pending",
+                    "createdAt": "2025-11-25T13:37:46.829Z"
+                  },
+                  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-11-25T13:45:01.778Z",
+                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/offramp/initiate",
+                  "error": "Error",
+                  "message": "Amount exceeds maximum limit of 50000 BRL",
+                  "stack": "HttpException: Amount exceeds maximum limit of 50000 BRL\n    at CollectionService.validateLightningInvoiceInput (/usr/src/app/dist/src/collections/collection.service.js:2956:19)\n    at CollectionService.createLightningInvoice (/usr/src/app/dist/src/collections/collection.service.js:2821:18)\n    at CollectionService.initiateOfframp (/usr/src/app/dist/src/collections/collection.service.js:4093:49)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async RampController.initiateOfframp (/usr/src/app/dist/src/stores/ramp.controller.js:170:28)"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "timestamp": "2025-11-25T13:43:45.692Z",
+                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/offramp/initiate",
+                  "error": "Error",
+                  "message": "Bank account not found",
+                  "stack": "HttpException: Bank account not found\n    at CollectionService.initiateOfframp (/usr/src/app/dist/src/collections/collection.service.js:4081:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async RampController.initiateOfframp (/usr/src/app/dist/src/stores/ramp.controller.js:170:28)"
                 }
               }
             }
