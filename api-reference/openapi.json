@@ -2936,6 +2936,7 @@
                   {
                     "title": "BRL",
                     "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -2955,6 +2956,7 @@
                   {
                     "title": "NGN",
                     "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -2990,6 +2992,7 @@
                   {
                     "title": "USD",
                     "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -3056,6 +3059,7 @@
                   {
                     "title": "EUR",
                     "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -3102,6 +3106,54 @@
                       "bic",
                       "country",
                       "account_owner_type"
+                    ]
+                  },
+                  {
+                    "title": "GHS",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "GHS"
+                        ]
+                      },
+                      "phone_number": {
+                        "type": "string"
+                      },
+                      "account_owner_name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "phone_number",
+                      "account_owner_name"
+                    ]
+                  },
+                  {
+                    "title": "ZMW",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "ZMW"
+                        ]
+                      },
+                      "phone_number": {
+                        "type": "string"
+                      },
+                      "account_owner_name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "phone_number",
+                      "account_owner_name"
                     ]
                   }
                 ]
@@ -3159,6 +3211,22 @@
                     "business_name": "Acme Inc.",
                     "email": "john@example.com"
                   }
+                },
+                "GHS": {
+                  "summary": "GHS recipient example",
+                  "value": {
+                    "currency": "GHS",
+                    "phone_number": "+233241234567",
+                    "account_owner_name": "test two"
+                  }
+                },
+                "ZMW": {
+                  "summary": "ZMW recipient example",
+                  "value": {
+                    "currency": "ZMW",
+                    "phone_number": "+260241234567",
+                    "account_owner_name": "test two"
+                  }
                 }
               }
             }
@@ -3175,7 +3243,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "201": {
             "description": "Successful fiat recipient creation",
             "content": {
               "application/json": {
@@ -3190,13 +3258,40 @@
                     "account_id": { "type": "string" }
                   }
                 },
-                "example": {
-                  "id": "0bf68a2a-72e1-4846-82a6-c9023efd9907",
-                  "account_owner_name": "Hugo Gonzalez",
-                  "active": true,
-                  "currency": "BRL",
-                  "is_verified": false,
-                  "account_id": "667.136.083-96"
+                "examples": {
+                  "BRL": {
+                    "summary": "BRL example",
+                    "value": {
+                      "id": "0bf68a2a-72e1-4846-82a6-c9023efd9907",
+                      "account_owner_name": "Hugo Gonzalez",
+                      "active": true,
+                      "currency": "BRL",
+                      "is_verified": false,
+                      "account_id": "667.136.083-96"
+                    }
+                  },
+                  "GHS": {
+                    "summary": "GHS example",
+                    "value": {
+                      "id": "d1d89633-0a87-4324-9976-7708f5d70933",
+                      "account_owner_name": "test two",
+                      "active": true,
+                      "currency": "GHS",
+                      "is_verified": false,
+                      "account_id": "+233241234567"
+                    }
+                  },
+                  "ZMW": {
+                    "summary": "ZMW example",
+                    "value": {
+                      "id": "223d8913-17cd-4138-8e90-c6b63052cc39",
+                      "account_owner_name": "test two",
+                      "active": true,
+                      "currency": "ZMW",
+                      "is_verified": false,
+                      "account_id": "+260241234567"
+                    }
+                  }
                 }
               }
             }
@@ -3242,7 +3337,11 @@
                 },
                 "example": {
                   "statusCode": 403,
-                  "message": "Forbidden"
+                  "timestamp": "2025-11-25T02:42:56.154Z",
+                  "path": "/v1/ramp/abcdc10c-74f0-4176-b328-d2b8b162972d/banking/recipients",
+                  "error": "Error",
+                  "message": "You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails",
+                  "stack": "HttpException: You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails\n    at BankingService.addBankAccount (/usr/src/app/dist/src/banking/banking.service.js:166:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
                 }
               }
             }
@@ -3800,105 +3899,6 @@
                   "fee_currency": "USD",
                   "rate": 1,
                   "gross_amount": 16.01
-                }
-              }
-            }
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Banking > Withdrawals"
-        ],
-        "summary": "Get All Withdrawals",
-        "description": "Retrieve a list of all withdrawals for a specific subaccount. All withdrawal requests require approved KYC.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedWithdrawals"
-                },
-                "example": {
-                  "data": [
-                    {
-                      "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
-                      "amount": "12.00000000",
-                      "currency": "USD",
-                      "status": "pending",
-                      "created_at": "2025-11-20T08:26:07.432Z",
-                      "protocol": "erc20",
-                      "description": null,
-                      "chain": "ETH",
-                      "local_currency": "usdt",
-                      "local_amount": "12",
-                      "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-                      "tx_hash": null,
-                      "destination_tag": null,
-                      "fee_amount": "1.08000000",
-                      "fee_currency": "USD",
-                      "rate": 1,
-                      "gross_amount": 13.08,
-                      "destination_address": "0x***37"
-                    }
-                  ],
-                  "count": 1,
-                  "page": 1,
-                  "limit": 10,
-                  "totalPages": 1
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "statusCode": 401,
-                  "message": "Unauthorized"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "statusCode": 403,
-                  "message": "Forbidden"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "statusCode": 404,
-                  "message": "Not Found"
                 }
               }
             }
