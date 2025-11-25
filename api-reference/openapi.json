@@ -1663,7 +1663,7 @@
           "Banking > Deposits"
         ],
         "summary": "Request Fiat Deposit",
-        "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency (NGN, ZMW, USD, BRL). All deposit requests require approved KYC.",
+        "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency. All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1708,25 +1708,35 @@
                       "amount": {
                         "type": "number"
                       },
-                      "source": {
-                        "type": "object",
-                        "properties": {
-                          "accountType": {
-                            "type": "string",
-                            "enum": [
-                              "bank"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "accountType"
-                        ]
+                      "phoneNumber": {
+                        "type": "string"
                       }
                     },
                     "required": [
                       "channelId",
                       "amount",
-                      "source"
+                      "phoneNumber"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "GHS",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      },
+                      "phoneNumber": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "amount",
+                      "phoneNumber"
                     ]
                   },
                   {
@@ -1802,10 +1812,16 @@
                   "summary": "ZMW Deposit Request",
                   "value": {
                     "channelId": "zmw-channel-id-bullring-finance",
-                    "amount": 100,
-                    "source": {
-                      "accountType": "bank"
-                    }
+                    "amount": 11.1,
+                    "phoneNumber": "260977373310"
+                  }
+                },
+                "GHS": {
+                  "summary": "GHS Deposit Request",
+                  "value": {
+                    "channelId": "ghs-channel-id-bullring-finance",
+                    "amount": 1,
+                    "phoneNumber": "+233552508032"
                   }
                 },
                 "USD": {
@@ -1849,16 +1865,10 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "title": "USD Response",
+                      "title": "NGN Response",
                       "properties": {
                         "status": {
                           "type": "string"
-                        },
-                        "amount": {
-                          "type": "number"
-                        },
-                        "localAmount": {
-                          "type": "number"
                         },
                         "currency": {
                           "type": "string"
@@ -1902,10 +1912,44 @@
                     },
                     {
                       "type": "object",
-                      "title": "NGN Response",
+                      "title": "ZMW Response",
+                      "properties": {
+                        "status": { "type": "string" },
+                        "amount": { "type": "string" },
+                        "localAmount": { "type": "string" },
+                        "currency": { "type": "string" },
+                        "country": { "type": "string" },
+                        "rate": { "type": "string" },
+                        "localCurrency": { "type": "string" },
+                        "channelId": { "type": "string" }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "GHS Response",
+                      "properties": {
+                        "status": { "type": "string" },
+                        "amount": { "type": "string" },
+                        "localAmount": { "type": "string" },
+                        "currency": { "type": "string" },
+                        "country": { "type": "string" },
+                        "rate": { "type": "string" },
+                        "localCurrency": { "type": "string" },
+                        "channelId": { "type": "string" }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "USD Response",
                       "properties": {
                         "status": {
                           "type": "string"
+                        },
+                        "amount": {
+                          "type": "number"
+                        },
+                        "localAmount": {
+                          "type": "number"
                         },
                         "currency": {
                           "type": "string"
@@ -1996,6 +2040,51 @@
                   ]
                 },
                 "examples": {
+                  "NGN": {
+                    "summary": "NGN Response",
+                    "value": {
+                      "status": "pending",
+                      "currency": "NGN",
+                      "country": "NG",
+                      "rate": 1,
+                      "localCurrency": "NGN",
+                      "bankInfo": {
+                        "id": "9805dc88-b78b-4515-ab13-60f63924a565",
+                        "bankBeneficiaryName": "Dameon O\"Hara",
+                        "bankName": "Maplerad",
+                        "bankAddress": "N/A",
+                        "bankRoutingNumber": "N/A",
+                        "bankAccountNumber": "8595061826"
+                      },
+                      "channelId": "ngn-channel-id-bullring-finance"
+                    }
+                  },
+                  "ZMW": {
+                    "summary": "ZMW Response",
+                    "value": {
+                      "status": "processing",
+                      "amount": "11.10000000",
+                      "localAmount": "254.40000000",
+                      "currency": "USD",
+                      "country": "ZM",
+                      "rate": "22.9190",
+                      "localCurrency": "ZMW",
+                      "channelId": "zmw-channel-id-bullring-finance"
+                    }
+                  },
+                  "GHS": {
+                    "summary": "GHS Response",
+                    "value": {
+                      "status": "processing",
+                      "amount": "1.00000000",
+                      "localAmount": "11.00000000",
+                      "currency": "USD",
+                      "country": "GH",
+                      "rate": "11.0011",
+                      "localCurrency": "GHS",
+                      "channelId": "ghs-channel-id-bullring-finance"
+                    }
+                  },
                   "USD": {
                     "summary": "USD Response",
                     "value": {
@@ -2015,25 +2104,6 @@
                         "bankAccountNumber": "900843098394"
                       },
                       "channelId": "usd-channel-id-bullring-finance"
-                    }
-                  },
-                  "NGN": {
-                    "summary": "NGN Response",
-                    "value": {
-                      "status": "pending",
-                      "currency": "NGN",
-                      "country": "NG",
-                      "rate": 1,
-                      "localCurrency": "NGN",
-                      "bankInfo": {
-                        "id": "9805dc88-b78b-4515-ab13-60f63924a565",
-                        "bankBeneficiaryName": "Dameon O\"Hara",
-                        "bankName": "Maplerad",
-                        "bankAddress": "N/A",
-                        "bankRoutingNumber": "N/A",
-                        "bankAccountNumber": "8595061826"
-                      },
-                      "channelId": "ngn-channel-id-bullring-finance"
                     }
                   },
                   "BRL": {
