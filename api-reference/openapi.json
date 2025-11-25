@@ -5025,7 +5025,7 @@
         "tags": [
           "Rates"
         ],
-        "summary": "Rate Conversion",
+        "summary": "Conversion Rate",
         "description": "Get the conversion rate between two currencies. All withdrawal requests require approved KYC.",
         "parameters": [
           {
