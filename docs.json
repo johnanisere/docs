@@ -40,6 +40,7 @@
                 "group": "Get Started",
                 "pages": [
                   "en/introduction",
+                  "en/supported-currencies",
                   "en/authentication",
                   "en/environments"
                 ]
