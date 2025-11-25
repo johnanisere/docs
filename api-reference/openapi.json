@@ -434,7 +434,7 @@
           "Verification"
         ],
         "summary": "Tier One",
-        "description": "Submit information for Tier One verification for NGN or BRL subaccounts. The request body format varies based on the subaccount's currency.",
+        "description": "Submit information for Tier One verification for customer's country. The request body format varies based on the subaccount's currency.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -442,16 +442,16 @@
                 "oneOf": [
                   {
                     "type": "object",
-                    "title": "Nigeria",
-                    "description": "Nigeria (NGN) Tier One Verification",
+                    "title": "Other Countries",
+                    "description": "Other Countries Tier One Verification e.g Nigeria, Ghana, Zambia, etc.",
                     "properties": {
                       "first_name": {
                         "type": "string",
-                        "example": "john"
+                        "example": "eli"
                       },
                       "last_name": {
                         "type": "string",
-                        "example": "don"
+                        "example": "dan"
                       },
                       "date_of_birth": {
                         "type": "string",
@@ -459,7 +459,7 @@
                       },
                       "identification_number": {
                         "type": "string",
-                        "example": "12345678902"
+                        "example": "22245678123"
                       },
                       "address": {
                         "type": "object",
@@ -482,7 +482,7 @@
                           },
                           "country": {
                             "type": "string",
-                            "example": "NG"
+                            "example": "GH"
                           }
                         },
                         "required": ["street", "city", "state", "postal_code", "country"]
@@ -496,7 +496,7 @@
                           },
                           "phone_number": {
                             "type": "string",
-                            "example": "8144194590"
+                            "example": "1234194590"
                           }
                         },
                         "required": ["phone_country_code", "phone_number"]
@@ -516,30 +516,34 @@
                       },
                       "cnpjNumber": {
                         "type": "string",
-                        "description": "Brazilian CNPJ number for business verification (optional, use either cpfNumber or cnpjNumber)"
+                        "description": "Brazilian CNPJ number for business verification",
+                        "example": "12.345.678/0001-96"
                       }
-                    }
+                    },
+                    "oneOf": [
+                      { "required": ["cnpjNumber"] }
+                    ]
                   }
                 ]
               },
               "examples": {
-                "Nigeria": {
-                  "summary": "Nigeria (NGN) Tier One Verification Request",
+                "Other Countries": {
+                  "summary": "Other Countries Tier One Verification Request",
                   "value": {
-                    "first_name": "john",
-                    "last_name": "don",
+                    "first_name": "eli",
+                    "last_name": "dan",
                     "date_of_birth": "24-05-1983",
-                    "identification_number": "12345678902",
+                    "identification_number": "22245678123",
                     "address": {
                       "street": "13, muilli street",
                       "city": "ikeja",
                       "state": "lagos",
                       "postal_code": "100001",
-                      "country": "NG"
+                      "country": "GH"
                     },
                     "phone": {
                       "phone_country_code": "+234",
-                      "phone_number": "8144194590"
+                      "phone_number": "1234194590"
                     }
                   }
                 },
@@ -547,6 +551,12 @@
                   "summary": "Brazil (BRL) Tier One Verification Request",
                   "value": {
                     "cpfNumber": "12345678909"
+                  }
+                },
+                "Brazil (CNPJ)": {
+                  "summary": "Brazil (BRL) Tier One Verification Request (CNPJ)",
+                  "value": {
+                    "cnpjNumber": "12.345.678/0001-96"
                   }
                 }
               }
@@ -872,67 +882,6 @@
                   "has_accepted_terms_of_service": {
                     "type": "boolean"
                   },
-                  "capabilities": {
-                    "type": "object",
-                    "properties": {
-                      "payin_crypto": {
-                        "type": "string"
-                      },
-                      "payout_crypto": {
-                        "type": "string"
-                      },
-                      "payin_fiat": {
-                        "type": "string"
-                      },
-                      "payout_fiat": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "requirements_due": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "rejection_reasons": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "future_requirements_due": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  },
-                  "endorsements": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "name": {
-                          "type": "string"
-                        },
-                        "status": {
-                          "type": "string"
-                        },
-                        "additional_requirements": {
-                          "type": "string",
-                          "nullable": true
-                        }
-                      }
-                    }
-                  },
-                  "created_at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  "updated_at": {
-                    "type": "string",
-                    "format": "date-time"
-                  },
                   "bridgeCustomerId": {
                     "type": "string",
                     "format": "uuid"
@@ -940,9 +889,6 @@
                   "lastSubmissionAt": {
                     "type": "string",
                     "format": "date-time"
-                  },
-                  "submissionCount": {
-                    "type": "integer"
                   },
                   "type": {
                     "type": "string",
@@ -1050,32 +996,8 @@
                 "status": "active",
                 "email": "demo123@mail.com",
                 "has_accepted_terms_of_service": true,
-                "capabilities": {
-                  "payin_crypto": "pending",
-                  "payout_crypto": "pending",
-                  "payin_fiat": "pending",
-                  "payout_fiat": "pending"
-                },
-                "requirements_due": [],
-                "rejection_reasons": [],
-                "future_requirements_due": [],
-                "endorsements": [
-                  {
-                    "name": "base",
-                    "status": "approved",
-                    "additional_requirements": null
-                  },
-                  {
-                    "name": "sepa",
-                    "status": "approved",
-                    "additional_requirements": null
-                  }
-                ],
-                "created_at": "2025-11-21T15:14:16.208Z",
-                "updated_at": "2025-11-21T15:18:49.043Z",
                 "bridgeCustomerId": "790e9944-49f8-45b3-ac60-b605f13a07db",
                 "lastSubmissionAt": "2025-11-21T15:18:49.039Z",
-                "submissionCount": 1,
                 "type": "individual",
                 "first_name": "Dafe",
                 "middle_name": null,
