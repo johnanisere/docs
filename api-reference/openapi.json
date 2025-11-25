@@ -1672,6 +1672,7 @@
                   {
                     "type": "object",
                     "title": "NGN",
+                    "description": "Requires Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1699,6 +1700,7 @@
                   {
                     "type": "object",
                     "title": "ZMW",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1730,6 +1732,7 @@
                   {
                     "type": "object",
                     "title": "USD",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1769,6 +1772,7 @@
                   {
                     "type": "object",
                     "title": "BRL",
+                    "description": "Requires Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1845,7 +1849,7 @@
                   "oneOf": [
                     {
                       "type": "object",
-                      "title": "USD Deposit Response",
+                      "title": "USD Response",
                       "properties": {
                         "status": {
                           "type": "string"
@@ -1898,7 +1902,7 @@
                     },
                     {
                       "type": "object",
-                      "title": "NGN Deposit Response",
+                      "title": "NGN Response",
                       "properties": {
                         "status": {
                           "type": "string"
@@ -1945,7 +1949,7 @@
                     },
                     {
                       "type": "object",
-                      "title": "BRL Deposit Response",
+                      "title": "BRL Response",
                       "properties": {
                         "id": {
                           "type": "string"
@@ -1993,7 +1997,7 @@
                 },
                 "examples": {
                   "USD": {
-                    "summary": "USD Deposit Response",
+                    "summary": "USD Response",
                     "value": {
                       "status": "pending",
                       "amount": 1000,
@@ -2014,7 +2018,7 @@
                     }
                   },
                   "NGN": {
-                    "summary": "NGN Deposit Response",
+                    "summary": "NGN Response",
                     "value": {
                       "status": "pending",
                       "currency": "NGN",
@@ -2033,7 +2037,7 @@
                     }
                   },
                   "BRL": {
-                    "summary": "BRL Deposit Response",
+                    "summary": "BRL Response",
                     "value": {
                       "id": "7ae3dc77746f4302aa67eb009b1c3c18",
                       "status": "pending",
@@ -3551,6 +3555,7 @@
                   {
                     "title": "USD",
                     "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "external_account_id": { "type": "string" },
                       "amount": { "type": "string" },
@@ -3562,6 +3567,7 @@
                   {
                     "title": "BRL",
                     "type": "object",
+                    "description": "Requires Tier 1 KYC.",
                     "properties": {
                       "account_id": { "type": "string" },
                       "amount": { "type": "string" },
@@ -3572,6 +3578,7 @@
                   {
                     "title": "EUR",
                     "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
                     "properties": {
                       "external_account_id": { "type": "string" },
                       "amount": { "type": "string" },
@@ -3583,6 +3590,7 @@
                   {
                     "title": "NGN",
                     "type": "object",
+                    "description": "Requires Tier 1 KYC.",
                     "properties": {
                       "account_id": { "type": "string" },
                       "amount": { "type": "string" },
