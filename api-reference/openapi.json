@@ -4779,6 +4779,138 @@
         }
       }
     },
+    "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status": {
+      "get": {
+        "tags": [
+          "Banking > Withdrawals"
+        ],
+        "summary": "Get Withdraw Crypto Status",
+        "description": "Retrieve the status of a crypto withdrawal via offramp.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "offrampId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "id": { "type": "string", "format": "uuid" },
+                        "status": { "type": "string" },
+                        "targetAmount": { "type": "number" },
+                        "targetCurrency": { "type": "string" },
+                        "lightningAmount": { "type": "number" },
+                        "withdrawalId": { "type": "string", "nullable": true },
+                        "invoicePaidAt": { "type": "string", "format": "date-time", "nullable": true },
+                        "withdrawalInitiatedAt": { "type": "string", "format": "date-time", "nullable": true },
+                        "completedAt": { "type": "string", "format": "date-time", "nullable": true },
+                        "errorMessage": { "type": "string", "nullable": true },
+                        "createdAt": { "type": "string", "format": "date-time" },
+                        "updatedAt": { "type": "string", "format": "date-time" },
+                        "lightningCurrency": { "type": "string" },
+                        "exchangeRate": { "type": "number" },
+                        "lightningFee": { "type": "number" },
+                        "withdrawalFee": { "type": "number" },
+                        "targetAmountReceivable": { "type": "number" },
+                        "totalFees": { "type": "number" }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+                    "status": "pending",
+                    "targetAmount": 12,
+                    "targetCurrency": "brl",
+                    "lightningAmount": 226,
+                    "withdrawalId": null,
+                    "invoicePaidAt": null,
+                    "withdrawalInitiatedAt": null,
+                    "completedAt": null,
+                    "errorMessage": null,
+                    "createdAt": "2025-11-25T13:48:02.667Z",
+                    "updatedAt": "2025-11-25T13:48:02.667Z",
+                    "lightningCurrency": "stablesats",
+                    "exchangeRate": 0.18822916,
+                    "lightningFee": 0,
+                    "withdrawalFee": 0.11,
+                    "targetAmountReceivable": 53.09,
+                    "totalFees": 0.11
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Offramp transaction not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/withdrawals/{withdrawalId}": {
       "get": {
         "tags": [
