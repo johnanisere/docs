@@ -25,23 +25,23 @@
       "description": "Endpoints for subaccount verification, including KYC and KYB processes."
     },
     {
-      "name": "Banking > Deposits",
+      "name": "Deposits",
       "description": "Endpoints for handling deposits into subaccounts."
     },
     {
-      "name": "Banking > Recipients",
+      "name": "Recipients",
       "description": "Manage payment recipients for withdrawals."
     },
     {
-      "name": "Banking > Withdrawals",
+      "name": "Withdrawals",
       "description": "Endpoints for handling withdrawals from subaccounts."
     },
     {
-      "name": "Banking > Rates",
+      "name": "Rates",
       "description": "Endpoints for currency conversion rates."
     },
     {
-      "name": "Banking > Fees",
+      "name": "Fees",
       "description": "Endpoints for checking transaction fees."
     }
   ],
@@ -1081,7 +1081,7 @@
     "/v1/ramp/banking/channels": {
       "get": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "Get Deposit Channels",
         "description": "Retrieve a list of available deposit channels.",
@@ -1582,7 +1582,7 @@
     "/v1/ramp/{subaccountId}/banking/deposits": {
       "post": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "Request Fiat Deposit",
         "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency. All deposit requests require approved KYC.",
@@ -2120,7 +2120,7 @@
       },
       "get": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "List All Deposits",
         "description": "Retrieve a list of all deposits for a specific subaccount. All deposit requests require approved KYC.",
@@ -2343,7 +2343,7 @@
     "/v1/ramp/{subaccountId}/banking/deposits/lightning": {
       "post": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "Lightning Deposit",
         "description": "Create a lightning invoice for a deposit. All deposit requests require approved KYC.",
@@ -2537,7 +2537,7 @@
     "/v1/ramp/{subaccountId}/banking/deposits/crypto/{onchainNetwork}": {
       "get": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "Onchain Deposit",
         "description": "Get a deposit address for a specified blockchain network. All deposit requests require approved KYC.",
@@ -2716,7 +2716,7 @@
     "/v1/ramp/{subaccountId}/banking/deposits/simulate": {
       "post": {
         "tags": [
-          "Banking > Deposits"
+          "Deposits"
         ],
         "summary": "Simulate NGN Deposit",
         "description": "Simulate a deposit in NGN for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
@@ -2846,7 +2846,7 @@
     "/v1/ramp/{subaccountId}/banking/recipients": {
       "post": {
         "tags": [
-          "Banking > Recipients"
+          "Recipients"
         ],
         "summary": "Add Fiat Recipient",
         "description": "Add a new fiat recipient for withdrawals. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
@@ -3286,7 +3286,7 @@
       },
       "get": {
         "tags": [
-          "Banking > Recipients"
+          "Recipients"
         ],
         "summary": "Get All Recipients",
         "description": "Retrieve a list of all recipients for the subaccount.",
@@ -3358,7 +3358,7 @@
     "/v1/banking/brl/validate": {
       "post": {
         "tags": [
-          "Banking > Recipients"
+          "Recipients"
         ],
         "summary": "Validate BRL Recipient",
         "description": "Validate the details of a BRL recipient. All withdrawal requests require approved KYC.",
@@ -3475,7 +3475,7 @@
     "/v1/banking/ngn/validate": {
       "post": {
         "tags": [
-          "Banking > Recipients"
+          "Recipients"
         ],
         "summary": "Validate NGN Recipient",
         "description": "Validate the details of an NGN recipient. All withdrawal requests require approved KYC.",
@@ -3559,7 +3559,7 @@
     "/v1/ramp/{subaccountId}/banking/recipients/{recipientId}": {
       "get": {
         "tags": [
-          "Banking > Recipients"
+          "Recipients"
         ],
         "summary": "Get One Recipient",
         "description": "Retrieve the details of a single recipient by their ID. All withdrawal requests require approved KYC.",
@@ -3634,7 +3634,7 @@
     "/v1/ramp/{subaccountId}/banking/withdrawals": {
       "post": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Withdraw Fiat",
         "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
@@ -3930,7 +3930,7 @@
     "/v1/ramp/{subaccountId}/banking/withdrawals/all-balance": {
       "post": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Withdraw Full Balance",
         "description": "Withdraw the entire balance of a specified currency from a user's subaccount. All withdrawal requests require approved KYC.",
@@ -4173,7 +4173,7 @@
       },
       "get": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Get All Withdrawals",
         "description": "Retrieve a list of all withdrawals for a specific subaccount. All withdrawal requests require approved KYC.",
@@ -4274,7 +4274,7 @@
     "/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin": {
       "post": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Withdraw Stablecoin",
         "description": "Withdraw funds as a stablecoin to a specified address. All withdrawal requests require approved KYC.",
@@ -4548,7 +4548,7 @@
     "/v1/ramp/{subaccountId}/banking/offramp/initiate": {
       "post": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Withdraw Crypto",
         "description": "Initiate a crypto(in BTC) withdrawal via offramp.",
@@ -4704,7 +4704,7 @@
     "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status": {
       "get": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Get Withdraw Crypto Status",
         "description": "Retrieve the status of a crypto withdrawal via offramp.",
@@ -4836,7 +4836,7 @@
     "/v1/ramp/{subaccountId}/banking/withdrawals/{withdrawalId}": {
       "get": {
         "tags": [
-          "Banking > Withdrawals"
+          "Withdrawals"
         ],
         "summary": "Get One Withdrawal",
         "description": "Retrieve the details of a single withdrawal by its ID. All withdrawal requests require approved KYC.",
@@ -5023,7 +5023,7 @@
     "/v1/banking/rate": {
       "get": {
         "tags": [
-          "Banking > Rates"
+          "Rates"
         ],
         "summary": "Rate Conversion",
         "description": "Get the conversion rate between two currencies. All withdrawal requests require approved KYC.",
@@ -5128,7 +5128,7 @@
     "/v1/banking/withdrawal/fee": {
       "get": {
         "tags": [
-          "Banking > Fees"
+          "Fees"
         ],
         "summary": "Get Withdrawal Fee",
         "description": "Calculate the fee for a withdrawal. All withdrawal requests require approved KYC.",
@@ -5235,7 +5235,7 @@
     "/v1/banking/deposit/fee": {
       "get": {
         "tags": [
-          "Banking > Fees"
+          "Fees"
         ],
         "summary": "Get Deposit Fee",
         "description": "Calculate the fee for a deposit.",
