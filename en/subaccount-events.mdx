@@ -1,0 +1,54 @@
+---
+title: Subaccount Events
+description: Real-time notifications related to subaccount status changes.
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+### Subaccount Approved
+```json
+{
+    "data": {
+        "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
+        "email": "user@example.com",
+        "status": "approved"
+    },
+    "event": "subaccount.status.approved"
+}
+```
+
+### Subaccount Created
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "created"
+    },
+    "event": "subaccount.status.created"
+}
+```
+
+### Subaccount Declined
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "declined"
+    },
+    "event": "subaccount.status.declined"
+}
+```
+
+### Subaccount In Review
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "review"
+    },
+    "event": "subaccount.status.review"
+}
+```

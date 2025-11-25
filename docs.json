@@ -40,18 +40,23 @@
                 "group": "Get Started",
                 "pages": [
                   "en/introduction",
-                  "en/supported-currencies",
                   "en/authentication",
-                  "en/environments",
-                  "en/webhooks"
+                  "en/environments"
                 ]
               },
               {
                 "group": "Core Concepts",
                 "pages": [
                   "en/accounts",
-                  "en/making-payments",
-                  "en/receiving-payments"
+                  "en/supported-currencies"
+                ]
+              },
+              {
+                "group": "Events (Webhooks)",
+                "pages": [
+                  "en/subaccount-events",
+                  "en/withdrawal-events",
+                  "en/deposit-events"
                 ]
               }
             ]

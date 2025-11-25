@@ -1,0 +1,45 @@
+---
+title: Withdrawal Events
+description: Real-time notifications for outgoing payment status updates
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+### Withdrawal Failed
+```json
+{
+    "data": {
+        "id": "8c8785ea-5c8b-4461-bc83-97b9e6f4a21e",
+        "fee": "0.03000000",
+        "asset": "BRL",
+        "amount": 3.75,
+        "status": "failed",
+        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
+        "currency": "USD",
+        "protocol": "pix",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
+        "createdAt": "2025-11-24T12:35:09.887Z"
+    },
+    "event": "withdrawal.status.failed"
+}
+```
+
+### Withdrawal Completed
+```json
+{
+    "data": {
+        "id": "12da9555-f846-476d-bf64-210122908f9c",
+        "fee": "0.12000000",
+        "asset": "BRL",
+        "amount": 16.47,
+        "status": "complete",
+        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
+        "currency": "USD",
+        "protocol": "pix",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
+        "createdAt": "2025-11-24T14:30:39.466Z"
+    },
+    "event": "withdrawal.status.completed"
+}
+```
+

@@ -1,0 +1,40 @@
+---
+title: Deposit Events
+description: Real-time notifications for when funds are received
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+### Deposit Paid
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "completed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.paid"
+}
+```
+
+### Deposit Unpaid
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "failed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.unpaid"
+}
+```
