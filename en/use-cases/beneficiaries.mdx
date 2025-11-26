@@ -1,55 +1,175 @@
 ---
-title: "Beneficiaries & Payouts"
-description: "Manage recipients and send payouts."
+title: "Beneficiaries, Payouts & Offramp"
+description: "Manage recipients, send fiat payouts, and off-ramp to stablecoins."
 ---
 
 ## Overview
-Securely add external bank accounts and send funds to them.
 
-## 1. Validate Recipient Details
+You can withdraw funds from a subaccount's USD balance in two ways:
+1.  **Fiat Payouts:** Convert USD to local currency (e.g., NGN, BRL, EUR) and send it to a bank account.
+2.  **Stablecoin Off-ramp:** Withdraw USD as stablecoins (USDC/USDT) to an external crypto wallet.
+
+This guide covers validating recipients, creating beneficiaries, and initiating withdrawals.
+
+## 1. Validate Recipient Details (Fiat)
+
 **Endpoint:** `POST /v1/banking/{currency}/validate`
 
-Verify account details before adding them (e.g., Validate PIX key or NGN account number).
+Before adding a recipient for fiat withdrawals, it is **crucial** to validate the account details. This ensures the account exists and prevents failed transactions or lost funds.
 
-```javascript
-// Pseudo-code
-const isValid = await bullring.validateRecipient({
-  currency: "NGN",
-  accountNumber: "0062881117",
-  bankCode: "270"
-});
+<Note>
+  Always validate account numbers and bank codes before attempting to create a recipient.
+</Note>
 
-if (!isValid) throw Error("Invalid account details");
+### Example: Validate NGN Account
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/banking/ngn/validate" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "accountNumber": "0062881117",
+    "bankCode": "270"
+  }'
 ```
+
+**Response:**
+
+```json
+{
+  "accountNumber": "0062881117",
+  "bankCode": "270"
+}
+```
+
+[View API Reference](/api-reference/recipients/validate-ngn-recipient)
 
 ## 2. Create Recipient
+
 **Endpoint:** `POST /v1/ramp/{subaccountId}/banking/recipients`
 
-Save the validated details as a recipient.
+Once validated, save the details as a recipient. This recipient `id` will be used to initiate withdrawals.
 
-```javascript
-// Pseudo-code
-const recipient = await bullring.createRecipient(subaccountId, {
-  currency: "NGN",
-  account_number: "0062881117",
-  account_owner_name: "John Doe",
-  bank_code: "270",
-  bank_name: "Access Bank",
-  country: "NG"
-});
+### Example: Create NGN Recipient
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recipients" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "NGN",
+    "account_number": "0062881117",
+    "account_owner_name": "John Doe",
+    "bank_code": "270",
+    "bank_name": "Access Bank",
+    "country": "NG"
+  }'
 ```
 
-## 3. Initiate Withdrawal (Payout)
+**Response:**
+
+```json
+{
+  "id": "f4725e12-466f-49fd-89bd-899635f3f7f6",
+  "bank_name": "Access Bank",
+  "account_owner_name": "John Doe",
+  "last_4": "1117",
+  "active": true,
+  "account_id": "0062881117",
+  "currency": "NGN"
+}
+```
+
+[View API Reference](/api-reference/recipients/add-fiat-recipient)
+
+## 3. Initiate Fiat Payout
+
 **Endpoint:** `POST /v1/ramp/{subaccountId}/banking/withdrawals`
 
-Send funds to the created recipient.
+Send funds from the subaccount's USD balance to the created recipient. The system will automatically convert the USD amount to the recipient's local currency.
 
-```javascript
-// Pseudo-code
-const withdrawal = await bullring.createWithdrawal(subaccountId, {
-  account_id: recipient.account_id, // Use the ID from the recipient creation
-  amount: "5000",
-  currency: "NGN"
-});
+### Example: Withdraw to NGN Recipient
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "0062881117",
+    "amount": "50",
+    "currency": "NGN"
+  }'
 ```
 
+> **Note:** The `amount` field specifies the amount in the **destination currency** (e.g., NGN). The equivalent USD will be deducted from the subaccount.
+
+**Response:**
+
+```json
+{
+  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+  "amount": "50",
+  "currency": "NGN",
+  "status": "pending",
+  "created_at": "2025-11-21T15:59:09.341Z",
+  "protocol": "wire",
+  "fee_amount": "0.50",
+  "fee_currency": "USD",
+  "rate": 1500.00
+}
+```
+
+[View API Reference](/api-reference/withdrawals/withdraw-fiat)
+
+## 4. Stablecoin Off-ramp (Crypto Withdrawal)
+
+**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/withdrawals/stablecoin`
+
+You can also withdraw the USD balance directly as stablecoins (USDC or USDT) to an external wallet address.
+
+### Example: Withdraw USDT on Ethereum
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals/stablecoin" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": "100",
+    "stablecoin": "usdt",
+    "chain": "ethereum",
+    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
+  "amount": "100.00",
+  "currency": "USD",
+  "status": "pending",
+  "chain": "ethereum",
+  "local_currency": "usdt",
+  "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+  "tx_hash": null
+}
+```
+
+[View API Reference](/api-reference/withdrawals/withdraw-stablecoin)
+
+## Common Mistakes
+
+1.  **Skipping Validation:** Failing to validate bank account details often leads to failed withdrawals and unnecessary delays.
+2.  **Incorrect Network:** When withdrawing stablecoins, ensure the `chain` matches the destination wallet (e.g., sending ERC-20 USDT to a TRC-20 address will result in loss of funds).
+3.  **Insufficient Balance:** Ensure the subaccount has enough USD balance to cover the withdrawal amount **plus fees**.
+4.  **Unverified KYC:** Withdrawals are only permitted for subaccounts with approved KYC.
+
+## Webhook Events
+
+Listen to webhook events to track the status of your withdrawals in real-time.
+
+-   `withdrawal.status.completed`: The funds have successfully reached the destination.
+-   `withdrawal.status.failed`: The withdrawal could not be processed.
+
+See [Withdrawal Events](/en/withdrawal-events) for payload details.
