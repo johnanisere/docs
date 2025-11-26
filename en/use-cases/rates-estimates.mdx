@@ -4,37 +4,93 @@ description: "Calculate rates and fees before transacting."
 ---
 
 ## Overview
-Provide users with transparent quotes for deposits and withdrawals.
+
+In cross-border payments, transparency is key. Before initiating a deposit or withdrawal, you should always fetch the current exchange rates and estimate the transaction fees. This ensures your users know exactly what to expect in terms of costs and settlement amounts.
+
+The Bullring API provides endpoints to:
+1.  **Get real-time exchange rates** for currency pairs.
+2.  **Calculate precise fees** for deposits and withdrawals based on the transaction amount.
 
 ## 1. Get Exchange Rate
+
 **Endpoint:** `GET /v1/banking/rate`
 
-Fetch the current rate between two currencies (e.g., USDC to NGN).
+Exchange rates are dynamic and can fluctuate. Use this endpoint to get the current conversion rate between a source currency (`from`) and a destination currency (`to`).
 
-```javascript
-// Pseudo-code
-const rateData = await bullring.getRate({
-  from: "usdc",
-  to: "ngn"
-});
-// rateData.rate = 1500.00
+<Note>
+  Rates returned by this endpoint are indicative of the market rate at that moment. For the most accurate settlement, you should refresh this rate close to the time of transaction execution.
+</Note>
+
+### Example Request
+
+Fetch the rate for converting **USDC** to **NGN**.
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/rate?from=usdc&to=ngn' \
+  --header 'x-api-key: <your_api_key>'
 ```
 
-## 2. Calculate Fee
-**Endpoint:** `GET /v1/banking/withdrawal/fee` or `GET /v1/banking/deposit/fee`
+### Expected Response
 
-Estimate the fee for a specific amount.
-
-```javascript
-// Pseudo-code
-const feeData = await bullring.getWithdrawalFee({
-  currency: "ngn",
-  amount: 100000
-});
-
-// Display breakdown:
-// Amount: 100,000
-// Fee: feeData.netAmount (or specific fee field)
-// Total to Receive: feeData.grossAmount
+```json
+{
+  "from": "usdc",
+  "to": "ngn",
+  "rate": 1500.00
+}
 ```
 
+[View API Reference](/api-reference/rates/conversion-rate)
+
+## 2. Calculate Fees
+
+**Endpoints:** 
+- `GET /v1/banking/withdrawal/fee`
+- `GET /v1/banking/deposit/fee`
+
+Fees on Bullring are typically a combination of a percentage of the transaction amount and a flat fee. The fee structure depends on the currency and the transaction type (deposit or withdrawal).
+
+### Understanding the Response
+The fee calculation endpoints return a detailed breakdown:
+- **`amount`**: The total fee calculated.
+- **`percentage`**: The percentage rate applied.
+- **`flatFee`**: The fixed fee amount applied.
+- **`grossAmount`**: The total amount required (Principal + Fee).
+- **`netAmount`**: The amount that will actually be settled or received.
+
+### Example: Calculate Withdrawal Fee
+
+Estimate the cost of withdrawing **100,000 NGN**.
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/withdrawal/fee?currency=ngn&amount=100000' \
+  --header 'x-api-key: <your_api_key>'
+```
+
+### Expected Response
+
+```json
+{
+  "amount": 550,                // Total Fee (500 + 50)
+  "currency": "NGN",
+  "percentage": 0.005,          // 0.5%
+  "flatFee": 50,                // 50 NGN flat fee
+  "originalAmount": 100000,     // Amount requested
+  "netAmount": 100000,          // Amount user wants to receive
+  "grossAmount": 100550         // Total to be deducted from balance
+}
+```
+
+[View API Reference](/api-reference/fees/get-withdrawal-fee)
+
+## Common Mistakes
+
+<Warning>
+**Rate Staleness:** Do not cache exchange rates for long periods. Rates are market-dependent and can change. Always fetch the latest rate before confirming a transaction with a user.
+</Warning>
+
+1.  **Confusing Net vs. Gross:** Ensure you understand the difference between `netAmount` (what the recipient gets) and `grossAmount` (what you pay). If you want the user to receive an exact amount, use the calculator to determine the necessary gross amount.
+2.  **Unsupported Pairs:** Verify that the currency pair you are requesting is supported. See [Supported Currencies](/en/supported-currencies).
+3.  **Ignoring Minimums:** Fee calculations might be valid, but the actual transaction endpoints enforce minimum and maximum limits. Check the specific channel limits via `GET /v1/ramp/banking/channels`.
