@@ -1,0 +1,46 @@
+---
+title: "Mass Payouts for Teams"
+description: "Programmatic payouts to multiple currencies."
+---
+
+## Scenario
+A global company holds funds in USDC/USD and needs to pay contractors in Brazil (BRL), Nigeria (NGN), and Kenya (KES) simultaneously.
+
+## Workflow
+
+### 1. Fund Main Account
+Use the **Crypto Treasury** pattern.
+- Deposit USDC via `GET /v1/ramp/{id}/banking/deposits/crypto/ETH-MAINNET`.
+
+### 2. Iterate and Pay
+Loop through your payroll list and trigger withdrawals.
+
+```javascript
+// Pseudo-code
+const employees = [
+  { id: "user_brazil", currency: "BRL", amount: 5000 },
+  { id: "user_nigeria", currency: "NGN", amount: 300000 },
+  { id: "user_kenya", currency: "KES", amount: 15000 }
+];
+
+for (const emp of employees) {
+  // 1. Get or Create Subaccount
+  const subId = await getSubaccountId(emp.id);
+
+  // 2. Create Recipient (if not exists)
+  // ... check db ... or createRecipient(...)
+
+  // 3. Withdraw
+  // Note: Ensure the subaccount has funds, or use a master account structure if supported.
+  // Assuming funds are in the subaccount:
+  await bullring.createWithdrawal(subId, {
+    account_id: emp.recipientId,
+    amount: emp.amount, // Local currency amount
+    currency: emp.currency
+  });
+}
+```
+
+### 3. Track Status
+Poll `GET /v1/ramp/{id}/banking/withdrawals` for each subaccount or use webhooks (if available) to track success.
+

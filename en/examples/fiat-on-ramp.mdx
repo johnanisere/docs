@@ -1,0 +1,53 @@
+---
+title: "Fiat On-Ramping"
+description: "Fund subaccounts using local payment methods."
+---
+
+## Overview
+Enable users to deposit local currency (NGN, BRL, etc.) into their subaccounts.
+
+## 1. List Deposit Channels
+**Endpoint:** `GET /v1/ramp/banking/channels`
+
+Retrieve available funding methods, limits, and fees for a specific currency.
+
+```javascript
+// Pseudo-code
+const channels = await bullring.getDepositChannels();
+const ngnChannel = channels["NGN"].channels.find(c => c.rampType === "deposit");
+// Check limits: ngnChannel.min, ngnChannel.max
+```
+
+## 2. Initiate Deposit
+**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/deposits`
+
+Request a deposit. The response contains banking details or payment instructions (e.g., PIX QR code).
+
+```javascript
+// Pseudo-code
+const deposit = await bullring.createDeposit(subaccountId, {
+  channelId: ngnChannel.id,
+  source: {
+    accountType: "bank"
+  }
+});
+
+// Display deposit.bankInfo to the user
+// e.g., Bank Name, Account Number, or QR Code
+```
+
+## 3. Poll for Status
+**Endpoint:** `GET /v1/ramp/{subaccountId}/banking/deposits`
+
+Check the status of the deposit until it is `completed`.
+
+```javascript
+// Pseudo-code
+while (status !== "completed") {
+  const deposits = await bullring.getDeposits(subaccountId);
+  const myDeposit = deposits.data.find(d => d.id === deposit.id);
+  status = myDeposit.status;
+  wait(5000);
+}
+```
+

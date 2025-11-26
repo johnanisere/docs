@@ -1,0 +1,54 @@
+---
+title: "End-to-End User Onboarding"
+description: "Learn how to create and verify subaccounts."
+---
+
+## Overview
+This guide covers the complete flow for onboarding a new user (subaccount), including creation and KYC/KYB verification.
+
+## 1. Create Subaccount
+**Endpoint:** `POST /v1/ramp/subaccount`
+
+Create a basic subaccount with an email address.
+
+```javascript
+// Pseudo-code
+const subaccount = await bullring.createSubaccount({
+  email: "user@example.com"
+});
+const subaccountId = subaccount.id;
+```
+
+## 2. Tier 1 Verification (Individual)
+**Endpoint:** `POST /v1/ramp/subaccount/{subaccountId}/verification/tier-one`
+
+Submit basic details for immediate validation (required for NGN/BRL).
+
+```javascript
+// Pseudo-code
+await bullring.verifyTier1(subaccountId, {
+  country: "NG",
+  firstName: "John",
+  lastName: "Doe",
+  dob: "1990-01-01",
+  idNumber: "12345678901", // BVN or similar
+  address: { ... },
+  phone: { ... }
+});
+```
+
+## 3. Tier 2 Verification (Business/Limits)
+**Endpoint:** `POST /v1/ramp/subaccount/{subaccountId}/kyb`
+
+Initiate advanced verification for higher limits or business accounts. Returns a form URL for the user.
+
+```javascript
+// Pseudo-code
+const response = await bullring.initiateKYB(subaccountId, {
+  verificationType: "business" // or "individual" for higher limits
+});
+
+// Redirect user to response.formUrl
+redirect(response.formUrl);
+```
+

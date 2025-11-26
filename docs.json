@@ -86,6 +86,29 @@
           {
             "tab": "API Reference",
             "openapi": "api-reference/openapi.json"
+          },
+          {
+            "tab": "Examples",
+            "groups": [
+              {
+                "group": "Common Patterns",
+                "pages": [
+                  "en/examples/onboarding",
+                  "en/examples/fiat-on-ramp",
+                  "en/examples/beneficiaries",
+                  "en/examples/crypto-treasury",
+                  "en/examples/rates-estimates"
+                ]
+              },
+              {
+                "group": "Use Cases",
+                "pages": [
+                  "en/examples/remittance",
+                  "en/examples/mass-payouts",
+                  "en/examples/crypto-off-ramp"
+                ]
+              }
+            ]
           }
         ]
       },
