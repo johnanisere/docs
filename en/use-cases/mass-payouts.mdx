@@ -9,38 +9,121 @@ A global company holds funds in USDC/USD and needs to pay contractors in Brazil 
 ## Workflow
 
 ### 1. Fund Main Account
-Use the **Crypto Treasury** pattern.
-- Deposit USDC via `GET /v1/ramp/{id}/banking/deposits/crypto/ETH-MAINNET`.
+Use the **Crypto Treasury** pattern. The company (Main Account) deposits funds into their subaccount to build a balance.
+
+<CodeGroup>
+```bash Request
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET" \
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+```
+</CodeGroup>
+
+[See API Reference](/api-reference/deposits/onchain-deposit)
+
+**Response:**
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
 
 ### 2. Iterate and Pay
 Loop through your payroll list and trigger withdrawals.
 
+For each employee:
+1. **Create Recipient** (if they don't exist yet).
+2. **Withdraw** funds from the Main Account to the Recipient.
+
 ```javascript
 // Pseudo-code
 const employees = [
-  { id: "user_brazil", currency: "BRL", amount: 5000 },
-  { id: "user_nigeria", currency: "NGN", amount: 300000 },
-  { id: "user_kenya", currency: "KES", amount: 15000 }
+  { id: "user_brazil", currency: "BRL", amount: 5000, pix: "user@example.com" },
+  { id: "user_nigeria", currency: "NGN", amount: 300000, account: "1234567890" },
 ];
 
+const MAIN_ACCOUNT_ID = "YOUR_TREASURY_SUBACCOUNT_ID";
+
 for (const emp of employees) {
-  // 1. Get or Create Subaccount
-  const subId = await getSubaccountId(emp.id);
+  // 1. Create Recipient
+  // call POST /v1/ramp/{MAIN_ACCOUNT_ID}/banking/recipients
+  
+  // 2. Withdraw
+  // call POST /v1/ramp/{MAIN_ACCOUNT_ID}/banking/withdrawals
+}
+```
 
-  // 2. Create Recipient (if not exists)
-  // ... check db ... or createRecipient(...)
+#### Step 2a: Create Recipient
 
-  // 3. Withdraw
-  // Note: Ensure the subaccount has funds, or use a master account structure if supported.
-  // Assuming funds are in the subaccount:
-  await bullring.createWithdrawal(subId, {
-    account_id: emp.recipientId,
-    amount: emp.amount, // Local currency amount
-    currency: emp.currency
-  });
+<CodeGroup>
+```bash Request
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "BRL",
+    "pix_key": "user@example.com"
+  }'
+```
+</CodeGroup>
+
+[See API Reference](/api-reference/recipients/add-fiat-recipient)
+
+**Response:**
+```json
+{
+  "id": "recipient_123",
+  "currency": "BRL",
+  "pix_key": "user@example.com",
+  "created_at": "2025-11-21T11:20:00.000Z"
+}
+```
+
+#### Step 2b: Withdraw
+
+<CodeGroup>
+```bash Request
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "recipient_123",
+    "amount": "5000",
+    "currency": "BRL"
+  }'
+```
+</CodeGroup>
+
+[See API Reference](/api-reference/withdrawals/withdraw-fiat)
+
+**Response:**
+```json
+{
+  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+  "amount": "5000",
+  "currency": "BRL",
+  "status": "pending",
+  "created_at": "2025-11-21T15:59:09.341Z",
+  "protocol": "pix",
+  "local_currency": "BRL",
+  "local_amount": 5000,
+  "fee_amount": "0.50",
+  "fee_currency": "USD"
 }
 ```
 
 ### 3. Track Status
-Poll `GET /v1/ramp/{id}/banking/withdrawals` for each subaccount or use webhooks (if available) to track success.
+Poll the withdrawal status or listen for webhooks.
 
+<CodeGroup>
+```bash Request
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/856b896f-3f16-4f70-952d-ce1f65b28aaa" \
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+```
+</CodeGroup>
+
+[See API Reference](/api-reference/withdrawals/get-one-withdrawal)
