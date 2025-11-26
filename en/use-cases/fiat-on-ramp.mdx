@@ -1,53 +1,218 @@
 ---
-title: "Fiat On-Ramping"
-description: "Fund subaccounts using local payment methods."
+title: "Deposits & On-Ramping"
+description: "Fund subaccounts using fiat, stablecoins, and cryptocurrencies."
 ---
 
 ## Overview
-Enable users to deposit local currency (NGN, BRL, etc.) into their subaccounts.
+
+Enable users to deposit funds into their subaccounts using multiple methods:
+- **Fiat Currency** (e.g., NGN, BRL)
+- **Stablecoins** (USDC, USDT) on supported networks
+- **Cryptocurrency** (BTC via Lightning Network)
+
+For a full list of supported currencies and networks, see the [Supported Currencies](/en/supported-currencies) page.
 
 ## 1. List Deposit Channels
-**Endpoint:** `GET /v1/ramp/banking/channels`
 
-Retrieve available funding methods, limits, and fees for a specific currency.
+Retrieve available funding methods, limits, and fees for a specific currency. You can filter the response to find the appropriate `channelId` for your deposit.
 
-```javascript
-// Pseudo-code
-const channels = await bullring.getDepositChannels();
-const ngnChannel = channels["NGN"].channels.find(c => c.rampType === "deposit");
-// Check limits: ngnChannel.min, ngnChannel.max
+<Card title="API Reference" icon="code" href="/api-reference/endpoint/get-v1-ramp-banking-channels">
+  See the full endpoint documentation
+</Card>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/banking/channels \
+  --header 'Authorization: Bearer <YOUR_API_KEY>'
 ```
 
-## 2. Initiate Deposit
-**Endpoint:** `POST /v1/ramp/{subaccountId}/banking/deposits`
+**Response**
 
-Request a deposit. The response contains banking details or payment instructions (e.g., PIX QR code).
-
-```javascript
-// Pseudo-code
-const deposit = await bullring.createDeposit(subaccountId, {
-  channelId: ngnChannel.id,
-  source: {
-    accountType: "bank"
+```json
+{
+  "USDC": {
+    "channels": [
+      {
+        "id": "usdc-channel-id-bullring-finance",
+        "currency": "USDC",
+        "min": 0,
+        "max": 1500000000000000000,
+        "rampType": "deposit",
+        "channelType": "crypto",
+        "status": "active"
+      }
+    ],
+    "networks": [
+      {
+        "id": "eth-mainnet-network-id",
+        "name": "Ethereum Mainnet",
+        "code": "ETH-MAINNET"
+      }
+    ]
+  },
+  "NGN": {
+    "channels": [
+      {
+        "id": "ngn-channel-id-bullring-finance",
+        "currency": "NGN",
+        "min": 100,
+        "max": 10000000,
+        "rampType": "deposit",
+        "channelType": "fiat",
+        "status": "active"
+      }
+    ]
   }
-});
-
-// Display deposit.bankInfo to the user
-// e.g., Bank Name, Account Number, or QR Code
-```
-
-## 3. Poll for Status
-**Endpoint:** `GET /v1/ramp/{subaccountId}/banking/deposits`
-
-Check the status of the deposit until it is `completed`.
-
-```javascript
-// Pseudo-code
-while (status !== "completed") {
-  const deposits = await bullring.getDeposits(subaccountId);
-  const myDeposit = deposits.data.find(d => d.id === deposit.id);
-  status = myDeposit.status;
-  wait(5000);
 }
 ```
 
+## 2. Initiate Deposit
+
+### Method A: Fiat Deposit
+
+Initiate a bank transfer or other local payment method. The response will include banking details or payment instructions.
+
+<Card title="API Reference" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits">
+  See the full endpoint documentation
+</Card>
+
+**Example: NGN Deposit**
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Authorization: Bearer <YOUR_API_KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "channelId": "ngn-channel-id-bullring-finance",
+    "source": {
+      "accountType": "bank"
+    }
+  }'
+```
+
+**Response**
+
+```json
+{
+  "id": "deposit-uuid",
+  "status": "pending",
+  "amount": 5000,
+  "currency": "NGN",
+  "bankInfo": {
+    "bankName": "Providus Bank",
+    "accountNumber": "1234567890",
+    "accountName": "Bullring Checkout"
+  }
+}
+```
+
+### Method B: Crypto Deposit (On-Chain)
+
+Get a dedicated deposit address for a specific blockchain network (e.g., Ethereum, Solana).
+
+<Card title="API Reference" icon="code" href="/api-reference/endpoint/get-v1-ramp-subaccountid-banking-deposits-crypto-onchainnetwork">
+  See the full endpoint documentation
+</Card>
+
+**Example: Get USDC Address on Ethereum Sepolia**
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-SEPOLIA \
+  --header 'Authorization: Bearer <YOUR_API_KEY>'
+```
+
+**Response**
+
+```json
+{
+  "id": "address-uuid",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-SEPOLIA",
+  "currency": "USDC"
+}
+```
+
+### Method C: Lightning Network Deposit (BTC)
+
+Create a Lightning invoice for Bitcoin deposits.
+
+<Card title="API Reference" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits-lightning">
+  See the full endpoint documentation
+</Card>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/lightning \
+  --header 'Authorization: Bearer <YOUR_API_KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "amount": 10000,
+    "currency": "usd",
+    "note": "Top up"
+  }'
+```
+
+**Response**
+
+```json
+{
+  "id": "invoice-uuid",
+  "lightningInvoice": "lntbs108323630n1p53uucupp5t0...",
+  "status": "unpaid",
+  "paymentRequestAmount": 10000,
+  "paymentRequestCurrency": "usd"
+}
+```
+
+## 3. Listen for Webhook Events
+
+Instead of polling for status updates, we recommend listening for webhook events to get real-time notifications when a deposit is completed.
+
+<Card title="Deposit Events" icon="webhook" href="/en/deposit-events">
+  See all deposit events
+</Card>
+
+**Deposit Paid Event (`deposit.status.paid`)**
+
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "completed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.paid"
+}
+```
+
+**Deposit Failed Event (`deposit.status.unpaid`)**
+
+```json
+{
+    "data": {
+        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
+        "amount": 3.75,
+        "status": "failed",
+        "currency": "USD",
+        "createdAt": "2025-11-24T12:35:01.594Z",
+        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
+        "updatedAt": "2025-11-24T12:35:01.594Z",
+        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+    },
+    "event": "deposit.status.unpaid"
+}
+```
+
+## Common Mistakes
+
+- **Incorrect Network:** Sending crypto assets on the wrong network (e.g., sending USDC via Polygon to an Ethereum address) will result in permanent loss of funds. Always verify the network.
+- **Unverified KYC:** All deposit methods require the subaccount to have approved KYC. Attempting to deposit into an unverified account will return an error.
+- **Ignoring Limits:** Ensure the deposit amount is within the `min` and `max` limits specified in the `channels` response.
+- **Wrong Channel ID:** When making a fiat deposit, ensure you use the `channelId` corresponding to the correct currency and payment method.
