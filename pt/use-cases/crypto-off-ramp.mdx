@@ -1,0 +1,117 @@
+---
+title: "Off-Ramp Cripto Instantâneo"
+description: "Converta cripto em dinheiro instantaneamente."
+---
+
+## Cenário
+Um usuário quer vender Bitcoin ou USDC e receber dinheiro em sua conta bancária local (ex.: PIX no Brasil) imediatamente.
+
+## Fluxo de Trabalho
+
+### 1. Gerar Endereço de Depósito
+
+Primeiro, você precisa gerar um endereço de depósito para o usuário enviar suas criptomoedas. Você pode gerar uma fatura Lightning para Bitcoin ou um endereço on-chain para outras criptomoedas (ex.: USDC na Solana).
+
+#### Opção A: Bitcoin (Lightning)
+
+Gere uma fatura Lightning para um valor específico.
+
+<Note>
+  Veja a referência da API de [Depósito Lightning](/api-reference/deposits/lightning-deposit) para detalhes completos.
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/lightning \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "amount": 50,
+  "currency": "usd",
+  "note": "Depósito para saque"
+}'
+```
+
+**Resposta:**
+
+```json
+{
+  "lightningInvoice": "lntbs108...",
+  "id": "5567cac1-d7bc-4b0d-980d-8c2453dc952c",
+  "paymentHash": "5bd0d584d9d24693ed81e000b6b252b137166a562fd2fd65e4e376f73b4845c8",
+  "paymentRequestAmount": 50,
+  "paymentRequestCurrency": "usd",
+  "invoiceCurrency": "stablesats",
+  "status": "unpaid",
+  "createdAt": "2025-11-20T01:47:08.282Z"
+}
+```
+
+#### Opção B: USDC (On-Chain)
+
+Obtenha um endereço de depósito para uma blockchain suportada (ex.: `SOL-MAINNET-BETA`).
+
+<Note>
+  Veja a referência da API de [Depósito Onchain](/api-reference/deposits/onchain-deposit) para detalhes completos.
+</Note>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/SOL-MAINNET-BETA \
+  --header 'Authorization: Bearer <token>'
+```
+
+**Resposta:**
+
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "DnXn...",
+  "chain": "SOL-MAINNET-BETA",
+  "currency": "USDC",
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+### 2. Monitorar Depósito
+
+Aguarde o depósito ser confirmado. A Bullring enviará um evento de webhook quando os fundos forem creditados na subconta.
+
+Para detalhes sobre o payload do evento, veja [Eventos de Depósito](/pt/deposit-events).
+
+### 3. Saque Instantâneo
+
+Uma vez que os fundos estão disponíveis na subconta, dispare um saque para a conta bancária local do usuário.
+
+<Note>
+  Veja a referência da API de [Saque Fiat](/api-reference/withdrawals/withdraw-fiat) para detalhes completos.
+</Note>
+
+#### Exemplo: Sacar para o Brasil (PIX)
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "account_id": "123.456.789-00",
+  "amount": "50",
+  "currency": "BRL"
+}'
+```
+
+**Resposta:**
+
+```json
+{
+  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+  "amount": "50",
+  "currency": "BRL",
+  "status": "pending",
+  "created_at": "2025-11-21T15:59:09.341Z",
+  "fee_amount": "0.00",
+  "fee_currency": "BRL"
+}
+```
+

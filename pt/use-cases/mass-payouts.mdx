@@ -1,0 +1,130 @@
+---
+title: "Pagamentos em Massa para Equipes"
+description: "Pagamentos programáticos para múltiplas moedas."
+---
+
+## Cenário
+Uma empresa global mantém fundos em USDC/USD e precisa pagar prestadores de serviço no Brasil (BRL), Nigéria (NGN) e Quênia (KES) simultaneamente.
+
+## Fluxo de Trabalho
+
+### 1. Financiar Conta Principal
+Use o padrão **Tesouraria Cripto**. A empresa (Conta Principal) deposita fundos em sua subconta para construir um saldo.
+
+<CodeGroup>
+```bash Requisição
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>"
+```
+</CodeGroup>
+
+[Ver Referência da API](/api-reference/deposits/onchain-deposit)
+
+**Resposta:**
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+### 2. Iterar e Pagar
+Percorra sua lista de folha de pagamento e dispare os saques.
+
+Para cada funcionário:
+1. **Criar Destinatário** (se ainda não existir).
+2. **Sacar** fundos da Conta Principal para o Destinatário.
+
+```javascript
+// Pseudo-código
+const funcionarios = [
+  { id: "usuario_brasil", currency: "BRL", amount: 5000, pix: "usuario@exemplo.com" },
+  { id: "usuario_nigeria", currency: "NGN", amount: 300000, account: "1234567890" },
+];
+
+const ID_CONTA_PRINCIPAL = "ID_DA_SUA_SUBCONTA_TESOURARIA";
+
+for (const func of funcionarios) {
+  // 1. Criar Destinatário
+  // chamar POST /v1/ramp/{ID_CONTA_PRINCIPAL}/banking/recipients
+  
+  // 2. Sacar
+  // chamar POST /v1/ramp/{ID_CONTA_PRINCIPAL}/banking/withdrawals
+}
+```
+
+#### Etapa 2a: Criar Destinatário
+
+<CodeGroup>
+```bash Requisição
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "BRL",
+    "pix_key": "usuario@exemplo.com"
+  }'
+```
+</CodeGroup>
+
+[Ver Referência da API](/api-reference/recipients/add-fiat-recipient)
+
+**Resposta:**
+```json
+{
+  "id": "recipient_123",
+  "currency": "BRL",
+  "pix_key": "usuario@exemplo.com",
+  "created_at": "2025-11-21T11:20:00.000Z"
+}
+```
+
+#### Etapa 2b: Sacar
+
+<CodeGroup>
+```bash Requisição
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "recipient_123",
+    "amount": "5000",
+    "currency": "BRL"
+  }'
+```
+</CodeGroup>
+
+[Ver Referência da API](/api-reference/withdrawals/withdraw-fiat)
+
+**Resposta:**
+```json
+{
+  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+  "amount": "5000",
+  "currency": "BRL",
+  "status": "pending",
+  "created_at": "2025-11-21T15:59:09.341Z",
+  "protocol": "pix",
+  "local_currency": "BRL",
+  "local_amount": 5000,
+  "fee_amount": "0.50",
+  "fee_currency": "USD"
+}
+```
+
+### 3. Acompanhar Status
+Consulte o status do saque ou escute os webhooks.
+
+<CodeGroup>
+```bash Requisição
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/856b896f-3f16-4f70-952d-ce1f65b28aaa" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>"
+```
+</CodeGroup>
+
+[Ver Referência da API](/api-reference/withdrawals/get-one-withdrawal)
+

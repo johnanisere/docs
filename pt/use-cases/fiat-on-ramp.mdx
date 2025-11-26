@@ -1,0 +1,184 @@
+---
+title: "Depósitos e On-Ramping"
+description: "Adicione fundos às subcontas usando fiat, stablecoins e criptomoedas."
+---
+
+## Visão Geral
+
+Permita que usuários depositem fundos em suas subcontas usando múltiplos métodos:
+- **Moeda Fiduciária** (ex.: NGN, BRL)
+- **Stablecoins** (USDC, USDT) em redes suportadas
+- **Criptomoeda** (BTC via Lightning Network)
+
+Para uma lista completa de moedas e redes suportadas, veja a página de [Moedas Suportadas](/pt/supported-currencies).
+
+## 1. Listar Canais de Depósito
+
+Recupere os métodos de financiamento disponíveis, limites e taxas para uma moeda específica. Você pode filtrar a resposta para encontrar o `channelId` apropriado para seu depósito.
+
+<Card title="Referência da API" icon="code" href="/api-reference/endpoint/get-v1-ramp-banking-channels">
+  Veja a documentação completa do endpoint
+</Card>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/banking/channels \
+  --header 'Authorization: Bearer <SUA_CHAVE_DE_API>'
+```
+
+**Resposta**
+
+```json
+{
+  "USDC": {
+    "channels": [
+      {
+        "id": "usdc-channel-id-bullring-finance",
+        "currency": "USDC",
+        "min": 0,
+        "max": 1500000000000000000,
+        "rampType": "deposit",
+        "channelType": "crypto",
+        "status": "active"
+      }
+    ],
+    "networks": [
+      {
+        "id": "eth-mainnet-network-id",
+        "name": "Ethereum Mainnet",
+        "code": "ETH-MAINNET"
+      }
+    ]
+  },
+  "NGN": {
+    "channels": [
+      {
+        "id": "ngn-channel-id-bullring-finance",
+        "currency": "NGN",
+        "min": 100,
+        "max": 10000000,
+        "rampType": "deposit",
+        "channelType": "fiat",
+        "status": "active"
+      }
+    ]
+  }
+}
+```
+
+## 2. Iniciar Depósito
+
+### Método A: Depósito Fiat
+
+Inicie uma transferência bancária ou outro método de pagamento local. A resposta incluirá detalhes bancários ou instruções de pagamento.
+
+<Card title="Referência da API" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits">
+  Veja a documentação completa do endpoint
+</Card>
+
+**Exemplo: Depósito em NGN**
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Authorization: Bearer <SUA_CHAVE_DE_API>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "channelId": "ngn-channel-id-bullring-finance",
+    "source": {
+      "accountType": "bank"
+    }
+  }'
+```
+
+**Resposta**
+
+```json
+{
+  "id": "deposit-uuid",
+  "status": "pending",
+  "amount": 5000,
+  "currency": "NGN",
+  "bankInfo": {
+    "bankName": "Providus Bank",
+    "accountNumber": "1234567890",
+    "accountName": "Bullring Checkout"
+  }
+}
+```
+
+### Método B: Depósito Cripto (On-Chain)
+
+Obtenha um endereço de depósito dedicado para uma rede blockchain específica (ex.: Ethereum, Solana).
+
+<Card title="Referência da API" icon="code" href="/api-reference/endpoint/get-v1-ramp-subaccountid-banking-deposits-crypto-onchainnetwork">
+  Veja a documentação completa do endpoint
+</Card>
+
+**Exemplo: Obter Endereço USDC na Ethereum Sepolia**
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-SEPOLIA \
+  --header 'Authorization: Bearer <SUA_CHAVE_DE_API>'
+```
+
+**Resposta**
+
+```json
+{
+  "id": "address-uuid",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-SEPOLIA",
+  "currency": "USDC"
+}
+```
+
+### Método C: Depósito Lightning Network (BTC)
+
+Crie uma fatura Lightning para depósitos em Bitcoin.
+
+<Card title="Referência da API" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits-lightning">
+  Veja a documentação completa do endpoint
+</Card>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/lightning \
+  --header 'Authorization: Bearer <SUA_CHAVE_DE_API>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "amount": 10000,
+    "currency": "usd",
+    "note": "Recarga"
+  }'
+```
+
+**Resposta**
+
+```json
+{
+  "id": "invoice-uuid",
+  "lightningInvoice": "lntbs108323630n1p53uucupp5t0...",
+  "status": "unpaid",
+  "paymentRequestAmount": 10000,
+  "paymentRequestCurrency": "usd"
+}
+```
+
+## 3. Escutar Eventos de Webhook
+
+Escute os eventos de webhook para acompanhar o status dos seus depósitos em tempo real.
+
+-   `deposit.status.paid`: O depósito foi pago com sucesso.
+-   `deposit.status.unpaid`: O depósito falhou.
+
+Veja [Eventos de Depósito](/pt/deposit-events) para detalhes do payload.
+
+## Erros Comuns
+
+- **Rede Incorreta:** Enviar ativos cripto na rede errada (ex.: enviar USDC via Polygon para um endereço Ethereum) resultará em perda permanente de fundos. Sempre verifique a rede.
+- **KYC Não Verificado:** Todos os métodos de depósito requerem que a subconta tenha KYC aprovado. Tentar depositar em uma conta não verificada retornará um erro.
+- **Ignorando Limites:** Certifique-se de que o valor do depósito está dentro dos limites `min` e `max` especificados na resposta de `channels`.
+- **ID de Canal Errado:** Ao fazer um depósito fiat, certifique-se de usar o `channelId` correspondente à moeda e método de pagamento corretos.
+

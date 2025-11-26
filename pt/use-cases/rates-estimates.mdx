@@ -1,0 +1,97 @@
+---
+title: "Estimativas Pré-Transação"
+description: "Calcule taxas e tarifas antes de transacionar."
+---
+
+## Visão Geral
+
+Em pagamentos internacionais, a transparência é fundamental. Antes de iniciar um depósito ou saque, você deve sempre consultar as taxas de câmbio atuais e estimar as tarifas da transação. Isso garante que seus usuários saibam exatamente o que esperar em termos de custos e valores de liquidação.
+
+A API da Bullring fornece endpoints para:
+1.  **Obter taxas de câmbio em tempo real** para pares de moedas.
+2.  **Calcular tarifas precisas** para depósitos e saques com base no valor da transação.
+
+## 1. Obter Taxa de Câmbio
+
+**Endpoint:** `GET /v1/banking/rate`
+
+As taxas de câmbio são dinâmicas e podem flutuar. Use este endpoint para obter a taxa de conversão atual entre uma moeda de origem (`from`) e uma moeda de destino (`to`).
+
+<Note>
+  As taxas retornadas por este endpoint são indicativas da taxa de mercado naquele momento. Para a liquidação mais precisa, você deve atualizar esta taxa próximo ao momento da execução da transação.
+</Note>
+
+### Exemplo de Requisição
+
+Obtenha a taxa para converter **USDC** para **NGN**.
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/rate?from=usdc&to=ngn' \
+  --header 'x-api-key: <sua_chave_de_api>'
+```
+
+### Resposta Esperada
+
+```json
+{
+  "from": "usdc",
+  "to": "ngn",
+  "rate": 1500.00
+}
+```
+
+[Ver Referência da API](/api-reference/rates/conversion-rate)
+
+## 2. Calcular Tarifas
+
+**Endpoints:** 
+- `GET /v1/banking/withdrawal/fee`
+- `GET /v1/banking/deposit/fee`
+
+As tarifas na Bullring são tipicamente uma combinação de uma porcentagem do valor da transação e uma taxa fixa. A estrutura de tarifas depende da moeda e do tipo de transação (depósito ou saque).
+
+### Entendendo a Resposta
+Os endpoints de cálculo de tarifas retornam um detalhamento completo:
+- **`amount`**: A tarifa total calculada.
+- **`percentage`**: A taxa percentual aplicada.
+- **`flatFee`**: O valor da taxa fixa aplicada.
+- **`grossAmount`**: O valor total necessário (Principal + Tarifa).
+- **`netAmount`**: O valor que será efetivamente liquidado ou recebido.
+
+### Exemplo: Calcular Tarifa de Saque
+
+Estime o custo de sacar **100.000 NGN**.
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/withdrawal/fee?currency=ngn&amount=100000' \
+  --header 'x-api-key: <sua_chave_de_api>'
+```
+
+### Resposta Esperada
+
+```json
+{
+  "amount": 550,                // Tarifa Total (500 + 50)
+  "currency": "NGN",
+  "percentage": 0.005,          // 0.5%
+  "flatFee": 50,                // 50 NGN taxa fixa
+  "originalAmount": 100000,     // Valor solicitado
+  "netAmount": 100000,          // Valor que o usuário quer receber
+  "grossAmount": 100550         // Total a ser debitado do saldo
+}
+```
+
+[Ver Referência da API](/api-reference/fees/get-withdrawal-fee)
+
+## Erros Comuns
+
+<Warning>
+**Desatualização da Taxa:** Não armazene em cache as taxas de câmbio por longos períodos. As taxas dependem do mercado e podem mudar. Sempre busque a taxa mais recente antes de confirmar uma transação com um usuário.
+</Warning>
+
+1.  **Confundir Net vs. Gross:** Certifique-se de entender a diferença entre `netAmount` (o que o destinatário recebe) e `grossAmount` (o que você paga). Se você quer que o usuário receba um valor exato, use a calculadora para determinar o valor bruto necessário.
+2.  **Pares Não Suportados:** Verifique se o par de moedas que você está solicitando é suportado. Veja [Moedas Suportadas](/pt/supported-currencies).
+3.  **Ignorando Mínimos:** Os cálculos de tarifas podem ser válidos, mas os endpoints de transação reais aplicam limites mínimos e máximos. Verifique os limites específicos do canal via `GET /v1/ramp/banking/channels`.
+

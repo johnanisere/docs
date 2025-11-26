@@ -1,0 +1,128 @@
+---
+title: "Remessa Internacional"
+description: "Receba moeda local (NGN), mantenha USD e pague globalmente (EUR)."
+---
+
+## Visão Geral
+
+Este guia demonstra como um exportador na Nigéria pode receber pagamentos em Naira Nigeriana (NGN), convertê-los automaticamente para USD para se proteger contra desvalorização e, posteriormente, pagar fornecedores na Europa usando Euros (EUR).
+
+### Modelo Mental
+
+Ao usar a API da Bullring para este fluxo, pense nele como um pipeline de três etapas:
+
+1.  **Entrada (On-Ramp):** Você solicita uma instrução de depósito. O cliente paga NGN para uma conta bancária local. A Bullring detecta isso e credita a subconta em USD.
+2.  **Armazenamento:** Os fundos são mantidos na subconta em USD (Stablecoin).
+3.  **Saída (Off-Ramp):** Você define um beneficiário (Destinatário) e inicia um saque para ele na moeda local dele (EUR).
+
+## 1. Receber Fundos (NGN)
+
+Primeiro, gere uma conta virtual ou instrução de pagamento para seu cliente enviar NGN.
+
+Use o endpoint [Criar Depósito](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits).
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channelId": "ngn-channel-id-bullring-finance",
+    "source": {
+      "accountType": "bank"
+    }
+  }'
+```
+</CodeGroup>
+
+### Resposta Esperada
+
+A API retorna os detalhes bancários que você deve apresentar ao seu cliente.
+
+```json
+{
+  "status": "pending",
+  "currency": "USD",
+  "country": "NG",
+  "rate": 1500.50,
+  "localCurrency": "NGN",
+  "bankInfo": {
+    "bankBeneficiaryName": "Bullring/Nome do Comerciante",
+    "bankName": "Providus Bank",
+    "bankAccountNumber": "1234567890"
+  },
+  "channelId": "ngn-channel-id-bullring-finance"
+}
+```
+
+Assim que o cliente transferir os fundos, o saldo da subconta é creditado em USD.
+
+## 2. Criar Destinatário (EUR)
+
+Antes de pagar seu fornecedor, você deve salvar os detalhes bancários dele como um Destinatário.
+
+Use o endpoint [Criar Destinatário](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-recipients).
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "EUR",
+    "account_owner_name": "Fornecedor Europeu Ltda",
+    "bank_name": "Deutsche Bank",
+    "account_number": "DE89370400440532013000",
+    "bic": "DEUTDEBBXXX",
+    "country": "DE",
+    "account_owner_type": "company"
+  }'
+```
+</CodeGroup>
+
+### Resposta Esperada
+
+```json
+{
+  "id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+  "currency": "EUR",
+  "account_owner_name": "Fornecedor Europeu Ltda",
+  "account_number": "DE89370400440532013000",
+  "bank_name": "Deutsche Bank",
+  "status": "active"
+}
+```
+
+## 3. Pagar Fornecedor (EUR)
+
+Finalmente, inicie a transferência para o destinatário que você acabou de criar. O saldo em USD na subconta será convertido para EUR.
+
+Use o endpoint [Criar Saque](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-withdrawals).
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
+  -H "Authorization: Bearer <SUA_CHAVE_DE_API>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+    "amount": "5000",
+    "currency": "EUR",
+    "sepa_message": "Fatura #INV-2024-001"
+  }'
+```
+</CodeGroup>
+
+### Resposta Esperada
+
+```json
+{
+  "id": "withdrawal-uuid-1234",
+  "amount": "5000",
+  "currency": "EUR",
+  "status": "processing",
+  "created_at": "2024-01-01T12:00:00Z",
+  "fee_amount": "5.00"
+}
+```
+

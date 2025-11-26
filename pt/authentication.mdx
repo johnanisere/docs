@@ -1,44 +1,41 @@
 ---
 title: Autenticação
-category: Referência da API
 ---
 
-## Autenticação da API
-
-Para acessar as APIs da Bullring Finance, você deve autenticar todas as requisições usando uma chave de API. Essa chave garante que sua aplicação esteja verificada e autorizada a interagir com a plataforma.
+Para acessar as APIs da Bullring Finance, você deve autenticar cada requisição usando uma chave de API. Esta chave garante que sua aplicação seja verificada e autorizada a interagir com a plataforma.
 
 ---
 
-## Obtenha sua Chave de API
+## Obtenha Sua Chave de API
 
-1. Entre em contato com a [Equipe da Bullring](mailto:developer@bullring.finance) para ser onboardado
-2. Acesse o Painel da Bullring
-3. Vá para **Desenvolvedores → Chaves de API**
-4. Clique em **Gerar Chave** para o ambiente de **homologação** ou **produção**
-5. Copie e armazene sua chave com segurança — ela não será exibida novamente
+1. Entre em contato com a [Equipe Bullring](mailto:developer@bullring.finance) para ser integrado
+2. Faça login no Dashboard da Bullring
+2. Navegue até **Desenvolvedores → Chaves de API**
+3. Clique em **Gerar Chave** para **staging** ou **produção**
+4. Copie e armazene sua chave com segurança — ela não será exibida novamente
 
-Cada ambiente possui uma chave única. Use a **chave de homologação** para testes e a **chave de produção** para transações reais.
+Cada ambiente tem sua própria chave única. Use a **chave de staging** para testes e a **chave de produção** para transações reais.
 
 ---
 
-## Cabeçalho de Autenticação
+## Header de Autenticação
 
-Todas as requisições para ambos os ambientes **devem** incluir sua chave de API no seguinte cabeçalho:
+Todas as requisições para ambos os ambientes **devem** incluir sua chave de API no seguinte header:
 
 ```http
 x-api-key: SUA_CHAVE_DE_API
 ```
 
-Se sua requisição não incluir uma chave válida, ela será rejeitada com a resposta `401 Unauthorized`.
+Se sua requisição não incluir uma chave válida, ela será rejeitada com uma resposta `401 Unauthorized`.
 
 ---
 
 ## Boas Práticas
 
-- 🔒 Nunca exponha sua chave de API no código do frontend
+- 🔒 Nunca exponha sua chave de API em código frontend
 - 🔁 Rotacione suas chaves de API periodicamente para maior segurança
-- 👀 Monitore o uso no Painel da Bullring
+- 👀 Monitore o uso no Dashboard da Bullring
 
 ---
 
-Precisa de ajuda? Fale com [developer@bullring.finance](mailto:developer@bullring.finance)
+Precisa de ajuda? Entre em contato com [developer@bullring.finance](mailto:developer@bullring.finance)

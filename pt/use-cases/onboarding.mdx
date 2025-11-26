@@ -1,0 +1,117 @@
+---
+title: "Integração de Usuários Completa"
+description: "Aprenda como criar e verificar subcontas."
+---
+
+## Visão Geral
+Este guia cobre o fluxo completo para integrar um novo usuário (subconta), incluindo criação e verificação KYC/KYB.
+
+Para integrar um novo usuário, você deve criar uma subconta. Este é o primeiro passo antes que eles possam depositar fundos ou realizar qualquer operação bancária.
+
+### Requisição
+
+Para criar uma subconta, envie uma requisição `POST` para `/v1/ramp/subaccount` com o endereço de email do usuário.
+
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -d '{
+    "email": "cliente@exemplo.com"
+  }'
+```
+
+### Resposta
+
+A API retornará os detalhes da subconta recém-criada, incluindo seu `id` único.
+
+```json
+{
+  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+  "email": "cliente@exemplo.com",
+  "status": "created"
+}
+```
+
+### Webhooks
+
+Quando uma subconta é criada, você receberá um evento `subaccount.status.created`.
+
+```json
+{
+    "data": {
+        "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+        "email": "cliente@exemplo.com",
+        "status": "created"
+    },
+    "event": "subaccount.status.created"
+}
+```
+
+## Recuperando uma Subconta
+
+Você pode verificar o saldo e o status de uma subconta a qualquer momento.
+
+### Requisição
+
+```bash
+curl https://api.bullring.finance/v1/ramp/subaccount/ID_DA_SUBCONTA \
+  -H "x-api-key: SUA_CHAVE_DE_API"
+```
+
+### Resposta
+
+A resposta inclui o saldo atual e o status de verificação.
+
+```json
+{
+  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+  "email": "cliente@exemplo.com",
+  "balance": "100.00000000",
+  "balanceCurrency": "USD",
+  "status": "approved",
+  "createdAt": "2025-11-19T23:59:29.241Z"
+}
+```
+
+## Listando Subcontas
+
+Para visualizar todos os seus usuários, você pode recuperar uma lista paginada de subcontas.
+
+### Requisição
+
+```bash
+curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
+  -H "x-api-key: SUA_CHAVE_DE_API"
+```
+
+## Próximos Passos e Funcionalidades
+
+Uma vez que uma subconta é criada, você pode acessar o conjunto completo de funcionalidades financeiras da Bullring para esse usuário. A maioria dessas operações requer que a subconta complete a [Verificação](/api-reference/verification).
+
+### 1. Verificação (KYC/KYB)
+Antes que uma subconta possa transacionar, ela deve verificar sua identidade (Tier 1) ou empresa (Tier 2/KYB).
+*   **Tier 1**: Informações pessoais básicas. Concede acesso a transações em **NGN**, **GHS** e **BRL**.
+*   **Tier 2**: Documentação abrangente para limites mais altos ou contas empresariais. Concede acesso a transações em **USD**, **ZMW** e **EUR**.
+*   [Veja a API de Verificação](/api-reference/verification)
+
+### 2. Depósitos (On-Ramp)
+Subcontas podem adicionar fundos aos seus saldos usando vários métodos:
+*   **Fiat**: Transferências bancárias locais, Mobile Money (ex.: NGN, GHS, ZMW).
+*   **Cripto**: Transferências on-chain (ETH, SOL) ou Lightning Network (BTC).
+*   [Veja a API de Depósitos](/api-reference/deposits/request-fiat-deposit)
+
+### 3. Saques (Off-Ramp)
+Subcontas podem sacar seus fundos para:
+*   **Destinatários Fiat**: Transferências Wire (USD, EUR), PIX (BRL), Mobile Money.
+*   **Carteiras Cripto**: Stablecoins (USDC, USDT) ou Bitcoin.
+*   [Veja a API de Saques](/api-reference/withdrawals/withdraw-fiat)
+
+### 4. Gestão de Destinatários
+Salve detalhes de beneficiários (contas bancárias, endereços cripto) para facilitar e tornar mais seguros os saques repetidos.
+*   [Veja a API de Destinatários](/api-reference/recipients/get-all-recipients)
+
+### 5. Taxas e Tarifas
+Verifique as taxas de conversão em tempo real e calcule as tarifas antes de iniciar transações para garantir transparência para seus usuários.
+*   [Veja a API de Taxas e Tarifas](/api-reference/rates/conversion-rate)
+

@@ -1,0 +1,15 @@
+---
+title: Contas e Subcontas
+description: "Entendendo a relação entre Contas e Subcontas"
+---
+
+Na Bullring Finance, a estrutura é projetada para separar o parceiro de integração (você) dos seus usuários finais (clientes).
+
+- **Conta**: Representa sua organização ou empresa. Esta é a entidade de nível superior que possui as chaves de API e integra com a Bullring.
+- **Subconta**: Representa um usuário individual ou cliente dentro da sua aplicação.
+
+Cada **Subconta** é completamente isolada das outras. Elas possuem seu próprio:
+- **Saldos**: Fundos mantidos em uma subconta não são acessíveis por outras.
+- **Status de Verificação**: Cada subconta deve passar por sua própria verificação KYC/KYB.
+- **Histórico de Transações**: Depósitos e saques são vinculados especificamente a uma subconta.
+

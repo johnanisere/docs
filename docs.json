@@ -93,17 +93,51 @@
         "language": "pt",
         "tabs": [
           {
-            "tab": "Guias",
+            "tab": "Primeiros Passos",
             "groups": [
               {
                 "group": "Primeiros Passos",
                 "pages": [
                   "pt/introduction",
                   "pt/authentication",
-                  "pt/environment",
-                  "pt/webhook",
-                  "pt/payment",
-                  "pt/withdrawal"
+                  "pt/environments"
+                ]
+              },
+              {
+                "group": "Conceitos Fundamentais",
+                "pages": [
+                  "pt/accounts",
+                  "pt/supported-currencies"
+                ]
+              },
+              {
+                "group": "Eventos (Webhooks)",
+                "pages": [
+                  "pt/subaccount-events",
+                  "pt/withdrawal-events",
+                  "pt/deposit-events"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Casos de Uso",
+            "groups": [
+              {
+                "group": "Padrões Comuns",
+                "pages": [
+                  "pt/use-cases/onboarding",
+                  "pt/use-cases/fiat-on-ramp",
+                  "pt/use-cases/beneficiaries",
+                  "pt/use-cases/rates-estimates"
+                ]
+              },
+              {
+                "group": "Casos de Uso",
+                "pages": [
+                  "pt/use-cases/remittance",
+                  "pt/use-cases/mass-payouts",
+                  "pt/use-cases/crypto-off-ramp"
                 ]
               }
             ]
