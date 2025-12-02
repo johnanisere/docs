@@ -4,99 +4,26 @@ description: "Converta cripto em dinheiro instantaneamente."
 ---
 
 ## Cenário
-Um usuário quer vender Bitcoin ou USDC e receber dinheiro em sua conta bancária local (ex.: PIX no Brasil) imediatamente.
+Um usuário deseja vender Bitcoin (via Lightning Network) e receber dinheiro em sua conta bancária local (por exemplo, PIX no Brasil) imediatamente usando um fluxo único e simplificado.
 
 ## Fluxo de Trabalho
 
-### 1. Gerar Endereço de Depósito
+### 1. Adicionar Conta Bancária de Beneficiário
 
-Primeiro, você precisa gerar um endereço de depósito para o usuário enviar suas criptomoedas. Você pode gerar uma fatura Lightning para Bitcoin ou um endereço on-chain para outras criptomoedas (ex.: USDC na Solana).
-
-#### Opção A: Bitcoin (Lightning)
-
-Gere uma fatura Lightning para um valor específico.
+Primeiro, adicione a conta bancária de destino como um beneficiário. É para lá que os fundos serão enviados após o recebimento da criptomoeda.
 
 <Note>
-  Veja a referência da API de [Depósito Lightning](/api-reference/deposits/lightning-deposit) para detalhes completos.
+  Consulte a referência da API [Adicionar Beneficiário](/api-reference/beneficiaries/add-beneficiary) para obter detalhes completos.
 </Note>
 
 ```bash
 curl --request POST \
-  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/lightning \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/beneficiaries \
   --header 'Content-Type: application/json' \
   --header 'Authorization: Bearer <token>' \
   --data '{
-  "amount": 50,
-  "currency": "usd",
-  "note": "Depósito para saque"
-}'
-```
-
-**Resposta:**
-
-```json
-{
-  "lightningInvoice": "lntbs108...",
-  "id": "5567cac1-d7bc-4b0d-980d-8c2453dc952c",
-  "paymentHash": "5bd0d584d9d24693ed81e000b6b252b137166a562fd2fd65e4e376f73b4845c8",
-  "paymentRequestAmount": 50,
-  "paymentRequestCurrency": "usd",
-  "invoiceCurrency": "stablesats",
-  "status": "unpaid",
-  "createdAt": "2025-11-20T01:47:08.282Z"
-}
-```
-
-#### Opção B: USDC (On-Chain)
-
-Obtenha um endereço de depósito para uma blockchain suportada (ex.: `SOL-MAINNET-BETA`).
-
-<Note>
-  Veja a referência da API de [Depósito Onchain](/api-reference/deposits/onchain-deposit) para detalhes completos.
-</Note>
-
-```bash
-curl --request GET \
-  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/SOL-MAINNET-BETA \
-  --header 'Authorization: Bearer <token>'
-```
-
-**Resposta:**
-
-```json
-{
-  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
-  "address": "DnXn...",
-  "chain": "SOL-MAINNET-BETA",
-  "currency": "USDC",
-  "createdAt": "2025-11-21T11:17:42.575Z"
-}
-```
-
-### 2. Monitorar Depósito
-
-Aguarde o depósito ser confirmado. A Bullring enviará um evento de webhook quando os fundos forem creditados na subconta.
-
-Para detalhes sobre o payload do evento, veja [Eventos de Depósito](/pt/deposit-events).
-
-### 3. Saque Instantâneo
-
-Uma vez que os fundos estão disponíveis na subconta, dispare um saque para a conta bancária local do usuário.
-
-<Note>
-  Veja a referência da API de [Saque Fiat](/api-reference/withdrawals/withdraw-fiat) para detalhes completos.
-</Note>
-
-#### Exemplo: Sacar para o Brasil (PIX)
-
-```bash
-curl --request POST \
-  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals \
-  --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer <token>' \
-  --data '{
-  "account_id": "123.456.789-00",
-  "amount": "50",
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
   "currency": "BRL"
 }'
 ```
@@ -105,13 +32,129 @@ curl --request POST \
 
 ```json
 {
-  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
-  "amount": "50",
+  "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
   "currency": "BRL",
-  "status": "pending",
-  "created_at": "2025-11-21T15:59:09.341Z",
-  "fee_amount": "0.00",
-  "fee_currency": "BRL"
+  "status": "active",
+  "created_at": "2025-11-25T12:00:00.000Z"
 }
 ```
 
+### 2. Iniciar Off-Ramp Cripto
+
+Inicie o off-ramp especificando o destinatário (ID do beneficiário) e o valor na moeda de destino. A API gerará uma fatura Lightning que o usuário precisa pagar.
+
+<Note>
+  Consulte a referência da API [Off-Ramp Cripto](/api-reference/withdrawals/offramp-crypto) para obter detalhes completos.
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "amount": 88
+}'
+```
+
+**Resposta:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
+    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
+    "targetAmount": 88,
+    "targetCurrency": "brl",
+    "lightningAmount": 1656,
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822915501882292,
+    "lightningFee": 0,
+    "withdrawalFee": 0.64,
+    "targetAmountReceivable": 87.34,
+    "totalFees": 0.64,
+    "bankAccount": {
+      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+      "bankName": null,
+      "accountId": "667.136.083-96",
+      "currency": "BRL"
+    },
+    "expiresAt": null,
+    "status": "pending",
+    "createdAt": "2025-11-25T13:37:46.829Z"
+  },
+  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
+}
+```
+
+**Campos Principais da Resposta:**
+- `lightningInvoice` - A fatura Lightning que o usuário precisa pagar
+- `lightningAmount` - A quantidade de satoshis a pagar
+- `targetAmountReceivable` - O valor que o usuário receberá (após taxas)
+- `totalFees` - Total de taxas cobradas pela transação
+
+### 3. Usuário Paga Fatura Lightning
+
+O usuário paga a fatura Lightning usando sua carteira Bitcoin Lightning. Assim que a fatura é paga, a Bullring processa automaticamente o saque para a conta bancária do beneficiário.
+
+### 4. Verificar Status do Off-Ramp
+
+Você pode verificar o status da transação de off-ramp a qualquer momento usando o ID do off-ramp.
+
+<Note>
+  Consulte a referência da API [Obter Status do Off-Ramp](/api-reference/withdrawals/get-offramp-status) para obter detalhes completos.
+</Note>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status \
+  --header 'Authorization: Bearer <token>'
+```
+
+**Resposta:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+    "status": "pending",
+    "targetAmount": 12,
+    "targetCurrency": "brl",
+    "lightningAmount": 226,
+    "withdrawalId": null,
+    "invoicePaidAt": null,
+    "withdrawalInitiatedAt": null,
+    "completedAt": null,
+    "errorMessage": null,
+    "createdAt": "2025-11-25T13:48:02.667Z",
+    "updatedAt": "2025-11-25T13:48:02.667Z",
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822916,
+    "lightningFee": 0,
+    "withdrawalFee": 0.11,
+    "targetAmountReceivable": 53.09,
+    "totalFees": 0.11
+  }
+}
+```
+
+**Valores de Status:**
+- `pending` - Aguardando pagamento da fatura Lightning
+- `processing` - Fatura paga, saque sendo processado
+- `completed` - Fundos enviados com sucesso para o beneficiário
+- `failed` - Transação falhou (veja `errorMessage` para detalhes)
+
+## Vantagens
+
+Este fluxo de off-ramp simplificado oferece vários benefícios:
+
+- **Chamada de API Única**: Gere a fatura Lightning e inicie o saque em uma única solicitação
+- **Processamento Automático**: Assim que a fatura Lightning é paga, o saque é processado automaticamente
+- **Taxas de Câmbio em Tempo Real**: Obtenha a taxa de câmbio atual e as taxas antecipadamente
+- **Integração Simples**: Não é necessário gerenciar fluxos separados de depósito e saque
