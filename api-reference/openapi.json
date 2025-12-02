@@ -4953,7 +4953,7 @@
         "tags": [
           "Withdrawals"
         ],
-        "summary": "Get Withdraw Crypto Status",
+        "summary": "Get Offramp Crypto Status",
         "description": "Retrieve the status of a crypto withdrawal via offramp.",
         "parameters": [
           {
