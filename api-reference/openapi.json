@@ -1594,7 +1594,7 @@
                   {
                     "type": "object",
                     "title": "NGN",
-                    "description": "Requires Tier 1 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1704,7 +1704,7 @@
                   {
                     "type": "object",
                     "title": "BRL",
-                    "description": "Requires Tier 1 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -3790,68 +3790,101 @@
                     "type": "object",
                     "description": "Requires approved Tier 2 KYC.",
                     "properties": {
-                      "external_account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["USD"] },
                       "wire_message": { "type": "string" }
                     },
-                    "required": ["external_account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
                   },
                   {
                     "title": "BRL",
                     "type": "object",
-                    "description": "Requires Tier 1 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["BRL"] }
                     },
-                    "required": ["account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
                   },
                   {
                     "title": "EUR",
                     "type": "object",
                     "description": "Requires approved Tier 2 KYC.",
                     "properties": {
-                      "external_account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["EUR"] },
                       "sepa_message": { "type": "string" }
                     },
-                    "required": ["external_account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
                   },
                   {
                     "title": "NGN",
                     "type": "object",
-                    "description": "Requires Tier 1 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["NGN"] }
                     },
-                    "required": ["account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
                   },
                   {
                     "title": "ZMW",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["ZMW"] }
                     },
-                    "required": ["account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
                   },
                   {
                     "title": "GHS",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "amount": { "type": "string" },
                       "currency": { "type": "string", "enum": ["GHS"] }
                     },
-                    "required": ["account_id", "amount", "currency"]
+                    "required": ["recipient_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "MXN",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["MXN"] }
+                    },
+                    "required": ["recipient_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "COP",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["COP"] }
+                    },
+                    "required": ["recipient_id", "amount", "currency"]
+                  },
+                  {
+                    "title": "ARS",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "amount": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["ARS"] }
+                    },
+                    "required": ["recipient_id", "amount", "currency"]
                   }
                 ]
               },
@@ -3859,7 +3892,7 @@
                 "USD": {
                   "summary": "USD Withdrawal",
                   "value": {
-                    "external_account_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "1",
                     "currency": "USD",
                     "wire_message": "Payment for services"
@@ -3868,7 +3901,7 @@
                 "BRL": {
                   "summary": "BRL Withdrawal",
                   "value": {
-                    "account_id": "667.136.083-96",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "10",
                     "currency": "BRL"
                   }
@@ -3876,7 +3909,7 @@
                 "EUR": {
                   "summary": "EUR Withdrawal",
                   "value": {
-                    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+                    "recipient_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
                     "amount": "1",
                     "currency": "EUR",
                     "sepa_message": "Payment for services"
@@ -3885,7 +3918,7 @@
                 "NGN": {
                   "summary": "NGN Withdrawal",
                   "value": {
-                    "account_id": "0062881117",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "100",
                     "currency": "NGN"
                   }
@@ -3893,7 +3926,7 @@
                 "ZMW": {
                   "summary": "ZMW Withdrawal",
                   "value": {
-                    "account_id": "+260241234568",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "3",
                     "currency": "ZMW"
                   }
@@ -3901,9 +3934,33 @@
                 "GHS": {
                   "summary": "GHS Withdrawal",
                   "value": {
-                    "account_id": "+233241234567",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "10",
                     "currency": "GHS"
+                  }
+                },
+                "MXN": {
+                  "summary": "MXN Withdrawal",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "amount": "10",
+                    "currency": "MXN"
+                  }
+                },
+                "COP": {
+                  "summary": "COP Withdrawal",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "amount": "1000",
+                    "currency": "COP"
+                  }
+                },
+                "ARS": {
+                  "summary": "ARS Withdrawal",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "amount": "100",
+                    "currency": "ARS"
                   }
                 }
               }
@@ -4085,11 +4142,11 @@
                     "title": "USD Full Balance Withdrawal",
                     "type": "object",
                     "properties": {
-                      "external_account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "currency": { "type": "string", "enum": ["USD"] },
                       "wire_message": { "type": "string" }
                     },
-                    "required": ["external_account_id", "currency"]
+                    "required": ["recipient_id", "currency"]
                   },
                   {
                     "title": "Stablecoin Full Balance Withdrawal",
@@ -4105,29 +4162,56 @@
                     "title": "EUR Full Balance Withdrawal",
                     "type": "object",
                     "properties": {
-                      "external_account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "currency": { "type": "string", "enum": ["EUR"] },
                       "sepa_message": { "type": "string" }
                     },
-                    "required": ["external_account_id", "currency"]
+                    "required": ["recipient_id", "currency"]
                   },
                   {
                     "title": "BRL Full Balance Withdrawal",
                     "type": "object",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "currency": { "type": "string", "enum": ["BRL"] }
                     },
-                    "required": ["account_id", "currency"]
+                    "required": ["recipient_id", "currency"]
                   },
                   {
                     "title": "NGN Full Balance Withdrawal",
                     "type": "object",
                     "properties": {
-                      "account_id": { "type": "string" },
+                      "recipient_id": { "type": "string" },
                       "currency": { "type": "string", "enum": ["NGN"] }
                     },
-                    "required": ["account_id", "currency"]
+                    "required": ["recipient_id", "currency"]
+                  },
+                  {
+                    "title": "MXN Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["MXN"] }
+                    },
+                    "required": ["recipient_id", "currency"]
+                  },
+                  {
+                    "title": "COP Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["COP"] }
+                    },
+                    "required": ["recipient_id", "currency"]
+                  },
+                  {
+                    "title": "ARS Full Balance Withdrawal",
+                    "type": "object",
+                    "properties": {
+                      "recipient_id": { "type": "string" },
+                      "currency": { "type": "string", "enum": ["ARS"] }
+                    },
+                    "required": ["recipient_id", "currency"]
                   }
                 ]
               },
@@ -4135,7 +4219,7 @@
                 "USD": {
                   "summary": "Withdraw Full USD Balance",
                   "value": {
-                    "external_account_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "currency": "USD",
                     "wire_message": "Payment for services"
                   }
@@ -4151,7 +4235,7 @@
                 "EUR": {
                   "summary": "Withdraw Full EUR Balance",
                   "value": {
-                    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+                    "recipient_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
                     "currency": "EUR",
                     "sepa_message": "Payment for services"
                   }
@@ -4159,15 +4243,36 @@
                 "BRL": {
                   "summary": "Withdraw Full BRL Balance",
                   "value": {
-                    "account_id": "71719844194",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "currency": "BRL"
                   }
                 },
                 "NGN": {
                   "summary": "Withdraw Full NGN Balance",
                   "value": {
-                    "account_id": "0062881117",
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "currency": "NGN"
+                  }
+                },
+                "MXN": {
+                  "summary": "Withdraw Full MXN Balance",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "currency": "MXN"
+                  }
+                },
+                "COP": {
+                  "summary": "Withdraw Full COP Balance",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "currency": "COP"
+                  }
+                },
+                "ARS": {
+                  "summary": "Withdraw Full ARS Balance",
+                  "value": {
+                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+                    "currency": "ARS"
                   }
                 }
               }
@@ -4692,7 +4797,7 @@
         "tags": [
           "Withdrawals"
         ],
-        "summary": "Withdraw Crypto",
+        "summary": "Offramp Crypto",
         "description": "Initiate a crypto(in BTC) withdrawal via offramp.",
         "parameters": [
           {
@@ -4710,7 +4815,7 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "bankAccountId": {
+                  "recipient_id": {
                     "type": "string"
                   },
                   "amount": {
@@ -4718,12 +4823,12 @@
                   }
                 },
                 "required": [
-                  "bankAccountId",
+                  "recipient_id",
                   "amount"
                 ]
               },
               "example": {
-                "bankAccountId": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
                 "amount": 88
               }
             }
