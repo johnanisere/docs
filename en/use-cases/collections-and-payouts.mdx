@@ -1,0 +1,124 @@
+---
+title: "Collections and Payouts"
+description: "Accept payments and send payouts globally."
+---
+
+## Overview
+
+Bullring allows you to collect funds from users (Collections) and send funds to users (Payouts) using both Fiat and Crypto rails. This guide demonstrates how to implement these flows.
+
+## Collections (Deposits)
+
+Collections allow you to receive funds into your subaccount. You can collect funds via local banking rails (Fiat) or blockchain networks (Crypto).
+
+### Fiat Collections
+
+To collect fiat currency, you request a deposit instruction. The response will provide the necessary details for the user to make the transfer (e.g., a PIX code for BRL, or bank account details for USD).
+
+<Note>
+  See the [Request Fiat Deposit](/api-reference/deposits/request-fiat-deposit) API reference for full details.
+</Note>
+
+#### Example: Collecting BRL via PIX
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "channelId": "brl-channel-id-bullring-finance",
+  "amount": 100
+}'
+```
+
+The response will contain the PIX code or payment instructions.
+
+### Crypto Collections
+
+To collect crypto, you generate a deposit address for a specific blockchain network. Any funds sent to this address will be credited to your subaccount.
+
+<Note>
+  See the [Onchain Deposit](/api-reference/deposits/onchain-deposit) API reference for full details.
+</Note>
+
+#### Example: Generating an ETH Address
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET \
+  --header 'Authorization: Bearer <token>'
+```
+
+**Response:**
+
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+## Payouts (Withdrawals)
+
+Payouts allow you to send funds from your subaccount to external bank accounts or crypto wallets.
+
+### Fiat Payouts
+
+To send fiat currency, you first need to create a recipient (beneficiary) and then initiate a withdrawal to that recipient.
+
+1.  **Create Recipient**: Use the `/recipients` endpoint (see [Beneficiaries](/use-cases/beneficiaries) guide).
+2.  **Initiate Withdrawal**: Send funds to the recipient.
+
+<Note>
+  See the [Withdraw Fiat](/api-reference/withdrawals/withdraw-fiat) API reference for full details.
+</Note>
+
+#### Example: Sending BRL Payout
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+  "amount": "500",
+  "currency": "BRL"
+}'
+```
+
+### Crypto Payouts
+
+To send stablecoins (USDC, USDT) to an external wallet, specify the amount, token, chain, and destination address.
+
+<Note>
+  See the [Withdraw Stablecoin](/api-reference/withdrawals/withdraw-stablecoin) API reference for full details.
+</Note>
+
+#### Example: Sending USDT on Ethereum
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "amount": "100",
+  "stablecoin": "usdt",
+  "chain": "ethereum",
+  "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+}'
+```
+
+## Summary
+
+| Flow | Supported Methods | Use Cases |
+| :--- | :--- | :--- |
+| **Collections** | Fiat (PIX, Bank Transfer), Crypto (Onchain, Lightning) | E-commerce checkout, Wallet funding, Invoice payments |
+| **Payouts** | Fiat (Bank Transfer, PIX, Mobile Money), Crypto (Stablecoins) | Supplier payments, Salary disbursements, User withdrawals |
+

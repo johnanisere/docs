@@ -78,7 +78,8 @@
                 "pages": [
                   "en/use-cases/remittance",
                   "en/use-cases/mass-payouts",
-                  "en/use-cases/crypto-offramp"
+                  "en/use-cases/crypto-offramp",
+                  "en/use-cases/collections-and-payouts"
                 ]
               }
             ]
