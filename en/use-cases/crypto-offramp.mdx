@@ -1,0 +1,160 @@
+---
+title: "Instant Crypto Off-Ramp"
+description: "Convert crypto to cash instantly."
+---
+
+## Scenario
+A user wants to sell Bitcoin (via Lightning Network) and receive cash in their local bank account (e.g., Brazil PIX) immediately using a single streamlined flow.
+
+## Workflow
+
+### 1. Add Beneficiary Bank Account
+
+First, add the destination bank account as a beneficiary. This is where the funds will be sent after the crypto is received.
+
+<Note>
+  See the [Add Beneficiary](/api-reference/beneficiaries/add-beneficiary) API reference for full details.
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/beneficiaries \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
+  "currency": "BRL"
+}'
+```
+
+**Response:**
+
+```json
+{
+  "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
+  "currency": "BRL",
+  "status": "active",
+  "created_at": "2025-11-25T12:00:00.000Z"
+}
+```
+
+### 2. Initiate Crypto Offramp
+
+Initiate the offramp by specifying the recipient (beneficiary ID) and the amount in the destination currency. The API will generate a Lightning invoice that the user needs to pay.
+
+<Note>
+  See the [Offramp Crypto](/api-reference/withdrawals/offramp-crypto) API reference for full details.
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "amount": 88
+}'
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
+    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
+    "targetAmount": 88,
+    "targetCurrency": "brl",
+    "lightningAmount": 1656,
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822915501882292,
+    "lightningFee": 0,
+    "withdrawalFee": 0.64,
+    "targetAmountReceivable": 87.34,
+    "totalFees": 0.64,
+    "bankAccount": {
+      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+      "bankName": null,
+      "accountId": "667.136.083-96",
+      "currency": "BRL"
+    },
+    "expiresAt": null,
+    "status": "pending",
+    "createdAt": "2025-11-25T13:37:46.829Z"
+  },
+  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
+}
+```
+
+**Key Response Fields:**
+- `lightningInvoice` - The Lightning invoice that the user needs to pay
+- `lightningAmount` - The amount of satoshis to pay
+- `targetAmountReceivable` - The amount the user will receive (after fees)
+- `totalFees` - Total fees charged for the transaction
+
+### 3. User Pays Lightning Invoice
+
+The user pays the Lightning invoice using their Bitcoin Lightning wallet. Once the invoice is paid, Bullring automatically processes the withdrawal to the beneficiary's bank account.
+
+### 4. Check Offramp Status
+
+You can check the status of the offramp transaction at any time using the offramp ID.
+
+<Note>
+  See the [Get Offramp Status](/api-reference/withdrawals/get-offramp-status) API reference for full details.
+</Note>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status \
+  --header 'Authorization: Bearer <token>'
+```
+
+**Response:**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+    "status": "pending",
+    "targetAmount": 12,
+    "targetCurrency": "brl",
+    "lightningAmount": 226,
+    "withdrawalId": null,
+    "invoicePaidAt": null,
+    "withdrawalInitiatedAt": null,
+    "completedAt": null,
+    "errorMessage": null,
+    "createdAt": "2025-11-25T13:48:02.667Z",
+    "updatedAt": "2025-11-25T13:48:02.667Z",
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822916,
+    "lightningFee": 0,
+    "withdrawalFee": 0.11,
+    "targetAmountReceivable": 53.09,
+    "totalFees": 0.11
+  }
+}
+```
+
+**Status Values:**
+- `pending` - Waiting for Lightning invoice to be paid
+- `processing` - Invoice paid, withdrawal being processed
+- `completed` - Funds successfully sent to beneficiary
+- `failed` - Transaction failed (see `errorMessage` for details)
+
+## Advantages
+
+This streamlined offramp flow offers several benefits:
+
+- **Single API Call**: Generate the Lightning invoice and initiate the withdrawal in one request
+- **Automatic Processing**: Once the Lightning invoice is paid, the withdrawal is automatically processed
+- **Real-time Exchange Rates**: Get the current exchange rate and fees upfront
+- **Simple Integration**: No need to manage separate deposit and withdrawal flows
