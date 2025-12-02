@@ -3033,7 +3033,7 @@
                   {
                     "title": "GHS",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -3057,7 +3057,7 @@
                   {
                     "title": "ZMW",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -3076,6 +3076,117 @@
                       "currency",
                       "phone_number",
                       "account_owner_name"
+                    ]
+                  },
+                  {
+                    "title": "MXN",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "MXN"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "mxn_method": {
+                        "type": "string",
+                        "enum": [
+                          "spei",
+                          "debit_card",
+                          "phone_number"
+                        ]
+                      },
+                      "beneficiary": {
+                        "type": "string"
+                      },
+                      "clabe": {
+                        "type": "string"
+                      },
+                      "institution_code": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "mxn_method",
+                      "beneficiary",
+                      "clabe",
+                      "institution_code"
+                    ]
+                  },
+                  {
+                    "title": "ARS",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "ARS"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "recipient_name": {
+                        "type": "string"
+                      },
+                      "cvu": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "recipient_name",
+                      "cvu"
+                    ]
+                  },
+                  {
+                    "title": "COP",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "COP"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "cop_method": {
+                        "type": "string",
+                        "enum": [
+                          "pse",
+                          "ach"
+                        ]
+                      },
+                      "bank_account": {
+                        "type": "string"
+                      },
+                      "account_type": {
+                        "type": "string",
+                        "enum": [
+                          "1",
+                          "2"
+                        ],
+                        "description": "1-Checking, 2-Savings"
+                      },
+                      "bank_code": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "cop_method",
+                      "bank_account",
+                      "account_type",
+                      "bank_code"
                     ]
                   }
                 ]
@@ -3148,6 +3259,37 @@
                     "currency": "ZMW",
                     "phone_number": "+260241234567",
                     "account_owner_name": "test two"
+                  }
+                },
+                "MXN": {
+                  "summary": "MXN recipient example",
+                  "value": {
+                    "currency": "MXN",
+                    "alias": "My Mexican Bank Account",
+                    "mxn_method": "phone_number",
+                    "beneficiary": "Juan Pérez García",
+                    "clabe": "123456789123456789",
+                    "institution_code": "37006"
+                  }
+                },
+                "ARS": {
+                  "summary": "ARS recipient example",
+                  "value": {
+                    "currency": "ARS",
+                    "alias": "My Argentine Bank Account",
+                    "recipient_name": "Juan José Martinelli",
+                    "cvu": "1430001713001199250012"
+                  }
+                },
+                "COP": {
+                  "summary": "COP recipient example",
+                  "value": {
+                    "currency": "COP",
+                    "alias": "My Colombian Bank Account",
+                    "cop_method": "pse",
+                    "bank_account": "87654321",
+                    "account_type": "1",
+                    "bank_code": "064"
                   }
                 }
               }
