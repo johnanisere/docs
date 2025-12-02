@@ -1,0 +1,124 @@
+---
+title: "Cobranças e Pagamentos"
+description: "Aceite pagamentos e envie repasses globalmente."
+---
+
+## Visão Geral
+
+A Bullring permite que você receba fundos de usuários (Cobranças) e envie fundos para usuários (Pagamentos) usando tanto trilhas Fiat quanto Cripto. Este guia demonstra como implementar esses fluxos.
+
+## Cobranças (Depósitos)
+
+As Cobranças permitem que você receba fundos em sua subconta. Você pode receber fundos via trilhas bancárias locais (Fiat) ou redes blockchain (Cripto).
+
+### Cobranças em Fiat
+
+Para cobrar em moeda fiduciária (fiat), você solicita uma instrução de depósito. A resposta fornecerá os detalhes necessários para o usuário realizar a transferência (ex: um código PIX para BRL ou dados bancários para USD).
+
+<Note>
+  Veja a referência da API [Request Fiat Deposit](/api-reference/deposits/request-fiat-deposit) para detalhes completos.
+</Note>
+
+#### Exemplo: Cobrando BRL via PIX
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "channelId": "brl-channel-id-bullring-finance",
+  "amount": 100
+}'
+```
+
+A resposta conterá o código PIX ou as instruções de pagamento.
+
+### Cobranças em Cripto
+
+Para cobrar em cripto, você gera um endereço de depósito para uma rede blockchain específica. Quaisquer fundos enviados para este endereço serão creditados em sua subconta.
+
+<Note>
+  Veja a referência da API [Onchain Deposit](/api-reference/deposits/onchain-deposit) para detalhes completos.
+</Note>
+
+#### Exemplo: Gerando um Endereço ETH
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET \
+  --header 'Authorization: Bearer <token>'
+```
+
+**Resposta:**
+
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+## Pagamentos (Saques)
+
+Os Pagamentos permitem que você envie fundos da sua subconta para contas bancárias externas ou carteiras de criptomoedas.
+
+### Pagamentos em Fiat
+
+Para enviar moeda fiduciária, você primeiro precisa criar um destinatário (beneficiário) e então iniciar um saque para esse destinatário.
+
+1.  **Criar Destinatário**: Use o endpoint `/recipients` (veja o guia [Beneficiários](/use-cases/beneficiaries)).
+2.  **Iniciar Saque**: Envie fundos para o destinatário.
+
+<Note>
+  Veja a referência da API [Withdraw Fiat](/api-reference/withdrawals/withdraw-fiat) para detalhes completos.
+</Note>
+
+#### Exemplo: Enviando Pagamento em BRL
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+  "amount": "500",
+  "currency": "BRL"
+}'
+```
+
+### Pagamentos em Cripto
+
+Para enviar stablecoins (USDC, USDT) para uma carteira externa, especifique o valor, token, rede e endereço de destino.
+
+<Note>
+  Veja a referência da API [Withdraw Stablecoin](/api-reference/withdrawals/withdraw-stablecoin) para detalhes completos.
+</Note>
+
+#### Exemplo: Enviando USDT na Ethereum
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "amount": "100",
+  "stablecoin": "usdt",
+  "chain": "ethereum",
+  "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+}'
+```
+
+## Resumo
+
+| Fluxo | Métodos Suportados | Casos de Uso |
+| :--- | :--- | :--- |
+| **Cobranças** | Fiat (PIX, Transferência Bancária), Cripto (Onchain, Lightning) | Checkout de e-commerce, Financiamento de carteira, Pagamento de faturas |
+| **Pagamentos** | Fiat (Transferência Bancária, PIX, Mobile Money), Cripto (Stablecoins) | Pagamentos a fornecedores, Pagamentos de salários, Saques de usuários |
+
