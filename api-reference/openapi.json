@@ -43,6 +43,10 @@
     {
       "name": "Fees",
       "description": "Endpoints for checking transaction fees."
+    },
+    {
+      "name": "Offramp",
+      "description": "Endpoints for handling offramp operations."
     }
   ],
   "paths": {
@@ -4890,7 +4894,7 @@
     "/v1/ramp/{subaccountId}/banking/offramp/initiate": {
       "post": {
         "tags": [
-          "Withdrawals"
+          "Offramp"
         ],
         "summary": "Offramp Crypto",
         "description": "Initiate a crypto(in BTC) withdrawal via offramp.",
@@ -5046,7 +5050,7 @@
     "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status": {
       "get": {
         "tags": [
-          "Withdrawals"
+          "Offramp"
         ],
         "summary": "Get Offramp Crypto Status",
         "description": "Retrieve the status of a crypto withdrawal via offramp.",
