@@ -999,9 +999,9 @@
                 "bridgeCustomerId": "790e9944-49f8-45b3-ac60-b605f13a07db",
                 "lastSubmissionAt": "2025-11-21T15:18:49.039Z",
                 "type": "individual",
-                "first_name": "Dafe",
+                "first_name": "Mike",
                 "middle_name": null,
-                "last_name": "Aror",
+                "last_name": "Brown",
                 "phone": "+234 8012345678",
                 "address": {
                   "street_line_1": "9 Karimu Street",
@@ -1598,20 +1598,6 @@
                     "properties": {
                       "channelId": {
                         "type": "string"
-                      },
-                      "source": {
-                        "type": "object",
-                        "properties": {
-                          "accountType": {
-                            "type": "string",
-                            "enum": [
-                              "bank"
-                            ]
-                          }
-                        },
-                        "required": [
-                          "accountType"
-                        ]
                       }
                     },
                     "required": [
@@ -1622,7 +1608,7 @@
                   {
                     "type": "object",
                     "title": "ZMW",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1643,7 +1629,7 @@
                   {
                     "type": "object",
                     "title": "GHS",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved Tier 1 KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -1717,6 +1703,32 @@
                       "channelId",
                       "amount"
                     ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "MXN",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "channelId"
+                    ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "ARS",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "channelId"
+                    ]
                   }
                 ]
               },
@@ -1724,10 +1736,7 @@
                 "NGN": {
                   "summary": "NGN Deposit Request",
                   "value": {
-                    "channelId": "ngn-channel-id-bullring-finance",
-                    "source": {
-                      "accountType": "bank"
-                    }
+                    "channelId": "ngn-channel-id-bullring-finance"
                   }
                 },
                 "ZMW": {
@@ -1762,6 +1771,18 @@
                   "value": {
                     "channelId": "brl-channel-id-bullring-finance",
                     "amount": 100
+                  }
+                },
+                "MXN": {
+                  "summary": "MXN Deposit Request",
+                  "value": {
+                    "channelId": "mxn-channel-id-bullring-finance"
+                  }
+                },
+                "ARS": {
+                  "summary": "ARS Deposit Request",
+                  "value": {
+                    "channelId": "ars-channel-id-bullring-finance"
                   }
                 }
               }
@@ -1958,6 +1979,61 @@
                           "format": "date-time"
                         }
                       }
+                    },
+                    {
+                      "type": "object",
+                      "title": "MXN Response",
+                      "properties": {
+                        "currency": {
+                          "type": "string"
+                        },
+                        "bankInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "beneficiaryName": {
+                              "type": "string"
+                            },
+                            "clabe": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "channelId": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "title": "ARS Response",
+                      "properties": {
+                        "currency": {
+                          "type": "string"
+                        },
+                        "bankInfo": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "cvu": {
+                              "type": "string"
+                            },
+                            "beneficiaryName": {
+                              "type": "string"
+                            },
+                            "transferReference": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "channelId": {
+                          "type": "string"
+                        }
+                      }
                     }
                   ]
                 },
@@ -1965,47 +2041,41 @@
                   "NGN": {
                     "summary": "NGN Response",
                     "value": {
-                      "status": "pending",
                       "currency": "NGN",
-                      "country": "NG",
-                      "rate": 1,
-                      "localCurrency": "NGN",
                       "bankInfo": {
-                        "id": "9805dc88-b78b-4515-ab13-60f63924a565",
-                        "bankBeneficiaryName": "Dameon O\"Hara",
-                        "bankName": "Maplerad",
-                        "bankAddress": "N/A",
-                        "bankRoutingNumber": "N/A",
-                        "bankAccountNumber": "8595061826"
+                          "id": "9805dc88-b78b-4515-ab13-60f63924a565",
+                          "bankBeneficiaryName": "Dameon O\"Hara",
+                          "bankName": "Maplerad",
+                          "bankAccountNumber": "8595061826"
                       },
                       "channelId": "ngn-channel-id-bullring-finance"
-                    }
+                  }
                   },
                   "ZMW": {
                     "summary": "ZMW Response",
                     "value": {
                       "status": "processing",
-                      "amount": "11.10000000",
-                      "localAmount": "254.40000000",
-                      "currency": "USD",
+                      "amount": "50.00000000",
+                      "localAmount": "50.00000000",
+                      "currency": "ZMW",
                       "country": "ZM",
-                      "rate": "22.9190",
+                      "rate": "1.0000",
                       "localCurrency": "ZMW",
                       "channelId": "zmw-channel-id-bullring-finance"
-                    }
+                  }
                   },
                   "GHS": {
                     "summary": "GHS Response",
                     "value": {
                       "status": "processing",
-                      "amount": "1.00000000",
-                      "localAmount": "11.00000000",
-                      "currency": "USD",
+                      "amount": "20.00000000",
+                      "localAmount": "20.00000000",
+                      "currency": "GHS",
                       "country": "GH",
-                      "rate": "11.0011",
+                      "rate": "1.0000",
                       "localCurrency": "GHS",
                       "channelId": "ghs-channel-id-bullring-finance"
-                    }
+                  }
                   },
                   "USD": {
                     "summary": "USD Response",
@@ -2019,7 +2089,7 @@
                       "localCurrency": "USD",
                       "bankInfo": {
                         "id": "85ebbb73-f7cd-47b7-9112-d5b06428cac9",
-                        "bankBeneficiaryName": "Dafe Aror",
+                        "bankBeneficiaryName": "Mike Brown",
                         "bankName": "Bank of Nowhere",
                         "bankAddress": "1800 North Pole St., Orlando, FL 32801",
                         "bankRoutingNumber": "101019644",
@@ -2044,6 +2114,31 @@
                       "rate": 5.36,
                       "expiresAt": "2025-11-21T15:32:04.000Z",
                       "createdAt": "2025-11-21T15:29:35.164Z"
+                    }
+                  },
+                  "MXN": {
+                    "summary": "MXN Response",
+                    "value": {
+                      "currency": "MXN",
+                      "bankInfo": {
+                        "id": "6527fe17-1c8b-473f-84dd-133538e9d3cc",
+                        "beneficiaryName": "mike dan",
+                        "clabe": "710969000000519618"
+                      },
+                      "channelId": "mxn-channel-id-bullring-finance"
+                    }
+                  },
+                  "ARS": {
+                    "summary": "ARS Response",
+                    "value": {
+                      "currency": "ARS",
+                      "bankInfo": {
+                        "id": "6336dacd-f0ee-4692-bf32-6dd2e9fca069",
+                        "cvu": "123456",
+                        "beneficiaryName": "Bullring Finance",
+                        "transferReference": "FDC95"
+                      },
+                      "channelId": "ars-channel-id-bullring-finance"
                     }
                   }
                 }
