@@ -1658,37 +1658,10 @@
                     "properties": {
                       "channelId": {
                         "type": "string"
-                      },
-                      "amount": {
-                        "type": "number"
-                      },
-                      "source": {
-                        "type": "object",
-                        "properties": {
-                          "accountType": {
-                            "type": "string",
-                            "enum": [
-                              "bank"
-                            ]
-                          },
-                          "accountNumber": {
-                            "type": "string"
-                          },
-                          "networkId": {
-                            "type": "string"
-                          }
-                        },
-                        "required": [
-                          "accountType",
-                          "accountNumber",
-                          "networkId"
-                        ]
                       }
                     },
                     "required": [
-                      "channelId",
-                      "amount",
-                      "source"
+                      "channelId"
                     ]
                   },
                   {
@@ -1762,12 +1735,7 @@
                 "USD": {
                   "summary": "USD Deposit Request",
                   "value": {
-                    "channelId": "usd-channel-id-bullring-finance",
-                    "source": {
-                      "accountType": "bank",
-                      "accountNumber": "+260977123456",
-                      "networkId": "20823163-f55c-4fa5-8cdb-d59c5289a137"
-                    }
+                    "channelId": "usd-channel-id-bullring-finance"
                   }
                 },
                 "BRL": {
@@ -2461,7 +2429,7 @@
                       "usd",
                       "brl"
                     ],
-                    "description": "\"usd\" or \"brl\""
+                    "description": "All [fiat currencies](/en/supported-currencies) are supported"
                   },
                   "note": {
                     "type": "string"
@@ -2817,8 +2785,8 @@
         "tags": [
           "Deposits"
         ],
-        "summary": "Simulate NGN Deposit",
-        "description": "Simulate a deposit in NGN for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
+        "summary": "Simulate Fiat Deposit",
+        "description": "Simulate a deposit in all [supported fiat currencies](/en/supported-currencies) for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -5047,12 +5015,223 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status": {
+    "/v1/ramp/{subaccountId}/banking/offramp/": {
       "get": {
         "tags": [
           "Offramp"
         ],
-        "summary": "Get Offramp Crypto Status",
+        "summary": "Get All Offramps",
+        "description": "Retrieve a list of crypto withdrawals via offramp for a subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "targetAmount": {
+                            "type": "number"
+                          },
+                          "targetCurrency": {
+                            "type": "string"
+                          },
+                          "lightningAmount": {
+                            "type": "number"
+                          },
+                          "withdrawalId": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "invoicePaidAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true
+                          },
+                          "withdrawalInitiatedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true
+                          },
+                          "completedAt": {
+                            "type": "string",
+                            "format": "date-time",
+                            "nullable": true
+                          },
+                          "errorMessage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "createdAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "updatedAt": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "lightningCurrency": {
+                            "type": "string"
+                          },
+                          "exchangeRate": {
+                            "type": "number"
+                          },
+                          "lightningFee": {
+                            "type": "number"
+                          },
+                          "withdrawalFee": {
+                            "type": "number"
+                          },
+                          "totalFees": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": [
+                    {
+                      "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+                      "status": "pending",
+                      "targetAmount": 12,
+                      "targetCurrency": "brl",
+                      "lightningAmount": 226,
+                      "withdrawalId": null,
+                      "invoicePaidAt": null,
+                      "withdrawalInitiatedAt": null,
+                      "completedAt": null,
+                      "errorMessage": null,
+                      "createdAt": "2025-11-25T13:48:02.667Z",
+                      "updatedAt": "2025-11-25T13:48:02.667Z",
+                      "lightningCurrency": "stablesats",
+                      "exchangeRate": 0.18822916,
+                      "lightningFee": 0,
+                      "withdrawalFee": 0.11,
+                      "totalFees": 0.11
+                    },
+                    {
+                      "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+                      "status": "pending",
+                      "targetAmount": 88,
+                      "targetCurrency": "brl",
+                      "lightningAmount": 1656,
+                      "withdrawalId": null,
+                      "invoicePaidAt": null,
+                      "withdrawalInitiatedAt": null,
+                      "completedAt": null,
+                      "errorMessage": null,
+                      "createdAt": "2025-11-25T13:37:46.829Z",
+                      "updatedAt": "2025-11-25T13:37:46.829Z",
+                      "lightningCurrency": "stablesats",
+                      "exchangeRate": 0.18822916,
+                      "lightningFee": 0,
+                      "withdrawalFee": 0.64,
+                      "totalFees": 0.64
+                    }
+                  ],
+                  "count": 2,
+                  "page": 1,
+                  "limit": 10,
+                  "totalPages": 1
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}": {
+      "get": {
+        "tags": [
+          "Offramp"
+        ],
+        "summary": "Get One Offramp",
         "description": "Retrieve the status of a crypto withdrawal via offramp.",
         "parameters": [
           {
