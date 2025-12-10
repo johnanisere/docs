@@ -5418,6 +5418,496 @@
         }
       }
     },
+    "/v1/ramp/{subaccountId}/banking/onramp/initiate": {
+      "post": {
+        "tags": [
+          "Onramp"
+        ],
+        "summary": "Initiate Onramp",
+        "description": "Initiate a fiat-to-crypto onramp transaction.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string"
+                  },
+                  "cryptoAsset": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "currency",
+                  "cryptoAsset",
+                  "amount"
+                ]
+              },
+              "example": {
+                "currency": "NGN",
+                "cryptoAsset": "USDT",
+                "amount": 20000
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "amount": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "cryptoAsset": {
+                      "type": "string"
+                    },
+                    "cryptoAmount": {
+                      "type": "number"
+                    },
+                    "cryptoAmountInLocalCurrency": {
+                      "type": "number"
+                    },
+                    "exchangeRate": {
+                      "type": "number"
+                    },
+                    "totalFees": {
+                      "type": "number"
+                    },
+                    "feeBreakdown": {
+                      "type": "object",
+                      "properties": {
+                        "depositFee": {
+                          "type": "number"
+                        },
+                        "networkFee": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "paymentInstructions": {
+                      "type": "object",
+                      "properties": {
+                        "method": {
+                          "type": "string"
+                        },
+                        "bankDetails": {
+                          "type": "object",
+                          "properties": {
+                            "accountNumber": {
+                              "type": "string"
+                            },
+                            "bankName": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "expiresAt": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "collectionId": {
+                      "type": "string"
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "5c12d3de-b57e-49de-945c-9109dc5c2075",
+                  "status": "pending",
+                  "amount": 20000,
+                  "currency": "NGN",
+                  "cryptoAsset": "USDT",
+                  "cryptoAmount": 30.774252936127745,
+                  "cryptoAmountInLocalCurrency": 19426.554997822153,
+                  "exchangeRate": 0.0015841333133732535,
+                  "totalFees": 573.445002177847,
+                  "feeBreakdown": {
+                    "depositFee": 100,
+                    "networkFee": 473.445002177847
+                  },
+                  "paymentInstructions": {
+                    "method": "ngn_transfer",
+                    "bankDetails": {
+                      "accountNumber": "6685523257",
+                      "bankName": "Maplerad"
+                    },
+                    "expiresAt": "2025-12-11T06:14:37.856Z"
+                  },
+                  "collectionId": "a694e96d-e563-4aeb-9ee1-869c814b2303",
+                  "expiresAt": "2025-12-11T06:14:37.857Z",
+                  "createdAt": "2025-12-10T06:14:37.857Z"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-12-10T06:10:31.899Z",
+                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/onramp/initiate",
+                  "error": "Bad Request",
+                  "message": "cryptoAsset must be one of the following values: USDT, USDC, BTC_LIGHTNING"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "timestamp": "2025-12-10T05:58:00.326Z",
+                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/onramp/initiate",
+                  "error": "Error",
+                  "message": "Bank account not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/onramp/": {
+      "get": {
+        "tags": [
+          "Onramp"
+        ],
+        "summary": "Get All Onramps",
+        "description": "Retrieve a list of onramp transactions for a subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of items per page",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "targetAmount": {
+                            "type": "number"
+                          },
+                          "targetCurrency": {
+                            "type": "string"
+                          },
+                          "lightningAmount": {
+                            "type": "number"
+                          },
+                          "withdrawalId": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "invoicePaidAt": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "withdrawalInitiatedAt": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "completedAt": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "errorMessage": {
+                            "type": "string",
+                            "nullable": true
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          },
+                          "updatedAt": {
+                            "type": "string"
+                          },
+                          "lightningCurrency": {
+                            "type": "string"
+                          },
+                          "exchangeRate": {
+                            "type": "number"
+                          },
+                          "lightningFee": {
+                            "type": "number"
+                          },
+                          "withdrawalFee": {
+                            "type": "number"
+                          },
+                          "totalFees": {
+                            "type": "number"
+                          }
+                        }
+                      }
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "page": {
+                      "type": "integer"
+                    },
+                    "limit": {
+                      "type": "integer"
+                    },
+                    "totalPages": {
+                      "type": "integer"
+                    }
+                  }
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+                      "status": "pending",
+                      "targetAmount": 12,
+                      "targetCurrency": "brl",
+                      "lightningAmount": 226,
+                      "withdrawalId": null,
+                      "invoicePaidAt": null,
+                      "withdrawalInitiatedAt": null,
+                      "completedAt": null,
+                      "errorMessage": null,
+                      "createdAt": "2025-11-25T13:48:02.667Z",
+                      "updatedAt": "2025-11-25T13:48:02.667Z",
+                      "lightningCurrency": "stablesats",
+                      "exchangeRate": 0.18822916,
+                      "lightningFee": 0,
+                      "withdrawalFee": 0.11,
+                      "totalFees": 0.11
+                    },
+                    {
+                      "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+                      "status": "pending",
+                      "targetAmount": 88,
+                      "targetCurrency": "brl",
+                      "lightningAmount": 1656,
+                      "withdrawalId": null,
+                      "invoicePaidAt": null,
+                      "withdrawalInitiatedAt": null,
+                      "completedAt": null,
+                      "errorMessage": null,
+                      "createdAt": "2025-11-25T13:37:46.829Z",
+                      "updatedAt": "2025-11-25T13:37:46.829Z",
+                      "lightningCurrency": "stablesats",
+                      "exchangeRate": 0.18822916,
+                      "lightningFee": 0,
+                      "withdrawalFee": 0.64,
+                      "totalFees": 0.64
+                    }
+                  ],
+                  "count": 2,
+                  "page": 1,
+                  "limit": 10,
+                  "totalPages": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/onramp/{onrampId}": {
+      "get": {
+        "tags": [
+          "Onramp"
+        ],
+        "summary": "Get One Onramp",
+        "description": "Retrieve the status of an onramp transaction.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          },
+          {
+            "name": "onrampId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "localAmount": {
+                      "type": "number"
+                    },
+                    "localCurrency": {
+                      "type": "string"
+                    },
+                    "cryptoAsset": {
+                      "type": "string"
+                    },
+                    "cryptoAmount": {
+                      "type": "number"
+                    },
+                    "cryptoAmountReceivable": {
+                      "type": "number"
+                    },
+                    "exchangeRate": {
+                      "type": "number"
+                    },
+                    "totalFees": {
+                      "type": "number"
+                    },
+                    "paymentMethod": {
+                      "type": "string"
+                    },
+                    "paymentReference": {
+                      "type": "string"
+                    },
+                    "cryptoTransactionHash": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "cryptoDestinationAddress": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "errorMessage": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "paymentReceivedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "conversionInitiatedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "completedAt": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "id": "5c12d3de-b57e-49de-945c-9109dc5c2075",
+                  "status": "pending",
+                  "localAmount": 20000,
+                  "localCurrency": "NGN",
+                  "cryptoAsset": "USDT",
+                  "cryptoAmount": 30.77425294,
+                  "cryptoAmountReceivable": 19426.55499782,
+                  "exchangeRate": 0.00158413,
+                  "totalFees": 573.44500218,
+                  "paymentMethod": "ngn_transfer",
+                  "paymentReference": "a694e96d-e563-4aeb-9ee1-869c814b2303",
+                  "cryptoTransactionHash": null,
+                  "cryptoDestinationAddress": null,
+                  "errorMessage": null,
+                  "paymentReceivedAt": null,
+                  "conversionInitiatedAt": null,
+                  "completedAt": null,
+                  "createdAt": "2025-12-10T06:14:37.857Z",
+                  "updatedAt": "2025-12-10T06:14:37.857Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/withdrawals/{withdrawalId}": {
       "get": {
         "tags": [
