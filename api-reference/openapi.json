@@ -5442,10 +5442,17 @@
                 "type": "object",
                 "properties": {
                   "currency": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
                   },
                   "cryptoAsset": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
+                    "enum": [
+                      "USDT",
+                      "USDC",
+                      "BTC_LIGHTNING"
+                    ]
                   },
                   "amount": {
                     "type": "number"
