@@ -1247,270 +1247,322 @@
                 },
                 "example": {
                   "USDC": {
-                    "channels": [
-                      {
-                        "id": "usdc-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "USDC",
-                        "countryCurrency": "USUSDC",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "usdc-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "crypto",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "eth-sepolia-network-id-bullring-finance",
-                        "name": "Ethereum Sepolia",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "USDC",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "usdc-channel-id-bullring-finance"
-                        ],
-                        "code": "ETH-SEPOLIA",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      },
-                      {
-                        "id": "sol-devnet-network-id-bullring-finance",
-                        "name": "Solana Devnet",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "USDC",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "usdc-channel-id-bullring-finance"
-                        ],
-                        "code": "SOL-DEVNET",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      }
-                    ]
+                      "channels": [
+                          {
+                              "id": "usdc-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "USDC",
+                              "status": "active",
+                              "channelType": "crypto",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "eth-sepolia-network-id-bullring-finance",
+                              "name": "Ethereum Sepolia",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "USDC",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "usdc-channel-id-bullring-finance"
+                              ],
+                              "code": "ETH-SEPOLIA"
+                          },
+                          {
+                              "id": "sol-devnet-network-id-bullring-finance",
+                              "name": "Solana Devnet",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "USDC",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "usdc-channel-id-bullring-finance"
+                              ],
+                              "code": "SOL-DEVNET"
+                          }
+                      ]
+                  },
+                  "USD": {
+                      "channels": [
+                          {
+                              "max": 1500000000000000000,
+                              "currency": "USD",
+                              "status": "active",
+                              "min": 0,
+                              "channelType": "bank",
+                              "rampType": "deposit",
+                              "id": "usd-channel-id-bullring-finance"
+                          }
+                      ],
+                      "networks": []
                   },
                   "USDT": {
-                    "channels": [
-                      {
-                        "id": "usdt-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "USDT",
-                        "countryCurrency": "USUSDT",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "usdt-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "crypto",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "eth-sepolia-network-id-bullring-finance",
-                        "name": "Ethereum Sepolia",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "USDT",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "usdt-channel-id-bullring-finance"
-                        ],
-                        "code": "ETH-SEPOLIA",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      },
-                      {
-                        "id": "sol-devnet-network-id-bullring-finance",
-                        "name": "Solana Devnet",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "USDT",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "usdt-channel-id-bullring-finance"
-                        ],
-                        "code": "SOL-DEVNET",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      }
-                    ]
+                      "channels": [
+                          {
+                              "id": "usdt-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "USDT",
+                              "status": "active",
+                              "channelType": "crypto",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "eth-sepolia-network-id-bullring-finance",
+                              "name": "Ethereum Sepolia",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "USDT",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "usdt-channel-id-bullring-finance"
+                              ],
+                              "code": "ETH-SEPOLIA"
+                          },
+                          {
+                              "id": "sol-devnet-network-id-bullring-finance",
+                              "name": "Solana Devnet",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "USDT",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "usdt-channel-id-bullring-finance"
+                              ],
+                              "code": "SOL-DEVNET"
+                          }
+                      ]
                   },
                   "BTC": {
-                    "channels": [
-                      {
-                        "id": "btc-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "BTC",
-                        "countryCurrency": "USBTC",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "btc-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "lightning",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "bitcoin-network-id-bullring-finance",
-                        "name": "Lightning Network",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "BTC",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "btc-channel-id-bullring-finance"
-                        ],
-                        "code": "BTC",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      }
-                    ]
+                      "channels": [
+                          {
+                              "id": "btc-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "BTC",
+                              "status": "active",
+                              "channelType": "lightning",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "bitcoin-network-id-bullring-finance",
+                              "name": "Lightning Network",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "BTC",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "btc-channel-id-bullring-finance"
+                              ],
+                              "code": "BTC"
+                          }
+                      ]
                   },
                   "NGN": {
-                    "channels": [
-                      {
-                        "id": "ngn-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "NGN",
-                        "countryCurrency": "USNGN",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "ngn-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "bank",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      },
-                      {
-                        "id": "ngn-otc-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "NGN",
-                        "countryCurrency": "USNGN",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "ngn-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "otc",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "ngn-network-id-bullring-finance",
-                        "name": "Bank",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "NGN",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "ngn-channel-id-bullring-finance"
-                        ],
-                        "code": "NGN",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      },
-                      {
-                        "id": "ngn-otc-network-id-bullring-finance",
-                        "name": "OTC (Over The Counter)",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "NGN",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "ngn-otc-channel-id-bullring-finance"
-                        ],
-                        "code": "NGN",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      }
-                    ]
+                      "channels": [
+                          {
+                              "id": "ngn-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "NGN",
+                              "status": "active",
+                              "channelType": "bank",
+                              "rampType": "deposit"
+                          },
+                          {
+                              "id": "ngn-otc-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "NGN",
+                              "status": "active",
+                              "channelType": "otc",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "ngn-network-id-bullring-finance",
+                              "name": "Bank",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "NGN",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "ngn-channel-id-bullring-finance"
+                              ],
+                              "code": "NGN"
+                          },
+                          {
+                              "id": "ngn-otc-network-id-bullring-finance",
+                              "name": "OTC (Over The Counter)",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "NGN",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "ngn-otc-channel-id-bullring-finance"
+                              ],
+                              "code": "NGN"
+                          }
+                      ]
                   },
                   "ZMW": {
-                    "channels": [
-                      {
-                        "id": "zmw-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 5000,
-                        "currency": "ZMW",
-                        "countryCurrency": "USZMW",
-                        "status": "active",
-                        "feeLocal": 0,
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "vendorId": "zmw-vendor-id-bullring-finance",
-                        "country": "US",
-                        "feeUSD": 0,
-                        "channelType": "otc",
-                        "rampType": "deposit",
-                        "updatedAt": "2025-11-20T01:47:04.519Z",
-                        "apiStatus": "active",
-                        "settlementType": "instant",
-                        "estimatedSettlementTime": 60
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "zmw-network-id-bullring-finance",
-                        "name": "OTC (Over The Counter)",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "ZMW",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "zmw-channel-id-bullring-finance"
-                        ],
-                        "code": "ZMW",
-                        "createdAt": "2025-11-20T01:47:04.519Z",
-                        "updatedAt": "2025-11-20T01:47:04.519Z"
-                      }
-                    ]
+                      "channels": [
+                          {
+                              "id": "zmw-otc-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 5000,
+                              "currency": "ZMW",
+                              "status": "active",
+                              "channelType": "otc",
+                              "rampType": "deposit"
+                          },
+                          {
+                              "id": "zmw-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 5000,
+                              "currency": "ZMW",
+                              "status": "active",
+                              "channelType": "momo",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "zmw-network-id-bullring-finance",
+                              "name": "OTC (Over The Counter)",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "ZMW",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "zmw-otc-channel-id-bullring-finance"
+                              ],
+                              "code": "ZMW"
+                          },
+                          {
+                              "id": "zmw-network-id-bullring-finance",
+                              "name": "Mobile Money",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "ZMW",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "zmw-channel-id-bullring-finance"
+                              ],
+                              "code": "ZMW"
+                          }
+                      ]
+                  },
+                  "GHS": {
+                      "channels": [
+                          {
+                              "id": "ghs-otc-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 5000,
+                              "currency": "GHS",
+                              "status": "active",
+                              "channelType": "otc",
+                              "rampType": "deposit"
+                          },
+                          {
+                              "id": "ghs-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 5000,
+                              "currency": "GHS",
+                              "status": "active",
+                              "channelType": "momo",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": [
+                          {
+                              "id": "ghs-network-id-bullring-finance",
+                              "name": "OTC (Over The Counter)",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "GHS",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "ghs-otc-channel-id-bullring-finance"
+                              ],
+                              "code": "GHS"
+                          },
+                          {
+                              "id": "ghs-network-id-bullring-finance",
+                              "name": "Mobile Money",
+                              "status": "active",
+                              "country": "US",
+                              "currency": "GHS",
+                              "accountNumberType": "address",
+                              "countryAccountNumberType": "address",
+                              "channelIds": [
+                                  "ghs-channel-id-bullring-finance"
+                              ],
+                              "code": "GHS"
+                          }
+                      ]
+                  },
+                  "COP": {
+                      "channels": [
+                          {
+                              "id": "cop-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "COP",
+                              "status": "active",
+                              "channelType": "bank",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": []
+                  },
+                  "MXN": {
+                      "channels": [
+                          {
+                              "id": "mxn-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "MXN",
+                              "status": "active",
+                              "channelType": "bank",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": []
+                  },
+                  "ARS": {
+                      "channels": [
+                          {
+                              "id": "ars-channel-id-bullring-finance",
+                              "max": 1500000000000000000,
+                              "min": 0,
+                              "currency": "ARS",
+                              "status": "active",
+                              "channelType": "bank",
+                              "rampType": "deposit"
+                          }
+                      ],
+                      "networks": []
                   }
-                }
+              }
               }
             }
           },
@@ -2785,8 +2837,8 @@
         "tags": [
           "Deposits"
         ],
-        "summary": "Simulate Fiat Deposit",
-        "description": "Simulate a deposit in all [supported fiat currencies](/en/supported-currencies) for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
+        "summary": "Simulate Fiat/Stablecoin Deposit",
+        "description": "Simulate a deposit in all [supported fiat currencies and stablecoins](/en/supported-currencies) for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -2825,18 +2877,26 @@
         "responses": {
           "200": {
             "description": "Successful response",
-            "content": {
+            "content": {}
+          },
+          "400":  {
+            "description": "Bad Request - Invalid currency",
+"content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
+                    "error": {
+                      "type": "string"
+                    },
                     "message": {
                       "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "message": "Deposit successful"
+                  "error": "Bad Request",
+                  "message": "currency must be one of the following values: NGN, BRL, USD, EUR, GHS, ZMW, TZS, USDC, USDT, MXN, COP, ARS"
                 }
               }
             }
