@@ -47,6 +47,10 @@
     {
       "name": "Offramp",
       "description": "Endpoints for handling offramp operations."
+    },
+    {
+      "name": "Conversions",
+      "description": "Endpoints for currency conversions."
     }
   ],
   "paths": {
@@ -6420,6 +6424,175 @@
           }
         }
       }
+    },
+    "/v1/ramp/{subaccountId}/banking/conversions": {
+      "post": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Convert Currency",
+        "description": "Convert funds from one currency to another within a subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              },
+              "example": {
+                "fromCurrency": "USD",
+                "toCurrency": "NGN",
+                "amount": 17
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful conversion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionResponse"
+                },
+                "example": {
+                  "id": "445952df-9346-4d45-9478-3cd24fa25531",
+                  "fromCurrency": "usd",
+                  "toCurrency": "ngn",
+                  "amount": 17,
+                  "feeAmount": 0,
+                  "netAmount": 17,
+                  "estimatedReceived": 10179.6,
+                  "rate": 598.8,
+                  "createdAt": "2025-12-16T18:04:55.385Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/conversions/quote": {
+      "post": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Get Conversion Quote",
+        "description": "Get a quote for a currency conversion.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              },
+              "example": {
+                "fromCurrency": "USD",
+                "toCurrency": "NGN",
+                "amount": 17
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionQuoteResponse"
+                },
+                "example": {
+                  "fromCurrency": "USD",
+                  "toCurrency": "NGN",
+                  "amount": 17,
+                  "feeAmount": 0,
+                  "netAmount": 17,
+                  "estimatedReceived": 10179.6,
+                  "rate": 598.8,
+                  "quoteTime": "2025-12-16T18:04:55.841Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/conversions/{conversionId}": {
+      "get": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Get Conversion",
+        "description": "Retrieve details of a specific conversion.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          },
+          {
+            "name": "conversionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the conversion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionDetailsResponse"
+                },
+                "example": {
+                  "id": "d257fc14-5d63-49a4-bcf8-20a2753e6451",
+                  "fromCurrency": "usd",
+                  "toCurrency": "ngn",
+                  "amount": "17.000000000000",
+                  "feeAmount": "0.000000000000",
+                  "netAmount": "17.000000000000",
+                  "estimatedReceived": "10179.600000000000",
+                  "rate": "598.800000000000",
+                  "createdAt": "2025-12-16T17:42:32.416Z"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -6541,6 +6714,60 @@
           "originalAmount": { "type": "number" },
           "netAmount": { "type": "number" },
           "grossAmount": { "type": "number" }
+        }
+      },
+      "ConversionRequest": {
+        "type": "object",
+        "properties": {
+          "fromCurrency": { "type": "string", "example": "USD" },
+          "toCurrency": { "type": "string", "example": "NGN" },
+          "amount": { "type": "number", "example": 17 }
+        },
+        "required": [
+          "fromCurrency",
+          "toCurrency",
+          "amount"
+        ]
+      },
+      "ConversionResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "example": "445952df-9346-4d45-9478-3cd24fa25531" },
+          "fromCurrency": { "type": "string", "example": "usd" },
+          "toCurrency": { "type": "string", "example": "ngn" },
+          "amount": { "type": "number", "example": 17 },
+          "feeAmount": { "type": "number", "example": 0 },
+          "netAmount": { "type": "number", "example": 17 },
+          "estimatedReceived": { "type": "number", "example": 10179.6 },
+          "rate": { "type": "number", "example": 598.8 },
+          "createdAt": { "type": "string", "format": "date-time", "example": "2025-12-16T18:04:55.385Z" }
+        }
+      },
+      "ConversionQuoteResponse": {
+        "type": "object",
+        "properties": {
+          "fromCurrency": { "type": "string", "example": "USD" },
+          "toCurrency": { "type": "string", "example": "NGN" },
+          "amount": { "type": "number", "example": 17 },
+          "feeAmount": { "type": "number", "example": 0 },
+          "netAmount": { "type": "number", "example": 17 },
+          "estimatedReceived": { "type": "number", "example": 10179.6 },
+          "rate": { "type": "number", "example": 598.8 },
+          "quoteTime": { "type": "string", "format": "date-time", "example": "2025-12-16T18:04:55.841Z" }
+        }
+      },
+      "ConversionDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid", "example": "d257fc14-5d63-49a4-bcf8-20a2753e6451" },
+          "fromCurrency": { "type": "string", "example": "usd" },
+          "toCurrency": { "type": "string", "example": "ngn" },
+          "amount": { "type": "string", "example": "17.000000000000" },
+          "feeAmount": { "type": "string", "example": "0.000000000000" },
+          "netAmount": { "type": "string", "example": "17.000000000000" },
+          "estimatedReceived": { "type": "string", "example": "10179.600000000000" },
+          "rate": { "type": "string", "example": "598.800000000000" },
+          "createdAt": { "type": "string", "format": "date-time", "example": "2025-12-16T17:42:32.416Z" }
         }
       },
       "ErrorResponse": {
