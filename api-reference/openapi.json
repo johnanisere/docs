@@ -37,6 +37,10 @@
       "description": "Endpoints for handling withdrawals from subaccounts."
     },
     {
+      "name": "Conversions",
+      "description": "Endpoints for currency conversions."
+    },
+    {
       "name": "Rates",
       "description": "Endpoints for currency conversion rates."
     },
@@ -49,8 +53,8 @@
       "description": "Endpoints for handling offramp operations."
     },
     {
-      "name": "Conversions",
-      "description": "Endpoints for currency conversions."
+      "name": "Onramp",
+      "description": "Endpoints for handling onramp operations."
     }
   ],
   "paths": {
@@ -4923,6 +4927,265 @@
         }
       }
     },
+    "/v1/ramp/{subaccountId}/banking/conversions": {
+      "get": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Get All Conversions",
+        "description": "Retrieve a paginated list of all conversions for a subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            },
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20
+            },
+            "description": "Items per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PaginatedConversionsResponse"
+                },
+                "example": {
+                  "data": [
+                    {
+                      "id": "261cfa71-01ba-43b5-b1e7-9f48a0e86e83",
+                      "fromCurrency": "usd",
+                      "toCurrency": "ngn",
+                      "amount": "17.000000000000",
+                      "feeAmount": "0.000000000000",
+                      "netAmount": "17.000000000000",
+                      "estimatedReceived": "10179.600000000000",
+                      "rate": "598.800000000000",
+                      "createdAt": "2025-12-16T18:50:44.576Z"
+                    },
+                    {
+                      "id": "445952df-9346-4d45-9478-3cd24fa25531",
+                      "fromCurrency": "usd",
+                      "toCurrency": "ngn",
+                      "amount": "17.000000000000",
+                      "feeAmount": "0.000000000000",
+                      "netAmount": "17.000000000000",
+                      "estimatedReceived": "10179.600000000000",
+                      "rate": "598.800000000000",
+                      "createdAt": "2025-12-16T18:04:55.385Z"
+                    },
+                    {
+                      "id": "d257fc14-5d63-49a4-bcf8-20a2753e6451",
+                      "fromCurrency": "usd",
+                      "toCurrency": "ngn",
+                      "amount": "17.000000000000",
+                      "feeAmount": "0.000000000000",
+                      "netAmount": "17.000000000000",
+                      "estimatedReceived": "10179.600000000000",
+                      "rate": "598.800000000000",
+                      "createdAt": "2025-12-16T17:42:32.416Z"
+                    }
+                  ],
+                  "total": 3,
+                  "page": 1,
+                  "limit": 20,
+                  "totalPages": 1
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Convert Currency",
+        "description": "Convert funds from one currency to another within a subaccount.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              },
+              "example": {
+                "fromCurrency": "USD",
+                "toCurrency": "NGN",
+                "amount": 17
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful conversion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionResponse"
+                },
+                "example": {
+                  "id": "445952df-9346-4d45-9478-3cd24fa25531",
+                  "fromCurrency": "usd",
+                  "toCurrency": "ngn",
+                  "amount": 17,
+                  "feeAmount": 0,
+                  "netAmount": 17,
+                  "estimatedReceived": 10179.6,
+                  "rate": 598.8,
+                  "createdAt": "2025-12-16T18:04:55.385Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/conversions/quote": {
+      "post": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Get Conversion Quote",
+        "description": "Get a quote for a currency conversion.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConversionRequest"
+              },
+              "example": {
+                "fromCurrency": "USD",
+                "toCurrency": "NGN",
+                "amount": 17
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionQuoteResponse"
+                },
+                "example": {
+                  "fromCurrency": "USD",
+                  "toCurrency": "NGN",
+                  "amount": 17,
+                  "feeAmount": 0,
+                  "netAmount": 17,
+                  "estimatedReceived": 10179.6,
+                  "rate": 598.8,
+                  "quoteTime": "2025-12-16T18:04:55.841Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/conversions/{conversionId}": {
+      "get": {
+        "tags": [
+          "Conversions"
+        ],
+        "summary": "Get Conversion",
+        "description": "Retrieve details of a specific conversion.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the subaccount"
+          },
+          {
+            "name": "conversionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "The unique identifier of the conversion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConversionDetailsResponse"
+                },
+                "example": {
+                  "id": "d257fc14-5d63-49a4-bcf8-20a2753e6451",
+                  "fromCurrency": "usd",
+                  "toCurrency": "ngn",
+                  "amount": "17.000000000000",
+                  "feeAmount": "0.000000000000",
+                  "netAmount": "17.000000000000",
+                  "estimatedReceived": "10179.600000000000",
+                  "rate": "598.800000000000",
+                  "createdAt": "2025-12-16T17:42:32.416Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/offramp/initiate": {
       "post": {
         "tags": [
@@ -6546,265 +6809,6 @@
                   "statusCode": 404,
                   "message": "Not Found",
                   "error": "Not Found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/{subaccountId}/banking/conversions": {
-      "get": {
-        "tags": [
-          "Conversions"
-        ],
-        "summary": "Get All Conversions",
-        "description": "Retrieve a paginated list of all conversions for a subaccount.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The unique identifier of the subaccount"
-          },
-          {
-            "name": "page",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 1
-            },
-            "description": "Page number"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "schema": {
-              "type": "integer",
-              "default": 20
-            },
-            "description": "Items per page"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PaginatedConversionsResponse"
-                },
-                "example": {
-                  "data": [
-                    {
-                      "id": "261cfa71-01ba-43b5-b1e7-9f48a0e86e83",
-                      "fromCurrency": "usd",
-                      "toCurrency": "ngn",
-                      "amount": "17.000000000000",
-                      "feeAmount": "0.000000000000",
-                      "netAmount": "17.000000000000",
-                      "estimatedReceived": "10179.600000000000",
-                      "rate": "598.800000000000",
-                      "createdAt": "2025-12-16T18:50:44.576Z"
-                    },
-                    {
-                      "id": "445952df-9346-4d45-9478-3cd24fa25531",
-                      "fromCurrency": "usd",
-                      "toCurrency": "ngn",
-                      "amount": "17.000000000000",
-                      "feeAmount": "0.000000000000",
-                      "netAmount": "17.000000000000",
-                      "estimatedReceived": "10179.600000000000",
-                      "rate": "598.800000000000",
-                      "createdAt": "2025-12-16T18:04:55.385Z"
-                    },
-                    {
-                      "id": "d257fc14-5d63-49a4-bcf8-20a2753e6451",
-                      "fromCurrency": "usd",
-                      "toCurrency": "ngn",
-                      "amount": "17.000000000000",
-                      "feeAmount": "0.000000000000",
-                      "netAmount": "17.000000000000",
-                      "estimatedReceived": "10179.600000000000",
-                      "rate": "598.800000000000",
-                      "createdAt": "2025-12-16T17:42:32.416Z"
-                    }
-                  ],
-                  "total": 3,
-                  "page": 1,
-                  "limit": 20,
-                  "totalPages": 1
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Conversions"
-        ],
-        "summary": "Convert Currency",
-        "description": "Convert funds from one currency to another within a subaccount.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConversionRequest"
-              },
-              "example": {
-                "fromCurrency": "USD",
-                "toCurrency": "NGN",
-                "amount": 17
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful conversion",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConversionResponse"
-                },
-                "example": {
-                  "id": "445952df-9346-4d45-9478-3cd24fa25531",
-                  "fromCurrency": "usd",
-                  "toCurrency": "ngn",
-                  "amount": 17,
-                  "feeAmount": 0,
-                  "netAmount": 17,
-                  "estimatedReceived": 10179.6,
-                  "rate": 598.8,
-                  "createdAt": "2025-12-16T18:04:55.385Z"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/{subaccountId}/banking/conversions/quote": {
-      "post": {
-        "tags": [
-          "Conversions"
-        ],
-        "summary": "Get Conversion Quote",
-        "description": "Get a quote for a currency conversion.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ConversionRequest"
-              },
-              "example": {
-                "fromCurrency": "USD",
-                "toCurrency": "NGN",
-                "amount": 17
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConversionQuoteResponse"
-                },
-                "example": {
-                  "fromCurrency": "USD",
-                  "toCurrency": "NGN",
-                  "amount": 17,
-                  "feeAmount": 0,
-                  "netAmount": 17,
-                  "estimatedReceived": 10179.6,
-                  "rate": 598.8,
-                  "quoteTime": "2025-12-16T18:04:55.841Z"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/{subaccountId}/banking/conversions/{conversionId}": {
-      "get": {
-        "tags": [
-          "Conversions"
-        ],
-        "summary": "Get Conversion",
-        "description": "Retrieve details of a specific conversion.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The unique identifier of the subaccount"
-          },
-          {
-            "name": "conversionId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "description": "The unique identifier of the conversion"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConversionDetailsResponse"
-                },
-                "example": {
-                  "id": "d257fc14-5d63-49a4-bcf8-20a2753e6451",
-                  "fromCurrency": "usd",
-                  "toCurrency": "ngn",
-                  "amount": "17.000000000000",
-                  "feeAmount": "0.000000000000",
-                  "netAmount": "17.000000000000",
-                  "estimatedReceived": "10179.600000000000",
-                  "rate": "598.800000000000",
-                  "createdAt": "2025-12-16T17:42:32.416Z"
                 }
               }
             }
