@@ -5422,6 +5422,134 @@
         }
       }
     },
+    "/v1/ramp/{subaccountId}/banking/onramp/quote": {
+      "post": {
+        "tags": [
+          "Onramp"
+        ],
+        "summary": "Get Onramp Quote",
+        "description": "Get a quote for a fiat-to-crypto onramp transaction.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
+                  },
+                  "cryptoAsset": {
+                    "type": "string",
+                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
+                    "enum": [
+                      "USDT",
+                      "USDC",
+                      "BTC_LIGHTNING"
+                    ]
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount in fiat currency."
+                  }
+                },
+                "required": [
+                  "currency",
+                  "cryptoAsset",
+                  "amount"
+                ]
+              },
+              "example": {
+                "currency": "GHS",
+                "cryptoAsset": "BTC_LIGHTNING",
+                "amount": 500
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "cryptoAsset": {
+                      "type": "string"
+                    },
+                    "exchangeRate": {
+                      "type": "number"
+                    },
+                    "cryptoAmount": {
+                      "type": "number"
+                    },
+                    "estimatedFees": {
+                      "type": "object",
+                      "properties": {
+                        "depositFee": {
+                          "type": "number"
+                        },
+                        "networkFee": {
+                          "type": "number"
+                        },
+                        "totalFees": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "minAmount": {
+                      "type": "number"
+                    },
+                    "maxAmount": {
+                      "type": "number"
+                    },
+                    "quoteValiditySeconds": {
+                      "type": "integer"
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "amount": 500,
+                  "currency": "GHS",
+                  "cryptoAsset": "BTC_LIGHTNING",
+                  "exchangeRate": 0.08552894211576846,
+                  "cryptoAmount": 41.62300399201597,
+                  "estimatedFees": {
+                    "depositFee": 7.5,
+                    "networkFee": 5.845974329054843,
+                    "totalFees": 13.345974329054844
+                  },
+                  "minAmount": 100,
+                  "maxAmount": 500000,
+                  "quoteValiditySeconds": 300,
+                  "expiresAt": "2025-12-16T19:28:42.149Z"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/onramp/initiate": {
       "post": {
         "tags": [
