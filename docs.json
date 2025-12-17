@@ -68,6 +68,7 @@
               {
                 "group": "Common Patterns",
                 "pages": [
+                  "en/use-cases/multi-currency-operations",
                   "en/use-cases/onboarding",
                   "en/use-cases/fiat-on-ramp",
                   "en/use-cases/beneficiaries",
