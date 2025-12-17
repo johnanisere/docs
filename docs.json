@@ -47,6 +47,7 @@
               {
                 "group": "Core Concepts",
                 "pages": [
+                  "en/multi-currency-balances",
                   "en/accounts",
                   "en/supported-currencies"
                 ]
