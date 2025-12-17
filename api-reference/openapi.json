@@ -5210,95 +5210,288 @@
                 "type": "object",
                 "properties": {
                   "recipient_id": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The ID of the recipient bank account."
+                  },
+                  "bankAccountId": {
+                    "type": "string",
+                    "description": "Alternative to recipient_id. The ID of the recipient bank account."
                   },
                   "amount": {
-                    "type": "number"
+                    "type": "number",
+                    "description": "The amount to offramp."
+                  },
+                  "chain": {
+                    "type": "string",
+                    "description": "Blockchain network for stablecoin offramp (e.g., SOL-DEVNET). See [supported networks](/en/supported-currencies#supported-networks)"
+                  },
+                  "stablecoin": {
+                    "type": "string",
+                    "enum": [
+                      "USDC",
+                      "USDT"
+                    ],
+                    "description": "Stablecoin to use (USDC or USDT)."
                   }
                 },
                 "required": [
-                  "recipient_id",
                   "amount"
                 ]
               },
-              "example": {
-                "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                "amount": 88
+              "examples": {
+                "btc_lightning": {
+                  "summary": "BTC Lightning Offramp",
+                  "value": {
+                    "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                    "amount": 1250
+                  }
+                },
+                "stablecoin_usdc": {
+                  "summary": "Stablecoin USDC Offramp",
+                  "value": {
+                    "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                    "amount": 1250,
+                    "chain": "SOL-DEVNET",
+                    "stablecoin": "USDC"
+                  }
+                },
+                "stablecoin_usdc_bankAccountId": {
+                  "summary": "Stablecoin USDC Offramp with bankAccountId",
+                  "value": {
+                    "bankAccountId": "dea0bbad-ee32-47d6-a016-dc7a5bc957b9",
+                    "amount": 1250,
+                    "chain": "SOL-DEVNET",
+                    "stablecoin": "USDC"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "201": {
-            "description": "Lightning invoice generated successfully",
+            "description": "Offramp initiated successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
-                    "data": {
+                  "oneOf": [
+                    {
                       "type": "object",
                       "properties": {
-                        "id": { "type": "string" },
-                        "lightningInvoice": { "type": "string" },
-                        "lightningInvoiceId": { "type": "string" },
-                        "targetAmount": { "type": "number" },
-                        "targetCurrency": { "type": "string" },
-                        "lightningAmount": { "type": "number" },
-                        "lightningCurrency": { "type": "string" },
-                        "exchangeRate": { "type": "number" },
-                        "lightningFee": { "type": "number" },
-                        "withdrawalFee": { "type": "number" },
-                        "targetAmountReceivable": { "type": "number" },
-                        "totalFees": { "type": "number" },
-                        "bankAccount": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "data": {
                           "type": "object",
                           "properties": {
-                            "id": { "type": "string" },
-                            "bankName": { "type": "string", "nullable": true },
-                            "accountId": { "type": "string" },
-                            "currency": { "type": "string" }
+                            "id": {
+                              "type": "string"
+                            },
+                            "lightningInvoice": {
+                              "type": "string"
+                            },
+                            "lightningInvoiceId": {
+                              "type": "string"
+                            },
+                            "targetAmount": {
+                              "type": "number"
+                            },
+                            "targetCurrency": {
+                              "type": "string"
+                            },
+                            "lightningAmount": {
+                              "type": "number"
+                            },
+                            "lightningCurrency": {
+                              "type": "string"
+                            },
+                            "exchangeRate": {
+                              "type": "number"
+                            },
+                            "lightningFee": {
+                              "type": "number"
+                            },
+                            "withdrawalFee": {
+                              "type": "number"
+                            },
+                            "targetAmountReceivable": {
+                              "type": "number"
+                            },
+                            "totalFees": {
+                              "type": "number"
+                            },
+                            "bankAccount": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "bankName": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "accountId": {
+                                  "type": "string"
+                                },
+                                "currency": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "expiresAt": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string"
+                            }
                           }
                         },
-                        "expiresAt": { "type": "string", "nullable": true },
-                        "status": { "type": "string" },
-                        "createdAt": { "type": "string" }
+                        "message": {
+                          "type": "string"
+                        }
                       }
                     },
-                    "message": {
-                      "type": "string"
+                    {
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "type": "boolean"
+                        },
+                        "data": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "targetAmount": {
+                              "type": "number"
+                            },
+                            "targetCurrency": {
+                              "type": "string"
+                            },
+                            "stablecoinAmount": {
+                              "type": "number"
+                            },
+                            "stablecoinCurrency": {
+                              "type": "string"
+                            },
+                            "depositAddress": {
+                              "type": "string"
+                            },
+                            "depositAddressId": {
+                              "type": "string"
+                            },
+                            "exchangeRate": {
+                              "type": "number"
+                            },
+                            "lightningFee": {
+                              "type": "number"
+                            },
+                            "withdrawalFee": {
+                              "type": "number"
+                            },
+                            "targetAmountReceivable": {
+                              "type": "number"
+                            },
+                            "totalFees": {
+                              "type": "number"
+                            },
+                            "bankAccount": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "string"
+                                },
+                                "bankName": {
+                                  "type": "string",
+                                  "nullable": true
+                                },
+                                "accountId": {
+                                  "type": "string"
+                                },
+                                "currency": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "status": {
+                              "type": "string"
+                            },
+                            "createdAt": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  ]
+                },
+                "examples": {
+                  "btc_lightning_response": {
+                    "summary": "BTC Lightning Response",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "b57c1ebd-4229-44be-91bc-94d6bb10b5c1",
+                        "lightningInvoice": "lntbs22730n1p55yt8wpp5s7jddlte53dhd4728n22h2uvxtfch3mca0jny27yfehkfwwv0dlsdqqcqzpuxqzfvsp5m55n8lg0pxcnzxf2qh5n9nph0lckf90ch4tt5wymn6nyeu8f668q9qxpqysgqnn7j20lge5p8qat877ry0kuahvx2csdrew4f7d3y6pzt0p0cvf39zp5sz7x5dva98qg2huqdncq8xy7d3dhkdhdrvevx20ejs2ks7yqqq5rtvn",
+                        "lightningInvoiceId": "95e22057-3e91-455b-a980-97ccdcee92fe",
+                        "targetAmount": 1250,
+                        "targetCurrency": "ngn",
+                        "lightningAmount": 198,
+                        "lightningCurrency": "stablesats",
+                        "exchangeRate": 0.0015841333133732535,
+                        "lightningFee": 0,
+                        "withdrawalFee": 9.75,
+                        "targetAmountReceivable": 1240.25,
+                        "totalFees": 9.75,
+                        "bankAccount": {
+                          "id": "8fdc3754-10f0-4295-a1db-da9c2677cad6",
+                          "bankName": "Access Bank Nigeria Plc",
+                          "accountId": "0062881117",
+                          "currency": "NGN"
+                        },
+                        "status": "pending",
+                        "createdAt": "2025-12-17T04:09:18.621Z"
+                      },
+                      "message": "Pay to receive funds in your bank account."
+                    }
+                  },
+                  "stablecoin_response": {
+                    "summary": "Stablecoin Response",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "id": "aa3774fe-b1cc-4548-ba6b-dfde804a3cd7",
+                        "targetAmount": 1250,
+                        "targetCurrency": "brl",
+                        "stablecoinAmount": 227.16646293166716,
+                        "stablecoinCurrency": "USDC",
+                        "depositAddress": "EyaCBDK28oikm5Zb65i3SYMhtFKqd2rmX7uieLG4b8Pj",
+                        "depositAddressId": "f0d1383a-47ff-4c62-b3dc-f7626c89b0a4",
+                        "exchangeRate": 5.5025728,
+                        "lightningFee": 0,
+                        "withdrawalFee": 8.75,
+                        "targetAmountReceivable": 1241.25,
+                        "totalFees": 8.75,
+                        "bankAccount": {
+                          "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                          "bankName": null,
+                          "accountId": "667.136.083-96",
+                          "currency": "BRL"
+                        },
+                        "status": "pending",
+                        "createdAt": "2025-12-17T04:14:54.831Z"
+                      },
+                      "message": "Pay to receive funds in your bank account."
                     }
                   }
-                },
-                "example": {
-                  "success": true,
-                  "data": {
-                    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
-                    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
-                    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
-                    "targetAmount": 88,
-                    "targetCurrency": "brl",
-                    "lightningAmount": 1656,
-                    "lightningCurrency": "stablesats",
-                    "exchangeRate": 0.18822915501882292,
-                    "lightningFee": 0,
-                    "withdrawalFee": 0.64,
-                    "targetAmountReceivable": 87.34,
-                    "totalFees": 0.64,
-                    "bankAccount": {
-                      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                      "bankName": null,
-                      "accountId": "667.136.083-96",
-                      "currency": "BRL"
-                    },
-                    "expiresAt": null,
-                    "status": "pending",
-                    "createdAt": "2025-11-25T13:37:46.829Z"
-                  },
-                  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
                 }
               }
             }
