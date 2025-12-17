@@ -5191,8 +5191,8 @@
         "tags": [
           "Offramp"
         ],
-        "summary": "Offramp Crypto",
-        "description": "Initiate a crypto(in BTC) withdrawal via offramp.",
+        "summary": "Initiate Offramp",
+        "description": "Convert crypto to fiat via offramp. This does not affect your Bullring balance.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -5335,6 +5335,163 @@
                   "error": "Error",
                   "message": "Bank account not found",
                   "stack": "HttpException: Bank account not found\n    at CollectionService.initiateOfframp (/usr/src/app/dist/src/collections/collection.service.js:4081:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async RampController.initiateOfframp (/usr/src/app/dist/src/stores/ramp.controller.js:170:28)"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/offramp/quote": {
+      "post": {
+        "tags": [
+          "Offramp"
+        ],
+        "summary": "Get Offramp Quote",
+        "description": "Get a quote to offramp crypto to fiat. This does not affect your Bullring balance.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "recipient_id": {
+                    "type": "string"
+                  },
+                  "amount": {
+                    "type": "number"
+                  },
+                  "chain": {
+                    "type": "string"
+                  },
+                  "stablecoin": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "recipient_id",
+                  "amount",
+                  "chain",
+                  "stablecoin"
+                ]
+              },
+              "example": {
+                "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                "amount": 200,
+                "chain": "SOL-DEVNET",
+                "stablecoin": "USDC"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Quote retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "targetAmount": {
+                          "type": "number"
+                        },
+                        "targetCurrency": {
+                          "type": "string"
+                        },
+                        "stablecoinAmount": {
+                          "type": "number"
+                        },
+                        "stablecoinCurrency": {
+                          "type": "string"
+                        },
+                        "depositAddress": {
+                          "type": "string"
+                        },
+                        "depositAddressId": {
+                          "type": "string"
+                        },
+                        "exchangeRate": {
+                          "type": "number"
+                        },
+                        "lightningFee": {
+                          "type": "number"
+                        },
+                        "withdrawalFee": {
+                          "type": "number"
+                        },
+                        "targetAmountReceivable": {
+                          "type": "number"
+                        },
+                        "totalFees": {
+                          "type": "number"
+                        },
+                        "bankAccount": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "string"
+                            },
+                            "bankName": {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            "accountId": {
+                              "type": "string"
+                            },
+                            "currency": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "status": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "success": true,
+                  "data": {
+                    "targetAmount": 200,
+                    "targetCurrency": "brl",
+                    "stablecoinAmount": 36.346634069066745,
+                    "stablecoinCurrency": "USDC",
+                    "depositAddress": "EyaCBDK28oikm5Zb65i3SYMhtFKqd2rmX7uieLG4b8Pj",
+                    "depositAddressId": "f0d1383a-47ff-4c62-b3dc-f7626c89b0a4",
+                    "exchangeRate": 5.5025728,
+                    "lightningFee": 0,
+                    "withdrawalFee": 1.4,
+                    "targetAmountReceivable": 198.6,
+                    "totalFees": 1.4,
+                    "bankAccount": {
+                      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+                      "bankName": null,
+                      "accountId": "667.136.083-96",
+                      "currency": "BRL"
+                    },
+                    "status": "pending"
+                  },
+                  "message": "Pay to receive funds in your bank account."
                 }
               }
             }
@@ -5685,141 +5842,13 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/onramp/quote": {
-      "post": {
-        "tags": [
-          "Onramp"
-        ],
-        "summary": "Get Onramp Quote",
-        "description": "Get a quote for a fiat-to-crypto onramp transaction.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string"
-            },
-            "required": true
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "currency": {
-                    "type": "string",
-                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
-                  },
-                  "cryptoAsset": {
-                    "type": "string",
-                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
-                    "enum": [
-                      "USDT",
-                      "USDC",
-                      "BTC_LIGHTNING"
-                    ]
-                  },
-                  "amount": {
-                    "type": "number",
-                    "description": "The amount in fiat currency."
-                  }
-                },
-                "required": [
-                  "currency",
-                  "cryptoAsset",
-                  "amount"
-                ]
-              },
-              "example": {
-                "currency": "GHS",
-                "cryptoAsset": "BTC_LIGHTNING",
-                "amount": 500
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful quote",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "amount": {
-                      "type": "number"
-                    },
-                    "currency": {
-                      "type": "string"
-                    },
-                    "cryptoAsset": {
-                      "type": "string"
-                    },
-                    "exchangeRate": {
-                      "type": "number"
-                    },
-                    "cryptoAmount": {
-                      "type": "number"
-                    },
-                    "estimatedFees": {
-                      "type": "object",
-                      "properties": {
-                        "depositFee": {
-                          "type": "number"
-                        },
-                        "networkFee": {
-                          "type": "number"
-                        },
-                        "totalFees": {
-                          "type": "number"
-                        }
-                      }
-                    },
-                    "minAmount": {
-                      "type": "number"
-                    },
-                    "maxAmount": {
-                      "type": "number"
-                    },
-                    "quoteValiditySeconds": {
-                      "type": "integer"
-                    },
-                    "expiresAt": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "amount": 500,
-                  "currency": "GHS",
-                  "cryptoAsset": "BTC_LIGHTNING",
-                  "exchangeRate": 0.08552894211576846,
-                  "cryptoAmount": 41.62300399201597,
-                  "estimatedFees": {
-                    "depositFee": 7.5,
-                    "networkFee": 5.845974329054843,
-                    "totalFees": 13.345974329054844
-                  },
-                  "minAmount": 100,
-                  "maxAmount": 500000,
-                  "quoteValiditySeconds": 300,
-                  "expiresAt": "2025-12-16T19:28:42.149Z"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/ramp/{subaccountId}/banking/onramp/initiate": {
       "post": {
         "tags": [
           "Onramp"
         ],
         "summary": "Initiate Onramp",
-        "description": "Initiate a fiat-to-crypto onramp transaction.",
+        "description": "Initiate a fiat-to-crypto onramp transaction. This does not affect your Bullring balance.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -6005,6 +6034,134 @@
                   "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/onramp/initiate",
                   "error": "Error",
                   "message": "Bank account not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/{subaccountId}/banking/onramp/quote": {
+      "post": {
+        "tags": [
+          "Onramp"
+        ],
+        "summary": "Get Onramp Quote",
+        "description": "Get a quote to onramp fiat to crypto. This does not affect your Bullring balance.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string"
+            },
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "currency": {
+                    "type": "string",
+                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
+                  },
+                  "cryptoAsset": {
+                    "type": "string",
+                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
+                    "enum": [
+                      "USDT",
+                      "USDC",
+                      "BTC_LIGHTNING"
+                    ]
+                  },
+                  "amount": {
+                    "type": "number",
+                    "description": "The amount in fiat currency."
+                  }
+                },
+                "required": [
+                  "currency",
+                  "cryptoAsset",
+                  "amount"
+                ]
+              },
+              "example": {
+                "currency": "GHS",
+                "cryptoAsset": "BTC_LIGHTNING",
+                "amount": 500
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful quote",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number"
+                    },
+                    "currency": {
+                      "type": "string"
+                    },
+                    "cryptoAsset": {
+                      "type": "string"
+                    },
+                    "exchangeRate": {
+                      "type": "number"
+                    },
+                    "cryptoAmount": {
+                      "type": "number"
+                    },
+                    "estimatedFees": {
+                      "type": "object",
+                      "properties": {
+                        "depositFee": {
+                          "type": "number"
+                        },
+                        "networkFee": {
+                          "type": "number"
+                        },
+                        "totalFees": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "minAmount": {
+                      "type": "number"
+                    },
+                    "maxAmount": {
+                      "type": "number"
+                    },
+                    "quoteValiditySeconds": {
+                      "type": "integer"
+                    },
+                    "expiresAt": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "amount": 500,
+                  "currency": "GHS",
+                  "cryptoAsset": "BTC_LIGHTNING",
+                  "exchangeRate": 0.08552894211576846,
+                  "cryptoAmount": 41.62300399201597,
+                  "estimatedFees": {
+                    "depositFee": 7.5,
+                    "networkFee": 5.845974329054843,
+                    "totalFees": 13.345974329054844
+                  },
+                  "minAmount": 100,
+                  "maxAmount": 500000,
+                  "quoteValiditySeconds": 300,
+                  "expiresAt": "2025-12-16T19:28:42.149Z"
                 }
               }
             }
