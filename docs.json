@@ -8,10 +8,7 @@
     "dark": "#15803D"
   },
   "contextual": {
-    "options": [
-      "copy",
-      "view"
-    ]
+    "options": ["copy", "view"]
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -109,6 +106,7 @@
               {
                 "group": "Conceitos Fundamentais",
                 "pages": [
+                  "pt/multi-currency-balances",
                   "pt/accounts",
                   "pt/supported-currencies"
                 ]
@@ -129,6 +127,7 @@
               {
                 "group": "Padrões Comuns",
                 "pages": [
+                  "pt/use-cases/multi-currency-operations",
                   "pt/use-cases/onboarding",
                   "pt/use-cases/fiat-on-ramp",
                   "pt/use-cases/beneficiaries",
