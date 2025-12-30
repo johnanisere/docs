@@ -4163,6 +4163,311 @@
         }
       }
     },
+    "/v1/ramp/banking/taxonomy/{currency}": {
+      "get": {
+        "tags": ["Recipients"],
+        "summary": "Get Taxonomy",
+        "description": "Get taxonomy for a specific currency.",
+        "parameters": [
+          {
+            "name": "currency",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "The currency code (e.g., MXN, BRL, COP, ARS)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "method": { "type": "string" },
+                      "name": { "type": "string" },
+                      "integration": { "type": "string" },
+                      "sub_method": { "type": "string", "nullable": true },
+                      "method_name": { "type": "string" },
+                      "network_name": { "type": "string" },
+                      "channel_name": { "type": "string" },
+                      "network_description": { "type": "string" },
+                      "required_fields": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      },
+                      "optional_fields": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      },
+                      "currency_configurations": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "currency": { "type": "string" },
+                            "fee": {
+                              "type": "object",
+                              "properties": {
+                                "amount": { "type": "string" },
+                                "type": { "type": "string" }
+                              }
+                            },
+                            "limits": {
+                              "type": "object",
+                              "properties": {
+                                "system_min": { "type": "string" },
+                                "system_max": { "type": "string" },
+                                "tx_limit": { "type": "string" },
+                                "status": { "type": "string" }
+                              }
+                            },
+                            "status": {
+                              "type": "object",
+                              "properties": {
+                                "type": { "type": "string" },
+                                "description": { "type": "string" }
+                              }
+                            },
+                            "asset": { "type": "string" },
+                            "legal_operating_entity": {
+                              "type": "object",
+                              "properties": {
+                                "legal_operation_entity": { "type": "string" },
+                                "country_code": { "type": "string" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "consumer_contacts_enabled": { "type": "boolean" },
+                      "method_description": { "type": "string" },
+                      "icon_config": {
+                        "type": "object",
+                        "properties": {
+                          "path": { "type": "string" },
+                          "name": { "type": "string" }
+                        }
+                      },
+                      "tags": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "title": { "type": "string" },
+                            "type": { "type": "string" }
+                          }
+                        }
+                      },
+                      "network": { "type": "string" },
+                      "protocol": { "type": "string" },
+                      "security": {
+                        "type": "object",
+                        "properties": {
+                          "modes": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": { "type": "string" },
+                                "name": { "type": "string" },
+                                "from_amount": { "type": "number" },
+                                "to_amount": { "type": "number" }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "contract": { "type": "string" },
+                      "taxes": {
+                        "type": "array",
+                        "items": { "type": "object" }
+                      },
+                      "payment_rails": { "type": "string", "nullable": true }
+                    }
+                  }
+                },
+                "example": [
+                  {
+                    "method": "bt",
+                    "name": "Bitso Transfer",
+                    "integration": "bt",
+                    "sub_method": null,
+                    "method_name": "Bitso Transfer",
+                    "network_name": "Bitso Transfer",
+                    "channel_name": "Bitso Transfer",
+                    "network_description": "To other Bitso users, immediately without fees.",
+                    "required_fields": [],
+                    "optional_fields": [
+                      "notes",
+                      "refcode",
+                      "email",
+                      "phone",
+                      "emoji",
+                      "to_client",
+                      "origin_id"
+                    ],
+                    "currency_configurations": [
+                      {
+                        "currency": "ars",
+                        "fee": {
+                          "amount": "0.00000000",
+                          "type": "fixed"
+                        },
+                        "limits": {
+                          "system_min": "0.01000000",
+                          "system_max": "0.00000000",
+                          "tx_limit": "0.00000000",
+                          "status": "upgradeable"
+                        },
+                        "status": {
+                          "type": "active",
+                          "description": "Ok"
+                        },
+                        "asset": "ars",
+                        "legal_operating_entity": {
+                          "legal_operation_entity": "Nvio Argentina",
+                          "country_code": "AR"
+                        }
+                      }
+                    ],
+                    "consumer_contacts_enabled": false,
+                    "method_description": "To other Bitso accounts.",
+                    "icon_config": {
+                      "path": "/assets/icon/funding_methods/",
+                      "name": "bt"
+                    },
+                    "tags": [
+                      {
+                        "title": "Zero-fee",
+                        "type": "SUCCESS"
+                      },
+                      {
+                        "title": "Immediate",
+                        "type": "SUCCESS"
+                      }
+                    ],
+                    "network": "bt",
+                    "protocol": "bt",
+                    "security": {
+                      "modes": [
+                        {
+                          "type": "PIN",
+                          "name": "UNKNOWN",
+                          "from_amount": 0,
+                          "to_amount": 9223372036854776000
+                        }
+                      ]
+                    },
+                    "contract": "none",
+                    "taxes": [],
+                    "payment_rails": null
+                  },
+                  {
+                    "method": "bind",
+                    "name": "Bank Transfer",
+                    "integration": "bind",
+                    "sub_method": null,
+                    "method_name": "Bank Transfer",
+                    "network_name": "Bank",
+                    "channel_name": "Bank",
+                    "network_description": "Transfer to any bank",
+                    "required_fields": ["cvu"],
+                    "optional_fields": [
+                      "description",
+                      "recipient_name",
+                      "origin_id",
+                      "client_withdrawal_id",
+                      "max_fee",
+                      "withdrawal_initiation_token",
+                      "withdrawalInitiationToken"
+                    ],
+                    "currency_configurations": [
+                      {
+                        "currency": "ars",
+                        "fee": {
+                          "amount": "0.00000000",
+                          "type": "fixed"
+                        },
+                        "limits": {
+                          "system_min": "0.01000000",
+                          "system_max": "0.00000000",
+                          "tx_limit": "0.00000000",
+                          "status": "upgradeable"
+                        },
+                        "status": {
+                          "type": "active",
+                          "description": "Ok"
+                        },
+                        "asset": "ars",
+                        "legal_operating_entity": {
+                          "legal_operation_entity": "Nvio Argentina",
+                          "country_code": "AR"
+                        }
+                      }
+                    ],
+                    "consumer_contacts_enabled": true,
+                    "method_description": "To any bank or digital account.",
+                    "icon_config": {
+                      "path": "/assets/icon/withdrawal_methods/",
+                      "name": "bank"
+                    },
+                    "tags": [
+                      {
+                        "title": "Zero-fee",
+                        "type": "SUCCESS"
+                      },
+                      {
+                        "title": "Immediate",
+                        "type": "SUCCESS"
+                      }
+                    ],
+                    "network": "coelsa",
+                    "protocol": "cvu",
+                    "security": {
+                      "modes": [
+                        {
+                          "type": "PIN",
+                          "name": "UNKNOWN",
+                          "from_amount": 0,
+                          "to_amount": 9223372036854776000
+                        }
+                      ]
+                    },
+                    "contract": "none",
+                    "taxes": [],
+                    "payment_rails": null
+                  }
+                ]
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-12-30T10:46:33.672Z",
+                  "path": "/v1/ramp/banking/taxonomy/NGN",
+                  "error": "Bad Request",
+                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS",
+                  "stack": "BadRequestException: Invalid currency. Supported currencies: MXN, BRL, COP, ARS"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ramp/{subaccountId}/banking/withdrawals": {
       "post": {
         "tags": ["Withdrawals"],
