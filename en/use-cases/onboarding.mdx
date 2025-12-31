@@ -90,9 +90,9 @@ curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
 Once a subaccount is created, you can access the full suite of Bullring's financial features for that user. Most of these operations require the subaccount to complete [Verification](/api-reference/verification).
 
 ### 1. Verification (KYC/KYB)
-Before a subaccount can transact, they must verify their identity (Tier 1) or business (Tier 2/KYB).
-*   **Tier 1**: Basic personal information. Grants access to **NGN**, **GHS**, and **BRL** transactions.
-*   **Tier 2**: Comprehensive documentation for higher limits or business accounts. Grants access to **USD**, **ZMW**, and **EUR** transactions.
+Before a subaccount can transact, they must verify their identity. There are 2 levels of KYC separated by country:
+*   **Tier 1**: Grants access to all currencies except **USD** and **EUR**. This level is required to unlock **NGN** transactions.
+*   **Tier 2**: Grants access to all currencies except **NGN**. This level is required to unlock **USD** and **EUR** transactions.
 *   [See Verification API](/api-reference/verification)
 
 ### 2. Deposits (On-Ramp)
