@@ -1496,8 +1496,8 @@
     "/v1/kyc/customers/{subaccountId}": {
       "patch": {
         "tags": ["Verification"],
-        "summary": "Tier Two | Update Customer Information",
-        "description": "Update the KYC information for a tier two customer.",
+        "summary": "Tier Two | Add/Update Customer Information",
+        "description": "Add or update the KYC information for a tier two customer.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -1526,28 +1526,97 @@
                       "street_line_1": { "type": "string" },
                       "street_line_2": { "type": "string" },
                       "city": { "type": "string" },
-                      "state": { "type": "string" },
+                      "state": {
+                        "type": "string",
+                        "description": "ISO 2 state codes. See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
+                      },
                       "postal_code": { "type": "string" },
-                      "country": { "type": "string" }
+                      "country": {
+                        "type": "string",
+                        "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
+                      }
                     }
                   },
-                  "birth_date": { "type": "string", "format": "date" },
-                  "account_purpose": { "type": "string" },
+                  "birth_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Must be formatted as YYYY-MM-DD"
+                  },
+                  "account_purpose": {
+                    "type": "string",
+                    "enum": [
+                      "CHARITABLE_DONATIONS",
+                      "ECOMMERCE_RETAIL_PAYMENTS",
+                      "INVESTMENT_PURPOSES",
+                      "OPERATING_A_COMPANY",
+                      "OTHER",
+                      "PAYMENTS_TO_FRIENDS_OR_FAMILY_ABROAD",
+                      "PERSONAL_OR_LIVING_EXPENSES",
+                      "PROTECT_WEALTH",
+                      "PURCHASE_GOODS_AND_SERVICES",
+                      "RECEIVE_PAYMENT_FOR_FREELANCING",
+                      "RECEIVE_SALARY"
+                    ]
+                  },
                   "account_purpose_other": {
                     "type": "string",
                     "nullable": true
                   },
-                  "employment_status": { "type": "string" },
-                  "expected_monthly_payments_usd": { "type": "string" },
+                  "employment_status": {
+                    "type": "string",
+                    "enum": [
+                      "EMPLOYED",
+                      "HOMEMAKER",
+                      "RETIRED",
+                      "SELF_EMPLOYED",
+                      "STUDENT",
+                      "UNEMPLOYED"
+                    ]
+                  },
+                  "expected_monthly_payments_usd": {
+                    "type": "string",
+                    "enum": [
+                      "UP_TO_4999",
+                      "FROM_5000_TO_9999",
+                      "FROM_10000_TO_49999",
+                      "FROM_50000"
+                    ]
+                  },
                   "acting_as_intermediary": { "type": "boolean" },
-                  "most_recent_occupation": { "type": "string" },
-                  "source_of_funds": { "type": "string" },
+                  "most_recent_occupation": {
+                    "type": "string",
+                    "description": "Fetch from occupation endpoint: [/api-reference/verification/get-occupations](/api-reference/verification/get-occupations)"
+                  },
+                  "source_of_funds": {
+                    "type": "string",
+                    "enum": [
+                      "COMPANY_FUNDS",
+                      "ECOMMERCE_RESELLER",
+                      "GAMBLING_PROCEEDS",
+                      "GIFTS",
+                      "GOVERNMENT_BENEFITS",
+                      "INHERITANCE",
+                      "INVESTMENTS_LOANS",
+                      "PENSION_RETIREMENT",
+                      "SALARY",
+                      "SALE_OF_ASSETS_REAL_ESTATE",
+                      "SAVINGS",
+                      "SOMEONE_ELSES_FUNDS"
+                    ]
+                  },
                   "documents": {
                     "type": "array",
                     "items": {
                       "type": "object",
                       "properties": {
-                        "purpose": { "type": "string" },
+                        "purpose": {
+                          "type": "string",
+                          "enum": [
+                            "PROOF_OF_ACCOUNT_PURPOSE",
+                            "PROOF_OF_ADDRESS",
+                            "PROOF_OF_SOURCE_OF_FUNDS"
+                          ]
+                        },
                         "file": { "type": "string", "format": "uri" }
                       }
                     }
@@ -1557,8 +1626,14 @@
                     "items": {
                       "type": "object",
                       "properties": {
-                        "type": { "type": "string" },
-                        "issuing_country": { "type": "string" },
+                        "type": {
+                          "type": "string",
+                          "enum": ["passport"]
+                        },
+                        "issuing_country": {
+                          "type": "string",
+                          "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
+                        },
                         "number": { "type": "string" },
                         "image_front": { "type": "string", "format": "uri" },
                         "image_back": { "type": "string", "format": "uri" }
