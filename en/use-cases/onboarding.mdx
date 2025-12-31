@@ -4,6 +4,7 @@ description: "Learn how to create and verify subaccounts."
 ---
 
 ## Overview
+
 This guide covers the complete flow for onboarding a new user (subaccount), including creation and KYC/KYB verification.
 
 To onboard a new user, you must create a subaccount. This is the first step before they can deposit funds or perform any banking operations.
@@ -39,12 +40,12 @@ When a subaccount is created, you will receive a `subaccount.status.created` eve
 
 ```json
 {
-    "data": {
-        "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
-        "email": "customer@example.com",
-        "status": "created"
-    },
-    "event": "subaccount.status.created"
+  "data": {
+    "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+    "email": "customer@example.com",
+    "status": "created"
+  },
+  "event": "subaccount.status.created"
 }
 ```
 
@@ -90,27 +91,37 @@ curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
 Once a subaccount is created, you can access the full suite of Bullring's financial features for that user. Most of these operations require the subaccount to complete [Verification](/api-reference/verification).
 
 ### 1. Verification (KYC/KYB)
+
 Before a subaccount can transact, they must verify their identity. There are 2 levels of KYC separated by country:
-*   **Tier 1**: Grants access to all currencies except **USD** and **EUR**. This level is required to unlock **NGN** transactions.
-*   **Tier 2**: Grants access to all currencies except **NGN**. This level is required to unlock **USD** and **EUR** transactions.
-*   [See Verification API](/api-reference/verification)
+
+- **Tier 1**: Grants access to all currencies except **USD** and **EUR**. This level is required to unlock **NGN** transactions.
+- **Tier 2**: Grants access to all currencies except **NGN**. This level is required to unlock **USD** and **EUR** transactions.
+- [See Verification API](/api-reference/verification)
 
 ### 2. Deposits (On-Ramp)
+
 Subaccounts can fund their balances using various methods:
-*   **Fiat**: Local bank transfers, Mobile Money (e.g., NGN, GHS, ZMW).
-*   **Crypto**: On-chain transfers (ETH, SOL) or Lightning Network (BTC).
-*   [See Deposits API](/api-reference/deposits/request-fiat-deposit)
+
+- **Fiat**: Local bank transfers, Mobile Money (e.g., NGN, GHS, ZMW).
+- **Crypto**: On-chain transfers (ETH, SOL) or Lightning Network (BTC).
+- [See Deposits API](/api-reference/deposits/request-fiat-deposit)
 
 ### 3. Withdrawals (Off-Ramp)
+
 Subaccounts can withdraw their funds to:
-*   **Fiat Recipients**: Wire transfers (USD, EUR), PIX (BRL), Mobile Money.
-*   **Crypto Wallets**: Stablecoins (USDC, USDT) or Bitcoin.
-*   [See Withdrawals API](/api-reference/withdrawals/withdraw-fiat)
+
+- **Fiat Recipients**: Wire transfers (USD, EUR), PIX (BRL), Mobile Money.
+- **Crypto Wallets**: Stablecoins (USDC, USDT) or Bitcoin.
+- [See Withdrawals API](/api-reference/withdrawals/withdraw-fiat)
 
 ### 4. Recipient Management
+
 Save beneficiary details (bank accounts, crypto addresses) to make repeated withdrawals easier and safer.
-*   [See Recipients API](/api-reference/recipients/get-all-recipients)
+
+- [See Recipients API](/api-reference/recipients/get-all-recipients)
 
 ### 5. Rates & Fees
+
 Check real-time conversion rates and calculate fees before initiating transactions to ensure transparency for your users.
-*   [See Rates & Fees API](/api-reference/rates/conversion-rate)
+
+- [See Rates & Fees API](/api-reference/rates/conversion-rate)
