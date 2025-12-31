@@ -3609,15 +3609,10 @@
             "in": "path",
             "schema": {
               "type": "string",
-              "enum": [
-                "ETH-MAINNET",
-                "SOL-MAINNET-BETA",
-                "ETH-SEPOLIA",
-                "SOL-DEVNET"
-              ]
+              "enum": ["ETH", "SOL", "ETH-SEPOLIA", "SOL-DEVNET"]
             },
             "required": true,
-            "description": "The blockchain network.\n\n**Production:** `ETH-MAINNET`, `SOL-MAINNET-BETA`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
+            "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
           }
         ],
         "responses": {
