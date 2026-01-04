@@ -2696,6 +2696,14 @@
                     "properties": {
                       "channelId": {
                         "type": "string"
+                      },
+                      "generateNewAccount": {
+                        "type": "boolean",
+                        "description": "Generates a new unique account each time the API is called with this field set to true"
+                      },
+                      "accountId": {
+                        "type": "string",
+                        "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
                     "required": ["channelId", "source"]
@@ -2766,6 +2774,14 @@
                     "properties": {
                       "channelId": {
                         "type": "string"
+                      },
+                      "generateNewAccount": {
+                        "type": "boolean",
+                        "description": "Generates a new unique account each time the API is called with this field set to true"
+                      },
+                      "accountId": {
+                        "type": "string",
+                        "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
                     "required": ["channelId"]
@@ -2777,6 +2793,14 @@
                     "properties": {
                       "channelId": {
                         "type": "string"
+                      },
+                      "generateNewAccount": {
+                        "type": "boolean",
+                        "description": "Generates a new unique account each time the API is called with this field set to true"
+                      },
+                      "accountId": {
+                        "type": "string",
+                        "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
                     "required": ["channelId"]
