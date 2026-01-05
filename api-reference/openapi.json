@@ -25,6 +25,10 @@
       "description": "Endpoints for subaccount verification, including KYC and KYB processes."
     },
     {
+      "name": "Balances",
+      "description": "Endpoints for retrieving account balances."
+    },
+    {
       "name": "Deposits",
       "description": "Endpoints for handling deposits into subaccounts."
     },
@@ -2146,6 +2150,66 @@
                   "error": "Error",
                   "message": "Missing required fields: signed_agreement_id",
                   "stack": "HttpException: Missing required fields: signed_agreement_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/banking/balances": {
+      "get": {
+        "tags": ["Balances"],
+        "summary": "Get Balances",
+        "description": "Retrieve account balances.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string" },
+                    "email": { "type": "string" },
+                    "balances": {
+                      "type": "object",
+                      "properties": {
+                        "usd": { "type": "number" },
+                        "ngn": { "type": "number" },
+                        "brl": { "type": "number" },
+                        "eur": { "type": "number" },
+                        "ghs": { "type": "number" },
+                        "zmw": { "type": "number" },
+                        "tzs": { "type": "number" },
+                        "mxn": { "type": "number" },
+                        "cop": { "type": "number" },
+                        "ars": { "type": "number" }
+                      }
+                    },
+                    "businessName": { "type": "string" },
+                    "status": { "type": "string" },
+                    "createdAt": { "type": "string", "format": "date-time" }
+                  }
+                },
+                "example": {
+                  "id": "abc12345-8854-4790-97e0-1fa45a15b672",
+                  "email": "owneremail@example.com",
+                  "balances": {
+                    "usd": 3256775.24,
+                    "ngn": 40538.8,
+                    "brl": 3091.904761,
+                    "eur": 0,
+                    "ghs": 20,
+                    "zmw": 50,
+                    "tzs": 0,
+                    "mxn": 0,
+                    "cop": 0,
+                    "ars": 0
+                  },
+                  "businessName": "Grand Global Company",
+                  "status": "created",
+                  "createdAt": "2025-11-19T16:48:49.565Z"
                 }
               }
             }
