@@ -6714,15 +6714,20 @@
                   "$ref": "#/components/schemas/ConversionResponse"
                 },
                 "example": {
-                  "id": "445952df-9346-4d45-9478-3cd24fa25531",
-                  "fromCurrency": "usd",
-                  "toCurrency": "ngn",
-                  "amount": 17,
-                  "feeAmount": 0,
-                  "netAmount": 17,
-                  "estimatedReceived": 10179.6,
-                  "rate": 598.8,
-                  "createdAt": "2025-12-16T18:04:55.385Z"
+                  "id": "dba54d80-73fc-45aa-adbe-c9c75b7f9c9a",
+                  "createdAt": "2026-01-05T00:39:12.624Z",
+                  "from": {
+                    "currency": "USD",
+                    "amount": 17
+                  },
+                  "to": {
+                    "currency": "BRL",
+                    "grossAmount": 92.184761,
+                    "netAmount": 91.904761
+                  },
+                  "feeAmount": 0.28,
+                  "feeCurrency": "BRL",
+                  "rate": 5.422633
                 }
               }
             }
@@ -8894,20 +8899,31 @@
           "id": {
             "type": "string",
             "format": "uuid",
-            "example": "445952df-9346-4d45-9478-3cd24fa25531"
+            "example": "dba54d80-73fc-45aa-adbe-c9c75b7f9c9a"
           },
-          "fromCurrency": { "type": "string", "example": "usd" },
-          "toCurrency": { "type": "string", "example": "ngn" },
-          "amount": { "type": "number", "example": 17 },
-          "feeAmount": { "type": "number", "example": 0 },
-          "netAmount": { "type": "number", "example": 17 },
-          "estimatedReceived": { "type": "number", "example": 10179.6 },
-          "rate": { "type": "number", "example": 598.8 },
           "createdAt": {
             "type": "string",
             "format": "date-time",
-            "example": "2025-12-16T18:04:55.385Z"
-          }
+            "example": "2026-01-05T00:39:12.624Z"
+          },
+          "from": {
+            "type": "object",
+            "properties": {
+              "currency": { "type": "string", "example": "USD" },
+              "amount": { "type": "number", "example": 17 }
+            }
+          },
+          "to": {
+            "type": "object",
+            "properties": {
+              "currency": { "type": "string", "example": "BRL" },
+              "grossAmount": { "type": "number", "example": 92.184761 },
+              "netAmount": { "type": "number", "example": 91.904761 }
+            }
+          },
+          "feeAmount": { "type": "number", "example": 0.28 },
+          "feeCurrency": { "type": "string", "example": "BRL" },
+          "rate": { "type": "number", "example": 5.422633 }
         }
       },
       "ConversionQuoteResponse": {
