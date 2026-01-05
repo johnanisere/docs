@@ -515,6 +515,7 @@
                       },
                       "identification_number": {
                         "type": "string",
+                        "description": "BVN, NIN can be passed to identification_number",
                         "example": "22245678123"
                       },
                       "address": {
