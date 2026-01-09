@@ -154,55 +154,10 @@
                       "format": "email",
                       "description": "Email address of the subaccount"
                     },
-                    "balances": {
-                      "type": "object",
-                      "description": "Subaccount balances per currency",
-                      "properties": {
-                        "usd": {
-                          "type": "number",
-                          "description": "USD balance"
-                        },
-                        "ngn": {
-                          "type": "number",
-                          "description": "NGN balance"
-                        },
-                        "brl": {
-                          "type": "number",
-                          "description": "BRL balance"
-                        },
-                        "eur": {
-                          "type": "number",
-                          "description": "EUR balance"
-                        },
-                        "ghs": {
-                          "type": "number",
-                          "description": "GHS balance"
-                        },
-                        "zmw": {
-                          "type": "number",
-                          "description": "ZMW balance"
-                        },
-                        "tzs": {
-                          "type": "number",
-                          "description": "TZS balance"
-                        },
-                        "mxn": {
-                          "type": "number",
-                          "description": "MXN balance"
-                        },
-                        "cop": {
-                          "type": "number",
-                          "description": "COP balance"
-                        },
-                        "ars": {
-                          "type": "number",
-                          "description": "ARS balance"
-                        }
-                      }
-                    },
                     "status": {
                       "type": "string",
-                      "description": "Current status of the subaccount"
+                      "description": "Current status of the subaccount",
+                      "enum": ["created", "approved", "review"]
                     },
                     "createdAt": {
                       "type": "string",
@@ -211,27 +166,16 @@
                     },
                     "verificationTier": {
                       "type": "number",
-                      "description": "Verification tier of the subaccount"
+                      "description": "Verification tier of the subaccount",
+                      "enum": [1, 2]
                     }
                   }
                 },
                 "example": {
-                  "id": "5f7dc10c-74f0-4176-b328-d2b8b162972d",
-                  "email": "johnanisere+0012djdi@bullring.finance",
-                  "balances": {
-                    "usd": 3206246.58,
-                    "ngn": 40538.8,
-                    "brl": 3000,
-                    "eur": 0,
-                    "ghs": 20,
-                    "zmw": 50,
-                    "tzs": 0,
-                    "mxn": 0,
-                    "cop": 0,
-                    "ars": 0
-                  },
+                  "id": "f28c3af5-e59b-4fd2-99e0-32ea06f56444",
+                  "email": "user+01@gmail.com",
                   "status": "approved",
-                  "createdAt": "2025-11-21T15:31:37.541Z",
+                  "createdAt": "2026-01-06T08:17:51.020Z",
                   "verificationTier": 1
                 }
               }
