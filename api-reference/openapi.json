@@ -1792,7 +1792,7 @@
     "/v1/kyc/customers/{subaccountId}": {
       "patch": {
         "tags": ["Verification"],
-        "summary": "Tier Two | Add/Update Customer Information",
+        "summary": "Tier Two | Add/Update Individual Information",
         "description": "Add or update the KYC information for a tier two customer.",
         "parameters": [
           {
@@ -2192,7 +2192,7 @@
       },
       "get": {
         "tags": ["Verification"],
-        "summary": "Tier Two | Get Customer Information",
+        "summary": "Tier Two | Get Individual Information",
         "description": "Retrieve the tier two customer KYC information.",
         "parameters": [
           {
@@ -2414,10 +2414,1388 @@
         }
       }
     },
+    "/v1/kyc/businesses/{subaccountId}": {
+      "patch": {
+        "tags": ["Verification"],
+        "summary": "Tier Two | Add/Update Business Information",
+        "description": "Add or update the KYC information for a tier two business.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "legal_name": {
+                    "type": "string"
+                  },
+                  "trade_name": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "source_of_funds": {
+                    "type": "string"
+                  },
+                  "business_type": {
+                    "type": "string"
+                  },
+                  "website": {
+                    "type": "string"
+                  },
+                  "registered_address": {
+                    "type": "object",
+                    "properties": {
+                      "street_line_1": {
+                        "type": "string"
+                      },
+                      "street_line_2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "subdivision": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "physical_address": {
+                    "type": "object",
+                    "properties": {
+                      "street_line_1": {
+                        "type": "string"
+                      },
+                      "street_line_2": {
+                        "type": "string"
+                      },
+                      "city": {
+                        "type": "string"
+                      },
+                      "subdivision": {
+                        "type": "string"
+                      },
+                      "postal_code": {
+                        "type": "string"
+                      },
+                      "country": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "identification": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string"
+                        },
+                        "number": {
+                          "type": "string"
+                        },
+                        "issuing_country": {
+                          "type": "string"
+                        },
+                        "image_front": {
+                          "type": "string",
+                          "format": "uri"
+                        },
+                        "image_back": {
+                          "type": "string",
+                          "format": "uri"
+                        }
+                      }
+                    }
+                  },
+                  "is_dao": {
+                    "type": "boolean"
+                  },
+                  "is_money_transmitter": {
+                    "type": "boolean"
+                  },
+                  "business_industry": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "account_purpose": {
+                    "type": "string"
+                  },
+                  "ultimate_beneficial_owners": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "first_name": {
+                          "type": "string"
+                        },
+                        "middle_name": {
+                          "type": "string"
+                        },
+                        "last_name": {
+                          "type": "string"
+                        },
+                        "birth_date": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "address": {
+                          "type": "object",
+                          "properties": {
+                            "street_line_1": {
+                              "type": "string"
+                            },
+                            "street_line_2": {
+                              "type": "string"
+                            },
+                            "city": {
+                              "type": "string"
+                            },
+                            "subdivision": {
+                              "type": "string"
+                            },
+                            "postal_code": {
+                              "type": "string"
+                            },
+                            "country": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "identification": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "type": "string"
+                              },
+                              "number": {
+                                "type": "string"
+                              },
+                              "issuing_country": {
+                                "type": "string"
+                              },
+                              "image_front": {
+                                "type": "string",
+                                "format": "uri"
+                              },
+                              "image_back": {
+                                "type": "string",
+                                "format": "uri"
+                              }
+                            }
+                          }
+                        },
+                        "has_ownership": {
+                          "type": "boolean"
+                        },
+                        "has_control": {
+                          "type": "boolean"
+                        },
+                        "is_signer": {
+                          "type": "boolean"
+                        },
+                        "title": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "formation_document": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "ownership_document": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "flow_of_funds_document": {
+                    "type": "string",
+                    "format": "uri",
+                    "nullable": true
+                  },
+                  "has_material_intermediary_ownership": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "example": {
+                "legal_name": "Bullring Finance 2",
+                "trade_name": "Anisere",
+                "description": "yfguy bhbiu",
+                "source_of_funds": "grants",
+                "business_type": "corporation",
+                "website": "bullring.finance",
+                "registered_address": {
+                  "street_line_1": "1 Swallow Street",
+                  "street_line_2": "",
+                  "city": "birmingham",
+                  "subdivision": "EN",
+                  "postal_code": "B2 4AA",
+                  "country": "GBR"
+                },
+                "physical_address": {
+                  "street_line_1": "1 Swallow Street",
+                  "street_line_2": "",
+                  "city": "birmingham",
+                  "subdivision": "EN",
+                  "postal_code": "B2 4AA",
+                  "country": "GBR"
+                },
+                "identification": [
+                  {
+                    "type": "crn",
+                    "number": "1760716",
+                    "issuing_country": "GBR",
+                    "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
+                    "image_back": ""
+                  }
+                ],
+                "is_dao": false,
+                "is_money_transmitter": false,
+                "business_industry": ["111150"],
+                "account_purpose": "payroll",
+                "ultimate_beneficial_owners": [
+                  {
+                    "first_name": "John",
+                    "middle_name": "Omoniyi",
+                    "last_name": "Anisere",
+                    "birth_date": "1993-10-05T00:00:00.000Z",
+                    "email": "johnanisere@gmail.com",
+                    "address": {
+                      "street_line_1": "1 Swallow Street",
+                      "street_line_2": "",
+                      "city": "birmingham",
+                      "subdivision": "EN",
+                      "postal_code": "B2 4AA",
+                      "country": "GBR"
+                    },
+                    "identification": [
+                      {
+                        "type": "passport",
+                        "number": "B50091752",
+                        "issuing_country": "NGA",
+                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
+                        "image_back": ""
+                      }
+                    ],
+                    "has_ownership": true,
+                    "has_control": true,
+                    "is_signer": true,
+                    "title": "CEO"
+                  }
+                ],
+                "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
+                "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
+                "flow_of_funds_document": null,
+                "has_material_intermediary_ownership": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Business information updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "legal_name": {
+                      "type": "string"
+                    },
+                    "trade_name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "source_of_funds": {
+                      "type": "string"
+                    },
+                    "business_type": {
+                      "type": "string"
+                    },
+                    "website": {
+                      "type": "string"
+                    },
+                    "registered_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "physical_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "identification": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "issuing_country": {
+                            "type": "string"
+                          },
+                          "image_front": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "image_back": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "is_dao": {
+                      "type": "boolean"
+                    },
+                    "is_money_transmitter": {
+                      "type": "boolean"
+                    },
+                    "business_industry": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "account_purpose": {
+                      "type": "string"
+                    },
+                    "ultimate_beneficial_owners": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "middle_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "address": {
+                            "type": "object",
+                            "properties": {
+                              "street_line_1": {
+                                "type": "string"
+                              },
+                              "street_line_2": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "subdivision": {
+                                "type": "string"
+                              },
+                              "postal_code": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "identification": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "number": {
+                                  "type": "string"
+                                },
+                                "issuing_country": {
+                                  "type": "string"
+                                },
+                                "image_front": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "image_back": {
+                                  "type": "string",
+                                  "format": "uri"
+                                }
+                              }
+                            }
+                          },
+                          "has_ownership": {
+                            "type": "boolean"
+                          },
+                          "has_control": {
+                            "type": "boolean"
+                          },
+                          "is_signer": {
+                            "type": "boolean"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "formation_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "ownership_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "flow_of_funds_document": {
+                      "type": "string",
+                      "format": "uri",
+                      "nullable": true
+                    },
+                    "has_material_intermediary_ownership": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "not_started",
+                  "created_at": "2026-01-12T16:28:42.790Z",
+                  "updated_at": "2026-01-12T16:28:42.825Z",
+                  "type": "business",
+                  "legal_name": "Bullring Finance 2",
+                  "trade_name": "Anisere",
+                  "description": "yfguy bhbiu",
+                  "source_of_funds": "grants",
+                  "business_type": "corporation",
+                  "website": "bullring.finance",
+                  "registered_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "physical_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "identification": [
+                    {
+                      "type": "crn",
+                      "number": "1760716",
+                      "issuing_country": "GBR",
+                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
+                      "image_back": ""
+                    }
+                  ],
+                  "is_dao": false,
+                  "is_money_transmitter": false,
+                  "business_industry": ["111150"],
+                  "account_purpose": "payroll",
+                  "ultimate_beneficial_owners": [
+                    {
+                      "first_name": "John",
+                      "middle_name": "Omoniyi",
+                      "last_name": "Anisere",
+                      "birth_date": "1993-10-05T00:00:00.000Z",
+                      "email": "johnanisere@gmail.com",
+                      "address": {
+                        "street_line_1": "1 Swallow Street",
+                        "street_line_2": "",
+                        "city": "birmingham",
+                        "subdivision": "EN",
+                        "postal_code": "B2 4AA",
+                        "country": "GBR"
+                      },
+                      "identification": [
+                        {
+                          "type": "passport",
+                          "number": "B50091752",
+                          "issuing_country": "NGA",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
+                          "image_back": ""
+                        }
+                      ],
+                      "has_ownership": true,
+                      "has_control": true,
+                      "is_signer": true,
+                      "title": "CEO"
+                    }
+                  ],
+                  "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
+                  "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
+                  "flow_of_funds_document": null,
+                  "has_material_intermediary_ownership": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": ["Verification"],
+        "summary": "Tier Two | Get Business Information",
+        "description": "Retrieve the tier two business KYC information.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "rejection_reasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "endorsements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "legal_name": {
+                      "type": "string"
+                    },
+                    "trade_name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "source_of_funds": {
+                      "type": "string"
+                    },
+                    "business_type": {
+                      "type": "string"
+                    },
+                    "website": {
+                      "type": "string"
+                    },
+                    "registered_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "physical_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "identification": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "issuing_country": {
+                            "type": "string"
+                          },
+                          "image_front": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "image_back": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "is_dao": {
+                      "type": "boolean"
+                    },
+                    "is_money_transmitter": {
+                      "type": "boolean"
+                    },
+                    "business_industry": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "account_purpose": {
+                      "type": "string"
+                    },
+                    "ultimate_beneficial_owners": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "middle_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "address": {
+                            "type": "object",
+                            "properties": {
+                              "street_line_1": {
+                                "type": "string"
+                              },
+                              "street_line_2": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "subdivision": {
+                                "type": "string"
+                              },
+                              "postal_code": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "identification": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "number": {
+                                  "type": "string"
+                                },
+                                "issuing_country": {
+                                  "type": "string"
+                                },
+                                "image_front": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "image_back": {
+                                  "type": "string",
+                                  "format": "uri"
+                                }
+                              }
+                            }
+                          },
+                          "has_ownership": {
+                            "type": "boolean"
+                          },
+                          "has_control": {
+                            "type": "boolean"
+                          },
+                          "is_signer": {
+                            "type": "boolean"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "formation_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "ownership_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "flow_of_funds_document": {
+                      "type": "string",
+                      "format": "uri",
+                      "nullable": true
+                    },
+                    "has_material_intermediary_ownership": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "not_started",
+                  "email": "johnanisere+15124@bullring.finance",
+                  "rejection_reasons": [],
+                  "endorsements": [],
+                  "created_at": "2026-01-12T16:28:42.790Z",
+                  "updated_at": "2026-01-12T16:28:42.825Z",
+                  "type": "business",
+                  "legal_name": "Bullring Finance 2",
+                  "trade_name": "Anisere",
+                  "description": "yfguy bhbiu",
+                  "source_of_funds": "grants",
+                  "business_type": "corporation",
+                  "website": "bullring.finance",
+                  "registered_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "physical_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "identification": [
+                    {
+                      "type": "crn",
+                      "number": "1760716",
+                      "issuing_country": "GBR",
+                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
+                      "image_back": ""
+                    }
+                  ],
+                  "is_dao": false,
+                  "is_money_transmitter": false,
+                  "business_industry": ["111150"],
+                  "account_purpose": "payroll",
+                  "ultimate_beneficial_owners": [
+                    {
+                      "first_name": "John",
+                      "middle_name": "Omoniyi",
+                      "last_name": "Anisere",
+                      "birth_date": "1993-10-05T00:00:00.000Z",
+                      "email": "johnanisere@gmail.com",
+                      "address": {
+                        "street_line_1": "1 Swallow Street",
+                        "street_line_2": "",
+                        "city": "birmingham",
+                        "subdivision": "EN",
+                        "postal_code": "B2 4AA",
+                        "country": "GBR"
+                      },
+                      "identification": [
+                        {
+                          "type": "passport",
+                          "number": "B50091752",
+                          "issuing_country": "NGA",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
+                          "image_back": ""
+                        }
+                      ],
+                      "has_ownership": true,
+                      "has_control": true,
+                      "is_signer": true,
+                      "title": "CEO"
+                    }
+                  ],
+                  "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
+                  "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
+                  "flow_of_funds_document": null,
+                  "has_material_intermediary_ownership": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Business not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 404,
+                  "timestamp": "2026-01-12T16:03:41.899Z",
+                  "path": "/v1/kyc/businesses/07f3e38c-d1b7-43dd-b7b0-6608b13ab697",
+                  "error": "Error",
+                  "message": "Business not found",
+                  "stack": "HttpException: Business not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/kyc/businesses/{subaccountId}/submit": {
+      "post": {
+        "tags": ["Verification"],
+        "summary": "Tier Two | Submit Business Information",
+        "description": "Submit the tier two business information for verification.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submission successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "rejection_reasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "endorsements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "additional_requirements": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "legal_name": {
+                      "type": "string"
+                    },
+                    "trade_name": {
+                      "type": "string"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "source_of_funds": {
+                      "type": "string"
+                    },
+                    "business_type": {
+                      "type": "string"
+                    },
+                    "website": {
+                      "type": "string"
+                    },
+                    "registered_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "physical_address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "subdivision": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "identification": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "issuing_country": {
+                            "type": "string"
+                          },
+                          "image_front": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "image_back": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "is_dao": {
+                      "type": "boolean"
+                    },
+                    "is_money_transmitter": {
+                      "type": "boolean"
+                    },
+                    "business_industry": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "account_purpose": {
+                      "type": "string"
+                    },
+                    "ultimate_beneficial_owners": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "first_name": {
+                            "type": "string"
+                          },
+                          "middle_name": {
+                            "type": "string"
+                          },
+                          "last_name": {
+                            "type": "string"
+                          },
+                          "birth_date": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "email": {
+                            "type": "string",
+                            "format": "email"
+                          },
+                          "address": {
+                            "type": "object",
+                            "properties": {
+                              "street_line_1": {
+                                "type": "string"
+                              },
+                              "street_line_2": {
+                                "type": "string"
+                              },
+                              "city": {
+                                "type": "string"
+                              },
+                              "subdivision": {
+                                "type": "string"
+                              },
+                              "postal_code": {
+                                "type": "string"
+                              },
+                              "country": {
+                                "type": "string"
+                              }
+                            }
+                          },
+                          "identification": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string"
+                                },
+                                "number": {
+                                  "type": "string"
+                                },
+                                "issuing_country": {
+                                  "type": "string"
+                                },
+                                "image_front": {
+                                  "type": "string",
+                                  "format": "uri"
+                                },
+                                "image_back": {
+                                  "type": "string",
+                                  "format": "uri"
+                                }
+                              }
+                            }
+                          },
+                          "has_ownership": {
+                            "type": "boolean"
+                          },
+                          "has_control": {
+                            "type": "boolean"
+                          },
+                          "is_signer": {
+                            "type": "boolean"
+                          },
+                          "title": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "formation_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "ownership_document": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "flow_of_funds_document": {
+                      "type": "string",
+                      "format": "uri",
+                      "nullable": true
+                    },
+                    "has_material_intermediary_ownership": {
+                      "type": "boolean"
+                    }
+                  }
+                },
+                "example": {
+                  "status": "awaiting_ubo",
+                  "email": "johnanisere+15124@bullring.finance",
+                  "rejection_reasons": [],
+                  "endorsements": [
+                    {
+                      "name": "base",
+                      "status": "incomplete",
+                      "additional_requirements": ["kyc_approval"]
+                    },
+                    {
+                      "name": "sepa",
+                      "status": "incomplete",
+                      "additional_requirements": [
+                        "kyc_approval",
+                        "kyc_with_proof_of_address"
+                      ]
+                    }
+                  ],
+                  "created_at": "2026-01-12T16:28:42.790Z",
+                  "updated_at": "2026-01-12T16:30:46.020Z",
+                  "type": "business",
+                  "legal_name": "Bullring Finance 2",
+                  "trade_name": "Anisere",
+                  "description": "yfguy bhbiu",
+                  "source_of_funds": "grants",
+                  "business_type": "corporation",
+                  "website": "bullring.finance",
+                  "registered_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "physical_address": {
+                    "street_line_1": "1 Swallow Street",
+                    "street_line_2": "",
+                    "city": "birmingham",
+                    "subdivision": "EN",
+                    "postal_code": "B2 4AA",
+                    "country": "GBR"
+                  },
+                  "identification": [
+                    {
+                      "type": "crn",
+                      "number": "1760716",
+                      "issuing_country": "GBR",
+                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
+                      "image_back": ""
+                    }
+                  ],
+                  "is_dao": false,
+                  "is_money_transmitter": false,
+                  "business_industry": ["111150"],
+                  "account_purpose": "payroll",
+                  "ultimate_beneficial_owners": [
+                    {
+                      "first_name": "John",
+                      "middle_name": "Omoniyi",
+                      "last_name": "Anisere",
+                      "birth_date": "1993-10-05T00:00:00.000Z",
+                      "email": "johnanisere@gmail.com",
+                      "address": {
+                        "street_line_1": "1 Swallow Street",
+                        "street_line_2": "",
+                        "city": "birmingham",
+                        "subdivision": "EN",
+                        "postal_code": "B2 4AA",
+                        "country": "GBR"
+                      },
+                      "identification": [
+                        {
+                          "type": "passport",
+                          "number": "B50091752",
+                          "issuing_country": "NGA",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
+                          "image_back": ""
+                        }
+                      ],
+                      "has_ownership": true,
+                      "has_control": true,
+                      "is_signer": true,
+                      "title": "CEO"
+                    }
+                  ],
+                  "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
+                  "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
+                  "flow_of_funds_document": null,
+                  "has_material_intermediary_ownership": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-12-31T10:19:59.164Z",
+                  "path": "/v1/kyc/customers/5f7dc10c-74f0-4176-b328-d2b8b162972d/submit",
+                  "error": "Error",
+                  "message": "Missing required fields: signed_agreement_id",
+                  "stack": "HttpException: Missing required fields: signed_agreement_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/kyc/customers/{subaccountId}/submit": {
       "post": {
         "tags": ["Verification"],
-        "summary": "Tier Two | Submit Customer Information",
+        "summary": "Tier Two | Submit Individual Information",
         "description": "Submit the tier two customer information for verification.",
         "parameters": [
           {
