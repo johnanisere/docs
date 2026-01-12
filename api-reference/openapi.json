@@ -2414,6 +2414,276 @@
         }
       }
     },
+    "/v1/kyc/customers/{subaccountId}/submit": {
+      "post": {
+        "tags": ["Verification"],
+        "summary": "Tier Two | Submit Individual Information",
+        "description": "Submit the tier two customer information for verification.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object"
+              },
+              "example": {}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Submission successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "rejection_reasons": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "endorsements": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "name": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          },
+                          "additional_requirements": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "updated_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "lastSubmissionAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "submissionCount": {
+                      "type": "integer"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "first_name": {
+                      "type": "string"
+                    },
+                    "middle_name": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "last_name": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street_line_1": {
+                          "type": "string"
+                        },
+                        "street_line_2": {
+                          "type": "string"
+                        },
+                        "city": {
+                          "type": "string"
+                        },
+                        "state": {
+                          "type": "string"
+                        },
+                        "postal_code": {
+                          "type": "string"
+                        },
+                        "country": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "birth_date": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "documents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "purpose": {
+                            "type": "string"
+                          },
+                          "file": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    },
+                    "account_purpose": {
+                      "type": "string"
+                    },
+                    "account_purpose_other": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "employment_status": {
+                      "type": "string"
+                    },
+                    "expected_monthly_payments_usd": {
+                      "type": "string"
+                    },
+                    "acting_as_intermediary": {
+                      "type": "boolean"
+                    },
+                    "most_recent_occupation": {
+                      "type": "string"
+                    },
+                    "source_of_funds": {
+                      "type": "string"
+                    },
+                    "identifying_information": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string"
+                          },
+                          "issuing_country": {
+                            "type": "string"
+                          },
+                          "number": {
+                            "type": "string"
+                          },
+                          "image_front": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "image_back": {
+                            "type": "string",
+                            "format": "uri"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "status": "incomplete",
+                  "rejection_reasons": [],
+                  "endorsements": [
+                    {
+                      "name": "base",
+                      "status": "incomplete",
+                      "additional_requirements": ["kyc_approval"]
+                    },
+                    {
+                      "name": "sepa",
+                      "status": "incomplete",
+                      "additional_requirements": [
+                        "kyc_approval",
+                        "kyc_with_proof_of_address"
+                      ]
+                    }
+                  ],
+                  "created_at": "2025-12-31T10:37:53.156Z",
+                  "updated_at": "2025-12-31T10:38:25.087Z",
+                  "lastSubmissionAt": "2025-12-31T10:38:25.084Z",
+                  "submissionCount": 1,
+                  "type": "individual",
+                  "first_name": "Mike",
+                  "middle_name": null,
+                  "last_name": "Bull",
+                  "phone": "+2348012345678",
+                  "address": {
+                    "street_line_1": "9 Karimu Street",
+                    "street_line_2": "",
+                    "city": "Lagos",
+                    "state": "LA",
+                    "postal_code": "105102",
+                    "country": "NGA"
+                  },
+                  "birth_date": "1993-01-24",
+                  "documents": [
+                    {
+                      "purpose": "PROOF_OF_ADDRESS",
+                      "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738205/verification/2025-11-21/n0slzbkhxreppmqew4yd.png"
+                    }
+                  ],
+                  "account_purpose": "payments_to_friends_or_family_abroad",
+                  "account_purpose_other": null,
+                  "employment_status": "employed",
+                  "expected_monthly_payments_usd": "FROM_5000_TO_9999",
+                  "acting_as_intermediary": false,
+                  "most_recent_occupation": "ACCOUNTANT_AND_AUDITOR",
+                  "source_of_funds": "inheritance",
+                  "identifying_information": [
+                    {
+                      "type": "passport",
+                      "issuing_country": "NGA",
+                      "number": "12345678909",
+                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738198/verification/2025-11-21/t2fgqlxesqigmm0qfvbi.png",
+                      "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738205/verification/2025-11-21/n0slzbkhxreppmqew4yd.png"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing required fields",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2025-12-31T10:19:59.164Z",
+                  "path": "/v1/kyc/customers/5f7dc10c-74f0-4176-b328-d2b8b162972d/submit",
+                  "error": "Error",
+                  "message": "Missing required fields: signed_agreement_id",
+                  "stack": "HttpException: Missing required fields: signed_agreement_id"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/kyc/businesses/{subaccountId}": {
       "patch": {
         "tags": ["Verification"],
@@ -3767,276 +4037,6 @@
                   "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
                   "flow_of_funds_document": null,
                   "has_material_intermediary_ownership": false
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Missing required fields",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "statusCode": 400,
-                  "timestamp": "2025-12-31T10:19:59.164Z",
-                  "path": "/v1/kyc/customers/5f7dc10c-74f0-4176-b328-d2b8b162972d/submit",
-                  "error": "Error",
-                  "message": "Missing required fields: signed_agreement_id",
-                  "stack": "HttpException: Missing required fields: signed_agreement_id"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/kyc/customers/{subaccountId}/submit": {
-      "post": {
-        "tags": ["Verification"],
-        "summary": "Tier Two | Submit Individual Information",
-        "description": "Submit the tier two customer information for verification.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            },
-            "required": true,
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object"
-              },
-              "example": {}
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Submission successful",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "type": "string"
-                    },
-                    "rejection_reasons": {
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "endorsements": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "name": {
-                            "type": "string"
-                          },
-                          "status": {
-                            "type": "string"
-                          },
-                          "additional_requirements": {
-                            "type": "array",
-                            "items": {
-                              "type": "string"
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "created_at": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "updated_at": {
-                      "type": "string",
-                      "format": "date-time"
-                    },
-                    "lastSubmissionAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true
-                    },
-                    "submissionCount": {
-                      "type": "integer"
-                    },
-                    "type": {
-                      "type": "string"
-                    },
-                    "first_name": {
-                      "type": "string"
-                    },
-                    "middle_name": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "last_name": {
-                      "type": "string"
-                    },
-                    "phone": {
-                      "type": "string"
-                    },
-                    "address": {
-                      "type": "object",
-                      "properties": {
-                        "street_line_1": {
-                          "type": "string"
-                        },
-                        "street_line_2": {
-                          "type": "string"
-                        },
-                        "city": {
-                          "type": "string"
-                        },
-                        "state": {
-                          "type": "string"
-                        },
-                        "postal_code": {
-                          "type": "string"
-                        },
-                        "country": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    "birth_date": {
-                      "type": "string",
-                      "format": "date"
-                    },
-                    "documents": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "purpose": {
-                            "type": "string"
-                          },
-                          "file": {
-                            "type": "string",
-                            "format": "uri"
-                          }
-                        }
-                      }
-                    },
-                    "account_purpose": {
-                      "type": "string"
-                    },
-                    "account_purpose_other": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "employment_status": {
-                      "type": "string"
-                    },
-                    "expected_monthly_payments_usd": {
-                      "type": "string"
-                    },
-                    "acting_as_intermediary": {
-                      "type": "boolean"
-                    },
-                    "most_recent_occupation": {
-                      "type": "string"
-                    },
-                    "source_of_funds": {
-                      "type": "string"
-                    },
-                    "identifying_information": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string"
-                          },
-                          "issuing_country": {
-                            "type": "string"
-                          },
-                          "number": {
-                            "type": "string"
-                          },
-                          "image_front": {
-                            "type": "string",
-                            "format": "uri"
-                          },
-                          "image_back": {
-                            "type": "string",
-                            "format": "uri"
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "status": "incomplete",
-                  "rejection_reasons": [],
-                  "endorsements": [
-                    {
-                      "name": "base",
-                      "status": "incomplete",
-                      "additional_requirements": ["kyc_approval"]
-                    },
-                    {
-                      "name": "sepa",
-                      "status": "incomplete",
-                      "additional_requirements": [
-                        "kyc_approval",
-                        "kyc_with_proof_of_address"
-                      ]
-                    }
-                  ],
-                  "created_at": "2025-12-31T10:37:53.156Z",
-                  "updated_at": "2025-12-31T10:38:25.087Z",
-                  "lastSubmissionAt": "2025-12-31T10:38:25.084Z",
-                  "submissionCount": 1,
-                  "type": "individual",
-                  "first_name": "Mike",
-                  "middle_name": null,
-                  "last_name": "Bull",
-                  "phone": "+2348012345678",
-                  "address": {
-                    "street_line_1": "9 Karimu Street",
-                    "street_line_2": "",
-                    "city": "Lagos",
-                    "state": "LA",
-                    "postal_code": "105102",
-                    "country": "NGA"
-                  },
-                  "birth_date": "1993-01-24",
-                  "documents": [
-                    {
-                      "purpose": "PROOF_OF_ADDRESS",
-                      "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738205/verification/2025-11-21/n0slzbkhxreppmqew4yd.png"
-                    }
-                  ],
-                  "account_purpose": "payments_to_friends_or_family_abroad",
-                  "account_purpose_other": null,
-                  "employment_status": "employed",
-                  "expected_monthly_payments_usd": "FROM_5000_TO_9999",
-                  "acting_as_intermediary": false,
-                  "most_recent_occupation": "ACCOUNTANT_AND_AUDITOR",
-                  "source_of_funds": "inheritance",
-                  "identifying_information": [
-                    {
-                      "type": "passport",
-                      "issuing_country": "NGA",
-                      "number": "12345678909",
-                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738198/verification/2025-11-21/t2fgqlxesqigmm0qfvbi.png",
-                      "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1763738205/verification/2025-11-21/n0slzbkhxreppmqew4yd.png"
-                    }
-                  ]
                 }
               }
             }
