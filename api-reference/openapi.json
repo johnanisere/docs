@@ -9067,6 +9067,7 @@
                     "properties": {
                       "chain": {
                         "type": "string",
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
                         "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA"]
                       },
                       "asset": {
@@ -9704,13 +9705,16 @@
                         "type": "string"
                       },
                       "phoneNumber": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Required for momo currencies e.g `GHS`."
                       },
                       "paymentRail": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Required for `COP`."
                       },
                       "bankCode": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Required for `COP`."
                       }
                     },
                     "required": ["amount", "currency"]
@@ -9725,7 +9729,7 @@
                       },
                       "chain": {
                         "type": "string",
-                        "description": "Options: lightning, SOL-DEVNET, ETH-SEPOLIA, ETH (in Production)",
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
@@ -9734,7 +9738,8 @@
                         ]
                       },
                       "destination_address": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "A wallet address for USDT & USDC or a Lightning Address for BTC."
                       }
                     },
                     "required": ["asset", "chain", "destination_address"]
