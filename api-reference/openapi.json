@@ -7663,7 +7663,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/offramp/initiate": {
+    "/v2/ramp/{subaccountId}/banking/offramp/initiate": {
       "post": {
         "tags": ["Offramp"],
         "summary": "Initiate Offramp",
@@ -7684,51 +7684,40 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "recipient_id": {
-                    "type": "string",
-                    "description": "The ID of the recipient bank account."
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "chain": {
+                        "type": "string",
+                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA"]
+                      },
+                      "asset": {
+                        "type": "string",
+                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                      }
+                    }
                   },
-                  "amount": {
-                    "type": "number",
-                    "description": "The amount to offramp."
-                  },
-                  "chain": {
-                    "type": "string",
-                    "description": "Blockchain network for stablecoin offramp (e.g., SOL-DEVNET). See [supported networks](/en/supported-currencies#supported-networks)"
-                  },
-                  "stablecoin": {
-                    "type": "string",
-                    "enum": ["USDC", "USDT"],
-                    "description": "Stablecoin to use (USDC or USDT)."
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "recipient_id": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      }
+                    }
                   }
-                },
-                "required": ["amount"]
+                }
               },
-              "examples": {
-                "btc_lightning": {
-                  "summary": "BTC Lightning Offramp",
-                  "value": {
-                    "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                    "amount": 1250
-                  }
+              "example": {
+                "from": {
+                  "chain": "SOL-DEVNET",
+                  "asset": "USDC"
                 },
-                "stablecoin_usdc": {
-                  "summary": "Stablecoin USDC Offramp",
-                  "value": {
-                    "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                    "amount": 1250,
-                    "chain": "SOL-DEVNET",
-                    "stablecoin": "USDC"
-                  }
-                },
-                "stablecoin_usdc_bankAccountId": {
-                  "summary": "Stablecoin USDC Offramp with bankAccountId",
-                  "value": {
-                    "bankAccountId": "dea0bbad-ee32-47d6-a016-dc7a5bc957b9",
-                    "amount": 1250,
-                    "chain": "SOL-DEVNET",
-                    "stablecoin": "USDC"
-                  }
+                "to": {
+                  "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303",
+                  "amount": 250
                 }
               }
             }
@@ -7740,242 +7729,100 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "from": {
                       "type": "object",
                       "properties": {
-                        "success": {
-                          "type": "boolean"
+                        "amount": {
+                          "type": "string"
                         },
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "lightningInvoice": {
-                              "type": "string"
-                            },
-                            "lightningInvoiceId": {
-                              "type": "string"
-                            },
-                            "targetAmount": {
-                              "type": "number"
-                            },
-                            "targetCurrency": {
-                              "type": "string"
-                            },
-                            "lightningAmount": {
-                              "type": "number"
-                            },
-                            "lightningCurrency": {
-                              "type": "string"
-                            },
-                            "exchangeRate": {
-                              "type": "number"
-                            },
-                            "lightningFee": {
-                              "type": "number"
-                            },
-                            "withdrawalFee": {
-                              "type": "number"
-                            },
-                            "targetAmountReceivable": {
-                              "type": "number"
-                            },
-                            "totalFees": {
-                              "type": "number"
-                            },
-                            "bankAccount": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "bankName": {
-                                  "type": "string",
-                                  "nullable": true
-                                },
-                                "accountId": {
-                                  "type": "string"
-                                },
-                                "currency": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "expiresAt": {
-                              "type": "string",
-                              "nullable": true
-                            },
-                            "status": {
-                              "type": "string"
-                            },
-                            "createdAt": {
-                              "type": "string"
-                            }
-                          }
+                        "asset": {
+                          "type": "string"
                         },
-                        "message": {
+                        "network": {
+                          "type": "string"
+                        },
+                        "address": {
                           "type": "string"
                         }
                       }
                     },
-                    {
+                    "to": {
                       "type": "object",
                       "properties": {
-                        "success": {
-                          "type": "boolean"
+                        "currency": {
+                          "type": "string"
                         },
-                        "data": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "targetAmount": {
-                              "type": "number"
-                            },
-                            "targetCurrency": {
-                              "type": "string"
-                            },
-                            "stablecoinAmount": {
-                              "type": "number"
-                            },
-                            "stablecoinCurrency": {
-                              "type": "string"
-                            },
-                            "depositAddress": {
-                              "type": "string"
-                            },
-                            "depositAddressId": {
-                              "type": "string"
-                            },
-                            "exchangeRate": {
-                              "type": "number"
-                            },
-                            "lightningFee": {
-                              "type": "number"
-                            },
-                            "withdrawalFee": {
-                              "type": "number"
-                            },
-                            "targetAmountReceivable": {
-                              "type": "number"
-                            },
-                            "totalFees": {
-                              "type": "number"
-                            },
-                            "bankAccount": {
-                              "type": "object",
-                              "properties": {
-                                "id": {
-                                  "type": "string"
-                                },
-                                "bankName": {
-                                  "type": "string",
-                                  "nullable": true
-                                },
-                                "accountId": {
-                                  "type": "string"
-                                },
-                                "currency": {
-                                  "type": "string"
-                                }
-                              }
-                            },
-                            "status": {
-                              "type": "string"
-                            },
-                            "createdAt": {
-                              "type": "string"
-                            }
-                          }
+                        "gross_amount": {
+                          "type": "string"
                         },
-                        "message": {
+                        "net_amount": {
+                          "type": "string"
+                        },
+                        "recipient_id": {
                           "type": "string"
                         }
                       }
-                    }
-                  ]
-                },
-                "examples": {
-                  "btc_lightning_response": {
-                    "summary": "BTC Lightning Response",
-                    "value": {
-                      "success": true,
-                      "data": {
-                        "id": "b57c1ebd-4229-44be-91bc-94d6bb10b5c1",
-                        "lightningInvoice": "lntbs22730n1p55yt8wpp5s7jddlte53dhd4728n22h2uvxtfch3mca0jny27yfehkfwwv0dlsdqqcqzpuxqzfvsp5m55n8lg0pxcnzxf2qh5n9nph0lckf90ch4tt5wymn6nyeu8f668q9qxpqysgqnn7j20lge5p8qat877ry0kuahvx2csdrew4f7d3y6pzt0p0cvf39zp5sz7x5dva98qg2huqdncq8xy7d3dhkdhdrvevx20ejs2ks7yqqq5rtvn",
-                        "lightningInvoiceId": "95e22057-3e91-455b-a980-97ccdcee92fe",
-                        "targetAmount": 1250,
-                        "targetCurrency": "ngn",
-                        "lightningAmount": 198,
-                        "lightningCurrency": "stablesats",
-                        "exchangeRate": 0.0015841333133732535,
-                        "lightningFee": 0,
-                        "withdrawalFee": 9.75,
-                        "targetAmountReceivable": 1240.25,
-                        "totalFees": 9.75,
-                        "bankAccount": {
-                          "id": "8fdc3754-10f0-4295-a1db-da9c2677cad6",
-                          "bankName": "Access Bank Nigeria Plc",
-                          "accountId": "0062881117",
-                          "currency": "NGN"
+                    },
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
                         },
-                        "status": "pending",
-                        "createdAt": "2025-12-17T04:09:18.621Z"
-                      },
-                      "message": "Pay to receive funds in your bank account."
-                    }
-                  },
-                  "stablecoin_response": {
-                    "summary": "Stablecoin Response",
-                    "value": {
-                      "success": true,
-                      "data": {
-                        "id": "aa3774fe-b1cc-4548-ba6b-dfde804a3cd7",
-                        "targetAmount": 1250,
-                        "targetCurrency": "brl",
-                        "stablecoinAmount": 227.16646293166716,
-                        "stablecoinCurrency": "USDC",
-                        "depositAddress": "EyaCBDK28oikm5Zb65i3SYMhtFKqd2rmX7uieLG4b8Pj",
-                        "depositAddressId": "f0d1383a-47ff-4c62-b3dc-f7626c89b0a4",
-                        "exchangeRate": 5.5025728,
-                        "lightningFee": 0,
-                        "withdrawalFee": 8.75,
-                        "targetAmountReceivable": 1241.25,
-                        "totalFees": 8.75,
-                        "bankAccount": {
-                          "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                          "bankName": null,
-                          "accountId": "667.136.083-96",
-                          "currency": "BRL"
-                        },
-                        "status": "pending",
-                        "createdAt": "2025-12-17T04:14:54.831Z"
-                      },
-                      "message": "Pay to receive funds in your bank account."
+                        "fees": {
+                          "type": "object",
+                          "properties": {
+                            "offramp_fee": {
+                              "type": "string"
+                            },
+                            "offramp_fee_currency": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
                 },
                 "example": {
-                  "statusCode": 400,
-                  "timestamp": "2025-11-25T13:45:01.778Z",
-                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/offramp/initiate",
-                  "error": "Error",
-                  "message": "Amount exceeds maximum limit of 50000 BRL",
-                  "stack": "HttpException: Amount exceeds maximum limit of 50000 BRL\n    at CollectionService.validateLightningInvoiceInput (/usr/src/app/dist/src/collections/collection.service.js:2956:19)\n    at CollectionService.createLightningInvoice (/usr/src/app/dist/src/collections/collection.service.js:2821:18)\n    at CollectionService.initiateOfframp (/usr/src/app/dist/src/collections/collection.service.js:4093:49)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async RampController.initiateOfframp (/usr/src/app/dist/src/stores/ramp.controller.js:170:28)"
+                  "id": "25ffacb7-6bf0-488d-b578-fa9b97a32e84",
+                  "type": "offramp",
+                  "status": "pending",
+                  "created_at": "2026-01-12T15:07:48.271Z",
+                  "from": {
+                    "amount": "23.36763078395597",
+                    "asset": "USDC",
+                    "network": "SOL-DEVNET",
+                    "address": "6n3pQZwdFRFRNDFUAsWp2WdsYxBjP1BG8kp94fccSXif"
+                  },
+                  "to": {
+                    "currency": "ghs",
+                    "gross_amount": "250",
+                    "net_amount": "244",
+                    "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                  },
+                  "pricing": {
+                    "fx_rate": "10.69856",
+                    "fees": {
+                      "offramp_fee": "6",
+                      "offramp_fee_currency": "ghs"
+                    }
+                  }
                 }
               }
             }
@@ -7989,11 +7836,10 @@
                 },
                 "example": {
                   "statusCode": 404,
-                  "timestamp": "2025-11-25T13:43:45.692Z",
-                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/offramp/initiate",
+                  "timestamp": "2026-01-12T15:10:22.392Z",
+                  "path": "/v2/ramp/07f3e38c-d1b7-43dd-b7b0-6608b13ab697/banking/offramp/quote",
                   "error": "Error",
-                  "message": "Bank account not found",
-                  "stack": "HttpException: Bank account not found\n    at CollectionService.initiateOfframp (/usr/src/app/dist/src/collections/collection.service.js:4081:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async RampController.initiateOfframp (/usr/src/app/dist/src/stores/ramp.controller.js:170:28)"
+                  "message": "Bank account not found"
                 }
               }
             }
@@ -8001,7 +7847,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/offramp/quote": {
+    "/v2/ramp/{subaccountId}/banking/offramp/quote": {
       "post": {
         "tags": ["Offramp"],
         "summary": "Get Offramp Quote",
@@ -8022,26 +7868,41 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "recipient_id": {
-                    "type": "string"
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "chain": {
+                        "type": "string",
+                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA"]
+                      },
+                      "asset": {
+                        "type": "string",
+                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                      }
+                    }
                   },
-                  "amount": {
-                    "type": "number"
-                  },
-                  "chain": {
-                    "type": "string"
-                  },
-                  "stablecoin": {
-                    "type": "string"
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "recipient_id": {
+                        "type": "string"
+                      },
+                      "amount": {
+                        "type": "number"
+                      }
+                    }
                   }
-                },
-                "required": ["recipient_id", "amount", "chain", "stablecoin"]
+                }
               },
               "example": {
-                "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                "amount": 200,
-                "chain": "SOL-DEVNET",
-                "stablecoin": "USDC"
+                "from": {
+                  "chain": "SOL-DEVNET",
+                  "asset": "USDC"
+                },
+                "to": {
+                  "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303",
+                  "amount": 250
+                }
               }
             }
           }
@@ -8054,96 +7915,81 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "success": {
-                      "type": "boolean"
+                    "type": {
+                      "type": "string"
                     },
-                    "data": {
+                    "from": {
                       "type": "object",
                       "properties": {
-                        "targetAmount": {
-                          "type": "number"
-                        },
-                        "targetCurrency": {
+                        "amount": {
                           "type": "string"
                         },
-                        "stablecoinAmount": {
-                          "type": "number"
-                        },
-                        "stablecoinCurrency": {
+                        "asset": {
                           "type": "string"
                         },
-                        "depositAddress": {
-                          "type": "string"
-                        },
-                        "depositAddressId": {
-                          "type": "string"
-                        },
-                        "exchangeRate": {
-                          "type": "number"
-                        },
-                        "lightningFee": {
-                          "type": "number"
-                        },
-                        "withdrawalFee": {
-                          "type": "number"
-                        },
-                        "targetAmountReceivable": {
-                          "type": "number"
-                        },
-                        "totalFees": {
-                          "type": "number"
-                        },
-                        "bankAccount": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "bankName": {
-                              "type": "string",
-                              "nullable": true
-                            },
-                            "accountId": {
-                              "type": "string"
-                            },
-                            "currency": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "status": {
+                        "network": {
                           "type": "string"
                         }
                       }
                     },
-                    "message": {
-                      "type": "string"
+                    "to": {
+                      "type": "object",
+                      "properties": {
+                        "currency": {
+                          "type": "string"
+                        },
+                        "gross_amount": {
+                          "type": "string"
+                        },
+                        "net_amount": {
+                          "type": "string"
+                        },
+                        "recipient_id": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
+                        },
+                        "fees": {
+                          "type": "object",
+                          "properties": {
+                            "offramp_fee": {
+                              "type": "string"
+                            },
+                            "offramp_fee_currency": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 "example": {
-                  "success": true,
-                  "data": {
-                    "targetAmount": 200,
-                    "targetCurrency": "brl",
-                    "stablecoinAmount": 36.346634069066745,
-                    "stablecoinCurrency": "USDC",
-                    "depositAddress": "EyaCBDK28oikm5Zb65i3SYMhtFKqd2rmX7uieLG4b8Pj",
-                    "depositAddressId": "f0d1383a-47ff-4c62-b3dc-f7626c89b0a4",
-                    "exchangeRate": 5.5025728,
-                    "lightningFee": 0,
-                    "withdrawalFee": 1.4,
-                    "targetAmountReceivable": 198.6,
-                    "totalFees": 1.4,
-                    "bankAccount": {
-                      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-                      "bankName": null,
-                      "accountId": "667.136.083-96",
-                      "currency": "BRL"
-                    },
-                    "status": "pending"
+                  "type": "offramp",
+                  "from": {
+                    "amount": "23.36763078395597",
+                    "asset": "USDC",
+                    "network": "SOL-DEVNET"
                   },
-                  "message": "Pay to receive funds in your bank account."
+                  "to": {
+                    "currency": "ghs",
+                    "gross_amount": "250",
+                    "net_amount": "244",
+                    "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                  },
+                  "pricing": {
+                    "fx_rate": "10.69856",
+                    "fees": {
+                      "offramp_fee": "6",
+                      "offramp_fee_currency": "ghs"
+                    }
+                  }
                 }
               }
             }
@@ -8151,7 +7997,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/offramp/": {
+    "/v2/ramp/{subaccountId}/banking/offramp/": {
       "get": {
         "tags": ["Offramp"],
         "summary": "Get All Offramps",
@@ -8192,75 +8038,76 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "success": {
-                      "type": "boolean"
-                    },
                     "data": {
                       "type": "array",
                       "items": {
                         "type": "object",
                         "properties": {
                           "id": {
-                            "type": "string",
-                            "format": "uuid"
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "string"
                           },
                           "status": {
                             "type": "string"
                           },
-                          "targetAmount": {
-                            "type": "number"
-                          },
-                          "targetCurrency": {
-                            "type": "string"
-                          },
-                          "lightningAmount": {
-                            "type": "number"
-                          },
-                          "withdrawalId": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "invoicePaidAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "nullable": true
-                          },
-                          "withdrawalInitiatedAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "nullable": true
-                          },
-                          "completedAt": {
-                            "type": "string",
-                            "format": "date-time",
-                            "nullable": true
-                          },
-                          "errorMessage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "createdAt": {
+                          "created_at": {
                             "type": "string",
                             "format": "date-time"
                           },
-                          "updatedAt": {
-                            "type": "string",
-                            "format": "date-time"
+                          "from": {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "string"
+                              },
+                              "asset": {
+                                "type": "string"
+                              },
+                              "network": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              }
+                            }
                           },
-                          "lightningCurrency": {
-                            "type": "string"
+                          "to": {
+                            "type": "object",
+                            "properties": {
+                              "currency": {
+                                "type": "string"
+                              },
+                              "gross_amount": {
+                                "type": "string"
+                              },
+                              "net_amount": {
+                                "type": "string"
+                              },
+                              "recipient_id": {
+                                "type": "string"
+                              }
+                            }
                           },
-                          "exchangeRate": {
-                            "type": "number"
-                          },
-                          "lightningFee": {
-                            "type": "number"
-                          },
-                          "withdrawalFee": {
-                            "type": "number"
-                          },
-                          "totalFees": {
-                            "type": "number"
+                          "pricing": {
+                            "type": "object",
+                            "properties": {
+                              "fx_rate": {
+                                "type": "string"
+                              },
+                              "fees": {
+                                "type": "object",
+                                "properties": {
+                                  "offramp_fee": {
+                                    "type": "string"
+                                  },
+                                  "offramp_fee_currency": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
                           }
                         }
                       }
@@ -8280,79 +8127,37 @@
                   }
                 },
                 "example": {
-                  "success": true,
                   "data": [
                     {
-                      "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+                      "id": "25ffacb7-6bf0-488d-b578-fa9b97a32e84",
+                      "type": "offramp",
                       "status": "pending",
-                      "targetAmount": 12,
-                      "targetCurrency": "brl",
-                      "lightningAmount": 226,
-                      "withdrawalId": null,
-                      "invoicePaidAt": null,
-                      "withdrawalInitiatedAt": null,
-                      "completedAt": null,
-                      "errorMessage": null,
-                      "createdAt": "2025-11-25T13:48:02.667Z",
-                      "updatedAt": "2025-11-25T13:48:02.667Z",
-                      "lightningCurrency": "stablesats",
-                      "exchangeRate": 0.18822916,
-                      "lightningFee": 0,
-                      "withdrawalFee": 0.11,
-                      "totalFees": 0.11
-                    },
-                    {
-                      "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
-                      "status": "pending",
-                      "targetAmount": 88,
-                      "targetCurrency": "brl",
-                      "lightningAmount": 1656,
-                      "withdrawalId": null,
-                      "invoicePaidAt": null,
-                      "withdrawalInitiatedAt": null,
-                      "completedAt": null,
-                      "errorMessage": null,
-                      "createdAt": "2025-11-25T13:37:46.829Z",
-                      "updatedAt": "2025-11-25T13:37:46.829Z",
-                      "lightningCurrency": "stablesats",
-                      "exchangeRate": 0.18822916,
-                      "lightningFee": 0,
-                      "withdrawalFee": 0.64,
-                      "totalFees": 0.64
+                      "created_at": "2026-01-12T15:07:48.271Z",
+                      "from": {
+                        "amount": "23.36763078",
+                        "asset": "USDC",
+                        "network": "SOL-DEVNET",
+                        "address": "6n3pQZwdFRFRNDFUAsWp2WdsYxBjP1BG8kp94fccSXif"
+                      },
+                      "to": {
+                        "currency": "ghs",
+                        "gross_amount": "250",
+                        "net_amount": "244",
+                        "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                      },
+                      "pricing": {
+                        "fx_rate": "10.69856",
+                        "fees": {
+                          "offramp_fee": "6",
+                          "offramp_fee_currency": "ghs"
+                        }
+                      }
                     }
                   ],
-                  "count": 2,
+                  "count": 1,
                   "page": 1,
-                  "limit": 10,
+                  "limit": 20,
                   "totalPages": 1
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Insufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
                 }
               }
             }
@@ -8360,7 +8165,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/offramp/{offrampId}": {
+    "/v2/ramp/{subaccountId}/banking/offramp/{offrampId}": {
       "get": {
         "tags": ["Offramp"],
         "summary": "Get One Offramp",
@@ -8391,145 +8196,98 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "success": {
-                      "type": "boolean"
+                    "id": {
+                      "type": "string"
                     },
-                    "data": {
+                    "type": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "from": {
                       "type": "object",
                       "properties": {
-                        "id": {
-                          "type": "string",
-                          "format": "uuid"
-                        },
-                        "status": {
+                        "amount": {
                           "type": "string"
                         },
-                        "targetAmount": {
-                          "type": "number"
-                        },
-                        "targetCurrency": {
+                        "asset": {
                           "type": "string"
                         },
-                        "lightningAmount": {
-                          "type": "number"
-                        },
-                        "withdrawalId": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "invoicePaidAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "nullable": true
-                        },
-                        "withdrawalInitiatedAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "nullable": true
-                        },
-                        "completedAt": {
-                          "type": "string",
-                          "format": "date-time",
-                          "nullable": true
-                        },
-                        "errorMessage": {
-                          "type": "string",
-                          "nullable": true
-                        },
-                        "createdAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "updatedAt": {
-                          "type": "string",
-                          "format": "date-time"
-                        },
-                        "lightningCurrency": {
+                        "network": {
                           "type": "string"
                         },
-                        "exchangeRate": {
-                          "type": "number"
+                        "address": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "to": {
+                      "type": "object",
+                      "properties": {
+                        "currency": {
+                          "type": "string"
                         },
-                        "lightningFee": {
-                          "type": "number"
+                        "gross_amount": {
+                          "type": "string"
                         },
-                        "withdrawalFee": {
-                          "type": "number"
+                        "net_amount": {
+                          "type": "string"
                         },
-                        "targetAmountReceivable": {
-                          "type": "number"
+                        "recipient_id": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
                         },
-                        "totalFees": {
-                          "type": "number"
+                        "fees": {
+                          "type": "object",
+                          "properties": {
+                            "offramp_fee": {
+                              "type": "string"
+                            },
+                            "offramp_fee_currency": {
+                              "type": "string"
+                            }
+                          }
                         }
                       }
                     }
                   }
                 },
                 "example": {
-                  "success": true,
-                  "data": {
-                    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
-                    "status": "pending",
-                    "targetAmount": 12,
-                    "targetCurrency": "brl",
-                    "lightningAmount": 226,
-                    "withdrawalId": null,
-                    "invoicePaidAt": null,
-                    "withdrawalInitiatedAt": null,
-                    "completedAt": null,
-                    "errorMessage": null,
-                    "createdAt": "2025-11-25T13:48:02.667Z",
-                    "updatedAt": "2025-11-25T13:48:02.667Z",
-                    "lightningCurrency": "stablesats",
-                    "exchangeRate": 0.18822916,
-                    "lightningFee": 0,
-                    "withdrawalFee": 0.11,
-                    "targetAmountReceivable": 53.09,
-                    "totalFees": 0.11
+                  "id": "25ffacb7-6bf0-488d-b578-fa9b97a32e84",
+                  "type": "offramp",
+                  "status": "pending",
+                  "created_at": "2026-01-12T15:07:48.271Z",
+                  "from": {
+                    "amount": "23.36763078",
+                    "asset": "USDC",
+                    "network": "SOL-DEVNET",
+                    "address": "6n3pQZwdFRFRNDFUAsWp2WdsYxBjP1BG8kp94fccSXif"
+                  },
+                  "to": {
+                    "currency": "ghs",
+                    "gross_amount": "250",
+                    "net_amount": "244",
+                    "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                  },
+                  "pricing": {
+                    "fx_rate": "10.69856",
+                    "fees": {
+                      "offramp_fee": "6",
+                      "offramp_fee_currency": "ghs"
+                    }
                   }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Insufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                },
-                "example": {
-                  "error": "Not Found",
-                  "message": "Offramp transaction not found"
                 }
               }
             }
