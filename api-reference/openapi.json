@@ -8295,7 +8295,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/onramp/initiate": {
+    "/v2/ramp/{subaccountId}/banking/onramp/initiate": {
       "post": {
         "tags": ["Onramp"],
         "summary": "Initiate Onramp",
@@ -8316,25 +8316,63 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "currency": {
-                    "type": "string",
-                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number"
+                      },
+                      "currency": {
+                        "type": "string"
+                      },
+                      "phoneNumber": {
+                        "type": "string"
+                      },
+                      "paymentRail": {
+                        "type": "string"
+                      },
+                      "bankCode": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["amount", "currency"]
                   },
-                  "cryptoAsset": {
-                    "type": "string",
-                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
-                    "enum": ["USDT", "USDC", "BTC_LIGHTNING"]
-                  },
-                  "amount": {
-                    "type": "number"
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "asset": {
+                        "type": "string",
+                        "description": "Options: STABLE_SATS, USDC, USDT",
+                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                      },
+                      "chain": {
+                        "type": "string",
+                        "description": "Options: lightning, SOL-DEVNET, ETH-SEPOLIA, ETH (in Production)",
+                        "enum": [
+                          "lightning",
+                          "SOL-DEVNET",
+                          "ETH-SEPOLIA",
+                          "ETH"
+                        ]
+                      },
+                      "destination_address": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["asset", "chain", "destination_address"]
                   }
-                },
-                "required": ["currency", "cryptoAsset", "amount"]
+                }
               },
               "example": {
-                "currency": "NGN",
-                "cryptoAsset": "USDT",
-                "amount": 20000
+                "from": {
+                  "amount": 500,
+                  "currency": "BRL"
+                },
+                "to": {
+                  "asset": "STABLE_SATS",
+                  "chain": "lightning",
+                  "destination_address": "jornie@speed.app"
+                }
               }
             }
           }
@@ -8353,96 +8391,107 @@
                     "status": {
                       "type": "string"
                     },
-                    "amount": {
-                      "type": "number"
-                    },
-                    "currency": {
+                    "type": {
                       "type": "string"
                     },
-                    "cryptoAsset": {
-                      "type": "string"
-                    },
-                    "cryptoAmount": {
-                      "type": "number"
-                    },
-                    "cryptoAmountInLocalCurrency": {
-                      "type": "number"
-                    },
-                    "exchangeRate": {
-                      "type": "number"
-                    },
-                    "totalFees": {
-                      "type": "number"
-                    },
-                    "feeBreakdown": {
+                    "from": {
                       "type": "object",
                       "properties": {
-                        "depositFee": {
-                          "type": "number"
+                        "amount": {
+                          "type": "string"
                         },
-                        "networkFee": {
-                          "type": "number"
+                        "currency": {
+                          "type": "string"
+                        },
+                        "payment_instructions": {
+                          "type": "object",
+                          "properties": {
+                            "method": {
+                              "type": "string"
+                            },
+                            "qr_code": {
+                              "type": "string"
+                            },
+                            "expires_at": {
+                              "type": "string",
+                              "format": "date-time"
+                            }
+                          }
                         }
                       }
                     },
-                    "paymentInstructions": {
+                    "to": {
                       "type": "object",
                       "properties": {
-                        "method": {
+                        "asset": {
                           "type": "string"
                         },
-                        "bankDetails": {
+                        "gross_amount": {
+                          "type": "string"
+                        },
+                        "net_amount": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
+                        },
+                        "fees": {
                           "type": "object",
                           "properties": {
-                            "accountNumber": {
+                            "onramp_fee": {
                               "type": "string"
                             },
-                            "bankName": {
+                            "onramp_fee_currency": {
+                              "type": "string"
+                            },
+                            "network_fee": {
+                              "type": "string"
+                            },
+                            "network_fee_asset": {
                               "type": "string"
                             }
                           }
-                        },
-                        "expiresAt": {
-                          "type": "string"
                         }
                       }
-                    },
-                    "collectionId": {
-                      "type": "string"
-                    },
-                    "expiresAt": {
-                      "type": "string"
-                    },
-                    "createdAt": {
-                      "type": "string"
                     }
                   }
                 },
                 "example": {
-                  "id": "5c12d3de-b57e-49de-945c-9109dc5c2075",
+                  "id": "f7009e0e-73f4-44cb-8f51-d30073f57716",
                   "status": "pending",
-                  "amount": 20000,
-                  "currency": "NGN",
-                  "cryptoAsset": "USDT",
-                  "cryptoAmount": 30.774252936127745,
-                  "cryptoAmountInLocalCurrency": 19426.554997822153,
-                  "exchangeRate": 0.0015841333133732535,
-                  "totalFees": 573.445002177847,
-                  "feeBreakdown": {
-                    "depositFee": 100,
-                    "networkFee": 473.445002177847
+                  "type": "onramp",
+                  "from": {
+                    "amount": "500",
+                    "currency": "BRL",
+                    "payment_instructions": {
+                      "method": "pix",
+                      "qr_code": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/fe71dbca8bb145fa953c1a2282ee49d15204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***",
+                      "expires_at": "2026-01-12T15:31:28.000Z"
+                    }
                   },
-                  "paymentInstructions": {
-                    "method": "ngn_transfer",
-                    "bankDetails": {
-                      "accountNumber": "6685523257",
-                      "bankName": "Maplerad"
-                    },
-                    "expiresAt": "2025-12-11T06:14:37.856Z"
+                  "to": {
+                    "asset": "STABLE_SATS",
+                    "gross_amount": "92.80822735283428",
+                    "net_amount": "92.02980267077578",
+                    "address": "jornie@speed.app"
                   },
-                  "collectionId": "a694e96d-e563-4aeb-9ee1-869c814b2303",
-                  "expiresAt": "2025-12-11T06:14:37.857Z",
-                  "createdAt": "2025-12-10T06:14:37.857Z"
+                  "pricing": {
+                    "fx_rate": "0.18561645470566857",
+                    "fees": {
+                      "onramp_fee": "1.5",
+                      "onramp_fee_currency": "brl",
+                      "network_fee": "2.6937266999999996",
+                      "network_fee_asset": "STABLE_SATS"
+                    }
+                  }
                 }
               }
             }
@@ -8484,7 +8533,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/onramp/quote": {
+    "/v2/ramp/{subaccountId}/banking/onramp/quote": {
       "post": {
         "tags": ["Onramp"],
         "summary": "Get Onramp Quote",
@@ -8505,26 +8554,50 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "currency": {
-                    "type": "string",
-                    "description": "The fiat currency to be used for payment. See [supported currencies](/en/supported-currencies)."
+                  "from": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number"
+                      },
+                      "currency": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["amount", "currency"]
                   },
-                  "cryptoAsset": {
-                    "type": "string",
-                    "description": "The crypto asset to receive. Options: USDT, USDC, BTC_LIGHTNING.",
-                    "enum": ["USDT", "USDC", "BTC_LIGHTNING"]
-                  },
-                  "amount": {
-                    "type": "number",
-                    "description": "The amount in fiat currency."
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "asset": {
+                        "type": "string",
+                        "description": "Options: STABLE_SATS, USDC, USDT",
+                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                      },
+                      "chain": {
+                        "type": "string",
+                        "description": "Options: lightning, SOL-DEVNET, ETH-SEPOLIA, ETH",
+                        "enum": [
+                          "lightning",
+                          "SOL-DEVNET",
+                          "ETH-SEPOLIA",
+                          "ETH"
+                        ]
+                      }
+                    },
+                    "required": ["asset", "chain"]
                   }
-                },
-                "required": ["currency", "cryptoAsset", "amount"]
+                }
               },
               "example": {
-                "currency": "GHS",
-                "cryptoAsset": "BTC_LIGHTNING",
-                "amount": 500
+                "from": {
+                  "amount": 500,
+                  "currency": "BRL"
+                },
+                "to": {
+                  "asset": "STABLE_SATS",
+                  "chain": "lightning"
+                }
               }
             }
           }
@@ -8537,64 +8610,81 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "amount": {
-                      "type": "number"
-                    },
-                    "currency": {
+                    "type": {
                       "type": "string"
                     },
-                    "cryptoAsset": {
-                      "type": "string"
-                    },
-                    "exchangeRate": {
-                      "type": "number"
-                    },
-                    "cryptoAmount": {
-                      "type": "number"
-                    },
-                    "estimatedFees": {
+                    "from": {
                       "type": "object",
                       "properties": {
-                        "depositFee": {
-                          "type": "number"
+                        "amount": {
+                          "type": "string"
                         },
-                        "networkFee": {
-                          "type": "number"
-                        },
-                        "totalFees": {
-                          "type": "number"
+                        "currency": {
+                          "type": "string"
                         }
                       }
                     },
-                    "minAmount": {
-                      "type": "number"
+                    "to": {
+                      "type": "object",
+                      "properties": {
+                        "asset": {
+                          "type": "string"
+                        },
+                        "gross_amount": {
+                          "type": "string"
+                        },
+                        "net_amount": {
+                          "type": "string"
+                        }
+                      }
                     },
-                    "maxAmount": {
-                      "type": "number"
-                    },
-                    "quoteValiditySeconds": {
-                      "type": "integer"
-                    },
-                    "expiresAt": {
-                      "type": "string"
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
+                        },
+                        "fees": {
+                          "type": "object",
+                          "properties": {
+                            "onramp_fee": {
+                              "type": "string"
+                            },
+                            "onramp_fee_currency": {
+                              "type": "string"
+                            },
+                            "network_fee": {
+                              "type": "string"
+                            },
+                            "network_fee_asset": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 },
                 "example": {
-                  "amount": 500,
-                  "currency": "GHS",
-                  "cryptoAsset": "BTC_LIGHTNING",
-                  "exchangeRate": 0.08552894211576846,
-                  "cryptoAmount": 41.62300399201597,
-                  "estimatedFees": {
-                    "depositFee": 7.5,
-                    "networkFee": 5.845974329054843,
-                    "totalFees": 13.345974329054844
+                  "type": "onramp",
+                  "from": {
+                    "amount": "500",
+                    "currency": "BRL"
                   },
-                  "minAmount": 100,
-                  "maxAmount": 500000,
-                  "quoteValiditySeconds": 300,
-                  "expiresAt": "2025-12-16T19:28:42.149Z"
+                  "to": {
+                    "asset": "STABLE_SATS",
+                    "gross_amount": "92.80822735283428",
+                    "net_amount": "92.02980267077578"
+                  },
+                  "pricing": {
+                    "fx_rate": "0.18561645470566857",
+                    "fees": {
+                      "onramp_fee": "1.5",
+                      "onramp_fee_currency": "brl",
+                      "network_fee": "2.6937266999999996",
+                      "network_fee_asset": "STABLE_SATS"
+                    }
+                  }
                 }
               }
             }
@@ -8602,7 +8692,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/onramp/": {
+    "/v2/ramp/{subaccountId}/banking/onramp/": {
       "get": {
         "tags": ["Onramp"],
         "summary": "Get All Onramps",
@@ -8654,55 +8744,69 @@
                           "status": {
                             "type": "string"
                           },
-                          "targetAmount": {
-                            "type": "number"
-                          },
-                          "targetCurrency": {
+                          "type": {
                             "type": "string"
                           },
-                          "lightningAmount": {
-                            "type": "number"
+                          "from": {
+                            "type": "object",
+                            "properties": {
+                              "amount": {
+                                "type": "string"
+                              },
+                              "currency": {
+                                "type": "string"
+                              }
+                            }
                           },
-                          "withdrawalId": {
-                            "type": "string",
-                            "nullable": true
+                          "to": {
+                            "type": "object",
+                            "properties": {
+                              "asset": {
+                                "type": "string"
+                              },
+                              "gross_amount": {
+                                "type": "string"
+                              },
+                              "net_amount": {
+                                "type": "string"
+                              },
+                              "address": {
+                                "type": "string"
+                              }
+                            }
                           },
-                          "invoicePaidAt": {
-                            "type": "string",
-                            "nullable": true
+                          "pricing": {
+                            "type": "object",
+                            "properties": {
+                              "fx_rate": {
+                                "type": "string"
+                              },
+                              "fees": {
+                                "type": "object",
+                                "properties": {
+                                  "onramp_fee": {
+                                    "type": "string"
+                                  },
+                                  "onramp_fee_currency": {
+                                    "type": "string"
+                                  },
+                                  "network_fee": {
+                                    "type": "string"
+                                  },
+                                  "network_fee_asset": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
                           },
-                          "withdrawalInitiatedAt": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "completedAt": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "errorMessage": {
-                            "type": "string",
-                            "nullable": true
-                          },
-                          "createdAt": {
-                            "type": "string"
-                          },
-                          "updatedAt": {
-                            "type": "string"
-                          },
-                          "lightningCurrency": {
-                            "type": "string"
-                          },
-                          "exchangeRate": {
-                            "type": "number"
-                          },
-                          "lightningFee": {
-                            "type": "number"
-                          },
-                          "withdrawalFee": {
-                            "type": "number"
-                          },
-                          "totalFees": {
-                            "type": "number"
+                          "settlement": {
+                            "type": "object",
+                            "properties": {
+                              "collection_id": {
+                                "type": "string"
+                              }
+                            }
                           }
                         }
                       }
@@ -8724,47 +8828,36 @@
                 "example": {
                   "data": [
                     {
-                      "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+                      "id": "f7009e0e-73f4-44cb-8f51-d30073f57716",
                       "status": "pending",
-                      "targetAmount": 12,
-                      "targetCurrency": "brl",
-                      "lightningAmount": 226,
-                      "withdrawalId": null,
-                      "invoicePaidAt": null,
-                      "withdrawalInitiatedAt": null,
-                      "completedAt": null,
-                      "errorMessage": null,
-                      "createdAt": "2025-11-25T13:48:02.667Z",
-                      "updatedAt": "2025-11-25T13:48:02.667Z",
-                      "lightningCurrency": "stablesats",
-                      "exchangeRate": 0.18822916,
-                      "lightningFee": 0,
-                      "withdrawalFee": 0.11,
-                      "totalFees": 0.11
-                    },
-                    {
-                      "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
-                      "status": "pending",
-                      "targetAmount": 88,
-                      "targetCurrency": "brl",
-                      "lightningAmount": 1656,
-                      "withdrawalId": null,
-                      "invoicePaidAt": null,
-                      "withdrawalInitiatedAt": null,
-                      "completedAt": null,
-                      "errorMessage": null,
-                      "createdAt": "2025-11-25T13:37:46.829Z",
-                      "updatedAt": "2025-11-25T13:37:46.829Z",
-                      "lightningCurrency": "stablesats",
-                      "exchangeRate": 0.18822916,
-                      "lightningFee": 0,
-                      "withdrawalFee": 0.64,
-                      "totalFees": 0.64
+                      "type": "onramp",
+                      "from": {
+                        "amount": "92.02980267",
+                        "currency": "BRL"
+                      },
+                      "to": {
+                        "asset": "STABLE_SATS",
+                        "gross_amount": "92.80822735283428",
+                        "net_amount": "92.02980267",
+                        "address": "jornie@speed.app"
+                      },
+                      "pricing": {
+                        "fx_rate": "0.18561645",
+                        "fees": {
+                          "onramp_fee": "1.5",
+                          "onramp_fee_currency": "brl",
+                          "network_fee": "2.6937267",
+                          "network_fee_asset": "STABLE_SATS"
+                        }
+                      },
+                      "settlement": {
+                        "collection_id": "935c7d74-9e23-4cff-9b9c-0eab9d76461e"
+                      }
                     }
                   ],
-                  "count": 2,
+                  "count": 3,
                   "page": 1,
-                  "limit": 10,
+                  "limit": 20,
                   "totalPages": 1
                 }
               }
@@ -8773,7 +8866,7 @@
         }
       }
     },
-    "/v1/ramp/{subaccountId}/banking/onramp/{onrampId}": {
+    "/v2/ramp/{subaccountId}/banking/onramp/{onrampId}": {
       "get": {
         "tags": ["Onramp"],
         "summary": "Get One Onramp",
@@ -8810,85 +8903,98 @@
                     "status": {
                       "type": "string"
                     },
-                    "localAmount": {
-                      "type": "number"
-                    },
-                    "localCurrency": {
+                    "type": {
                       "type": "string"
                     },
-                    "cryptoAsset": {
-                      "type": "string"
+                    "from": {
+                      "type": "object",
+                      "properties": {
+                        "amount": {
+                          "type": "string"
+                        },
+                        "currency": {
+                          "type": "string"
+                        }
+                      }
                     },
-                    "cryptoAmount": {
-                      "type": "number"
+                    "to": {
+                      "type": "object",
+                      "properties": {
+                        "asset": {
+                          "type": "string"
+                        },
+                        "gross_amount": {
+                          "type": "string"
+                        },
+                        "net_amount": {
+                          "type": "string"
+                        },
+                        "address": {
+                          "type": "string"
+                        }
+                      }
                     },
-                    "cryptoAmountReceivable": {
-                      "type": "number"
+                    "pricing": {
+                      "type": "object",
+                      "properties": {
+                        "fx_rate": {
+                          "type": "string"
+                        },
+                        "fees": {
+                          "type": "object",
+                          "properties": {
+                            "onramp_fee": {
+                              "type": "string"
+                            },
+                            "onramp_fee_currency": {
+                              "type": "string"
+                            },
+                            "network_fee": {
+                              "type": "string"
+                            },
+                            "network_fee_asset": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
                     },
-                    "exchangeRate": {
-                      "type": "number"
-                    },
-                    "totalFees": {
-                      "type": "number"
-                    },
-                    "paymentMethod": {
-                      "type": "string"
-                    },
-                    "paymentReference": {
-                      "type": "string"
-                    },
-                    "cryptoTransactionHash": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "cryptoDestinationAddress": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "errorMessage": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "paymentReceivedAt": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "conversionInitiatedAt": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "completedAt": {
-                      "type": "string",
-                      "nullable": true
-                    },
-                    "createdAt": {
-                      "type": "string"
-                    },
-                    "updatedAt": {
-                      "type": "string"
+                    "settlement": {
+                      "type": "object",
+                      "properties": {
+                        "collection_id": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 },
                 "example": {
-                  "id": "5c12d3de-b57e-49de-945c-9109dc5c2075",
+                  "id": "f7009e0e-73f4-44cb-8f51-d30073f57716",
                   "status": "pending",
-                  "localAmount": 20000,
-                  "localCurrency": "NGN",
-                  "cryptoAsset": "USDT",
-                  "cryptoAmount": 30.77425294,
-                  "cryptoAmountReceivable": 19426.55499782,
-                  "exchangeRate": 0.00158413,
-                  "totalFees": 573.44500218,
-                  "paymentMethod": "ngn_transfer",
-                  "paymentReference": "a694e96d-e563-4aeb-9ee1-869c814b2303",
-                  "cryptoTransactionHash": null,
-                  "cryptoDestinationAddress": null,
-                  "errorMessage": null,
-                  "paymentReceivedAt": null,
-                  "conversionInitiatedAt": null,
-                  "completedAt": null,
-                  "createdAt": "2025-12-10T06:14:37.857Z",
-                  "updatedAt": "2025-12-10T06:14:37.857Z"
+                  "type": "onramp",
+                  "from": {
+                    "amount": "92.02980267",
+                    "currency": "BRL"
+                  },
+                  "to": {
+                    "asset": "STABLE_SATS",
+                    "gross_amount": "92.80822735283428",
+                    "net_amount": "92.02980267",
+                    "address": "jornie@speed.app"
+                  },
+                  "pricing": {
+                    "fx_rate": "0.18561645",
+                    "fees": {
+                      "onramp_fee": "1.5",
+                      "onramp_fee_currency": "brl",
+                      "network_fee": "2.6937267",
+                      "network_fee_asset": "STABLE_SATS"
+                    }
+                  },
+                  "settlement": {
+                    "collection_id": "935c7d74-9e23-4cff-9b9c-0eab9d76461e"
+                  }
                 }
               }
             }
