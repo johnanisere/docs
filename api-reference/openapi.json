@@ -2403,10 +2403,8 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2025-12-31T10:36:17.034Z",
-                  "path": "/v1/kyc/customers/3dee9114-0467-4694-8e51-169978dd15d4",
                   "error": "Error",
-                  "message": "Customer not found",
-                  "stack": "HttpException: Customer not found"
+                  "message": "Customer not found"
                 }
               }
             }
@@ -2673,10 +2671,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-12-31T10:19:59.164Z",
-                  "path": "/v1/kyc/customers/5f7dc10c-74f0-4176-b328-d2b8b162972d/submit",
                   "error": "Error",
-                  "message": "Missing required fields: signed_agreement_id",
-                  "stack": "HttpException: Missing required fields: signed_agreement_id"
+                  "message": "Missing required fields: signed_agreement_id"
                 }
               }
             }
@@ -3649,10 +3645,8 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2026-01-12T16:03:41.899Z",
-                  "path": "/v1/kyc/businesses/07f3e38c-d1b7-43dd-b7b0-6608b13ab697",
                   "error": "Error",
-                  "message": "Business not found",
-                  "stack": "HttpException: Business not found"
+                  "message": "Business not found"
                 }
               }
             }
@@ -4051,10 +4045,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-12-31T10:19:59.164Z",
-                  "path": "/v1/kyc/customers/5f7dc10c-74f0-4176-b328-d2b8b162972d/submit",
                   "error": "Error",
-                  "message": "Missing required fields: signed_agreement_id",
-                  "stack": "HttpException: Missing required fields: signed_agreement_id"
+                  "message": "Missing required fields: signed_agreement_id"
                 }
               }
             }
@@ -5816,10 +5808,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-11-21T11:16:54.232Z",
-                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/deposits/crypto/poly",
                   "error": "Error",
-                  "message": "Invalid chain for current environment.",
-                  "stack": "HttpException: Invalid chain for current environment.\n    at RampController.storeChainAddress (/usr/src/app/dist/src/stores/ramp.controller.js:125:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Invalid chain for current environment."
                 }
               }
             }
@@ -6528,10 +6518,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-11-20T21:53:30.125Z",
-                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients",
                   "error": "Error",
-                  "message": "Failed to validate PIX key. Please check and try again.",
-                  "stack": "HttpException: Failed to validate PIX key. Please check and try again.\n    at BankingService.addBrlBankAccount (/usr/src/app/dist/src/banking/banking.service.js:334:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Failed to validate PIX key. Please check and try again."
                 }
               }
             }
@@ -6560,10 +6548,8 @@
                 "example": {
                   "statusCode": 403,
                   "timestamp": "2025-11-25T02:42:56.154Z",
-                  "path": "/v1/ramp/abcdc10c-74f0-4176-b328-d2b8b162972d/banking/recipients",
                   "error": "Error",
-                  "message": "You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails",
-                  "stack": "HttpException: You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails\n    at BankingService.addBankAccount (/usr/src/app/dist/src/banking/banking.service.js:166:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails"
                 }
               }
             }
@@ -6656,10 +6642,8 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2025-11-20T21:53:34.527Z",
-                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients/eb56fd66-a251-4371-99be-34a243171f3c",
                   "error": "Error",
-                  "message": "Bank account not found",
-                  "stack": "HttpException: Bank account not found\n    at BankingService.getBankAccount (/usr/src/app/dist/src/banking/banking.service.js:474:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Bank account not found"
                 }
               }
             }
@@ -6728,10 +6712,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-11-20T21:53:30.125Z",
-                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients",
                   "error": "Error",
-                  "message": "Failed to validate PIX key. Please check and try again.",
-                  "stack": "HttpException: Failed to validate PIX key. Please check and try again.\n    at BankingService.addBrlBankAccount (/usr/src/app/dist/src/banking/banking.service.js:334:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Failed to validate PIX key. Please check and try again."
                 }
               }
             }
@@ -7183,10 +7165,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-12-30T10:20:52.254Z",
-                  "path": "/v1/ramp/banking/banks/USD",
                   "error": "Bad Request",
-                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS, NGN",
-                  "stack": "BadRequestException: Invalid currency. Supported currencies: MXN, BRL, COP, ARS, NGN\n"
+                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS, NGN"
                 }
               }
             }
@@ -7270,10 +7250,8 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2025-11-20T21:53:34.527Z",
-                  "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/recipients/eb56fd66-a251-4371-99be-34a243171f3c",
                   "error": "Error",
-                  "message": "Bank account not found",
-                  "stack": "HttpException: Bank account not found\n    at BankingService.getBankAccount (/usr/src/app/dist/src/banking/banking.service.js:474:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Bank account not found"
                 }
               }
             }
@@ -7651,10 +7629,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-12-30T10:46:33.672Z",
-                  "path": "/v1/ramp/banking/taxonomy/NGN",
                   "error": "Bad Request",
-                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS",
-                  "stack": "BadRequestException: Invalid currency. Supported currencies: MXN, BRL, COP, ARS"
+                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS"
                 }
               }
             }
@@ -8055,10 +8031,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-11-25T12:49:22.586Z",
-                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/withdrawals",
                   "error": "Error",
-                  "message": "Invalid phone number format for ZM",
-                  "stack": "HttpException: Invalid phone number format for ZM\n    at BankingService.processMobileMoneyWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:2164:23)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async BankingService.createWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:953:44)"
+                  "message": "Invalid phone number format for ZM"
                 }
               }
             }
@@ -8695,10 +8669,8 @@
                     "value": {
                       "statusCode": 400,
                       "timestamp": "2025-11-20T20:37:49.137Z",
-                      "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/withdrawals/stablecoin",
                       "error": "Error",
-                      "message": "Insufficient balance: have 0 USD, need 13.08 USD",
-                      "stack": "HttpException: Insufficient balance: have 0 USD, need 13.08 USD\n    at BankingService.createStablecoinWithdrawal (/usr/src/app/dist/src/banking/banking.service.js:1360:19)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                      "message": "Insufficient balance: have 0 USD, need 13.08 USD"
                     }
                   },
                   "InvalidAddress": {
@@ -8706,10 +8678,8 @@
                     "value": {
                       "statusCode": 400,
                       "timestamp": "2025-11-20T20:52:37.185Z",
-                      "path": "/v1/ramp/ea8605ab-04eb-4bc4-91ca-13e4fe4cb83e/banking/withdrawals/stablecoin",
                       "error": "Bad Request",
-                      "message": "Invalid blockchain address format",
-                      "stack": "BadRequestException: Bad Request Exception\n    at ValidationPipe.exceptionFactory (/usr/src/app/node_modules/@nestjs/common/pipes/validation.pipe.js:99:20)\n    at ValidationPipe.transform (/usr/src/app/node_modules/@nestjs/common/pipes/validation.pipe.js:72:30)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async resolveParamValue (/usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:147:23)\n    at async Promise.all (index 0)\n    at async pipesFn (/usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:150:13)\n    at async /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:37:30"
+                      "message": "Invalid blockchain address format"
                     }
                   }
                 }
@@ -10026,7 +9996,6 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-12-10T06:10:31.899Z",
-                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/onramp/initiate",
                   "error": "Bad Request",
                   "message": "cryptoAsset must be one of the following values: USDT, USDC, BTC_LIGHTNING"
                 }
@@ -10043,7 +10012,6 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2025-12-10T05:58:00.326Z",
-                  "path": "/v1/ramp/5f7dc10c-74f0-4176-b328-d2b8b162972d/banking/onramp/initiate",
                   "error": "Error",
                   "message": "Bank account not found"
                 }
@@ -10925,11 +10893,9 @@
               "application/json": {
                 "example": {
                   "statusCode": 400,
-                  "timestamp": "2025-11-21T00:41:55.962Z",
-                  "path": "/v1/banking/withdrawal/fee?currency=ngnn&amount=0.99",
+                  "timestamp": "2025-11-21hdrawal/fee?currency=ngnn&amount=0.99",
                   "error": "Bad Request",
-                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW",
-                  "stack": "BadRequestException: Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW\n    at BankingController.calculateWithdrawalFee (/usr/src/app/dist/src/banking/banking.controller.js:68:19)\n    at /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:38:29\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW"
                 }
               }
             }
@@ -11024,10 +10990,8 @@
                 "example": {
                   "statusCode": 400,
                   "timestamp": "2025-11-21T00:41:55.962Z",
-                  "path": "/v1/banking/withdrawal/fee?currency=ngnn&amount=0.99",
                   "error": "Bad Request",
-                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW",
-                  "stack": "BadRequestException: Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW\n    at BankingController.calculateWithdrawalFee (/usr/src/app/dist/src/banking/banking.controller.js:68:19)\n    at /usr/src/app/node_modules/@nestjs/core/router/router-execution-context.js:38:29\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)"
+                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW"
                 }
               }
             }
