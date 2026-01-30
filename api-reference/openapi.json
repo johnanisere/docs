@@ -9470,11 +9470,18 @@
                             "type": "string"
                           },
                           "status": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The status of the offramp. Options: paid, completed, failed."
                           },
                           "created_at": {
                             "type": "string",
                             "format": "date-time"
+                          },
+                          "account_id": {
+                            "type": "string"
+                          },
+                          "client_offramp_reference": {
+                            "type": "string"
                           },
                           "from": {
                             "type": "object",
@@ -9528,6 +9535,24 @@
                                 }
                               }
                             }
+                          },
+                          "settlement": {
+                            "type": "object",
+                            "description": "Details about the settlement based on the status (paid, completed, failed).",
+                            "properties": {
+                              "withdrawal_id": {
+                                "type": "string",
+                                "description": "Present if 'completed' or 'failed'."
+                              },
+                              "estimated_at": {
+                                "type": "string",
+                                "format": "date-time",
+                                "description": "Present if 'completed'."
+                              },
+                              "end_to_end_id": {
+                                "type": "string"
+                              }
+                            }
                           }
                         }
                       }
@@ -9549,32 +9574,71 @@
                 "example": {
                   "data": [
                     {
-                      "id": "25ffacb7-6bf0-488d-b578-fa9b97a32e84",
+                      "id": "01994502-c69b-450a-bff1-1982ed7e2901",
                       "type": "offramp",
                       "status": "pending",
-                      "created_at": "2026-01-12T15:07:48.271Z",
+                      "created_at": "2026-01-29T00:38:40.168Z",
+                      "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                      "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-198895716122",
                       "from": {
-                        "amount": "23.36763078",
-                        "asset": "USDC",
-                        "network": "SOL-DEVNET",
-                        "address": "6n3pQZwdFRFRNDFUAsWp2WdsYxBjP1BG8kp94fccSXif"
+                        "amount": "13000",
+                        "asset": "stablesats",
+                        "network": "lightning",
+                        "address": "lntbs1464530n1p5h4tq0pp56d0ncwgksp522zjhd9plr33wddgy6clc4x3gqt65jjwu37kk559sdqqcqzpuxqzfvsp57kraxsqqjle9xakp02ex8h79qpyydrqr08xa3d9mf2vlj8pj29rs9qxpqysgqyuuwepsa5r7wkv4sd0ce7ukzn07m3wnjtl9qsd5lu3lurrp4a8xsg79wdzksk4dj4zzvffq0kjeyw6e53st5vuca4kgke5yr6nf2fdcq9k2ktn"
                       },
                       "to": {
-                        "currency": "ghs",
-                        "gross_amount": "250",
-                        "net_amount": "244",
-                        "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                        "currency": "brl",
+                        "gross_amount": "674.79",
+                        "net_amount": "672.09",
+                        "recipient_id": "979a654b-cf63-4302-8bb2-060918949331"
                       },
                       "pricing": {
-                        "fx_rate": "10.69856",
+                        "fx_rate": "5.1906978",
                         "fees": {
-                          "offramp_fee": "6",
-                          "offramp_fee_currency": "ghs"
+                          "offramp_fee": "2.7",
+                          "offramp_fee_currency": "brl"
                         }
+                      },
+                      "settlement": {
+                        "withdrawal_id": null,
+                        "estimated_at": null,
+                        "end_to_end_id": "E3513612020260128160900000066552"
+                      }
+                    },
+                    {
+                      "id": "f7ffc6d9-eb45-400e-af86-a4de4a9357f1",
+                      "type": "offramp",
+                      "status": "completed",
+                      "created_at": "2026-01-28T16:31:20.002Z",
+                      "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                      "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571618a",
+                      "from": {
+                        "amount": "130",
+                        "asset": "USDC",
+                        "network": "SOL-DEVNET",
+                        "address": "ATCfujGip9Mxu2Aa778qXeQXocNVHqTSgiBZSnM1eMzY"
+                      },
+                      "to": {
+                        "currency": "BRL",
+                        "gross_amount": "675.36",
+                        "net_amount": "672.66",
+                        "recipient_id": "979a654b-cf63-4302-8bb2-060918949331"
+                      },
+                      "pricing": {
+                        "fx_rate": "5.195089",
+                        "fees": {
+                          "offramp_fee": "2.7",
+                          "offramp_fee_currency": "brl"
+                        }
+                      },
+                      "settlement": {
+                        "withdrawal_id": "1a8e489f-f2b5-4916-bee5-e65dd999ac4e",
+                        "estimated_at": "2026-01-28T16:32:10.524Z",
+                        "end_to_end_id": "E3513612020260128163100000066555"
                       }
                     }
                   ],
-                  "count": 1,
+                  "count": 2,
                   "page": 1,
                   "limit": 20,
                   "totalPages": 1
@@ -9623,11 +9687,18 @@
                       "type": "string"
                     },
                     "status": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "The status of the offramp. Options: paid, completed, failed."
                     },
                     "created_at": {
                       "type": "string",
                       "format": "date-time"
+                    },
+                    "account_id": {
+                      "type": "string"
+                    },
+                    "client_offramp_reference": {
+                      "type": "string"
                     },
                     "from": {
                       "type": "object",
@@ -9681,33 +9752,58 @@
                           }
                         }
                       }
+                    },
+                    "settlement": {
+                      "type": "object",
+                      "description": "Details about the settlement based on the status (paid, completed, failed).",
+                      "properties": {
+                        "withdrawal_id": {
+                          "type": "string",
+                          "description": "Present if 'completed' or 'failed'."
+                        },
+                        "estimated_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "description": "Present if 'completed'."
+                        },
+                        "end_to_end_id": {
+                          "type": "string"
+                        }
+                      }
                     }
                   }
                 },
                 "example": {
-                  "id": "25ffacb7-6bf0-488d-b578-fa9b97a32e84",
-                  "type": "offramp",
-                  "status": "pending",
-                  "created_at": "2026-01-12T15:07:48.271Z",
-                  "from": {
-                    "amount": "23.36763078",
-                    "asset": "USDC",
-                    "network": "SOL-DEVNET",
-                    "address": "6n3pQZwdFRFRNDFUAsWp2WdsYxBjP1BG8kp94fccSXif"
-                  },
-                  "to": {
-                    "currency": "ghs",
-                    "gross_amount": "250",
-                    "net_amount": "244",
-                    "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
-                  },
-                  "pricing": {
-                    "fx_rate": "10.69856",
-                    "fees": {
-                      "offramp_fee": "6",
-                      "offramp_fee_currency": "ghs"
+                    "id": "f7ffc6d9-eb45-400e-af86-a4de4a9357f1",
+                    "type": "offramp",
+                    "status": "completed",
+                    "created_at": "2026-01-28T16:31:20.002Z",
+                    "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571618a",
+                    "from": {
+                        "amount": "130",
+                        "asset": "USDC",
+                        "network": "SOL-DEVNET",
+                        "address": "ATCfujGip9Mxu2Aa778qXeQXocNVHqTSgiBZSnM1eMzY"
+                    },
+                    "to": {
+                        "currency": "BRL",
+                        "gross_amount": "675.36",
+                        "net_amount": "672.66",
+                        "recipient_id": "979a654b-cf63-4302-8bb2-060918949331"
+                    },
+                    "pricing": {
+                        "fx_rate": "5.195089",
+                        "fees": {
+                            "offramp_fee": "2.7",
+                            "offramp_fee_currency": "brl"
+                        }
+                    },
+                    "settlement": {
+                        "withdrawal_id": "1a8e489f-f2b5-4916-bee5-e65dd999ac4e",
+                        "estimated_at": "2026-01-28T16:32:10.524Z",
+                        "end_to_end_id": "E3513612020260128163100000066555"
                     }
-                  }
                 }
               }
             }
