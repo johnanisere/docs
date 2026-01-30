@@ -118,7 +118,9 @@
                 "pages": [
                   "pt/subaccount-events",
                   "pt/withdrawal-events",
-                  "pt/deposit-events"
+                  "pt/deposit-events",
+                  "pt/off-ramp-events",
+                  "pt/on-ramp-events"
                 ]
               }
             ]
