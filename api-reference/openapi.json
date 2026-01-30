@@ -9811,15 +9811,15 @@
                       "currency": {
                         "type": "string"
                       },
-                      "phoneNumber": {
+                      "phone_number": {
                         "type": "string",
                         "description": "Required for momo currencies e.g `GHS`."
                       },
-                      "paymentRail": {
+                      "payment_rail": {
                         "type": "string",
                         "description": "Required for `COP`."
                       },
-                      "bankCode": {
+                      "bank_code": {
                         "type": "string",
                         "description": "Required for `COP`."
                       }
@@ -9841,7 +9841,8 @@
                           "lightning",
                           "SOL-DEVNET",
                           "ETH-SEPOLIA",
-                          "ETH"
+                          "ETH",
+                          "SOLANA"
                         ]
                       },
                       "destination_address": {
@@ -9850,6 +9851,11 @@
                       }
                     },
                     "required": ["asset", "chain", "destination_address"]
+                  },
+                  "client_onramp_reference": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "A unique valid UUID reference provided by the client."
                   }
                 }
               },
@@ -9859,10 +9865,11 @@
                   "currency": "BRL"
                 },
                 "to": {
-                  "asset": "STABLE_SATS",
-                  "chain": "lightning",
-                  "destination_address": "jornie@speed.app"
-                }
+                  "asset": "USDC",
+                  "chain": "SOLANA",
+                  "destination_address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+                },
+                "client_onramp_reference": "5a26b319-fc68-4ee2-83f2-198895716135"
               }
             }
           }
@@ -9882,6 +9889,16 @@
                       "type": "string"
                     },
                     "type": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "account_id": {
+                      "type": "string"
+                    },
+                    "client_onramp_reference": {
                       "type": "string"
                     },
                     "from": {
@@ -9947,6 +9964,12 @@
                             },
                             "network_fee_asset": {
                               "type": "string"
+                            },
+                            "total_fees": {
+                              "type": "string"
+                            },
+                            "total_fees_currency": {
+                              "type": "string"
                             }
                           }
                         }
@@ -9955,31 +9978,36 @@
                   }
                 },
                 "example": {
-                  "id": "f7009e0e-73f4-44cb-8f51-d30073f57716",
+                  "id": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
                   "status": "pending",
                   "type": "onramp",
+                  "created_at": "2026-01-30T15:16:21.764Z",
+                  "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                  "client_onramp_reference": "5a26b319-fc68-4ee2-83f2-198895716136",
                   "from": {
                     "amount": "500",
                     "currency": "BRL",
                     "payment_instructions": {
                       "method": "pix",
-                      "qr_code": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/fe71dbca8bb145fa953c1a2282ee49d15204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***",
-                      "expires_at": "2026-01-12T15:31:28.000Z"
+                      "qr_code": "00020101021226890014br.gov.bcb.pix2567brcode-h.sandbox.starkinfra.com/v2/2ac38224b4244685a0ddbd81c880da495204000053039865802BR5908Bullring6015Ciudad de Mexic62070503***6304B0A9",
+                      "expires_at": "2026-01-30T15:18:50.000Z"
                     }
                   },
                   "to": {
-                    "asset": "STABLE_SATS",
-                    "gross_amount": "92.80822735283428",
-                    "net_amount": "92.02980267077578",
-                    "address": "jornie@speed.app"
+                    "asset": "USDC",
+                    "gross_amount": "95.47",
+                    "net_amount": "94.43",
+                    "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
                   },
                   "pricing": {
-                    "fx_rate": "0.18561645470566857",
+                    "fx_rate": "0.19094342357815985",
                     "fees": {
                       "onramp_fee": "1.5",
                       "onramp_fee_currency": "brl",
-                      "network_fee": "2.6937266999999996",
-                      "network_fee_asset": "STABLE_SATS"
+                      "network_fee": "0.76",
+                      "network_fee_asset": "USDC",
+                      "total_fees": "5.43",
+                      "total_fees_currency": "brl"
                     }
                   }
                 }
