@@ -10171,6 +10171,15 @@
                           "type": {
                             "type": "string"
                           },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "account_id": {
+                            "type": "string"
+                          },
+                          "client_onramp_reference": {
+                            "type": "string"
+                          },
                           "from": {
                             "type": "object",
                             "properties": {
@@ -10219,6 +10228,12 @@
                                   },
                                   "network_fee_asset": {
                                     "type": "string"
+                                  },
+                                  "total_fees": {
+                                    "type": "string"
+                                  },
+                                  "total_fees_currency": {
+                                    "type": "string"
                                   }
                                 }
                               }
@@ -10252,34 +10267,71 @@
                 "example": {
                   "data": [
                     {
-                      "id": "f7009e0e-73f4-44cb-8f51-d30073f57716",
+                      "id": "28ec3842-88d3-44d8-ac25-fce61c2e6fc0",
                       "status": "pending",
                       "type": "onramp",
+                      "created_at": "2026-01-30T13:39:27.348Z",
+                      "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                      "client_onramp_reference": "5a26b319-fc68-4ee2-83f2-198895716135",
                       "from": {
-                        "amount": "92.02980267",
+                        "amount": "94.42",
                         "currency": "BRL"
                       },
                       "to": {
-                        "asset": "STABLE_SATS",
-                        "gross_amount": "92.80822735283428",
-                        "net_amount": "92.02980267",
-                        "address": "jornie@speed.app"
+                        "asset": "USDC",
+                        "gross_amount": "95.46",
+                        "net_amount": "94.42",
+                        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
                       },
                       "pricing": {
-                        "fx_rate": "0.18561645",
+                        "fx_rate": "0.19092881",
                         "fees": {
                           "onramp_fee": "1.5",
                           "onramp_fee_currency": "brl",
-                          "network_fee": "2.6937267",
-                          "network_fee_asset": "STABLE_SATS"
+                          "network_fee": "0.75",
+                          "network_fee_asset": "USDC",
+                          "total_fees": "5.43",
+                          "total_fees_currency": "brl"
                         }
                       },
                       "settlement": {
-                        "collection_id": "935c7d74-9e23-4cff-9b9c-0eab9d76461e"
+                        "collection_id": "e4a38b63-2b06-40bb-8b62-cb415e8994aa"
+                      }
+                    },
+                    {
+                      "id": "0a90865e-5f9f-4ac7-9498-ad7e6a99d224",
+                      "status": "completed",
+                      "type": "onramp",
+                      "created_at": "2026-01-30T13:17:13.200Z",
+                      "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                      "client_onramp_reference": "5a26b319-fc68-4ee2-83f2-198895716134",
+                      "from": {
+                        "amount": "94.42",
+                        "currency": "BRL"
+                      },
+                      "to": {
+                        "asset": "USDC",
+                        "gross_amount": "95.46",
+                        "net_amount": "94.42",
+                        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+                      },
+                      "pricing": {
+                        "fx_rate": "0.19092881",
+                        "fees": {
+                          "onramp_fee": "1.5",
+                          "onramp_fee_currency": "brl",
+                          "network_fee": "0.75",
+                          "network_fee_asset": "USDC",
+                          "total_fees": "5.43",
+                          "total_fees_currency": "brl"
+                        }
+                      },
+                      "settlement": {
+                        "collection_id": "92773c5a-c8c1-4975-ac85-fa710d41173b"
                       }
                     }
                   ],
-                  "count": 3,
+                  "count": 2,
                   "page": 1,
                   "limit": 20,
                   "totalPages": 1
