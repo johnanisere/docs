@@ -1,0 +1,163 @@
+---
+title: On-Ramp Events
+description: Real-time notifications related to onramp status changes.
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+### On-Ramp Pending
+```json
+{
+  "event": "onramp.status.pending",
+  "data": {
+    "id": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "status": "pending",
+    "client_onramp_reference": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "from": {
+        "amount": "94.43",
+        "currency": "BRL"
+    },
+    "to": {
+        "asset": "USDC",
+        "gross_amount": "95.47",
+        "net_amount": "94.43",
+        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+    },
+    "pricing": {
+        "fx_rate": "0.19094342",
+        "fees": {
+            "onramp_fee": "1.5",
+            "onramp_fee_currency": "brl",
+            "network_fee": "0.75",
+            "network_fee_asset": "USDC",
+            "total_fees": "5.43",
+            "total_fees_currency": "brl"
+        }
+    },
+    "settlement": {
+        "collection_id": "2ccc3c92-a256-4a21-836c-770da3522f42"
+    }
+  }
+}
+```
+
+### On-Ramp Paid
+```json
+{
+  "event": "onramp.status.paid",
+  "data": {
+    "id": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "status": "paid",
+    "client_onramp_reference": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:50:43.276Z",
+    "from": {
+        "amount": "94.43",
+        "currency": "BRL"
+    },
+    "to": {
+        "asset": "USDC",
+        "gross_amount": "95.47",
+        "net_amount": "94.43",
+        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+    },
+    "pricing": {
+        "fx_rate": "0.19094342",
+        "fees": {
+            "onramp_fee": "1.5",
+            "onramp_fee_currency": "brl",
+            "network_fee": "0.75",
+            "network_fee_asset": "USDC",
+            "total_fees": "5.43",
+            "total_fees_currency": "brl"
+        }
+    },
+    "settlement": {
+        "collection_id": "2ccc3c92-a256-4a21-836c-770da3522f42"
+    }
+  }
+}
+```
+
+### On-Ramp Completed
+```json
+{
+  "event": "onramp.status.completed",
+  "data": {
+    "id": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "status": "completed",
+    "client_onramp_reference": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:50:43.276Z",
+    "from": {
+        "amount": "94.43",
+        "currency": "BRL"
+    },
+    "to": {
+        "asset": "USDC",
+        "gross_amount": "95.47",
+        "net_amount": "94.43",
+        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+    },
+    "pricing": {
+        "fx_rate": "0.19094342",
+        "fees": {
+            "onramp_fee": "1.5",
+            "onramp_fee_currency": "brl",
+            "network_fee": "0.75",
+            "network_fee_asset": "USDC",
+            "total_fees": "5.43",
+            "total_fees_currency": "brl"
+        }
+    },
+    "settlement": {
+        "collection_id": "2ccc3c92-a256-4a21-836c-770da3522f42",
+        "transaction_hash": "0x1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+    }
+  }
+}
+```
+
+### On-Ramp Failed
+```json
+{
+  "event": "onramp.status.failed",
+  "data": {
+    "id": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "status": "failed",
+    "client_onramp_reference": "e1359951-fa48-40f8-9e85-c38bc5ea857d",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:50:43.276Z",
+    "from": {
+        "amount": "94.43",
+        "currency": "BRL"
+    },
+    "to": {
+        "asset": "USDC",
+        "gross_amount": "95.47",
+        "net_amount": "94.43",
+        "address": "2fFUHpCEXhdQtSxompq8qbyU7EjjrtkMnr7ZT4ovF9A9"
+    },
+    "pricing": {
+        "fx_rate": "0.19094342",
+        "fees": {
+            "onramp_fee": "1.5",
+            "onramp_fee_currency": "brl",
+            "network_fee": "0.75",
+            "network_fee_asset": "USDC",
+            "total_fees": "5.43",
+            "total_fees_currency": "brl"
+        }
+    },
+    "settlement": {
+        "collection_id": "2ccc3c92-a256-4a21-836c-770da3522f42",
+        "transaction_hash": null
+    }
+  }
+}
+```
