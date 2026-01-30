@@ -10174,6 +10174,12 @@
                             },
                             "network_fee_asset": {
                               "type": "string"
+                            },
+                            "total_fees": {
+                              "type": "string"
+                            },
+                            "total_fees_currency": {
+                              "type": "string"
                             }
                           }
                         }
@@ -10189,16 +10195,18 @@
                   },
                   "to": {
                     "asset": "STABLE_SATS",
-                    "gross_amount": "92.80822735283428",
-                    "net_amount": "92.02980267077578"
+                    "gross_amount": "95.47",
+                    "net_amount": "94.68"
                   },
                   "pricing": {
-                    "fx_rate": "0.18561645470566857",
+                    "fx_rate": "0.19094342357815985",
                     "fees": {
                       "onramp_fee": "1.5",
                       "onramp_fee_currency": "brl",
-                      "network_fee": "2.6937266999999996",
-                      "network_fee_asset": "STABLE_SATS"
+                      "network_fee": "0.51",
+                      "network_fee_asset": "STABLE_SATS",
+                      "total_fees": "4.12",
+                      "total_fees_currency": "brl"
                     }
                   }
                 }
