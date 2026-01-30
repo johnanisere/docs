@@ -54,7 +54,9 @@
                 "pages": [
                   "en/subaccount-events",
                   "en/withdrawal-events",
-                  "en/deposit-events"
+                  "en/deposit-events",
+                  "en/off-ramp-events",
+                  "en/on-ramp-events"
                 ]
               }
             ]

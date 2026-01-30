@@ -1,0 +1,157 @@
+---
+title: Off-Ramp Events
+description: Real-time notifications related to offramp status changes.
+---
+
+Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
+
+### Off-Ramp Pending
+```json
+{
+  "event": "offramp.status.pending",
+  "data": {
+    "id": "abc-offramp-id",
+    "client_offramp_reference": "some-reference-value",
+    "status": "pending",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "from": {
+        "amount": "100",
+        "asset": "USDC",
+        "network": "SOL-DEVNET",
+        "address": "9d374q7jAfAspuPvEwGEfy67FNuWAN4diDC4jFV4RZoG"
+    },
+    "to": {
+        "currency": "brl",
+        "gross_amount": "528.39",
+        "net_amount": "526.28",
+        "recipient_id": "5a26f319-fc68-4ee2-83c2-19889571618e"
+    },
+    "pricing": {
+        "fx_rate": "5.283911",
+        "fees": {
+            "offramp_fee": "2.11",
+            "offramp_fee_currency": "brl"
+        }
+    },
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:45:43.276Z"
+  }
+}
+```
+
+### Off-Ramp Paid
+```json
+{
+  "event": "offramp.status.paid",
+  "data": {
+    "id": "abc-offramp-id",
+    "client_offramp_reference": "some-reference-value",
+    "status": "paid",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "settlement": {
+          "transaction_hash" : "0x9a791e7785ce747951ab12cb0e51d4c4034449a71a3afbffee99b50ae1882874"
+      },
+    "from": {
+        "amount": "100",
+        "asset": "USDC",
+        "network": "SOL-DEVNET",
+        "address": "9d374q7jAfAspuPvEwGEfy67FNuWAN4diDC4jFV4RZoG"
+    },
+    "to": {
+        "currency": "brl",
+        "gross_amount": "528.39",
+        "net_amount": "526.28",
+        "recipient_id": "5a26f319-fc68-4ee2-83c2-19889571618e"
+    },
+    "pricing": {
+        "fx_rate": "5.283911",
+        "fees": {
+            "offramp_fee": "2.11",
+            "offramp_fee_currency": "brl"
+        }
+    },
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:50:43.276Z"
+  }
+}
+```
+
+### Off-Ramp Completed
+```json
+{
+  "event": "offramp.status.completed",
+  "data": {
+    "id": "abc-offramp-id",
+    "client_offramp_reference": "some-reference-value",
+    "status": "completed",
+    "account_id": "e704d0ec-5d19-49a1-b66c-86cd683f2d92",
+    "settlement": {
+          "withdrawal_id": "503a3d6d-91a0-4343-982c-374dc7d8eb1f",
+          "estimated_at": "2026-01-23T01:00:34.582Z",
+          "end_to_end_id": "E3513612020260123010000000066444",
+          "transaction_hash" : "0x9a791e7785ce747951ab12cb0e51d4c4034449a71a3afbffee99b50ae1882874"
+      },
+    "from": {
+        "amount": "100",
+        "asset": "USDC",
+        "network": "SOL-DEVNET",
+        "address": "9d374q7jAfAspuPvEwGEfy67FNuWAN4diDC4jFV4RZoG"
+    },
+    "to": {
+        "currency": "brl",
+        "gross_amount": "528.39",
+        "net_amount": "526.28",
+        "recipient_id": "5a26f319-fc68-4ee2-83c2-19889571618e"
+    },
+    "pricing": {
+        "fx_rate": "5.283911",
+        "fees": {
+            "offramp_fee": "2.11",
+            "offramp_fee_currency": "brl"
+        }
+    },
+    "created_at": "2026-01-23T16:45:43.276Z",
+    "updated_at": "2026-01-23T16:50:43.276Z"
+  }
+}
+```
+
+### Off-Ramp Failed
+```json
+{
+  "event": "offramp.status.failed",
+  "data": {
+    "id": "63e14948-2239-4a1c-9287-acaa3cd67273",
+    "account_id": "9a011afa-a247-4348-a822-c12d926b5d59",
+    "status": "failed",
+    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571611a",
+    "created_at": "2026-01-29T17:51:08.219Z",
+    "updated_at": "2026-01-29T17:51:56.213Z",
+    "from": {
+      "amount": "2103",
+      "asset": "USDC",
+      "network": "ETH-SEPOLIA",
+      "address": "0xa89fa58fe1752d518c521876b150d43628ead50c"
+    },
+    "to": {
+      "currency": "BRL",
+      "gross_amount": "10932.82",
+      "net_amount": "10889.09",
+      "recipient_id": "e940eab5-7853-48c7-a959-ad6b1aecf1bd"
+    },
+    "pricing": {
+      "fx_rate": "5.1986818",
+      "fees": {
+        "offramp_fee": "43.73",
+        "offramp_fee_currency": "brl"
+      }
+    },
+    "settlement": {
+      "withdrawal_id": "3ecb48d1-f391-4444-ba21-acc28d5f0cee",
+      "estimated_at": null,
+      "end_to_end_id": "E3513612020260129175100000066614",
+      "transaction_hash": "0x9a791e7785ce747951ab12cb0e51d4c4034449a71a3afbffee99b50ae1882874"
+    }
+  }
+}
+```
