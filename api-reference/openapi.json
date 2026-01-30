@@ -9250,8 +9250,6 @@
                 "example": {
                   "statusCode": 404,
                   "timestamp": "2026-01-12T15:10:22.392Z",
-                  "path": "/v2/ramp/07f3e38c-d1b7-43dd-b7b0-6608b13ab697/banking/offramp/quote",
-                  "error": "Error",
                   "message": "Bank account not found"
                 }
               }
@@ -9284,37 +9282,38 @@
                   "from": {
                     "type": "object",
                     "properties": {
-                      "chain": {
-                        "type": "string",
-                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA"]
+                      "amount": {
+                        "type": "number"
                       },
-                      "asset": {
-                        "type": "string",
-                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                      "currency": {
+                        "type": "string"
                       }
                     }
                   },
                   "to": {
                     "type": "object",
                     "properties": {
-                      "recipient_id": {
-                        "type": "string"
+                      "asset": {
+                        "type": "string",
+                        "enum": ["STABLE_SATS", "USDC", "USDT"]
                       },
-                      "amount": {
-                        "type": "number"
-                      }
+                      "chain": {
+                        "type": "string",
+                        "description": "Supported Chains by Asset:\n\n* **USDT** -> `ETHEREUM`, `TRON`\n* **USDC** -> `ETHEREUM`, `POLYGON`, `SOLANA`\n* **STABLE_SATS** -> `lightning`",
+                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA", "ETHEREUM", "TRON", "POLYGON", "SOLANA"]
+                      } 
                     }
                   }
                 }
               },
               "example": {
                 "from": {
-                  "chain": "SOL-DEVNET",
-                  "asset": "USDC"
+                  "amount": 500,
+                  "currency": "BRL"
                 },
                 "to": {
-                  "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303",
-                  "amount": 250
+                  "asset": "STABLE_SATS",
+                  "chain": "lightning"
                 }
               }
             }
@@ -9337,10 +9336,7 @@
                         "amount": {
                           "type": "string"
                         },
-                        "asset": {
-                          "type": "string"
-                        },
-                        "network": {
+                        "currency": {
                           "type": "string"
                         }
                       }
@@ -9348,16 +9344,13 @@
                     "to": {
                       "type": "object",
                       "properties": {
-                        "currency": {
+                        "asset": {
                           "type": "string"
                         },
                         "gross_amount": {
                           "type": "string"
                         },
                         "net_amount": {
-                          "type": "string"
-                        },
-                        "recipient_id": {
                           "type": "string"
                         }
                       }
@@ -9371,10 +9364,22 @@
                         "fees": {
                           "type": "object",
                           "properties": {
-                            "offramp_fee": {
+                            "onramp_fee": {
                               "type": "string"
                             },
-                            "offramp_fee_currency": {
+                            "onramp_fee_currency": {
+                              "type": "string"
+                            },
+                            "network_fee": {
+                              "type": "string"
+                            },
+                            "network_fee_asset": {
+                              "type": "string"
+                            },
+                            "total_fees": {
+                              "type": "string"
+                            },
+                            "total_fees_currency": {
                               "type": "string"
                             }
                           }
@@ -9384,23 +9389,25 @@
                   }
                 },
                 "example": {
-                  "type": "offramp",
+                  "type": "onramp",
                   "from": {
-                    "amount": "23.36763078395597",
-                    "asset": "USDC",
-                    "network": "SOL-DEVNET"
+                    "amount": "500",
+                    "currency": "BRL"
                   },
                   "to": {
-                    "currency": "ghs",
-                    "gross_amount": "250",
-                    "net_amount": "244",
-                    "recipient_id": "2ca1ab9c-88ec-4657-8e37-1f493ab43303"
+                    "asset": "STABLE_SATS",
+                    "gross_amount": "95.46",
+                    "net_amount": "94.67"
                   },
                   "pricing": {
-                    "fx_rate": "10.69856",
+                    "fx_rate": "0.19092881177248724",
                     "fees": {
-                      "offramp_fee": "6",
-                      "offramp_fee_currency": "ghs"
+                      "onramp_fee": "1.5",
+                      "onramp_fee_currency": "brl",
+                      "network_fee": "0.5",
+                      "network_fee_asset": "STABLE_SATS",
+                      "total_fees": "4.12",
+                      "total_fees_currency": "brl"
                     }
                   }
                 }
