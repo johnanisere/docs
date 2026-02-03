@@ -64,7 +64,9 @@
   "paths": {
     "/v1/ramp/subaccount": {
       "post": {
-        "tags": ["Subaccounts"],
+        "tags": [
+          "Subaccounts"
+        ],
         "summary": "Create Subaccount",
         "description": "Create a new user subaccount.",
         "requestBody": {
@@ -77,7 +79,9 @@
                     "type": "string"
                   }
                 },
-                "required": ["email"]
+                "required": [
+                  "email"
+                ]
               },
               "example": {
                 "email": "user1+0012357490i@bullring.finance"
@@ -105,7 +109,10 @@
                       "example": "user1+0013@bullring.finance"
                     }
                   },
-                  "required": ["id", "email"]
+                  "required": [
+                    "id",
+                    "email"
+                  ]
                 },
                 "example": {
                   "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
@@ -120,7 +127,9 @@
     },
     "/v1/ramp/subaccount/{subaccountId}": {
       "get": {
-        "tags": ["Subaccounts"],
+        "tags": [
+          "Subaccounts"
+        ],
         "summary": "Get Subaccount",
         "description": "Retrieve the details of a specific subaccount using its ID.",
         "parameters": [
@@ -157,7 +166,11 @@
                     "status": {
                       "type": "string",
                       "description": "Current status of the subaccount",
-                      "enum": ["created", "approved", "review"]
+                      "enum": [
+                        "created",
+                        "approved",
+                        "review"
+                      ]
                     },
                     "createdAt": {
                       "type": "string",
@@ -319,13 +332,21 @@
                     },
                     "assets": {
                       "USDT": {
-                        "networks": ["ETHEREUM", "SOLANA"]
+                        "networks": [
+                          "ETHEREUM",
+                          "SOLANA"
+                        ]
                       },
                       "USDC": {
-                        "networks": ["ETHEREUM", "SOLANA"]
+                        "networks": [
+                          "ETHEREUM",
+                          "SOLANA"
+                        ]
                       },
                       "BTC": {
-                        "networks": ["LIGHTNING"]
+                        "networks": [
+                          "LIGHTNING"
+                        ]
                       }
                     }
                   }
@@ -404,7 +425,9 @@
     },
     "/v1/ramp/subaccounts": {
       "get": {
-        "tags": ["Subaccounts"],
+        "tags": [
+          "Subaccounts"
+        ],
         "summary": "Get All Subaccounts",
         "description": "Retrieve a paginated list of all user subaccounts for a particular account.",
         "parameters": [
@@ -587,13 +610,21 @@
                         },
                         "assets": {
                           "USDT": {
-                            "networks": ["ETHEREUM", "SOLANA"]
+                            "networks": [
+                              "ETHEREUM",
+                              "SOLANA"
+                            ]
                           },
                           "USDC": {
-                            "networks": ["ETHEREUM", "SOLANA"]
+                            "networks": [
+                              "ETHEREUM",
+                              "SOLANA"
+                            ]
                           },
                           "BTC": {
-                            "networks": ["LIGHTNING"]
+                            "networks": [
+                              "LIGHTNING"
+                            ]
                           }
                         }
                       },
@@ -682,13 +713,21 @@
                         },
                         "assets": {
                           "USDT": {
-                            "networks": ["ETHEREUM", "SOLANA"]
+                            "networks": [
+                              "ETHEREUM",
+                              "SOLANA"
+                            ]
                           },
                           "USDC": {
-                            "networks": ["ETHEREUM", "SOLANA"]
+                            "networks": [
+                              "ETHEREUM",
+                              "SOLANA"
+                            ]
                           },
                           "BTC": {
-                            "networks": ["LIGHTNING"]
+                            "networks": [
+                              "LIGHTNING"
+                            ]
                           }
                         }
                       }
@@ -775,7 +814,9 @@
     },
     "/v1/ramp/subaccount/{subaccountId}/verification/tier-one": {
       "post": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier One",
         "description": "Submit information for Tier One verification for customer's country. The request body format varies based on the subaccount's currency.",
         "requestBody": {
@@ -849,7 +890,10 @@
                             "example": "1234194590"
                           }
                         },
-                        "required": ["phone_country_code", "phone_number"]
+                        "required": [
+                          "phone_country_code",
+                          "phone_number"
+                        ]
                       }
                     },
                     "required": [
@@ -879,7 +923,9 @@
                     },
                     "oneOf": [
                       {
-                        "required": ["cnpjNumber"]
+                        "required": [
+                          "cnpjNumber"
+                        ]
                       }
                     ]
                   }
@@ -1068,7 +1114,9 @@
     },
     "/v1/ramp/subaccount/{subaccountId}/kyb": {
       "post": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two (Form)",
         "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
         "requestBody": {
@@ -1079,12 +1127,17 @@
                 "properties": {
                   "verificationType": {
                     "type": "string",
-                    "enum": ["individual", "business"],
+                    "enum": [
+                      "individual",
+                      "business"
+                    ],
                     "description": "Type of verification to perform",
                     "example": "individual"
                   }
                 },
-                "required": ["verificationType"]
+                "required": [
+                  "verificationType"
+                ]
               },
               "example": {
                 "verificationType": "individual"
@@ -1119,7 +1172,9 @@
                       "description": "URL to the verification form where the user can complete their KYB/KYC verification"
                     }
                   },
-                  "required": ["formUrl"]
+                  "required": [
+                    "formUrl"
+                  ]
                 },
                 "example": {
                   "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
@@ -1198,7 +1253,9 @@
     },
     "/v1/kyc/occupations": {
       "get": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Get Occupations",
         "description": "Retrieve a list of accepted occupations for KYC verification.",
         "responses": {
@@ -1791,7 +1848,9 @@
     },
     "/v1/kyc/customers/{subaccountId}": {
       "patch": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Add/Update Individual Information",
         "description": "Add or update the KYC information for a tier two customer.",
         "parameters": [
@@ -1946,7 +2005,9 @@
                       "properties": {
                         "type": {
                           "type": "string",
-                          "enum": ["passport"]
+                          "enum": [
+                            "passport"
+                          ]
                         },
                         "issuing_country": {
                           "type": "string",
@@ -2191,7 +2252,9 @@
         }
       },
       "get": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Get Individual Information",
         "description": "Retrieve the tier two customer KYC information.",
         "parameters": [
@@ -2414,7 +2477,9 @@
     },
     "/v1/kyc/customers/{subaccountId}/submit": {
       "post": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Submit Individual Information",
         "description": "Submit the tier two customer information for verification.",
         "parameters": [
@@ -2606,7 +2671,9 @@
                     {
                       "name": "base",
                       "status": "incomplete",
-                      "additional_requirements": ["kyc_approval"]
+                      "additional_requirements": [
+                        "kyc_approval"
+                      ]
                     },
                     {
                       "name": "sepa",
@@ -2682,7 +2749,9 @@
     },
     "/v1/kyc/businesses/{subaccountId}": {
       "patch": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Add/Update Business Information",
         "description": "Add or update the KYC information for a tier two business.",
         "parameters": [
@@ -2944,7 +3013,9 @@
                 ],
                 "is_dao": false,
                 "is_money_transmitter": false,
-                "business_industry": ["111150"],
+                "business_industry": [
+                  "111150"
+                ],
                 "account_purpose": "payroll",
                 "ultimate_beneficial_owners": [
                   {
@@ -3251,7 +3322,9 @@
                   ],
                   "is_dao": false,
                   "is_money_transmitter": false,
-                  "business_industry": ["111150"],
+                  "business_industry": [
+                    "111150"
+                  ],
                   "account_purpose": "payroll",
                   "ultimate_beneficial_owners": [
                     {
@@ -3294,7 +3367,9 @@
         }
       },
       "get": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Get Business Information",
         "description": "Retrieve the tier two business KYC information.",
         "parameters": [
@@ -3595,7 +3670,9 @@
                   ],
                   "is_dao": false,
                   "is_money_transmitter": false,
-                  "business_industry": ["111150"],
+                  "business_industry": [
+                    "111150"
+                  ],
                   "account_purpose": "payroll",
                   "ultimate_beneficial_owners": [
                     {
@@ -3656,7 +3733,9 @@
     },
     "/v1/kyc/businesses/{subaccountId}/submit": {
       "post": {
-        "tags": ["Verification"],
+        "tags": [
+          "Verification"
+        ],
         "summary": "Tier Two | Submit Business Information",
         "description": "Submit the tier two business information for verification.",
         "parameters": [
@@ -3948,7 +4027,9 @@
                     {
                       "name": "base",
                       "status": "incomplete",
-                      "additional_requirements": ["kyc_approval"]
+                      "additional_requirements": [
+                        "kyc_approval"
+                      ]
                     },
                     {
                       "name": "sepa",
@@ -3995,7 +4076,9 @@
                   ],
                   "is_dao": false,
                   "is_money_transmitter": false,
-                  "business_industry": ["111150"],
+                  "business_industry": [
+                    "111150"
+                  ],
                   "account_purpose": "payroll",
                   "ultimate_beneficial_owners": [
                     {
@@ -4056,7 +4139,9 @@
     },
     "/v1/ramp/banking/balances": {
       "get": {
-        "tags": ["Balances"],
+        "tags": [
+          "Balances"
+        ],
         "summary": "Get Balances",
         "description": "Retrieve account balances.",
         "responses": {
@@ -4147,7 +4232,9 @@
     },
     "/v1/ramp/banking/channels": {
       "get": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "Get Deposit Channels",
         "description": "Retrieve a list of available deposit channels.",
         "responses": {
@@ -4300,7 +4387,10 @@
                         }
                       }
                     },
-                    "required": ["channels", "networks"]
+                    "required": [
+                      "channels",
+                      "networks"
+                    ]
                   }
                 },
                 "example": {
@@ -4325,7 +4415,9 @@
                         "currency": "USDC",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["usdc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "usdc-channel-id-bullring-finance"
+                        ],
                         "code": "ETH-SEPOLIA"
                       },
                       {
@@ -4336,7 +4428,9 @@
                         "currency": "USDC",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["usdc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "usdc-channel-id-bullring-finance"
+                        ],
                         "code": "SOL-DEVNET"
                       }
                     ]
@@ -4376,7 +4470,9 @@
                         "currency": "USDT",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["usdt-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "usdt-channel-id-bullring-finance"
+                        ],
                         "code": "ETH-SEPOLIA"
                       },
                       {
@@ -4387,7 +4483,9 @@
                         "currency": "USDT",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["usdt-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "usdt-channel-id-bullring-finance"
+                        ],
                         "code": "SOL-DEVNET"
                       }
                     ]
@@ -4413,7 +4511,9 @@
                         "currency": "BTC",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["btc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "btc-channel-id-bullring-finance"
+                        ],
                         "code": "BTC"
                       }
                     ]
@@ -4448,7 +4548,9 @@
                         "currency": "NGN",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["ngn-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "ngn-channel-id-bullring-finance"
+                        ],
                         "code": "NGN"
                       },
                       {
@@ -4459,7 +4561,9 @@
                         "currency": "NGN",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["ngn-otc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "ngn-otc-channel-id-bullring-finance"
+                        ],
                         "code": "NGN"
                       }
                     ]
@@ -4494,7 +4598,9 @@
                         "currency": "ZMW",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["zmw-otc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "zmw-otc-channel-id-bullring-finance"
+                        ],
                         "code": "ZMW"
                       },
                       {
@@ -4505,7 +4611,9 @@
                         "currency": "ZMW",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["zmw-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "zmw-channel-id-bullring-finance"
+                        ],
                         "code": "ZMW"
                       }
                     ]
@@ -4540,7 +4648,9 @@
                         "currency": "GHS",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["ghs-otc-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "ghs-otc-channel-id-bullring-finance"
+                        ],
                         "code": "GHS"
                       },
                       {
@@ -4551,7 +4661,9 @@
                         "currency": "GHS",
                         "accountNumberType": "address",
                         "countryAccountNumberType": "address",
-                        "channelIds": ["ghs-channel-id-bullring-finance"],
+                        "channelIds": [
+                          "ghs-channel-id-bullring-finance"
+                        ],
                         "code": "GHS"
                       }
                     ]
@@ -4673,7 +4785,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/deposits": {
       "post": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "Request Fiat Deposit",
         "description": "Initiate a fiat deposit request for a specific subaccount. The request body varies depending on the currency. All deposit requests require approved KYC.",
         "requestBody": {
@@ -4698,7 +4812,10 @@
                         "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
-                    "required": ["channelId", "source"]
+                    "required": [
+                      "channelId",
+                      "source"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4715,7 +4832,11 @@
                         "type": "string"
                       }
                     },
-                    "required": ["channelId", "amount", "phoneNumber"]
+                    "required": [
+                      "channelId",
+                      "amount",
+                      "phoneNumber"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4732,7 +4853,11 @@
                         "type": "string"
                       }
                     },
-                    "required": ["channelId", "amount", "phoneNumber"]
+                    "required": [
+                      "channelId",
+                      "amount",
+                      "phoneNumber"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4743,7 +4868,9 @@
                         "type": "string"
                       }
                     },
-                    "required": ["channelId"]
+                    "required": [
+                      "channelId"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4757,7 +4884,10 @@
                         "type": "number"
                       }
                     },
-                    "required": ["channelId", "amount"]
+                    "required": [
+                      "channelId",
+                      "amount"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4776,7 +4906,9 @@
                         "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
-                    "required": ["channelId"]
+                    "required": [
+                      "channelId"
+                    ]
                   },
                   {
                     "type": "object",
@@ -4795,7 +4927,9 @@
                         "description": "When provided, the API returns the account that has the provided id."
                       }
                     },
-                    "required": ["channelId"]
+                    "required": [
+                      "channelId"
+                    ]
                   }
                 ]
               },
@@ -5308,7 +5442,9 @@
         }
       },
       "get": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "List All Deposits",
         "description": "Retrieve a list of all deposits for a specific subaccount. All deposit requests require approved KYC.",
         "parameters": [
@@ -5529,7 +5665,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/deposits/lightning": {
       "post": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "Lightning Deposit",
         "description": "Create a lightning invoice for a deposit. All deposit requests require approved KYC.",
         "requestBody": {
@@ -5543,14 +5681,20 @@
                   },
                   "currency": {
                     "type": "string",
-                    "enum": ["usd", "brl"],
+                    "enum": [
+                      "usd",
+                      "brl"
+                    ],
                     "description": "All [fiat currencies](/en/supported-currencies) are supported"
                   },
                   "note": {
                     "type": "string"
                   }
                 },
-                "required": ["amount", "currency"]
+                "required": [
+                  "amount",
+                  "currency"
+                ]
               },
               "example": {
                 "amount": 10000,
@@ -5715,7 +5859,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/deposits/crypto/{onchainNetwork}": {
       "get": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "Onchain Deposit",
         "description": "Get a deposit address for a specified blockchain network. All deposit requests require approved KYC.",
         "parameters": [
@@ -5732,7 +5878,12 @@
             "in": "path",
             "schema": {
               "type": "string",
-              "enum": ["ETH", "SOL", "ETH-SEPOLIA", "SOL-DEVNET"]
+              "enum": [
+                "ETH",
+                "SOL",
+                "ETH-SEPOLIA",
+                "SOL-DEVNET"
+              ]
             },
             "required": true,
             "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
@@ -5885,7 +6036,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/deposits/simulate": {
       "post": {
-        "tags": ["Deposits"],
+        "tags": [
+          "Deposits"
+        ],
         "summary": "Simulate Fiat/Stablecoin Deposit",
         "description": "Simulate a deposit in all [supported fiat currencies and stablecoins](/en/supported-currencies) for testing purposes in the sandbox environment. All deposit requests require approved KYC.",
         "requestBody": {
@@ -5899,13 +6052,20 @@
                   },
                   "amount": {
                     "type": "number"
+                  },
+                  "accountNumber": {
+                    "type": "string"
                   }
                 },
-                "required": ["currency", "amount"]
+                "required": [
+                  "currency",
+                  "amount"
+                ]
               },
               "example": {
                 "currency": "NGN",
-                "amount": 100000000000
+                "amount": 10000,
+                "accountNumber": "7218001626"
               }
             }
           }
@@ -6018,7 +6178,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/recipients": {
       "post": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Add Fiat Recipient",
         "description": "Add a new fiat recipient for withdrawals. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -6033,13 +6195,18 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["BRL"]
+                        "enum": [
+                          "BRL"
+                        ]
                       },
                       "pix_key": {
                         "type": "string"
                       }
                     },
-                    "required": ["currency", "pix_key"]
+                    "required": [
+                      "currency",
+                      "pix_key"
+                    ]
                   },
                   {
                     "title": "NGN",
@@ -6048,7 +6215,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["NGN"]
+                        "enum": [
+                          "NGN"
+                        ]
                       },
                       "account_number": {
                         "type": "string"
@@ -6082,7 +6251,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["USD"]
+                        "enum": [
+                          "USD"
+                        ]
                       },
                       "account_owner_name": {
                         "type": "string"
@@ -6147,7 +6318,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["EUR"]
+                        "enum": [
+                          "EUR"
+                        ]
                       },
                       "account_owner_name": {
                         "type": "string"
@@ -6197,7 +6370,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["GHS"]
+                        "enum": [
+                          "GHS"
+                        ]
                       },
                       "phone_number": {
                         "type": "string"
@@ -6219,7 +6394,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["ZMW"]
+                        "enum": [
+                          "ZMW"
+                        ]
                       },
                       "phone_number": {
                         "type": "string"
@@ -6241,14 +6418,20 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["MXN"]
+                        "enum": [
+                          "MXN"
+                        ]
                       },
                       "alias": {
                         "type": "string"
                       },
                       "mxn_method": {
                         "type": "string",
-                        "enum": ["spei", "debit_card", "phone_number"]
+                        "enum": [
+                          "spei",
+                          "debit_card",
+                          "phone_number"
+                        ]
                       },
                       "beneficiary": {
                         "type": "string"
@@ -6275,7 +6458,9 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["ARS"]
+                        "enum": [
+                          "ARS"
+                        ]
                       },
                       "alias": {
                         "type": "string"
@@ -6287,7 +6472,11 @@
                         "type": "string"
                       }
                     },
-                    "required": ["currency", "recipient_name", "cvu"]
+                    "required": [
+                      "currency",
+                      "recipient_name",
+                      "cvu"
+                    ]
                   },
                   {
                     "title": "COP",
@@ -6296,21 +6485,29 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["COP"]
+                        "enum": [
+                          "COP"
+                        ]
                       },
                       "alias": {
                         "type": "string"
                       },
                       "cop_method": {
                         "type": "string",
-                        "enum": ["pse", "ach"]
+                        "enum": [
+                          "pse",
+                          "ach"
+                        ]
                       },
                       "bank_account": {
                         "type": "string"
                       },
                       "account_type": {
                         "type": "string",
-                        "enum": ["1", "2"],
+                        "enum": [
+                          "1",
+                          "2"
+                        ],
                         "description": "1-Checking, 2-Savings"
                       },
                       "bank_code": {
@@ -6571,7 +6768,9 @@
         }
       },
       "get": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Get All Recipients",
         "description": "Retrieve a list of all recipients for the subaccount.",
         "parameters": [
@@ -6653,7 +6852,9 @@
     },
     "/v1/banking/brl/validate": {
       "post": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Validate BRL Recipient",
         "description": "Validate the details of a BRL recipient. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -6664,13 +6865,18 @@
                 "properties": {
                   "currency": {
                     "type": "string",
-                    "enum": ["BRL"]
+                    "enum": [
+                      "BRL"
+                    ]
                   },
                   "pix_key": {
                     "type": "string"
                   }
                 },
-                "required": ["currency", "pix_key"]
+                "required": [
+                  "currency",
+                  "pix_key"
+                ]
               },
               "example": {
                 "currency": "BRL",
@@ -6765,7 +6971,9 @@
     },
     "/v1/banking/ngn/validate": {
       "post": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Validate NGN Recipient",
         "description": "Validate the details of an NGN recipient. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -6851,7 +7059,9 @@
     },
     "/v1/ramp/banking/banks/{currency}": {
       "get": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Get Banks by Currency",
         "description": "Retrieves a list of supported banks for a given currency.",
         "parameters": [
@@ -6862,7 +7072,13 @@
             "description": "The currency to get the banks for. Supported currencies: MXN, BRL, COP, ARS, NGN",
             "schema": {
               "type": "string",
-              "enum": ["MXN", "BRL", "COP", "ARS", "NGN"]
+              "enum": [
+                "MXN",
+                "BRL",
+                "COP",
+                "ARS",
+                "NGN"
+              ]
             }
           }
         ],
@@ -7176,7 +7392,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/recipients/{recipientId}": {
       "get": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Get One Recipient",
         "description": "Retrieve the details of a single recipient by their ID. All withdrawal requests require approved KYC.",
         "parameters": [
@@ -7261,7 +7479,9 @@
     },
     "/v1/ramp/banking/taxonomy/{currency}": {
       "get": {
-        "tags": ["Recipients"],
+        "tags": [
+          "Recipients"
+        ],
         "summary": "Get Taxonomy",
         "description": "Get taxonomy for a specific currency.",
         "parameters": [
@@ -7549,7 +7769,9 @@
                     "network_name": "Bank",
                     "channel_name": "Bank",
                     "network_description": "Transfer to any bank",
-                    "required_fields": ["cvu"],
+                    "required_fields": [
+                      "cvu"
+                    ],
                     "optional_fields": [
                       "description",
                       "recipient_name",
@@ -7640,7 +7862,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/withdrawals": {
       "post": {
-        "tags": ["Withdrawals"],
+        "tags": [
+          "Withdrawals"
+        ],
         "summary": "Withdraw Fiat",
         "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -7661,13 +7885,19 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["USD"]
+                        "enum": [
+                          "USD"
+                        ]
                       },
                       "wire_message": {
                         "type": "string"
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "BRL",
@@ -7682,10 +7912,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["BRL"]
+                        "enum": [
+                          "BRL"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "EUR",
@@ -7700,13 +7936,19 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["EUR"]
+                        "enum": [
+                          "EUR"
+                        ]
                       },
                       "sepa_message": {
                         "type": "string"
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "NGN",
@@ -7721,10 +7963,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["NGN"]
+                        "enum": [
+                          "NGN"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "ZMW",
@@ -7739,10 +7987,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["ZMW"]
+                        "enum": [
+                          "ZMW"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "GHS",
@@ -7757,10 +8011,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["GHS"]
+                        "enum": [
+                          "GHS"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "MXN",
@@ -7775,10 +8035,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["MXN"]
+                        "enum": [
+                          "MXN"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "COP",
@@ -7793,10 +8059,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["COP"]
+                        "enum": [
+                          "COP"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "ARS",
@@ -7811,10 +8083,16 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["ARS"]
+                        "enum": [
+                          "ARS"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "amount", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "amount",
+                      "currency"
+                    ]
                   }
                 ]
               },
@@ -8056,7 +8334,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/withdrawals/all-balance": {
       "post": {
-        "tags": ["Withdrawals"],
+        "tags": [
+          "Withdrawals"
+        ],
         "summary": "Withdraw Full Balance",
         "description": "Withdraw the entire balance of a specified currency from a user's subaccount. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -8073,13 +8353,18 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["USD"]
+                        "enum": [
+                          "USD"
+                        ]
                       },
                       "wire_message": {
                         "type": "string"
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "Stablecoin Full Balance Withdrawal",
@@ -8087,7 +8372,10 @@
                     "properties": {
                       "currency": {
                         "type": "string",
-                        "enum": ["USDC", "USDT"]
+                        "enum": [
+                          "USDC",
+                          "USDT"
+                        ]
                       },
                       "chain": {
                         "type": "string",
@@ -8103,7 +8391,11 @@
                         "type": "string"
                       }
                     },
-                    "required": ["currency", "chain", "address"]
+                    "required": [
+                      "currency",
+                      "chain",
+                      "address"
+                    ]
                   },
                   {
                     "title": "EUR Full Balance Withdrawal",
@@ -8114,13 +8406,18 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["EUR"]
+                        "enum": [
+                          "EUR"
+                        ]
                       },
                       "sepa_message": {
                         "type": "string"
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "BRL Full Balance Withdrawal",
@@ -8131,10 +8428,15 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["BRL"]
+                        "enum": [
+                          "BRL"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "NGN Full Balance Withdrawal",
@@ -8145,10 +8447,15 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["NGN"]
+                        "enum": [
+                          "NGN"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "MXN Full Balance Withdrawal",
@@ -8159,10 +8466,15 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["MXN"]
+                        "enum": [
+                          "MXN"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "COP Full Balance Withdrawal",
@@ -8173,10 +8485,15 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["COP"]
+                        "enum": [
+                          "COP"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   },
                   {
                     "title": "ARS Full Balance Withdrawal",
@@ -8187,10 +8504,15 @@
                       },
                       "currency": {
                         "type": "string",
-                        "enum": ["ARS"]
+                        "enum": [
+                          "ARS"
+                        ]
                       }
                     },
-                    "required": ["recipient_id", "currency"]
+                    "required": [
+                      "recipient_id",
+                      "currency"
+                    ]
                   }
                 ]
               },
@@ -8398,7 +8720,9 @@
         }
       },
       "get": {
-        "tags": ["Withdrawals"],
+        "tags": [
+          "Withdrawals"
+        ],
         "summary": "Get All Withdrawals",
         "description": "Retrieve a list of all withdrawals for a specific subaccount. All withdrawal requests require approved KYC.",
         "parameters": [
@@ -8497,7 +8821,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin": {
       "post": {
-        "tags": ["Withdrawals"],
+        "tags": [
+          "Withdrawals"
+        ],
         "summary": "Withdraw Stablecoin",
         "description": "Withdraw funds as a stablecoin to a specified address. All withdrawal requests require approved KYC.",
         "requestBody": {
@@ -8511,7 +8837,10 @@
                   },
                   "stablecoin": {
                     "type": "string",
-                    "enum": ["usdt", "usdc"],
+                    "enum": [
+                      "usdt",
+                      "usdc"
+                    ],
                     "description": "usdt or usdc"
                   },
                   "chain": {
@@ -8529,7 +8858,12 @@
                     "type": "string"
                   }
                 },
-                "required": ["amount", "stablecoin", "chain", "address"]
+                "required": [
+                  "amount",
+                  "stablecoin",
+                  "chain",
+                  "address"
+                ]
               },
               "example": {
                 "amount": "12",
@@ -8757,7 +9091,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/conversions": {
       "get": {
-        "tags": ["Conversions"],
+        "tags": [
+          "Conversions"
+        ],
         "summary": "Get All Conversions",
         "description": "Retrieve a paginated list of all conversions for a subaccount.",
         "parameters": [
@@ -8845,7 +9181,9 @@
         }
       },
       "post": {
-        "tags": ["Conversions"],
+        "tags": [
+          "Conversions"
+        ],
         "summary": "Convert Currency",
         "description": "Convert funds from one currency to another within a subaccount.",
         "parameters": [
@@ -8906,7 +9244,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/conversions/quote": {
       "post": {
-        "tags": ["Conversions"],
+        "tags": [
+          "Conversions"
+        ],
         "summary": "Get Conversion Quote",
         "description": "Get a quote for a currency conversion.",
         "parameters": [
@@ -8961,7 +9301,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/conversions/{conversionId}": {
       "get": {
-        "tags": ["Conversions"],
+        "tags": [
+          "Conversions"
+        ],
         "summary": "Get Conversion",
         "description": "Retrieve details of a specific conversion.",
         "parameters": [
@@ -9013,7 +9355,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/offramp/initiate": {
       "post": {
-        "tags": ["Offramp"],
+        "tags": [
+          "Offramp"
+        ],
         "summary": "Initiate Offramp",
         "description": "Convert crypto to fiat via offramp. This does not affect your Bullring balance.",
         "parameters": [
@@ -9038,11 +9382,23 @@
                       "chain": {
                         "type": "string",
                         "description": "Supported Chains by Asset:\n\n* **USDT** -> `ETHEREUM`, `TRON`\n* **USDC** -> `ETHEREUM`, `POLYGON`, `SOLANA`\n* **STABLE_SATS** -> `lightning`",
-                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA", "ETHEREUM", "TRON", "POLYGON", "SOLANA"]
+                        "enum": [
+                          "lightning",
+                          "SOL-DEVNET",
+                          "ETH-SEPOLIA",
+                          "ETHEREUM",
+                          "TRON",
+                          "POLYGON",
+                          "SOLANA"
+                        ]
                       },
                       "asset": {
                         "type": "string",
-                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                        "enum": [
+                          "STABLE_SATS",
+                          "USDC",
+                          "USDT"
+                        ]
                       },
                       "amount": {
                         "type": "number",
@@ -9230,7 +9586,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/offramp/quote": {
       "post": {
-        "tags": ["Offramp"],
+        "tags": [
+          "Offramp"
+        ],
         "summary": "Get Offramp Quote",
         "description": "Get a quote to offramp crypto to fiat. This does not affect your Bullring balance.",
         "parameters": [
@@ -9265,13 +9623,25 @@
                     "properties": {
                       "asset": {
                         "type": "string",
-                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                        "enum": [
+                          "STABLE_SATS",
+                          "USDC",
+                          "USDT"
+                        ]
                       },
                       "chain": {
                         "type": "string",
                         "description": "Supported Chains by Asset:\n\n* **USDT** -> `ETHEREUM`, `TRON`\n* **USDC** -> `ETHEREUM`, `POLYGON`, `SOLANA`\n* **STABLE_SATS** -> `lightning`",
-                        "enum": ["lightning", "SOL-DEVNET", "ETH-SEPOLIA", "ETHEREUM", "TRON", "POLYGON", "SOLANA"]
-                      } 
+                        "enum": [
+                          "lightning",
+                          "SOL-DEVNET",
+                          "ETH-SEPOLIA",
+                          "ETHEREUM",
+                          "TRON",
+                          "POLYGON",
+                          "SOLANA"
+                        ]
+                      }
                     }
                   }
                 }
@@ -9389,7 +9759,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/offramp/": {
       "get": {
-        "tags": ["Offramp"],
+        "tags": [
+          "Offramp"
+        ],
         "summary": "Get All Offramps",
         "description": "Retrieve a list of crypto withdrawals via offramp for a subaccount.",
         "parameters": [
@@ -9621,7 +9993,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/offramp/{offrampId}": {
       "get": {
-        "tags": ["Offramp"],
+        "tags": [
+          "Offramp"
+        ],
         "summary": "Get One Offramp",
         "description": "Retrieve the status of a crypto withdrawal via offramp.",
         "parameters": [
@@ -9744,36 +10118,36 @@
                   }
                 },
                 "example": {
-                    "id": "f7ffc6d9-eb45-400e-af86-a4de4a9357f1",
-                    "type": "offramp",
-                    "status": "completed",
-                    "created_at": "2026-01-28T16:31:20.002Z",
-                    "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
-                    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571618a",
-                    "from": {
-                        "amount": "130",
-                        "asset": "USDC",
-                        "network": "SOL-DEVNET",
-                        "address": "ATCfujGip9Mxu2Aa778qXeQXocNVHqTSgiBZSnM1eMzY"
-                    },
-                    "to": {
-                        "currency": "BRL",
-                        "gross_amount": "675.36",
-                        "net_amount": "672.66",
-                        "recipient_id": "979a654b-cf63-4302-8bb2-060918949331"
-                    },
-                    "pricing": {
-                        "fx_rate": "5.195089",
-                        "fees": {
-                            "offramp_fee": "2.7",
-                            "offramp_fee_currency": "brl"
-                        }
-                    },
-                    "settlement": {
-                        "withdrawal_id": "1a8e489f-f2b5-4916-bee5-e65dd999ac4e",
-                        "estimated_at": "2026-01-28T16:32:10.524Z",
-                        "end_to_end_id": "E3513612020260128163100000066555"
+                  "id": "f7ffc6d9-eb45-400e-af86-a4de4a9357f1",
+                  "type": "offramp",
+                  "status": "completed",
+                  "created_at": "2026-01-28T16:31:20.002Z",
+                  "account_id": "bb9bb7f8-53a1-4d2b-9d44-972462772789",
+                  "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571618a",
+                  "from": {
+                    "amount": "130",
+                    "asset": "USDC",
+                    "network": "SOL-DEVNET",
+                    "address": "ATCfujGip9Mxu2Aa778qXeQXocNVHqTSgiBZSnM1eMzY"
+                  },
+                  "to": {
+                    "currency": "BRL",
+                    "gross_amount": "675.36",
+                    "net_amount": "672.66",
+                    "recipient_id": "979a654b-cf63-4302-8bb2-060918949331"
+                  },
+                  "pricing": {
+                    "fx_rate": "5.195089",
+                    "fees": {
+                      "offramp_fee": "2.7",
+                      "offramp_fee_currency": "brl"
                     }
+                  },
+                  "settlement": {
+                    "withdrawal_id": "1a8e489f-f2b5-4916-bee5-e65dd999ac4e",
+                    "estimated_at": "2026-01-28T16:32:10.524Z",
+                    "end_to_end_id": "E3513612020260128163100000066555"
+                  }
                 }
               }
             }
@@ -9783,7 +10157,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/onramp/initiate": {
       "post": {
-        "tags": ["Onramp"],
+        "tags": [
+          "Onramp"
+        ],
         "summary": "Initiate Onramp",
         "description": "Initiate a fiat-to-crypto onramp transaction. This does not affect your Bullring balance.",
         "parameters": [
@@ -9824,7 +10200,10 @@
                         "description": "Required for `COP`."
                       }
                     },
-                    "required": ["amount", "currency"]
+                    "required": [
+                      "amount",
+                      "currency"
+                    ]
                   },
                   "to": {
                     "type": "object",
@@ -9832,7 +10211,11 @@
                       "asset": {
                         "type": "string",
                         "description": "Options: STABLE_SATS, USDC, USDT",
-                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                        "enum": [
+                          "STABLE_SATS",
+                          "USDC",
+                          "USDT"
+                        ]
                       },
                       "chain": {
                         "type": "string",
@@ -9850,7 +10233,11 @@
                         "description": "A wallet address for USDT & USDC or a Lightning Address for BTC."
                       }
                     },
-                    "required": ["asset", "chain", "destination_address"]
+                    "required": [
+                      "asset",
+                      "chain",
+                      "destination_address"
+                    ]
                   },
                   "client_onramp_reference": {
                     "type": "string",
@@ -10051,7 +10438,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/onramp/quote": {
       "post": {
-        "tags": ["Onramp"],
+        "tags": [
+          "Onramp"
+        ],
         "summary": "Get Onramp Quote",
         "description": "Get a quote to onramp fiat to crypto. This does not affect your Bullring balance.",
         "parameters": [
@@ -10080,7 +10469,10 @@
                         "type": "string"
                       }
                     },
-                    "required": ["amount", "currency"]
+                    "required": [
+                      "amount",
+                      "currency"
+                    ]
                   },
                   "to": {
                     "type": "object",
@@ -10088,7 +10480,11 @@
                       "asset": {
                         "type": "string",
                         "description": "Options: STABLE_SATS, USDC, USDT",
-                        "enum": ["STABLE_SATS", "USDC", "USDT"]
+                        "enum": [
+                          "STABLE_SATS",
+                          "USDC",
+                          "USDT"
+                        ]
                       },
                       "chain": {
                         "type": "string",
@@ -10101,7 +10497,10 @@
                         ]
                       }
                     },
-                    "required": ["asset", "chain"]
+                    "required": [
+                      "asset",
+                      "chain"
+                    ]
                   }
                 }
               },
@@ -10218,7 +10617,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/onramp/": {
       "get": {
-        "tags": ["Onramp"],
+        "tags": [
+          "Onramp"
+        ],
         "summary": "Get All Onramps",
         "description": "Retrieve a list of onramp transactions for a subaccount.",
         "parameters": [
@@ -10444,7 +10845,9 @@
     },
     "/v2/ramp/{subaccountId}/banking/onramp/{onrampId}": {
       "get": {
-        "tags": ["Onramp"],
+        "tags": [
+          "Onramp"
+        ],
         "summary": "Get One Onramp",
         "description": "Retrieve the status of an onramp transaction.",
         "parameters": [
@@ -10607,7 +11010,9 @@
     },
     "/v1/ramp/{subaccountId}/banking/withdrawals/{withdrawalId}": {
       "get": {
-        "tags": ["Withdrawals"],
+        "tags": [
+          "Withdrawals"
+        ],
         "summary": "Get One Withdrawal",
         "description": "Retrieve the details of a single withdrawal by its ID. All withdrawal requests require approved KYC.",
         "parameters": [
@@ -10792,7 +11197,9 @@
     },
     "/v1/banking/rate": {
       "get": {
-        "tags": ["Rates"],
+        "tags": [
+          "Rates"
+        ],
         "summary": "Conversion Rate",
         "description": "Get the conversion rate between two currencies. All withdrawal requests require approved KYC.",
         "parameters": [
@@ -10801,7 +11208,14 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["usd", "usdt", "usdc", "eur", "brl", "ngn"]
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "usdc"
           },
@@ -10810,7 +11224,14 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["usd", "usdt", "usdc", "eur", "brl", "ngn"]
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "usd"
           }
@@ -10881,7 +11302,9 @@
     },
     "/v1/banking/withdrawal/fee": {
       "get": {
-        "tags": ["Fees"],
+        "tags": [
+          "Fees"
+        ],
         "summary": "Get Withdrawal Fee",
         "description": "Calculate the fee for a withdrawal. All withdrawal requests require approved KYC.",
         "parameters": [
@@ -10890,7 +11313,14 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["usd", "usdt", "usdc", "eur", "brl", "ngn"]
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "ngn"
           },
@@ -10977,7 +11407,9 @@
     },
     "/v1/banking/deposit/fee": {
       "get": {
-        "tags": ["Fees"],
+        "tags": [
+          "Fees"
+        ],
         "summary": "Get Deposit Fee",
         "description": "Calculate the fee for a deposit.",
         "parameters": [
@@ -10986,7 +11418,14 @@
             "in": "query",
             "schema": {
               "type": "string",
-              "enum": ["usd", "usdt", "usdc", "eur", "brl", "ngn"]
+              "enum": [
+                "usd",
+                "usdt",
+                "usdc",
+                "eur",
+                "brl",
+                "ngn"
+              ]
             },
             "example": "ngn"
           },
@@ -11255,7 +11694,11 @@
             "example": 17
           }
         },
-        "required": ["fromCurrency", "toCurrency", "amount"]
+        "required": [
+          "fromCurrency",
+          "toCurrency",
+          "amount"
+        ]
       },
       "ConversionResponse": {
         "type": "object",
