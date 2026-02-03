@@ -8,33 +8,146 @@ Webhooks allow your application to receive real-time notifications when events h
 ### Deposit Paid
 ```json
 {
-    "data": {
-        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
-        "amount": 3.75,
-        "status": "completed",
-        "currency": "USD",
-        "createdAt": "2025-11-24T12:35:01.594Z",
-        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
-        "updatedAt": "2025-11-24T12:35:01.594Z",
-        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+  "event": "deposit.status.paid",
+  "data": {
+    "id": "0a484300-33a6-435f-ba44-8d9c10c51457",
+    "reference": "13360e66-bc53-44d8-98c8-25df91eb525c",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "net_amount": {
+      "value": 960,
+      "currency": "NGN"
     },
-    "event": "deposit.status.paid"
+    "gross_amount": {
+      "value": 980,
+      "currency": "NGN"
+    },
+    "fee": {
+      "value": "20.00000000",
+      "currency": "NGN"
+    },
+    "status": "completed",
+    "created_at": "2026-02-03T13:29:01.910Z",
+    "updated_at": "2026-02-03T13:29:01.910Z",
+    "payer": {
+      "bank_account_number": "0000000000",
+      "bank_account_name": "Mr. Linwood Emmerich III",
+      "bank_name": "Maplerad",
+      "bank_code": ""
+    },
+    "reciever": {
+      "bank_account_number": "5953717576",
+      "bank_account_name": "Cornelius Langworth",
+      "bank_name": "Maplerad"
+    },
+    "settlement": {
+      "settlement_at": "2026-02-03T13:29:01.910Z"
+    }
+  }
 }
 ```
+
+
+```json
+{
+  "event": "deposit.status.paid",
+  "data": {
+    "id": "3194ffba-82b6-473d-92b2-05779d18bd58",
+    "reference": "7953d234-4208-4b28-82da-55795459ebc9",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "net_amount": {
+      "value": 994,
+      "currency": "ARS"
+    },
+    "gross_amount": {
+      "value": 997,
+      "currency": "ARS"
+    },
+    "fee": {
+      "value": "3.00000000",
+      "currency": "ARS"
+    },
+    "status": "completed",
+    "created_at": "2026-02-03T13:35:11.996Z",
+    "updated_at": "2026-02-03T13:35:11.996Z",
+    "payer": {
+      "bank_account_number": "07**************4",
+      "bank_account_name": "M*********************",
+      "bank_code": "322"
+    },
+    "reciever": {},
+    "settlement": {
+      "settlement_at": "2026-02-03T13:35:11.996Z"
+    }
+  }
+}
+```
+
+```json
+{
+  "event": "deposit.status.paid",
+  "data": {
+    "id": "4d3aae75-defd-4f34-856d-0efc5eca211d",
+    "reference": "4d3aae75defd4f34856d0efc5eca211d",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "net_amount": {
+      "value": 210,
+      "currency": "BRL"
+    },
+    "gross_amount": {
+      "value": 210,
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": 0,
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-03T16:34:31.138Z",
+    "updated_at": "2026-02-03T16:35:46.634Z",
+    "payer": {},
+    "reciever": {
+      "name": "Unegbu"
+    },
+    "settlement": {
+      "settlement_at": "2026-02-03T16:35:46.634Z",
+      "end_to_end_id": "4d3aae75defd4f34856d0efc5eca211d"
+    }
+  }
+}
+```
+
 
 ### Deposit Unpaid
 ```json
 {
-    "data": {
-        "id": "9be0bd26-8e81-4773-b1c8-1950b2e5a6da",
-        "amount": 3.75,
-        "status": "failed",
-        "currency": "USD",
-        "createdAt": "2025-11-24T12:35:01.594Z",
-        "reference": "8086e5261368430efbcee9ba081db33eec4e15c9f3da455d9ef5e4dc3850da74",
-        "updatedAt": "2025-11-24T12:35:01.594Z",
-        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294"
+  "event": "deposit.status.unpaid",
+  "data": {
+    "id": "4d3aae75-defd-4f34-856d-0efc5eca211d",
+    "reference": "4d3aae75defd4f34856d0efc5eca211d",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "net_amount": {
+      "value": 210,
+      "currency": "BRL"
     },
-    "event": "deposit.status.unpaid"
+    "gross_amount": {
+      "value": 210,
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": 0,
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-03T16:34:31.138Z",
+    "updated_at": "2026-02-03T16:35:46.634Z",
+    "payer": {},
+    "reciever": {
+      "name": "Unegbu"
+    },
+    "settlement": {
+      "settlement_at": "2026-02-03T16:35:46.634Z",
+      "end_to_end_id": "4d3aae75defd4f34856d0efc5eca211d"
+    }
+  }
 }
 ```
