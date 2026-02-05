@@ -8,38 +8,88 @@ Webhooks allow your application to receive real-time notifications when events h
 ### Withdrawal Failed
 ```json
 {
-    "data": {
-        "id": "8c8785ea-5c8b-4461-bc83-97b9e6f4a21e",
-        "fee": "0.03000000",
-        "asset": "BRL",
-        "amount": 3.75,
-        "status": "failed",
-        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
-        "currency": "USD",
-        "protocol": "pix",
-        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
-        "createdAt": "2025-11-24T12:35:09.887Z"
+
+  "event": "withdrawal.status.failed",
+  "data": {
+    "id": "50f56c85-5d26-460b-93fe-6026e5d92428",
+    "reference": "f73847df5fea4873990133bb1d0022e2",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "payment_method": {
+      "type": "bank_transfer",
+      "scheme": "pix",
+      "network": "pix"
     },
-    "event": "withdrawal.status.failed"
+    "net_amount": {
+      "value": "99.60000000",
+      "currency": "BRL"
+    },
+    "gross_amount": {
+      "value": "100.00000000",
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": "0.40000000",
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-04T19:06:26.800Z",
+    "updated_at": "2026-02-04T19:11:14.288Z",
+    "beneficiary": {
+      "bank_account_number": "241394112",
+      "bank_account_name": "Hugo Gonzalez",
+      "bank_name": "BITSO IP LTDA",
+      "bank_code": "35136120"
+    },
+    "settlement": {
+      "end_to_end_id": "E3513612020260204190600000066754",
+      "estimated_at": "2026-02-04T19:11:18.243Z"
+    }
+  }
+
 }
 ```
 
 ### Withdrawal Completed
 ```json
 {
-    "data": {
-        "id": "12da9555-f846-476d-bf64-210122908f9c",
-        "fee": "0.12000000",
-        "asset": "BRL",
-        "amount": 16.47,
-        "status": "complete",
-        "storeId": "75e3d2ed-0d2e-43f6-8549-13c09bd86c7a",
-        "currency": "USD",
-        "protocol": "pix",
-        "offrampId": "254757bc-4d09-4d81-8daf-37e13a2a3294",
-        "createdAt": "2025-11-24T14:30:39.466Z"
+
+  "event": "withdrawal.status.completed",
+  "data": {
+    "id": "50f56c85-5d26-460b-93fe-6026e5d92428",
+    "reference": "f73847df5fea4873990133bb1d0022e2",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "payment_method": {
+      "type": "bank_transfer",
+      "scheme": "pix",
+      "network": "pix"
     },
-    "event": "withdrawal.status.completed"
+    "net_amount": {
+      "value": "99.60000000",
+      "currency": "BRL"
+    },
+    "gross_amount": {
+      "value": "100.00000000",
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": "0.40000000",
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-04T19:06:26.800Z",
+    "updated_at": "2026-02-04T19:11:14.288Z",
+    "beneficiary": {
+      "bank_account_number": "241394112",
+      "bank_account_name": "Hugo Gonzalez",
+      "bank_name": "BITSO IP LTDA",
+      "bank_code": "35136120"
+    },
+    "settlement": {
+      "end_to_end_id": "E3513612020260204190600000066754",
+      "estimated_at": "2026-02-04T19:11:18.243Z"
+    }
+  }
+
 }
 ```
 
