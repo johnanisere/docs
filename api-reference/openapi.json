@@ -9610,19 +9610,9 @@
                   "from": {
                     "type": "object",
                     "properties": {
-                      "amount": {
-                        "type": "number"
-                      },
-                      "currency": {
-                        "type": "string"
-                      }
-                    }
-                  },
-                  "to": {
-                    "type": "object",
-                    "properties": {
                       "asset": {
                         "type": "string",
+                        "description": "The crypto asset to offramp",
                         "enum": [
                           "STABLE_SATS",
                           "USDC",
@@ -9631,7 +9621,7 @@
                       },
                       "chain": {
                         "type": "string",
-                        "description": "Supported Chains by Asset:\n\n* **USDT** -> `ETHEREUM`, `TRON`\n* **USDC** -> `ETHEREUM`, `POLYGON`, `SOLANA`\n* **STABLE_SATS** -> `lightning`",
+                        "description": "The blockchain network",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
@@ -9642,18 +9632,44 @@
                           "SOLANA"
                         ]
                       }
-                    }
+                    },
+                    "required": [
+                      "asset",
+                      "chain"
+                    ]
+                  },
+                  "to": {
+                    "type": "object",
+                    "properties": {
+                      "amount": {
+                        "type": "number",
+                        "description": "The fiat amount to determine the quote"
+                      },
+                      "recipient_id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The unique identifier of the fiat recipient"
+                      }
+                    },
+                    "required": [
+                      "amount",
+                      "recipient_id"
+                    ]
                   }
-                }
+                },
+                "required": [
+                  "from",
+                  "to"
+                ]
               },
               "example": {
                 "from": {
-                  "amount": 500,
-                  "currency": "BRL"
+                  "asset": "USDC",
+                  "chain": "ETH-SEPOLIA"
                 },
                 "to": {
-                  "asset": "STABLE_SATS",
-                  "chain": "lightning"
+                  "amount": 10,
+                  "recipient_id": "540bbfd8-9bd6-4098-835b-840b63785597"
                 }
               }
             }
@@ -9668,7 +9684,8 @@
                   "type": "object",
                   "properties": {
                     "type": {
-                      "type": "string"
+                      "type": "string",
+                      "example": "offramp"
                     },
                     "from": {
                       "type": "object",
@@ -9676,7 +9693,10 @@
                         "amount": {
                           "type": "string"
                         },
-                        "currency": {
+                        "asset": {
+                          "type": "string"
+                        },
+                        "network": {
                           "type": "string"
                         }
                       }
@@ -9684,7 +9704,7 @@
                     "to": {
                       "type": "object",
                       "properties": {
-                        "asset": {
+                        "currency": {
                           "type": "string"
                         },
                         "gross_amount": {
@@ -9692,6 +9712,10 @@
                         },
                         "net_amount": {
                           "type": "string"
+                        },
+                        "recipient_id": {
+                          "type": "string",
+                          "format": "uuid"
                         }
                       }
                     },
@@ -9704,22 +9728,10 @@
                         "fees": {
                           "type": "object",
                           "properties": {
-                            "onramp_fee": {
+                            "offramp_fee": {
                               "type": "string"
                             },
-                            "onramp_fee_currency": {
-                              "type": "string"
-                            },
-                            "network_fee": {
-                              "type": "string"
-                            },
-                            "network_fee_asset": {
-                              "type": "string"
-                            },
-                            "total_fees": {
-                              "type": "string"
-                            },
-                            "total_fees_currency": {
+                            "offramp_fee_currency": {
                               "type": "string"
                             }
                           }
@@ -9729,25 +9741,23 @@
                   }
                 },
                 "example": {
-                  "type": "onramp",
+                  "type": "offramp",
                   "from": {
-                    "amount": "500",
-                    "currency": "BRL"
+                    "amount": "1.9314250621947842",
+                    "asset": "USDC",
+                    "network": "CELO-SEPOLIA"
                   },
                   "to": {
-                    "asset": "STABLE_SATS",
-                    "gross_amount": "95.46",
-                    "net_amount": "94.67"
+                    "currency": "brl",
+                    "gross_amount": "10",
+                    "net_amount": "9.96",
+                    "recipient_id": "540bbfd8-9bd6-4098-835b-840b63785597"
                   },
                   "pricing": {
-                    "fx_rate": "0.19092881177248724",
+                    "fx_rate": "5.1775242",
                     "fees": {
-                      "onramp_fee": "1.5",
-                      "onramp_fee_currency": "brl",
-                      "network_fee": "0.5",
-                      "network_fee_asset": "STABLE_SATS",
-                      "total_fees": "4.12",
-                      "total_fees_currency": "brl"
+                      "offramp_fee": "0.04",
+                      "offramp_fee_currency": "brl"
                     }
                   }
                 }
