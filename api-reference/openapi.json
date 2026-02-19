@@ -123,307 +123,7 @@
             }
           }
         }
-      }
-    },
-    "/v1/ramp/subaccount/{subaccountId}": {
-      "get": {
-        "tags": [
-          "Subaccounts"
-        ],
-        "summary": "Get Subaccount",
-        "description": "Retrieve the details of a specific subaccount using its ID.",
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
-            },
-            "required": true,
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "format": "uuid",
-                      "description": "Unique identifier for the subaccount"
-                    },
-                    "email": {
-                      "type": "string",
-                      "format": "email",
-                      "description": "Email address of the subaccount"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "Current status of the subaccount",
-                      "enum": [
-                        "created",
-                        "approved",
-                        "review"
-                      ]
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Subaccount creation timestamp"
-                    },
-                    "kyc": {
-                      "type": "object",
-                      "properties": {
-                        "profiles": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "country": {
-                                "type": "string"
-                              },
-                              "status": {
-                                "type": "string"
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "capabilities": {
-                      "type": "object",
-                      "properties": {
-                        "currencies": {
-                          "type": "object",
-                          "properties": {
-                            "USD": {
-                              "type": "object",
-                              "properties": {
-                                "canOnramp": {
-                                  "type": "boolean"
-                                },
-                                "canOfframp": {
-                                  "type": "boolean"
-                                },
-                                "canDeposit": {
-                                  "type": "boolean"
-                                },
-                                "canWithdraw": {
-                                  "type": "boolean"
-                                },
-                                "requiredKyc": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "assets": {
-                          "type": "object",
-                          "properties": {
-                            "USDT": {
-                              "type": "object",
-                              "properties": {
-                                "networks": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "string"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "example": {
-                  "id": "878beae6-e2f5-40a5-b7bf-449c73924aaa",
-                  "email": "user1+15124@bullring.finance",
-                  "status": "created",
-                  "createdAt": "2026-01-12T13:09:58.033Z",
-                  "kyc": {
-                    "profiles": [
-                      {
-                        "country": "NG",
-                        "status": "approved"
-                      }
-                    ]
-                  },
-                  "capabilities": {
-                    "currencies": {
-                      "USD": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_2"
-                      },
-                      "NGN": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 NG"
-                      },
-                      "BRL": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "EUR": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_2"
-                      },
-                      "GHS": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "ZMW": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "TZS": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "MXN": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "COP": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "ARS": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      }
-                    },
-                    "assets": {
-                      "USDT": {
-                        "networks": [
-                          "ETHEREUM",
-                          "SOLANA"
-                        ]
-                      },
-                      "USDC": {
-                        "networks": [
-                          "ETHEREUM",
-                          "SOLANA"
-                        ]
-                      },
-                      "BTC": {
-                        "networks": [
-                          "LIGHTNING"
-                        ]
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Insufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found - Subaccount not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Not Found",
-                  "message": "Subaccount not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/subaccounts": {
+      },
       "get": {
         "tags": [
           "Subaccounts"
@@ -805,6 +505,304 @@
                 "example": {
                   "error": "Not Found",
                   "message": "Account not found"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/ramp/subaccount/{subaccountId}": {
+      "get": {
+        "tags": [
+          "Subaccounts"
+        ],
+        "summary": "Get Subaccount",
+        "description": "Retrieve the details of a specific subaccount using its ID.",
+        "parameters": [
+          {
+            "name": "subaccountId",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
+            },
+            "required": true,
+            "description": "The unique identifier of the subaccount"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "description": "Unique identifier for the subaccount"
+                    },
+                    "email": {
+                      "type": "string",
+                      "format": "email",
+                      "description": "Email address of the subaccount"
+                    },
+                    "status": {
+                      "type": "string",
+                      "description": "Current status of the subaccount",
+                      "enum": [
+                        "created",
+                        "approved",
+                        "review"
+                      ]
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "Subaccount creation timestamp"
+                    },
+                    "kyc": {
+                      "type": "object",
+                      "properties": {
+                        "profiles": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "country": {
+                                "type": "string"
+                              },
+                              "status": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "capabilities": {
+                      "type": "object",
+                      "properties": {
+                        "currencies": {
+                          "type": "object",
+                          "properties": {
+                            "USD": {
+                              "type": "object",
+                              "properties": {
+                                "canOnramp": {
+                                  "type": "boolean"
+                                },
+                                "canOfframp": {
+                                  "type": "boolean"
+                                },
+                                "canDeposit": {
+                                  "type": "boolean"
+                                },
+                                "canWithdraw": {
+                                  "type": "boolean"
+                                },
+                                "requiredKyc": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "assets": {
+                          "type": "object",
+                          "properties": {
+                            "USDT": {
+                              "type": "object",
+                              "properties": {
+                                "networks": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "id": "878beae6-e2f5-40a5-b7bf-449c73924aaa",
+                  "email": "user1+15124@bullring.finance",
+                  "status": "created",
+                  "createdAt": "2026-01-12T13:09:58.033Z",
+                  "kyc": {
+                    "profiles": [
+                      {
+                        "country": "NG",
+                        "status": "approved"
+                      }
+                    ]
+                  },
+                  "capabilities": {
+                    "currencies": {
+                      "USD": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_2"
+                      },
+                      "NGN": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 NG"
+                      },
+                      "BRL": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "EUR": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_2"
+                      },
+                      "GHS": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "ZMW": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "TZS": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "MXN": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "COP": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      },
+                      "ARS": {
+                        "canOnramp": false,
+                        "canOfframp": false,
+                        "canDeposit": false,
+                        "canWithdraw": false,
+                        "requiredKyc": "TIER_1 or higher"
+                      }
+                    },
+                    "assets": {
+                      "USDT": {
+                        "networks": [
+                          "ETHEREUM",
+                          "SOLANA"
+                        ]
+                      },
+                      "USDC": {
+                        "networks": [
+                          "ETHEREUM",
+                          "SOLANA"
+                        ]
+                      },
+                      "BTC": {
+                        "networks": [
+                          "LIGHTNING"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized - Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Unauthorized",
+                  "message": "Invalid or missing API key"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden - Insufficient permissions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Forbidden",
+                  "message": "You do not have permission to access this resource"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found - Subaccount not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "error": "Not Found",
+                  "message": "Subaccount not found"
                 }
               }
             }
