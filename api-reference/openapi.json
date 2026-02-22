@@ -2086,14 +2086,6 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "lastSubmissionAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true
-                    },
-                    "submissionCount": {
-                      "type": "integer"
-                    },
                     "type": {
                       "type": "string"
                     },
@@ -2205,8 +2197,6 @@
                   "status": "not_started",
                   "created_at": "2025-11-21T15:32:51.901Z",
                   "updated_at": "2025-12-31T10:17:21.319Z",
-                  "lastSubmissionAt": null,
-                  "submissionCount": 0,
                   "type": "individual",
                   "first_name": "Mike",
                   "middle_name": null,
@@ -2291,14 +2281,6 @@
                     "updated_at": {
                       "type": "string",
                       "format": "date-time"
-                    },
-                    "lastSubmissionAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true
-                    },
-                    "submissionCount": {
-                      "type": "integer"
                     },
                     "type": {
                       "type": "string"
@@ -2412,8 +2394,6 @@
                   "rejection_reasons": [],
                   "created_at": "2025-12-31T10:37:53.156Z",
                   "updated_at": "2025-12-31T10:38:25.087Z",
-                  "lastSubmissionAt": "2025-12-31T10:38:25.084Z",
-                  "submissionCount": 1,
                   "type": "individual",
                   "first_name": "Mike",
                   "middle_name": null,
@@ -2547,14 +2527,6 @@
                       "type": "string",
                       "format": "date-time"
                     },
-                    "lastSubmissionAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "nullable": true
-                    },
-                    "submissionCount": {
-                      "type": "integer"
-                    },
                     "type": {
                       "type": "string"
                     },
@@ -2684,8 +2656,6 @@
                   ],
                   "created_at": "2025-12-31T10:37:53.156Z",
                   "updated_at": "2025-12-31T10:38:25.087Z",
-                  "lastSubmissionAt": "2025-12-31T10:38:25.084Z",
-                  "submissionCount": 1,
                   "type": "individual",
                   "first_name": "Mike",
                   "middle_name": null,
