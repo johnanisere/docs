@@ -4842,6 +4842,19 @@
                   },
                   {
                     "type": "object",
+                    "title": "EUR",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "channelId": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "channelId"
+                    ]
+                  },
+                  {
+                    "type": "object",
                     "title": "BRL",
                     "description": "Requires approved Tier 1 KYC.",
                     "properties": {
@@ -4855,48 +4868,6 @@
                     "required": [
                       "channelId",
                       "amount"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "title": "MXN",
-                    "description": "Requires approved Tier 1 KYC.",
-                    "properties": {
-                      "channelId": {
-                        "type": "string"
-                      },
-                      "generateNewAccount": {
-                        "type": "boolean",
-                        "description": "Generates a new unique account each time the API is called with this field set to true"
-                      },
-                      "accountId": {
-                        "type": "string",
-                        "description": "When provided, the API returns the account that has the provided id."
-                      }
-                    },
-                    "required": [
-                      "channelId"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "title": "ARS",
-                    "description": "Requires approved Tier 1 KYC.",
-                    "properties": {
-                      "channelId": {
-                        "type": "string"
-                      },
-                      "generateNewAccount": {
-                        "type": "boolean",
-                        "description": "Generates a new unique account each time the API is called with this field set to true"
-                      },
-                      "accountId": {
-                        "type": "string",
-                        "description": "When provided, the API returns the account that has the provided id."
-                      }
-                    },
-                    "required": [
-                      "channelId"
                     ]
                   }
                 ]
