@@ -1896,14 +1896,14 @@
                       },
                       "state": {
                         "type": "string",
-                        "description": "ISO 2 state codes. See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
+                        "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                       },
                       "postal_code": {
                         "type": "string"
                       },
                       "country": {
                         "type": "string",
-                        "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
+                        "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                       }
                     }
                   },
@@ -1991,7 +1991,8 @@
                         },
                         "file": {
                           "type": "string",
-                          "format": "uri"
+                          "format": "uri",
+                          "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                         }
                       }
                     }
@@ -2016,11 +2017,13 @@
                         },
                         "image_front": {
                           "type": "string",
-                          "format": "uri"
+                          "format": "uri",
+                          "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                         },
                         "image_back": {
                           "type": "string",
-                          "format": "uri"
+                          "format": "uri",
+                          "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                         }
                       }
                     }
@@ -2115,13 +2118,15 @@
                           "type": "string"
                         },
                         "state": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -2139,7 +2144,8 @@
                           },
                           "file": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2175,18 +2181,21 @@
                             "type": "string"
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "number": {
                             "type": "string"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2317,7 +2326,8 @@
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -2335,7 +2345,8 @@
                           },
                           "file": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2371,18 +2382,21 @@
                             "type": "string"
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "number": {
                             "type": "string"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2562,7 +2576,8 @@
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -2580,7 +2595,8 @@
                           },
                           "file": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2616,18 +2632,21 @@
                             "type": "string"
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "number": {
                             "type": "string"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -2771,13 +2790,15 @@
                         "type": "string"
                       },
                       "subdivision": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                       },
                       "postal_code": {
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                       }
                     }
                   },
@@ -2794,13 +2815,15 @@
                         "type": "string"
                       },
                       "subdivision": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                       },
                       "postal_code": {
                         "type": "string"
                       },
                       "country": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                       }
                     }
                   },
@@ -2810,21 +2833,26 @@
                       "type": "object",
                       "properties": {
                         "type": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                         },
                         "number": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The tax identification Number of the company."
                         },
                         "issuing_country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         },
                         "image_front": {
                           "type": "string",
-                          "format": "uri"
+                          "format": "uri",
+                          "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                         },
                         "image_back": {
                           "type": "string",
-                          "format": "uri"
+                          "format": "uri",
+                          "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                         }
                       }
                     }
@@ -2879,13 +2907,15 @@
                               "type": "string"
                             },
                             "subdivision": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                             },
                             "postal_code": {
                               "type": "string"
                             },
                             "country": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                             }
                           }
                         },
@@ -2895,21 +2925,26 @@
                             "type": "object",
                             "properties": {
                               "type": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                               },
                               "number": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "The tax identification Number of the company."
                               },
                               "issuing_country": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                               },
                               "image_front": {
                                 "type": "string",
-                                "format": "uri"
+                                "format": "uri",
+                                "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                               },
                               "image_back": {
                                 "type": "string",
-                                "format": "uri"
+                                "format": "uri",
+                                "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                               }
                             }
                           }
@@ -3076,13 +3111,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3099,13 +3136,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3115,21 +3154,26 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                           },
                           "number": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax identification Number of the company."
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -3184,13 +3228,15 @@
                                 "type": "string"
                               },
                               "subdivision": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                               },
                               "postal_code": {
                                 "type": "string"
                               },
                               "country": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                               }
                             }
                           },
@@ -3200,21 +3246,26 @@
                               "type": "object",
                               "properties": {
                                 "type": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                                 },
                                 "number": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax identification Number of the company."
                                 },
                                 "issuing_country": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                                 },
                                 "image_front": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 },
                                 "image_back": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 }
                               }
                             }
@@ -3421,13 +3472,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3444,13 +3497,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3460,21 +3515,26 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                           },
                           "number": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax identification Number of the company."
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -3529,13 +3589,15 @@
                                 "type": "string"
                               },
                               "subdivision": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                               },
                               "postal_code": {
                                 "type": "string"
                               },
                               "country": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                               }
                             }
                           },
@@ -3545,21 +3607,26 @@
                               "type": "object",
                               "properties": {
                                 "type": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                                 },
                                 "number": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax identification Number of the company."
                                 },
                                 "issuing_country": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                                 },
                                 "image_front": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 },
                                 "image_back": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 }
                               }
                             }
@@ -3811,13 +3878,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3834,13 +3903,15 @@
                           "type": "string"
                         },
                         "subdivision": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                         },
                         "postal_code": {
                           "type": "string"
                         },
                         "country": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                         }
                       }
                     },
@@ -3850,21 +3921,26 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                           },
                           "number": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "The tax identification Number of the company."
                           },
                           "issuing_country": {
-                            "type": "string"
+                            "type": "string",
+                            "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                           },
                           "image_front": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           },
                           "image_back": {
                             "type": "string",
-                            "format": "uri"
+                            "format": "uri",
+                            "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                           }
                         }
                       }
@@ -3919,13 +3995,15 @@
                                 "type": "string"
                               },
                               "subdivision": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "two-letter ISO 3166-2 code for the state/province (e.g., \"LA\" for Lagos, Nigeria) See [ISO 3166-2](https://en.wikipedia.org/wiki/ISO_3166-2)"
                               },
                               "postal_code": {
                                 "type": "string"
                               },
                               "country": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                               }
                             }
                           },
@@ -3935,21 +4013,26 @@
                               "type": "object",
                               "properties": {
                                 "type": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
                                 },
                                 "number": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "The tax identification Number of the company."
                                 },
                                 "issuing_country": {
-                                  "type": "string"
+                                  "type": "string",
+                                  "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
                                 },
                                 "image_front": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 },
                                 "image_back": {
                                   "type": "string",
-                                  "format": "uri"
+                                  "format": "uri",
+                                  "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                                 }
                               }
                             }
