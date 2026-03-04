@@ -1880,7 +1880,8 @@
                     "type": "string"
                   },
                   "phone": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "Phone number of the customer. Must be in E.164 format (e.g., +2348012345678)"
                   },
                   "address": {
                     "type": "object",
@@ -1962,18 +1963,18 @@
                   "source_of_funds": {
                     "type": "string",
                     "enum": [
-                      "COMPANY_FUNDS",
-                      "ECOMMERCE_RESELLER",
-                      "GAMBLING_PROCEEDS",
-                      "GIFTS",
-                      "GOVERNMENT_BENEFITS",
-                      "INHERITANCE",
-                      "INVESTMENTS_LOANS",
-                      "PENSION_RETIREMENT",
-                      "SALARY",
-                      "SALE_OF_ASSETS_REAL_ESTATE",
-                      "SAVINGS",
-                      "SOMEONE_ELSES_FUNDS"
+                      "company_funds",
+                      "ecommerce_reseller",
+                      "gambling_proceeds",
+                      "gifts",
+                      "government_benefits",
+                      "inheritance",
+                      "investments_loans",
+                      "pension_retirement",
+                      "salary",
+                      "sale_of_assets_real_estate",
+                      "savings",
+                      "someone_elses_funds"
                     ]
                   },
                   "documents": {
@@ -2167,10 +2168,25 @@
                       "type": "boolean"
                     },
                     "most_recent_occupation": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Fetch from occupation endpoint: [/api-reference/verification/get-occupations](/api-reference/verification/get-occupations)"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "company_funds",
+                        "ecommerce_reseller",
+                        "gambling_proceeds",
+                        "gifts",
+                        "government_benefits",
+                        "inheritance",
+                        "investments_loans",
+                        "pension_retirement",
+                        "salary",
+                        "sale_of_assets_real_estate",
+                        "savings",
+                        "someone_elses_funds"
+                      ]
                     },
                     "identifying_information": {
                       "type": "array",
@@ -2305,7 +2321,8 @@
                       "type": "string"
                     },
                     "phone": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Phone number of the customer. Must be in E.164 format (e.g., +2348012345678)"
                     },
                     "address": {
                       "type": "object",
@@ -2368,10 +2385,25 @@
                       "type": "boolean"
                     },
                     "most_recent_occupation": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Fetch from occupation endpoint: [/api-reference/verification/get-occupations](/api-reference/verification/get-occupations)"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "company_funds",
+                        "ecommerce_reseller",
+                        "gambling_proceeds",
+                        "gifts",
+                        "government_benefits",
+                        "inheritance",
+                        "investments_loans",
+                        "pension_retirement",
+                        "salary",
+                        "sale_of_assets_real_estate",
+                        "savings",
+                        "someone_elses_funds"
+                      ]
                     },
                     "identifying_information": {
                       "type": "array",
@@ -2555,7 +2587,8 @@
                       "type": "string"
                     },
                     "phone": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Phone number of the customer. Must be in E.164 format (e.g., +2348012345678)"
                     },
                     "address": {
                       "type": "object",
@@ -2618,10 +2651,25 @@
                       "type": "boolean"
                     },
                     "most_recent_occupation": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Fetch from occupation endpoint: [/api-reference/verification/get-occupations](/api-reference/verification/get-occupations)"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "company_funds",
+                        "ecommerce_reseller",
+                        "gambling_proceeds",
+                        "gifts",
+                        "government_benefits",
+                        "inheritance",
+                        "investments_loans",
+                        "pension_retirement",
+                        "salary",
+                        "sale_of_assets_real_estate",
+                        "savings",
+                        "someone_elses_funds"
+                      ]
                     },
                     "identifying_information": {
                       "type": "array",
@@ -2769,10 +2817,33 @@
                     "type": "string"
                   },
                   "source_of_funds": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "business_loans",
+                      "grants",
+                      "inter_company_funds",
+                      "investment_proceeds",
+                      "legal_settlement",
+                      "owners_capital",
+                      "pension_retirement",
+                      "sale_of_assets",
+                      "sales_of_goods_and_services",
+                      "tax_refund",
+                      "third_party_funds",
+                      "treasury_reserves"
+                    ]
                   },
                   "business_type": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "cooperative",
+                      "corporation",
+                      "llc",
+                      "other",
+                      "partnership",
+                      "sole_prop",
+                      "trust"
+                    ]
                   },
                   "website": {
                     "type": "string"
@@ -2867,10 +2938,26 @@
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
+                    },
+                    "description": "Array of Industry codes of the industry or industries the business operates in. The can be gotten here [Industry Codes](https://api.bullring.finance/v1/kyc/industry-codes)"
                   },
                   "account_purpose": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": [
+                      "charitable_donations",
+                      "ecommerce_retail_payments",
+                      "investment_purposes",
+                      "other",
+                      "payments_to_friends_or_family_abroad",
+                      "payroll",
+                      "personal_or_living_expenses",
+                      "protect_wealth",
+                      "purchase_goods_and_services",
+                      "receive_payments_for_goods_and_services",
+                      "tax_optimization",
+                      "third_party_money_transmission",
+                      "treasury_management"
+                    ]
                   },
                   "ultimate_beneficial_owners": {
                     "type": "array",
@@ -2926,11 +3013,14 @@
                             "properties": {
                               "type": {
                                 "type": "string",
-                                "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
+                                "description": "The passport of the individual.",
+                                "enum": [
+                                  "passport"
+                                ]
                               },
                               "number": {
                                 "type": "string",
-                                "description": "The tax identification Number of the company."
+                                "description": "The passport number of the individual."
                               },
                               "issuing_country": {
                                 "type": "string",
@@ -2966,16 +3056,24 @@
                   },
                   "formation_document": {
                     "type": "string",
-                    "format": "uri"
+                    "format": "uri",
+                    "description": "Certificate of Incorporation or similar document that proves the formation of the business. Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                   },
                   "ownership_document": {
                     "type": "string",
-                    "format": "uri"
+                    "format": "uri",
+                    "description": "A document that proves the ownership structure of the business. Supported document formats are jpeg, jpg, png, heic, heif, pdf",
+                    "pattern": "\\.(jpeg|jpg|png|heic|heif|pdf)$",
+                    "example": [
+                      "share certificate",
+                      "trust deed"
+                    ]
                   },
                   "flow_of_funds_document": {
                     "type": "string",
                     "format": "uri",
-                    "nullable": true
+                    "nullable": true,
+                    "description": "A document that proves the flow of funds for the business. Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                   },
                   "has_material_intermediary_ownership": {
                     "type": "boolean"
@@ -3090,10 +3188,33 @@
                       "type": "string"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "business_loans",
+                        "grants",
+                        "inter_company_funds",
+                        "investment_proceeds",
+                        "legal_settlement",
+                        "owners_capital",
+                        "pension_retirement",
+                        "sale_of_assets",
+                        "sales_of_goods_and_services",
+                        "tax_refund",
+                        "third_party_funds",
+                        "treasury_reserves"
+                      ]
                     },
                     "business_type": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "cooperative",
+                        "corporation",
+                        "llc",
+                        "other",
+                        "partnership",
+                        "sole_prop",
+                        "trust"
+                      ]
                     },
                     "website": {
                       "type": "string"
@@ -3188,10 +3309,26 @@
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Array of Industry codes of the industry or industries the business operates in. The can be gotten here [Industry Codes](https://api.bullring.finance/v1/kyc/industry-codes)"
                     },
                     "account_purpose": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "charitable_donations",
+                        "ecommerce_retail_payments",
+                        "investment_purposes",
+                        "other",
+                        "payments_to_friends_or_family_abroad",
+                        "payroll",
+                        "personal_or_living_expenses",
+                        "protect_wealth",
+                        "purchase_goods_and_services",
+                        "receive_payments_for_goods_and_services",
+                        "tax_optimization",
+                        "third_party_money_transmission",
+                        "treasury_management"
+                      ]
                     },
                     "ultimate_beneficial_owners": {
                       "type": "array",
@@ -3247,11 +3384,14 @@
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
+                                  "description": "The passport of the individual.",
+                                  "enum": [
+                                    "passport"
+                                  ]
                                 },
                                 "number": {
                                   "type": "string",
-                                  "description": "The tax identification Number of the company."
+                                  "description": "The passport number of the individual."
                                 },
                                 "issuing_country": {
                                   "type": "string",
@@ -3287,16 +3427,19 @@
                     },
                     "formation_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "ownership_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "flow_of_funds_document": {
                       "type": "string",
                       "format": "uri",
-                      "nullable": true
+                      "nullable": true,
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "has_material_intermediary_ownership": {
                       "type": "boolean"
@@ -3451,10 +3594,33 @@
                       "type": "string"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "business_loans",
+                        "grants",
+                        "inter_company_funds",
+                        "investment_proceeds",
+                        "legal_settlement",
+                        "owners_capital",
+                        "pension_retirement",
+                        "sale_of_assets",
+                        "sales_of_goods_and_services",
+                        "tax_refund",
+                        "third_party_funds",
+                        "treasury_reserves"
+                      ]
                     },
                     "business_type": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "cooperative",
+                        "corporation",
+                        "llc",
+                        "other",
+                        "partnership",
+                        "sole_prop",
+                        "trust"
+                      ]
                     },
                     "website": {
                       "type": "string"
@@ -3549,10 +3715,26 @@
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Array of Industry codes of the industry or industries the business operates in. The can be gotten here [Industry Codes](https://api.bullring.finance/v1/kyc/industry-codes)"
                     },
                     "account_purpose": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "charitable_donations",
+                        "ecommerce_retail_payments",
+                        "investment_purposes",
+                        "other",
+                        "payments_to_friends_or_family_abroad",
+                        "payroll",
+                        "personal_or_living_expenses",
+                        "protect_wealth",
+                        "purchase_goods_and_services",
+                        "receive_payments_for_goods_and_services",
+                        "tax_optimization",
+                        "third_party_money_transmission",
+                        "treasury_management"
+                      ]
                     },
                     "ultimate_beneficial_owners": {
                       "type": "array",
@@ -3608,11 +3790,14 @@
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
+                                  "description": "The passport of the individual.",
+                                  "enum": [
+                                    "passport"
+                                  ]
                                 },
                                 "number": {
                                   "type": "string",
-                                  "description": "The tax identification Number of the company."
+                                  "description": "The passport number of the individual."
                                 },
                                 "issuing_country": {
                                   "type": "string",
@@ -3648,16 +3833,19 @@
                     },
                     "formation_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "ownership_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "flow_of_funds_document": {
                       "type": "string",
                       "format": "uri",
-                      "nullable": true
+                      "nullable": true,
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "has_material_intermediary_ownership": {
                       "type": "boolean"
@@ -3857,10 +4045,33 @@
                       "type": "string"
                     },
                     "source_of_funds": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "business_loans",
+                        "grants",
+                        "inter_company_funds",
+                        "investment_proceeds",
+                        "legal_settlement",
+                        "owners_capital",
+                        "pension_retirement",
+                        "sale_of_assets",
+                        "sales_of_goods_and_services",
+                        "tax_refund",
+                        "third_party_funds",
+                        "treasury_reserves"
+                      ]
                     },
                     "business_type": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "cooperative",
+                        "corporation",
+                        "llc",
+                        "other",
+                        "partnership",
+                        "sole_prop",
+                        "trust"
+                      ]
                     },
                     "website": {
                       "type": "string"
@@ -3922,11 +4133,14 @@
                         "properties": {
                           "type": {
                             "type": "string",
-                            "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
+                            "description": "The passport of the individual.",
+                            "enum": [
+                              "passport"
+                            ]
                           },
                           "number": {
                             "type": "string",
-                            "description": "The tax identification Number of the company."
+                            "description": "The passport number of the individual."
                           },
                           "issuing_country": {
                             "type": "string",
@@ -3955,10 +4169,26 @@
                       "type": "array",
                       "items": {
                         "type": "string"
-                      }
+                      },
+                      "description": "Array of Industry codes of the industry or industries the business operates in. The can be gotten here [Industry Codes](https://api.bullring.finance/v1/kyc/industry-codes)"
                     },
                     "account_purpose": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "charitable_donations",
+                        "ecommerce_retail_payments",
+                        "investment_purposes",
+                        "other",
+                        "payments_to_friends_or_family_abroad",
+                        "payroll",
+                        "personal_or_living_expenses",
+                        "protect_wealth",
+                        "purchase_goods_and_services",
+                        "receive_payments_for_goods_and_services",
+                        "tax_optimization",
+                        "third_party_money_transmission",
+                        "treasury_management"
+                      ]
                     },
                     "ultimate_beneficial_owners": {
                       "type": "array",
@@ -4014,11 +4244,14 @@
                               "properties": {
                                 "type": {
                                   "type": "string",
-                                  "description": "The tax Identification document type. Eg \"tin\" for Nigeria Tax Identification Number, \"ein\" for US, \"utr\" for UK etc."
+                                  "description": "The passport number of the individual.",
+                                  "enum": [
+                                    "passport"
+                                  ]
                                 },
                                 "number": {
                                   "type": "string",
-                                  "description": "The tax identification Number of the company."
+                                  "description": "The passport number of the individual."
                                 },
                                 "issuing_country": {
                                   "type": "string",
@@ -4054,16 +4287,19 @@
                     },
                     "formation_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "ownership_document": {
                       "type": "string",
-                      "format": "uri"
+                      "format": "uri",
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "flow_of_funds_document": {
                       "type": "string",
                       "format": "uri",
-                      "nullable": true
+                      "nullable": true,
+                      "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                     },
                     "has_material_intermediary_ownership": {
                       "type": "boolean"
