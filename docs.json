@@ -52,7 +52,7 @@
               {
                 "group": "Events (Webhooks)",
                 "pages": [
-                  "en/webhook-intro.mdx",
+                  "en/webhook-intro",
                   "en/subaccount-events",
                   "en/withdrawal-events",
                   "en/deposit-events",
@@ -117,7 +117,7 @@
               {
                 "group": "Eventos (Webhooks)",
                 "pages": [
-                  "pt/webhook-intro.mdx",
+                  "pt/webhook-intro",
                   "pt/subaccount-events",
                   "pt/withdrawal-events",
                   "pt/deposit-events",

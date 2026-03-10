@@ -1,5 +1,5 @@
 ---
-title: Introduction to Webhook
+title: Introduction
 description: Understanding bullring webhooks.
 ---
 
@@ -128,69 +128,5 @@ Each webhook will be sent as a POST request to your registered endpoint with the
 ```
 
 ---
-
-### Example Payloads
-
-#### Subaccount Event: `subaccount.status.created`
-```json
-{
-  "event": "subaccount.status.created",
-  "data": {
-    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-    "email": "merchant@example.com",
-    "status": "created"
-  }
-}
-```
-
-#### Subaccount Event: `subaccount.status.approved`
-```json
-{
-  "event": "subaccount.status.approved",
-  "data": {
-    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-    "status": "approved"
-  }
-}
-```
-
-#### Payment Event: `payment.status.paid`
-```json
-{
-  "event": "payment.status.paid",
-  "data": {
-    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
-    "amount": 1000,
-    "currency": "brl",
-    "status": "paid"
-  }
-}
-```
-
-#### Payment Event: `payment.status.unpaid`
-```json
-{
-  "event": "payment.status.unpaid",
-  "data": {
-    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
-    "amount": 1000,
-    "currency": "brl",
-    "status": "unpaid"
-  }
-}
-```
-
-#### Withdrawal Event: `withdrawal.status.completed`
-```json
-{
-  "event": "withdrawal.status.completed",
-  "data": {
-    "id": "449eca18-9c77-472c-9e82-b08a18637759",
-    "status": "completed",
-    "amount": "496.50",
-    "currency": "BRL"
-  }
-}
-```
 
 Make sure your server is prepared to respond with a `2xx` status code to acknowledge receipt.

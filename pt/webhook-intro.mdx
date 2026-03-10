@@ -1,6 +1,6 @@
 ---
-title: Introduction to Webhook
-description: Understanding bullring webhooks.
+title: Introdução
+description: Entendendo os ganchos de teia da arena de touradas.
 ---
 
 ## Eventos de Webhook
@@ -129,69 +129,5 @@ Cada webhook será enviado como uma requisição POST para seu endpoint registra
 ```
 
 ---
-
-### Exemplos de Payloads
-
-#### Evento de Subconta: `subaccount.status.created`
-```json
-{
-  "event": "subaccount.status.created",
-  "data": {
-    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-    "email": "merchant@example.com",
-    "status": "created"
-  }
-}
-```
-
-#### Evento de Subconta: `subaccount.status.approved`
-```json
-{
-  "event": "subaccount.status.approved",
-  "data": {
-    "id": "47a79c3d-9a2b-4998-898b-8eb7fad01526",
-    "status": "approved"
-  }
-}
-```
-
-#### Evento de Pagamento: `payment.status.paid`
-```json
-{
-  "event": "payment.status.paid",
-  "data": {
-    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
-    "amount": 1000,
-    "currency": "brl",
-    "status": "paid"
-  }
-}
-```
-
-#### Evento de Pagamento: `payment.status.unpaid`
-```json
-{
-  "event": "payment.status.unpaid",
-  "data": {
-    "id": "06506c54-8df0-4d5f-bdc0-50dbe29fb84e",
-    "amount": 1000,
-    "currency": "brl",
-    "status": "unpaid"
-  }
-}
-```
-
-#### Evento de Saque: `withdrawal.status.completed`
-```json
-{
-  "event": "withdrawal.status.completed",
-  "data": {
-    "id": "449eca18-9c77-472c-9e82-b08a18637759",
-    "status": "completed",
-    "amount": "496.50",
-    "currency": "BRL"
-  }
-}
-```
 
 Certifique-se de que seu servidor esteja preparado para responder com um código de status `2xx` para confirmar o recebimento.
