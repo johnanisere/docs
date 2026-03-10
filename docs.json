@@ -1,5 +1,5 @@
 {
-  "$schema": "https://mintlify.com/docs.json",
+   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Bullring Finance API Doc",
   "colors": {
@@ -52,6 +52,7 @@
               {
                 "group": "Events (Webhooks)",
                 "pages": [
+                  "en/webhook-intro.mdx",
                   "en/subaccount-events",
                   "en/withdrawal-events",
                   "en/deposit-events",
@@ -116,6 +117,7 @@
               {
                 "group": "Eventos (Webhooks)",
                 "pages": [
+                  "pt/webhook-intro.mdx",
                   "pt/subaccount-events",
                   "pt/withdrawal-events",
                   "pt/deposit-events",
