@@ -9,7 +9,7 @@ Webhooks allow your system to automatically receive real-time updates from Bullr
 
 Bullring Finance can notify your server in real time about changes to subaccount status, payment confirmations, and withdrawal progress.
 
-To start receiving webhooks, register your endpoint via your Dashboard or the [Webhook API](/api-reference/webhook/add-webhook).
+To start receiving webhooks, register your endpoint via your Dashboard.
 
 ---
 ## How It Works
@@ -80,52 +80,6 @@ const isVerified = receivedHash === hash;
 ```
 
 Take note of the `,` between the timestamp and the payload `${timestamp},${payload}` when creating the hash.
-
----
-
-### Subaccount Events
-
-- `subaccount.status.created`
-- `subaccount.status.approved`
-- `subaccount.status.declined`
-- `subaccount.status.review`
-
-These events are triggered when a new store (subaccount) is created or goes through KYB review stages.
-
----
-
-### Payment Events
-
-- `payment.status.paid`
-- `payment.status.unpaid`
-
-These events notify you when an invoice is paid or expires without being paid.
-
----
-
-### Withdrawal Events
-
-- `withdrawal.status.not_initiated`
-- `withdrawal.status.in_progress`
-- `withdrawal.status.completed`
-- `withdrawal.status.failed`
-
-These events allow you to track the status of your store’s fiat payouts.
-
----
-
-### Webhook Payload Format
-
-Each webhook will be sent as a POST request to your registered endpoint with the following structure:
-
-```json
-{
-  "event": "event.name",
-  "data": {
-    "...": "event-specific payload"
-  }
-}
-```
 
 ---
 
