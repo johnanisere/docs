@@ -9,7 +9,7 @@ Webhooks permitem que seu sistema receba atualizações em tempo real da Bullrin
 
 A Bullring Finance pode notificar seu servidor em tempo real sobre alterações no status de subcontas, confirmações de pagamento e progresso de saques.
 
-Para começar a receber webhooks, registre seu endpoint pelo Painel ou via [API de Webhook](/api-reference/webhook/add-webhook).
+Para começar a receber webhooks, registre seu endpoint pelo Painel.
 
 ---
 ## Como Funciona
@@ -81,52 +81,6 @@ const isVerified = receivedHash === hash;
 ```
 
 Atenção ao uso da vírgula `,` entre o timestamp e o payload `${timestamp},${payload}` ao criar o hash.
-
----
-
-### Eventos de Subconta
-
-- `subaccount.status.created`
-- `subaccount.status.approved`
-- `subaccount.status.declined`
-- `subaccount.status.review`
-
-Esses eventos são acionados quando uma nova loja (subconta) é criada ou passa por etapas de verificação KYB.
-
----
-
-### Eventos de Pagamento
-
-- `payment.status.paid`
-- `payment.status.unpaid`
-
-Esses eventos notificam quando uma fatura é paga ou expira sem pagamento.
-
----
-
-### Eventos de Saque
-
-- `withdrawal.status.not_initiated`
-- `withdrawal.status.in_progress`
-- `withdrawal.status.completed`
-- `withdrawal.status.failed`
-
-Esses eventos permitem que você acompanhe o status dos saques em reais da sua loja.
-
----
-
-### Formato do Payload do Webhook
-
-Cada webhook será enviado como uma requisição POST para seu endpoint registrado com a seguinte estrutura:
-
-```json
-{
-  "event": "event.name",
-  "data": {
-    "...": "conteúdo específico do evento"
-  }
-}
-```
 
 ---
 
