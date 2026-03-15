@@ -6144,7 +6144,7 @@
               ]
             },
             "required": true,
-            "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
+            "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
           }
         ],
         "responses": {
@@ -8838,7 +8838,7 @@
                     "type": "object",
                     "properties": {
                       "chain": {
-                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`",
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
@@ -9085,7 +9085,7 @@
                           "MATIC",
                           "SOL"
                         ],
-                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
                       },
                       "amount": {
                         "type": "number",
@@ -9677,7 +9677,6 @@
                     "properties": {
                       "asset": {
                         "type": "string",
-                        "description": "Options: STABLE_SATS, USDC, USDT",
                         "enum": [
                           "STABLE_SATS",
                           "USDC",
@@ -9946,7 +9945,6 @@
                     "properties": {
                       "asset": {
                         "type": "string",
-                        "description": "Options: STABLE_SATS, USDC, USDT",
                         "enum": [
                           "STABLE_SATS",
                           "USDC",
@@ -9963,7 +9961,7 @@
                           "SOL",
                           "MATIC"
                         ],
-                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
                       },
                       "amount": {
                         "type": "number",
