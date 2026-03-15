@@ -9089,6 +9089,10 @@
                           "POLYGON",
                           "SOLANA"
                         ]
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount of crypto to offramp. if provided, the quote will be based on the provided amount. if provided, to.amount should not be provided."
                       }
                     },
                     "required": [
@@ -9101,17 +9105,15 @@
                     "properties": {
                       "amount": {
                         "type": "number",
-                        "description": "The fiat amount to determine the quote"
+                        "description": "The fiat amount to determine the quote.  if provided, the quote will be based on the provided amount. if provided, from.amount should not be provided."
                       },
-                      "recipient_id": {
+                      "currency": {
                         "type": "string",
-                        "format": "uuid",
-                        "description": "The unique identifier of the fiat recipient"
+                        "description": "The fiat currency for the quote"
                       }
                     },
                     "required": [
-                      "amount",
-                      "recipient_id"
+                      "currency"
                     ]
                   }
                 },
@@ -9126,8 +9128,8 @@
                   "chain": "ETH-SEPOLIA"
                 },
                 "to": {
-                  "amount": 10,
-                  "recipient_id": "540bbfd8-9bd6-4098-835b-840b63785597"
+                  "amount": 100,
+                  "currency": "BRL"
                 }
               }
             }
@@ -9931,14 +9933,14 @@
                     "type": "object",
                     "properties": {
                       "amount": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "The fiat amount to determine the quote. if provided, the quote will be based on the provided amount. if provided, to.amount should not be provided."
                       },
                       "currency": {
                         "type": "string"
                       }
                     },
                     "required": [
-                      "amount",
                       "currency"
                     ]
                   },
@@ -9963,6 +9965,10 @@
                           "ETH-SEPOLIA",
                           "ETH"
                         ]
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The crypto amount to determine the quote. if provided, the quote will be based on the provided amount. if provided, from.amount should not be provided."
                       }
                     },
                     "required": [
