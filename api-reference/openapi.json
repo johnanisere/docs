@@ -8838,16 +8838,14 @@
                     "type": "object",
                     "properties": {
                       "chain": {
-                        "type": "string",
-                        "description": "Supported Chains by Asset:\n\n* **USDT** -> `ETHEREUM`, `TRON`\n* **USDC** -> `ETHEREUM`, `POLYGON`, `SOLANA`\n* **STABLE_SATS** -> `lightning`",
+                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
                           "ETH-SEPOLIA",
-                          "ETHEREUM",
-                          "TRON",
-                          "POLYGON",
-                          "SOLANA"
+                          "ETH",
+                          "MATIC",
+                          "SOL"
                         ]
                       },
                       "asset": {
@@ -9079,16 +9077,15 @@
                       },
                       "chain": {
                         "type": "string",
-                        "description": "The blockchain network",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
                           "ETH-SEPOLIA",
-                          "ETHEREUM",
-                          "TRON",
-                          "POLYGON",
-                          "SOLANA"
-                        ]
+                          "ETH",
+                          "MATIC",
+                          "SOL"
+                        ],
+                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
                       },
                       "amount": {
                         "type": "number",
@@ -9958,13 +9955,15 @@
                       },
                       "chain": {
                         "type": "string",
-                        "description": "Options: lightning, SOL-DEVNET, ETH-SEPOLIA, ETH",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
                           "ETH-SEPOLIA",
-                          "ETH"
-                        ]
+                          "ETH",
+                          "SOL",
+                          "MATIC"
+                        ],
+                        "description": "The blockchain network.\n\n**Production:** `ETH`, `SOL`, `MATIC`\n\n**Staging:** `ETH-SEPOLIA`, `SOL-DEVNET`"
                       },
                       "amount": {
                         "type": "number",
