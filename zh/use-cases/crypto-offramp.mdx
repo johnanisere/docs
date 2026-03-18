@@ -1,0 +1,160 @@
+---
+title: "即时加密出金"
+description: "将加密货币即时转换为现金。"
+---
+
+## 场景
+用户希望出售比特币（通过闪电网络）并立即通过单一简化流程在其本地银行账户（如巴西 PIX）中收到现金。
+
+## 工作流程
+
+### 1. 添加受益人银行账户
+
+首先，将目标银行账户添加为受益人。这是加密货币收到后资金将发送到的地方。
+
+<Note>
+  请参阅[添加受益人](/api-reference/beneficiaries/add-beneficiary) API 参考获取完整详情。
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/beneficiaries \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
+  "currency": "BRL"
+}'
+```
+
+**响应：**
+
+```json
+{
+  "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "account_id": "667.136.083-96",
+  "account_type": "cpf",
+  "currency": "BRL",
+  "status": "active",
+  "created_at": "2025-11-25T12:00:00.000Z"
+}
+```
+
+### 2. 发起加密出金
+
+通过指定收款人（受益人 ID）和目标货币金额来发起出金。API 将生成用户需要支付的闪电网络发票。
+
+<Note>
+  请参阅[加密出金](/api-reference/withdrawals/offramp-crypto) API 参考获取完整详情。
+</Note>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+  "amount": 88
+}'
+```
+
+**响应：**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
+    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
+    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
+    "targetAmount": 88,
+    "targetCurrency": "brl",
+    "lightningAmount": 1656,
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822915501882292,
+    "lightningFee": 0,
+    "withdrawalFee": 0.64,
+    "targetAmountReceivable": 87.34,
+    "totalFees": 0.64,
+    "bankAccount": {
+      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+      "bankName": null,
+      "accountId": "667.136.083-96",
+      "currency": "BRL"
+    },
+    "expiresAt": null,
+    "status": "pending",
+    "createdAt": "2025-11-25T13:37:46.829Z"
+  },
+  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
+}
+```
+
+**关键响应字段：**
+- `lightningInvoice` - 用户需要支付的闪电网络发票
+- `lightningAmount` - 需要支付的聪数
+- `targetAmountReceivable` - 用户将收到的金额（扣除费用后）
+- `totalFees` - 交易收取的总费用
+
+### 3. 用户支付闪电网络发票
+
+用户使用其比特币闪电钱包支付闪电网络发票。发票支付后，Bullring 自动处理向受益人银行账户的提款。
+
+### 4. 查看出金状态
+
+您可以随时使用出金 ID 查看出金交易的状态。
+
+<Note>
+  请参阅[获取出金状态](/api-reference/withdrawals/get-offramp-status) API 参考获取完整详情。
+</Note>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status \
+  --header 'Authorization: Bearer <token>'
+```
+
+**响应：**
+
+```json
+{
+  "success": true,
+  "data": {
+    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
+    "status": "pending",
+    "targetAmount": 12,
+    "targetCurrency": "brl",
+    "lightningAmount": 226,
+    "withdrawalId": null,
+    "invoicePaidAt": null,
+    "withdrawalInitiatedAt": null,
+    "completedAt": null,
+    "errorMessage": null,
+    "createdAt": "2025-11-25T13:48:02.667Z",
+    "updatedAt": "2025-11-25T13:48:02.667Z",
+    "lightningCurrency": "stablesats",
+    "exchangeRate": 0.18822916,
+    "lightningFee": 0,
+    "withdrawalFee": 0.11,
+    "targetAmountReceivable": 53.09,
+    "totalFees": 0.11
+  }
+}
+```
+
+**状态值：**
+- `pending` - 等待闪电网络发票支付
+- `processing` - 发票已支付，正在处理提款
+- `completed` - 资金已成功发送给受益人
+- `failed` - 交易失败（详见 `errorMessage`）
+
+## 优势
+
+这一简化的出金流程提供多项优势：
+
+- **单次 API 调用**：在一个请求中生成闪电网络发票并发起提款
+- **自动处理**：闪电网络发票支付后，提款自动处理
+- **实时汇率**：预先获取当前汇率和费用
+- **简单集成**：无需管理单独的存款和提款流程

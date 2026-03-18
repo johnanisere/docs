@@ -1,0 +1,41 @@
+---
+title: "身份验证"
+---
+
+要访问 Bullring Finance API，您必须对每个请求进行身份验证。使用 API 密钥确保您的应用已验证并获授权与平台交互。
+
+---
+
+## 获取您的 API 密钥
+
+1. 联系 [Bullring 团队](mailto:developer@bullring.finance) 进行注册
+2. 登录 Bullring 控制面板
+3. 导航至 **开发者 → API 密钥**
+4. 点击 **生成密钥** 选择 **测试环境** 或 **生产环境**
+5. 安全复制并存储您的密钥 — 该密钥不会再次显示
+
+每个环境都有独立的密钥。使用 **测试密钥** 进行测试，使用 **生产密钥** 进行实际交易。
+
+---
+
+## 身份验证请求头
+
+所有对两个环境的请求都 **必须** 在以下请求头中包含您的 API 密钥：
+
+```http
+x-api-key: YOUR_API_KEY
+```
+
+如果您的请求不包含有效密钥，将返回 `401 Unauthorized` 响应。
+
+---
+
+## 最佳实践
+
+- 切勿在前端代码中暴露您的 API 密钥
+- 定期轮换您的 API 密钥以增强安全性
+- 在 Bullring 控制面板中监控使用情况
+
+---
+
+需要帮助？请联系 [developer@bullring.finance](mailto:developer@bullring.finance)

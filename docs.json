@@ -81,7 +81,8 @@
                   "en/use-cases/remittance",
                   "en/use-cases/mass-payouts",
                   "en/use-cases/crypto-offramp",
-                  "en/use-cases/collections-and-payouts"
+                  "en/use-cases/collections-and-payouts",
+                  "en/use-cases/card-collection"
                 ]
               }
             ]
@@ -146,13 +147,80 @@
                   "pt/use-cases/remittance",
                   "pt/use-cases/mass-payouts",
                   "pt/use-cases/crypto-offramp",
-                  "pt/use-cases/collections-and-payouts"
+                  "pt/use-cases/collections-and-payouts",
+                  "pt/use-cases/card-collection"
                 ]
               }
             ]
           },
           {
             "tab": "Referência da API",
+            "openapi": "api-reference/openapi.json"
+          }
+        ]
+      },
+      {
+        "language": "zh",
+        "tabs": [
+          {
+            "tab": "快速入门",
+            "groups": [
+              {
+                "group": "快速入门",
+                "pages": [
+                  "zh/introduction",
+                  "zh/authentication",
+                  "zh/environments"
+                ]
+              },
+              {
+                "group": "核心概念",
+                "pages": [
+                  "zh/multi-currency-balances",
+                  "zh/accounts",
+                  "zh/supported-currencies"
+                ]
+              },
+              {
+                "group": "事件 (Webhooks)",
+                "pages": [
+                  "zh/webhook-intro",
+                  "zh/subaccount-events",
+                  "zh/withdrawal-events",
+                  "zh/deposit-events",
+                  "zh/off-ramp-events",
+                  "zh/on-ramp-events"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "使用场景",
+            "groups": [
+              {
+                "group": "常见模式",
+                "pages": [
+                  "zh/use-cases/multi-currency-operations",
+                  "zh/use-cases/onboarding",
+                  "zh/use-cases/fiat-on-ramp",
+                  "zh/use-cases/beneficiaries",
+                  "zh/use-cases/rates-estimates"
+                ]
+              },
+              {
+                "group": "使用场景",
+                "pages": [
+                  "zh/use-cases/remittance",
+                  "zh/use-cases/mass-payouts",
+                  "zh/use-cases/crypto-offramp",
+                  "zh/use-cases/collections-and-payouts",
+                  "zh/use-cases/card-collection"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "API 参考",
             "openapi": "api-reference/openapi.json"
           }
         ]

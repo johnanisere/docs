@@ -1,0 +1,180 @@
+---
+title: "存款与入金"
+description: "使用法币、稳定币和加密货币为子账户充值。"
+---
+
+## 概述
+
+支持用户使用多种方式向其子账户存入资金：
+- **法币**（如 NGN、BRL）
+- **稳定币**（USDC、USDT）通过支持的网络
+- **加密货币**（BTC 通过闪电网络）
+
+有关支持的货币和网络的完整列表，请参阅[支持的货币](/zh/supported-currencies)页面。
+
+## 1. 列出存款渠道
+
+获取特定货币可用的充值方式、限额和费用。您可以筛选响应以找到适合存款的 `channelId`。
+
+<Card title="API 参考" icon="code" href="/api-reference/endpoint/get-v1-ramp-banking-channels">
+  查看完整的端点文档
+</Card>
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/banking/channels \
+  --header 'Authorization: Bearer <YOUR_API_KEY>'
+```
+
+**响应**
+
+```json
+{
+  "USDC": {
+    "channels": [
+      {
+        "id": "usdc-channel-id-bullring-finance",
+        "currency": "USDC",
+        "min": 0,
+        "max": 1500000000000000000,
+        "rampType": "deposit",
+        "channelType": "crypto",
+        "status": "active"
+      }
+    ],
+    "networks": [
+      {
+        "id": "eth-mainnet-network-id",
+        "name": "Ethereum Mainnet",
+        "code": "ETH-MAINNET"
+      }
+    ]
+  },
+  "NGN": {
+    "channels": [
+      {
+        "id": "ngn-channel-id-bullring-finance",
+        "currency": "NGN",
+        "min": 100,
+        "max": 10000000,
+        "rampType": "deposit",
+        "channelType": "fiat",
+        "status": "active"
+      }
+    ]
+  }
+}
+```
+
+## 2. 发起存款
+
+### 方式 A：法币存款
+
+发起银行转账或其他本地支付方式。响应将包含银行详情或支付说明。
+
+<Card title="API 参考" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits">
+  查看完整的端点文档
+</Card>
+
+**示例：NGN 存款**
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Authorization: Bearer <YOUR_API_KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "channelId": "ngn-channel-id-bullring-finance"
+  }'
+```
+
+**响应**
+
+```json
+{
+  "id": "deposit-uuid",
+  "status": "pending",
+  "amount": 5000,
+  "currency": "NGN",
+  "bankInfo": {
+    "bankName": "Providus Bank",
+    "accountNumber": "1234567890",
+    "accountName": "Bullring Checkout"
+  }
+}
+```
+
+### 方式 B：加密货币存款（链上）
+
+获取特定区块链网络（如以太坊、Solana）的专用存款地址。
+
+<Card title="API 参考" icon="code" href="/api-reference/endpoint/get-v1-ramp-subaccountid-banking-deposits-crypto-onchainnetwork">
+  查看完整的端点文档
+</Card>
+
+**示例：获取以太坊 Sepolia 上的 USDC 地址**
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-SEPOLIA \
+  --header 'Authorization: Bearer <YOUR_API_KEY>'
+```
+
+**响应**
+
+```json
+{
+  "id": "address-uuid",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-SEPOLIA",
+  "currency": "USDC"
+}
+```
+
+### 方式 C：闪电网络存款 (BTC)
+
+创建比特币存款的闪电网络发票。
+
+<Card title="API 参考" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits-lightning">
+  查看完整的端点文档
+</Card>
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/lightning \
+  --header 'Authorization: Bearer <YOUR_API_KEY>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "amount": 10000,
+    "currency": "usd",
+    "note": "Top up"
+  }'
+```
+
+**响应**
+
+```json
+{
+  "id": "invoice-uuid",
+  "lightningInvoice": "lntbs108323630n1p53uucupp5t0...",
+  "status": "unpaid",
+  "paymentRequestAmount": 10000,
+  "paymentRequestCurrency": "usd"
+}
+```
+
+## 3. 监听 Webhook 事件
+
+监听 webhook 事件以实时跟踪存款状态。
+
+-   `deposit.status.paid`：存款已成功支付。
+-   `deposit.status.unpaid`：存款失败。
+
+请参阅[存款事件](/zh/deposit-events)了解载荷详情。
+
+## 常见错误
+
+- **网络错误：** 在错误的网络上发送加密资产（例如，通过 Polygon 发送 USDC 到以太坊地址）将导致资金永久丢失。请务必验证网络。
+- **未完成 KYC：** 所有存款方式都要求子账户已通过 KYC 验证。尝试向未验证的账户存款将返回错误。
+- **忽略限额：** 确保存款金额在 `channels` 响应中指定的 `min` 和 `max` 限额范围内。
+- **渠道 ID 错误：** 进行法币存款时，请确保使用与正确货币和支付方式对应的 `channelId`。

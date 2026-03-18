@@ -1,0 +1,86 @@
+---
+title: "简介"
+description: "了解 Bullring webhooks。"
+---
+
+## Webhook 事件
+
+Webhook 允许您的系统在特定事件发生时自动接收 Bullring Finance 的实时更新。您可以注册 webhook URL 来监听事件通知并触发自己的工作流程。
+
+Bullring Finance 可以实时通知您的服务器关于子账户状态变更、付款确认和提款进度的变化。
+
+要开始接收 webhook，请通过控制面板注册您的端点。
+
+---
+## 工作原理
+
+当事件发生时，Bullring Finance 会向您注册的 URL 发送一个包含 JSON 载荷的 HTTP `POST` 请求，描述该事件。您的端点必须返回 `2xx` 状态码以确认收到。
+
+所有 webhook 请求均使用共享密钥签名。您应在处理之前验证请求签名。
+
+### 验证签名
+
+来自 Bullring 的所有 webhook 请求都包含一个请求头 X-BULLRING-SIGNATURE，其中包含时间戳和签名哈希字符串，格式如下：
+```json
+X-BULLRING-SIGNATURE: t={timestamp},v1={hash_string}
+```
+请求头示例：
+```json
+{
+  ...
+  X-BULLRING-SIGNATURE: "t=1492774577,v1=ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3,",
+  ...
+}
+```
+
+验证签名的步骤：
+
+- 获取 `X-BULLRING-SIGNATURE` 请求头的值。
+
+- 按 `,` 分割字符串。
+
+- 然后将每个部分按 `=` 分割。
+
+- 从每个部分提取索引 1 处的值。
+
+从上面的示例中，您将得到：
+
+```
+timestamp     // 1492774577
+hashString    // ansdoj213e98jqd928u3eudh239eu2j9d2jd8ejd238eu23ei2d9j23e8u23eue3
+
+```
+
+要验证签名，使用以下内容创建哈希：
+
+- 提取的时间戳
+
+- 请求载荷（body）
+
+- 密钥（在 Bullring 控制面板创建 webhook 后可获得）
+
+然后将生成的哈希与接收到的哈希进行相等 `==` 比较。
+
+由于 Bullring 使用 SHA256 哈希算法和 base64 编码，以下是使用 Node.js 验证签名的方法：
+
+```javascript 验证示例
+
+import { createHmac } from "crypto";
+
+const receivedHash = hashString;
+const payload = JSON.stringify({ ... }); // 请求体
+const key = "your_secret_key"; // 来自控制面板
+
+const hash = createHmac("sha256", key)
+  .update(`${timestamp},${payload}`)
+  .digest("base64");
+
+const isVerified = receivedHash === hash;
+
+```
+
+请注意创建哈希时时间戳和载荷之间的 `,`：`${timestamp},${payload}`。
+
+---
+
+请确保您的服务器准备好返回 `2xx` 状态码以确认收到。

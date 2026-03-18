@@ -1,0 +1,123 @@
+---
+title: "收款与支付"
+description: "全球接受付款和发送支付。"
+---
+
+## 概述
+
+Bullring 允许您使用法币和加密货币通道从用户收取资金（收款）并向用户发送资金（支付）。本指南演示如何实现这些流程。
+
+## 收款（存款）
+
+收款允许您将资金接收到子账户中。您可以通过本地银行通道（法币）或区块链网络（加密货币）收取资金。
+
+### 法币收款
+
+要收取法币，您需要请求存款指令。响应将提供用户进行转账所需的详细信息（例如，BRL 的 PIX 代码，或 USD 的银行账户详情）。
+
+<Note>
+  请参阅[请求法币存款](/api-reference/deposits/request-fiat-deposit) API 参考获取完整详情。
+</Note>
+
+#### 示例：通过 PIX 收取 BRL
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "channelId": "brl-channel-id-bullring-finance",
+  "amount": 100
+}'
+```
+
+响应将包含 PIX 代码或支付说明。
+
+### 加密货币收款
+
+要收取加密货币，您需要为特定区块链网络生成存款地址。发送到该地址的所有资金将记入您的子账户。
+
+<Note>
+  请参阅[链上存款](/api-reference/deposits/onchain-deposit) API 参考获取完整详情。
+</Note>
+
+#### 示例：生成 ETH 地址
+
+```bash
+curl --request GET \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET \
+  --header 'Authorization: Bearer <token>'
+```
+
+**响应：**
+
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+## 支付（提款）
+
+支付允许您从子账户向外部银行账户或加密钱包发送资金。
+
+### 法币支付
+
+要发送法币，您首先需要创建收款人（受益人），然后向该收款人发起提款。
+
+1.  **创建收款人**：使用 `/recipients` 端点（请参阅[受益人](/use-cases/beneficiaries)指南）。
+2.  **发起提款**：向收款人发送资金。
+
+<Note>
+  请参阅[法币提款](/api-reference/withdrawals/withdraw-fiat) API 参考获取完整详情。
+</Note>
+
+#### 示例：发送 BRL 支付
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+  "amount": "500",
+  "currency": "BRL"
+}'
+```
+
+### 加密货币支付
+
+要向外部钱包发送稳定币（USDC、USDT），请指定金额、代币、链和目标地址。
+
+<Note>
+  请参阅[稳定币提款](/api-reference/withdrawals/withdraw-stablecoin) API 参考获取完整详情。
+</Note>
+
+#### 示例：在以太坊上发送 USDT
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin \
+  --header 'Content-Type: application/json' \
+  --header 'Authorization: Bearer <token>' \
+  --data '{
+  "amount": "100",
+  "stablecoin": "usdt",
+  "chain": "ethereum",
+  "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+}'
+```
+
+## 总结
+
+| 流程 | 支持的方式 | 使用场景 |
+| :--- | :--- | :--- |
+| **收款** | 法币（PIX、银行转账）、加密货币（链上、闪电网络） | 电商结账、钱包充值、发票支付 |
+| **支付** | 法币（银行转账、PIX、移动支付）、加密货币（稳定币） | 供应商付款、工资发放、用户提款 |

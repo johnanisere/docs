@@ -5188,6 +5188,25 @@
                       "channelId",
                       "amount"
                     ]
+                  },
+                  {
+                    "type": "object",
+                    "title": "USD (Card)",
+                    "description": "Collect USD via card payment. Requires approved KYC. Returns a hosted payment link that redirects the customer to a card payment widget.",
+                    "properties": {
+                      "channelId": {
+                        "type": "string",
+                        "description": "The card deposit channel ID (e.g., usd-card-channel-id-bullring-finance)"
+                      },
+                      "amount": {
+                        "type": "number",
+                        "description": "The amount in USD to collect via card"
+                      }
+                    },
+                    "required": [
+                      "channelId",
+                      "amount"
+                    ]
                   }
                 ]
               },
@@ -5237,6 +5256,13 @@
                   "summary": "ARS Deposit Request",
                   "value": {
                     "channelId": "ars-channel-id-bullring-finance"
+                  }
+                },
+                "USD (Card)": {
+                  "summary": "USD Card Deposit Request",
+                  "value": {
+                    "channelId": "usd-card-channel-id-bullring-finance",
+                    "amount": 50
                   }
                 }
               }
@@ -5520,6 +5546,43 @@
                           "type": "string"
                         }
                       }
+                    },
+                    {
+                      "type": "object",
+                      "title": "USD Card Response",
+                      "description": "Response for card collection deposits. Contains a hosted payment link.",
+                      "properties": {
+                        "status": {
+                          "type": "string",
+                          "description": "The deposit status (e.g., processing)"
+                        },
+                        "amount": {
+                          "type": "number",
+                          "description": "The deposit amount"
+                        },
+                        "currency": {
+                          "type": "string",
+                          "description": "The deposit currency (USD)"
+                        },
+                        "country": {
+                          "type": "string",
+                          "description": "The country code (US)"
+                        },
+                        "channelId": {
+                          "type": "string",
+                          "description": "The card channel ID used"
+                        },
+                        "id": {
+                          "type": "string",
+                          "format": "uuid",
+                          "description": "Unique deposit identifier"
+                        },
+                        "paymentLink": {
+                          "type": "string",
+                          "format": "uri",
+                          "description": "Hosted payment link that redirects the customer to the card payment widget"
+                        }
+                      }
                     }
                   ]
                 },
@@ -5625,6 +5688,18 @@
                         "transferReference": "FDC95"
                       },
                       "channelId": "ars-channel-id-bullring-finance"
+                    }
+                  },
+                  "USD (Card)": {
+                    "summary": "USD Card Response",
+                    "value": {
+                      "status": "processing",
+                      "amount": 50,
+                      "currency": "USD",
+                      "country": "US",
+                      "channelId": "usd-card-channel-id-bullring-finance",
+                      "id": "9b33f86e-f832-477c-bb26-71a9e0e73f18",
+                      "paymentLink": "https://merchant.vesicash.com/checkout/PY_7c81d7bde52b44908518e9acf"
                     }
                   }
                 }
@@ -8298,12 +8373,20 @@
                       "polygon",
                       "solana",
                       "stellar",
-                      "tron"
+                      "tron",
+                      "celo"
                     ],
-                    "description": "ethereum, polygon, solana, stellar, or tron"
+                    "description": "ethereum, polygon, solana, stellar, tron, or celo"
                   },
                   "address": {
                     "type": "string"
+                  },
+                  "balance_account": {
+                    "type": "string",
+                    "description": "The balance account to withdraw from. Use USDCARD to withdraw from the card collection balance. If omitted, defaults to the standard USD balance.",
+                    "enum": [
+                      "USDCARD"
+                    ]
                   },
                   "client_reference": {
                     "type": "string",
@@ -8318,12 +8401,27 @@
                   "address"
                 ]
               },
-              "example": {
-                "amount": "12",
-                "stablecoin": "usdt",
-                "chain": "ethereum",
-                "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
-              }
+                "examples": {
+                  "Standard Withdrawal": {
+                    "summary": "Standard stablecoin withdrawal",
+                    "value": {
+                      "amount": "12",
+                      "stablecoin": "usdt",
+                      "chain": "ethereum",
+                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+                    }
+                  },
+                  "Card Collection Balance": {
+                    "summary": "Withdraw from card collection (USDCARD) balance",
+                    "value": {
+                      "amount": "50",
+                      "stablecoin": "usdc",
+                      "chain": "celo",
+                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                      "balance_account": "USDCARD"
+                    }
+                  }
+                }
             }
           }
         },
@@ -8393,6 +8491,10 @@
                     },
                     "gross_amount": {
                       "type": "number"
+                    },
+                    "net_amount": {
+                      "type": "number",
+                      "description": "The net amount after fees"
                     },
                     "rate": {
                       "type": "number"

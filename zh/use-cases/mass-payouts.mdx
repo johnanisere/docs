@@ -1,0 +1,129 @@
+---
+title: "团队批量支付"
+description: "向多种货币进行程序化支付。"
+---
+
+## 场景
+一家全球公司持有 USDC/USD 资金，需要同时向巴西 (BRL)、尼日利亚 (NGN) 和肯尼亚 (KES) 的承包商付款。
+
+## 工作流程
+
+### 1. 为主账户充值
+使用**加密资金库**模式。公司（主账户）将资金存入其子账户以积累余额。
+
+<CodeGroup>
+```bash Request
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits/crypto/ETH-MAINNET" \
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+```
+</CodeGroup>
+
+[查看 API 参考](/api-reference/deposits/onchain-deposit)
+
+**响应：**
+```json
+{
+  "id": "f156b4cb-9b34-4c45-bed1-92576c703412",
+  "address": "0x34e36e819b37577c66e7032e060866bd6a04e677",
+  "chain": "ETH-MAINNET",
+  "currency": "USDC",
+  "addressTag": null,
+  "createdAt": "2025-11-21T11:17:42.575Z"
+}
+```
+
+### 2. 遍历并支付
+循环遍历您的工资单并触发提款。
+
+对于每位员工：
+1. **创建收款人**（如果尚不存在）。
+2. 从主账户向收款人**提款**。
+
+```javascript
+// 伪代码
+const employees = [
+  { id: "user_brazil", currency: "BRL", amount: 5000, pix: "user@example.com" },
+  { id: "user_nigeria", currency: "NGN", amount: 300000, account: "1234567890" },
+];
+
+const MAIN_ACCOUNT_ID = "YOUR_TREASURY_SUBACCOUNT_ID";
+
+for (const emp of employees) {
+  // 1. 创建收款人
+  // 调用 POST /v1/ramp/{MAIN_ACCOUNT_ID}/banking/recipients
+  
+  // 2. 提款
+  // 调用 POST /v1/ramp/{MAIN_ACCOUNT_ID}/banking/withdrawals
+}
+```
+
+#### 步骤 2a：创建收款人
+
+<CodeGroup>
+```bash Request
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "BRL",
+    "pix_key": "user@example.com"
+  }'
+```
+</CodeGroup>
+
+[查看 API 参考](/api-reference/recipients/add-fiat-recipient)
+
+**响应：**
+```json
+{
+  "id": "recipient_123",
+  "currency": "BRL",
+  "pix_key": "user@example.com",
+  "created_at": "2025-11-21T11:20:00.000Z"
+}
+```
+
+#### 步骤 2b：提款
+
+<CodeGroup>
+```bash Request
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "account_id": "recipient_123",
+    "amount": "5000",
+    "currency": "BRL"
+  }'
+```
+</CodeGroup>
+
+[查看 API 参考](/api-reference/withdrawals/withdraw-fiat)
+
+**响应：**
+```json
+{
+  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
+  "amount": "5000",
+  "currency": "BRL",
+  "status": "pending",
+  "created_at": "2025-11-21T15:59:09.341Z",
+  "protocol": "pix",
+  "local_currency": "BRL",
+  "local_amount": 5000,
+  "fee_amount": "0.50",
+  "fee_currency": "USD"
+}
+```
+
+### 3. 跟踪状态
+轮询提款状态或监听 webhook。
+
+<CodeGroup>
+```bash Request
+curl -X GET "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/856b896f-3f16-4f70-952d-ce1f65b28aaa" \
+  -H "Authorization: Bearer <YOUR_API_KEY>"
+```
+</CodeGroup>
+
+[查看 API 参考](/api-reference/withdrawals/get-one-withdrawal)

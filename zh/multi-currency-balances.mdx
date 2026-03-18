@@ -1,0 +1,85 @@
+---
+title: "多币种余额"
+description: "了解子账户如何管理多种货币余额。"
+---
+
+## 概述
+
+Bullring 的多币种架构允许每个子账户同时持有所有支持的法定货币余额。这种设计使得跨不同区域的无缝操作成为可能，无需多个账户。
+
+- **统一子账户**：单个子账户管理 USD、BRL、NGN、MXN 和其他支持货币的账户。
+- **稳定币等值**：USD 余额与稳定币（USDC、USDT）保持 1:1 等值关系，架起法定货币和加密货币之间的桥梁。
+- **内部转换**：在货币之间内部转换资金，无需发起外部区块链或银行交易。
+
+完整的可用货币列表请参见[支持的货币](/zh/supported-currencies)。
+
+## 多币种余额工作原理
+
+### 独立货币余额
+
+子账户中的每种货币余额都是隔离的，独立跟踪。货币之间不会自动转换；余额根据您的特定存款、提款和转换操作独立更新。
+
+```mermaid
+graph TD
+    subgraph 子账户
+        USD[USD 余额]
+        BRL[BRL 余额]
+        NGN[NGN 余额]
+        MXN[MXN 余额]
+    end
+    
+    style 子账户 fill:#f9f9f9,stroke:#333,stroke-width:2px
+```
+
+### USD 与稳定币等值
+
+Bullring 子账户中的 USD 余额与稳定币保持 1:1 的关系。此功能允许在加密货币轨道和传统法定货币系统之间无缝转移资金。
+
+```mermaid
+flowchart LR
+    USDC[USDC / USDT] -- 存款 --> USD[USD 余额]
+    USD -- 提款 --> Stablecoins[USDC / USDT]
+    
+    style USD fill:#d4edda,stroke:#155724,stroke-width:2px
+```
+
+- **存款**：当您存入 USDC 或 USDT 时，您的 USD 余额按 1:1 增加。
+- **提款**：当您以稳定币提取资金时，您的 USD 余额按 1:1 减少。
+
+这种等值关系使加密原生用户能够与法定货币系统（如当地银行付款）交互，而无需在美国持有传统银行账户。
+
+### KYC 要求
+
+<Warning>
+  **重要**：用户必须完成与其拟使用的每种货币相对应的 KYC/KYB 级别。
+</Warning>
+
+不同的货币和地区有不同的监管要求。经过 USD 操作验证的子账户可能需要额外验证才能使用 BRL 或 NGN 进行交易。
+
+- **验证范围**：验证通常按地区或货币系列进行。
+- **合规性**：在没有适当 KYC 状态的情况下尝试使用某种货币进行交易将导致 API 错误。
+
+有关如何验证子账户的详细信息，请参阅[用户注册](/zh/use-cases/onboarding)指南。
+
+## 如何使用多币种余额
+
+### 功能
+
+- **查看余额**：通过单个请求检索子账户所有货币的当前余额。
+- **转换货币**：按当前市场汇率在支持的货币之间（如 USD 到 BRL）进行内部兑换。这些转换是**原子的**且**即时的**，完全在 Bullring 账本内完成。
+
+### 相关资源
+
+使用以下 API 端点将这些功能集成到您的应用中：
+
+- **查看余额**：[获取子账户余额](/api-reference/balances/get-balance)
+- **转换货币**：[货币转换](/api-reference/conversions/convert-currency)
+- **获取转换报价**：[获取转换报价](/api-reference/conversions/get-conversion-quote)
+- **查看汇率**：[交易前估算](/zh/use-cases/rates-estimates)
+
+## 相关主题
+
+- [支持的货币](/zh/supported-currencies) - 完整的可用货币和网络列表。
+- [账户与子账户](/zh/accounts) - 了解账户结构。
+- [存款与入金](/zh/use-cases/fiat-on-ramp) - 为您的账户充值。
+- [受益人与付款](/zh/use-cases/beneficiaries) - 提取资金至外部账户。

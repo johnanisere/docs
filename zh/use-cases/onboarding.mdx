@@ -1,0 +1,127 @@
+---
+title: "端到端用户入驻"
+description: "了解如何创建和验证子账户。"
+---
+
+## 概述
+
+本指南涵盖新用户（子账户）入驻的完整流程，包括创建和 KYC/KYB 验证。
+
+要入驻新用户，您必须创建一个子账户。这是用户存入资金或执行任何银行操作之前的第一步。
+
+### 请求
+
+要创建子账户，请向 `/v1/ramp/subaccount` 发送 `POST` 请求，包含用户的电子邮件地址。
+
+```bash
+curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -d '{
+    "email": "customer@example.com"
+  }'
+```
+
+### 响应
+
+API 将返回新创建的子账户详细信息，包括其唯一 `id`。
+
+```json
+{
+  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+  "email": "customer@example.com",
+  "status": "created"
+}
+```
+
+### Webhooks
+
+当子账户创建时，您将收到 `subaccount.status.created` 事件。
+
+```json
+{
+  "data": {
+    "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+    "email": "customer@example.com",
+    "status": "created"
+  },
+  "event": "subaccount.status.created"
+}
+```
+
+## 查询子账户
+
+您可以随时查看子账户的余额和状态。
+
+### 请求
+
+```bash
+curl https://api.bullring.finance/v1/ramp/subaccount/SUBACCOUNT_ID \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+### 响应
+
+响应包含当前余额和验证状态。
+
+```json
+{
+  "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
+  "email": "customer@example.com",
+  "balance": "100.00000000",
+  "balanceCurrency": "USD",
+  "status": "approved",
+  "createdAt": "2025-11-19T23:59:29.241Z"
+}
+```
+
+## 列出子账户
+
+要查看所有用户，您可以获取子账户的分页列表。
+
+### 请求
+
+```bash
+curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
+  -H "x-api-key: YOUR_API_KEY"
+```
+
+## 后续步骤和功能
+
+子账户创建后，您可以为该用户使用 Bullring 的全套金融功能。大多数操作要求子账户完成[身份验证](/api-reference/verification)。
+
+### 1. 身份验证 (KYC/KYB)
+
+在子账户可以交易之前，必须验证其身份。KYC 按国家分为 2 个级别：
+
+- **一级**：授予除 **USD** 和 **EUR** 以外所有货币的访问权限。此级别是解锁 **NGN** 交易所必需的。
+- **二级**：授予除 **NGN** 以外所有货币的访问权限。此级别是解锁 **USD** 和 **EUR** 交易所必需的。
+- [查看验证 API](/api-reference/verification)
+
+### 2. 存款（入金）
+
+子账户可以使用多种方式为其余额充值：
+
+- **法币**：本地银行转账、移动支付（如 NGN、GHS、ZMW）。
+- **加密货币**：链上转账（ETH、SOL）或闪电网络（BTC）。
+- [查看存款 API](/api-reference/deposits/request-fiat-deposit)
+
+### 3. 提款（出金）
+
+子账户可以将资金提取到：
+
+- **法币收款人**：电汇（USD、EUR）、PIX（BRL）、移动支付。
+- **加密钱包**：稳定币（USDC、USDT）或比特币。
+- [查看提款 API](/api-reference/withdrawals/withdraw-fiat)
+
+### 4. 收款人管理
+
+保存受益人详细信息（银行账户、加密地址），使重复提款更容易和更安全。
+
+- [查看收款人 API](/api-reference/recipients/get-all-recipients)
+
+### 5. 汇率和费用
+
+在发起交易之前查看实时转换汇率和计算费用，确保对用户的透明度。
+
+- [查看汇率和费用 API](/api-reference/rates/conversion-rate)

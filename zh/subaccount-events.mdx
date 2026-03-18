@@ -1,0 +1,54 @@
+---
+title: "子账户事件"
+description: "与子账户状态变更相关的实时通知。"
+---
+
+Webhook 允许您的应用程序在 Bullring 账户中发生事件时接收实时通知。我们会向您配置的 URL 发送 HTTP POST 请求，而无需轮询 API。
+
+### 子账户已批准
+```json
+{
+    "data": {
+        "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
+        "email": "user@example.com",
+        "status": "approved"
+    },
+    "event": "subaccount.status.approved"
+}
+```
+
+### 子账户已创建
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "created"
+    },
+    "event": "subaccount.status.created"
+}
+```
+
+### 子账户已拒绝
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "declined"
+    },
+    "event": "subaccount.status.declined"
+}
+```
+
+### 子账户审核中
+```json
+{
+    "data": {
+        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+        "email": "user@example.com",
+        "status": "review"
+    },
+    "event": "subaccount.status.review"
+}
+```

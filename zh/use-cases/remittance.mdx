@@ -1,0 +1,127 @@
+---
+title: "跨境汇款"
+description: "接收当地货币 (NGN)，持有 USD，全球支付 (EUR)。"
+---
+
+## 概述
+
+本指南演示尼日利亚出口商如何接收尼日利亚奈拉 (NGN) 付款，自动转换为 USD 以对冲贬值风险，随后使用欧元 (EUR) 向欧洲供应商付款。
+
+### 思维模型
+
+使用 Bullring API 实现此流程时，可以将其视为三步管道：
+
+1.  **资金流入（入金）：** 您请求存款指令。客户向本地银行账户支付 NGN。Bullring 检测到后将以 USD 记入子账户。
+2.  **资金存储：** 资金以 USD（稳定币）形式存放在子账户中。
+3.  **资金流出（出金）：** 您定义受益人（收款人）并向其发起以当地货币 (EUR) 计价的提款。
+
+## 1. 接收资金 (NGN)
+
+首先，为您的客户生成虚拟账户或付款指令以发送 NGN。
+
+使用[创建存款](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits)端点。
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "channelId": "ngn-channel-id-bullring-finance",
+    "source": {
+      "accountType": "bank"
+    }
+  }'
+```
+</CodeGroup>
+
+### 预期响应
+
+API 返回银行详情，您应将其展示给客户。
+
+```json
+{
+  "status": "pending",
+  "currency": "USD",
+  "country": "NG",
+  "rate": 1500.50,
+  "localCurrency": "NGN",
+  "bankInfo": {
+    "bankBeneficiaryName": "Bullring/Merchant Name",
+    "bankName": "Providus Bank",
+    "bankAccountNumber": "1234567890"
+  },
+  "channelId": "ngn-channel-id-bullring-finance"
+}
+```
+
+客户转账后，子账户余额将以 USD 计入。
+
+## 2. 创建收款人 (EUR)
+
+在向供应商付款之前，您必须将其银行详情保存为收款人。
+
+使用[创建收款人](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-recipients)端点。
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "EUR",
+    "account_owner_name": "European Supplier Ltd",
+    "bank_name": "Deutsche Bank",
+    "account_number": "DE89370400440532013000",
+    "bic": "DEUTDEBBXXX",
+    "country": "DE",
+    "account_owner_type": "company"
+  }'
+```
+</CodeGroup>
+
+### 预期响应
+
+```json
+{
+  "id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+  "currency": "EUR",
+  "account_owner_name": "European Supplier Ltd",
+  "account_number": "DE89370400440532013000",
+  "bank_name": "Deutsche Bank",
+  "status": "active"
+}
+```
+
+## 3. 向供应商付款 (EUR)
+
+最后，向刚创建的收款人发起转账。子账户中的 USD 余额将转换为 EUR。
+
+使用[创建提款](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-withdrawals)端点。
+
+<CodeGroup>
+```bash cURL
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
+  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+    "amount": "5000",
+    "currency": "EUR",
+    "sepa_message": "Invoice #INV-2024-001"
+  }'
+```
+</CodeGroup>
+
+### 预期响应
+
+```json
+{
+  "id": "withdrawal-uuid-1234",
+  "amount": "5000",
+  "currency": "EUR",
+  "status": "processing",
+  "created_at": "2024-01-01T12:00:00Z",
+  "fee_amount": "5.00"
+}
+```

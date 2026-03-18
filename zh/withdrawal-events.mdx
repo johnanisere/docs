@@ -1,0 +1,94 @@
+---
+title: "提款事件"
+description: "出款支付状态更新的实时通知"
+---
+
+Webhook 允许您的应用程序在 Bullring 账户中发生事件时接收实时通知。我们会向您配置的 URL 发送 HTTP POST 请求，而无需轮询 API。
+
+### 提款失败
+```json
+{
+
+  "event": "withdrawal.status.failed",
+  "data": {
+    "id": "50f56c85-5d26-460b-93fe-6026e5d92428",
+    "reference": "f73847df5fea4873990133bb1d0022e2",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "payment_method": {
+      "type": "bank_transfer",
+      "scheme": "pix",
+      "network": "pix"
+    },
+    "net_amount": {
+      "value": "99.60000000",
+      "currency": "BRL"
+    },
+    "gross_amount": {
+      "value": "100.00000000",
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": "0.40000000",
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-04T19:06:26.800Z",
+    "updated_at": "2026-02-04T19:11:14.288Z",
+    "beneficiary": {
+      "bank_account_number": "241394112",
+      "bank_account_name": "Hugo Gonzalez",
+      "bank_name": "BITSO IP LTDA",
+      "bank_code": "35136120"
+    },
+    "settlement": {
+      "end_to_end_id": "E3513612020260204190600000066754",
+      "estimated_at": "2026-02-04T19:11:18.243Z"
+    }
+  }
+
+}
+```
+
+### 提款完成
+```json
+{
+
+  "event": "withdrawal.status.completed",
+  "data": {
+    "id": "50f56c85-5d26-460b-93fe-6026e5d92428",
+    "reference": "f73847df5fea4873990133bb1d0022e2",
+    "account_id": "28007014-1855-4559-8da0-fdca137e97aa",
+    "payment_method": {
+      "type": "bank_transfer",
+      "scheme": "pix",
+      "network": "pix"
+    },
+    "net_amount": {
+      "value": "99.60000000",
+      "currency": "BRL"
+    },
+    "gross_amount": {
+      "value": "100.00000000",
+      "currency": "BRL"
+    },
+    "fee": {
+      "value": "0.40000000",
+      "currency": "BRL"
+    },
+    "status": "completed",
+    "created_at": "2026-02-04T19:06:26.800Z",
+    "updated_at": "2026-02-04T19:11:14.288Z",
+    "beneficiary": {
+      "bank_account_number": "241394112",
+      "bank_account_name": "Hugo Gonzalez",
+      "bank_name": "BITSO IP LTDA",
+      "bank_code": "35136120"
+    },
+    "settlement": {
+      "end_to_end_id": "E3513612020260204190600000066754",
+      "estimated_at": "2026-02-04T19:11:18.243Z"
+    }
+  }
+
+}
+```

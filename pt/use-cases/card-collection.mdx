@@ -1,0 +1,178 @@
+---
+title: "Cobranca por Cartao"
+description: "Aceite pagamentos via cartao e saque em stablecoins."
+---
+
+## Visao Geral
+
+A Cobranca por Cartao permite que voce aceite pagamentos em USD de clientes usando cartoes de debito ou credito. Quando um deposito por cartao e iniciado, a API retorna um **link de pagamento** hospedado que redireciona o cliente para um widget seguro de pagamento por cartao. Apos a conclusao do pagamento, os fundos sao creditados no saldo `USDCARD` da subconta.
+
+Voce pode entao sacar esses fundos como stablecoins (USDC ou USDT) para qualquer rede blockchain suportada.
+
+### Resumo do Fluxo
+
+```mermaid
+graph LR
+    A[Iniciar Deposito por Cartao] --> B[Cliente Paga via Widget]
+    B --> C[Saldo USDCARD Creditado]
+    C --> D[Sacar como USDC/USDT]
+    D --> E[Stablecoin Enviada para Carteira]
+```
+
+## 1. Iniciar Deposito por Cartao
+
+Para cobrar um pagamento por cartao, envie uma requisicao `POST` para o endpoint de depositos com o ID do canal de cartao USD e o valor a ser cobrado.
+
+<Card title="Referencia da API" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-deposits">
+  Veja a documentacao completa do endpoint
+</Card>
+
+### Requisicao
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -d '{
+    "channelId": "usd-card-channel-id-bullring-finance",
+    "amount": 50
+  }'
+```
+
+### Resposta
+
+```json
+{
+  "status": "processing",
+  "amount": 50,
+  "currency": "USD",
+  "country": "US",
+  "channelId": "usd-card-channel-id-bullring-finance",
+  "id": "9b33f86e-f832-477c-bb26-71a9e0e73f18",
+  "paymentLink": "https://merchant.vesicash.com/checkout/PY_7c81d7bde52b44908518e9acf"
+}
+```
+
+**Campos Importantes da Resposta:**
+- `paymentLink` -- Redirecione seu cliente para esta URL. Ela abre um widget hospedado de pagamento por cartao onde o cliente insere os dados do cartao e conclui o pagamento.
+- `id` -- Identificador unico para este deposito. Use-o para rastrear o status via webhooks.
+- `status` -- O status inicial e `processing` enquanto aguarda o pagamento por cartao.
+
+### Tratamento do Link de Pagamento
+
+Apos receber a resposta, redirecione ou apresente o `paymentLink` ao seu cliente:
+
+1. **Integracao web:** Redirecione o navegador para o `paymentLink`, ou abra-o em uma nova aba / iframe.
+2. **Integracao mobile:** Abra o `paymentLink` em um navegador in-app ou WebView.
+3. Apos o cliente concluir o pagamento no widget, ele e redirecionado de volta e o deposito e confirmado.
+
+## 2. Escutar Eventos de Webhook
+
+Acompanhe o status do deposito por cartao em tempo real usando webhooks:
+
+- `deposit.status.paid` -- O pagamento por cartao foi concluido com sucesso e o saldo `USDCARD` foi creditado.
+- `deposit.status.unpaid` -- O pagamento por cartao falhou ou foi recusado.
+
+Veja [Eventos de Deposito](/pt/deposit-events) para detalhes completos do payload dos webhooks.
+
+## 3. Sacar do Saldo de Cobranca por Cartao
+
+Apos os fundos serem creditados no saldo `USDCARD`, voce pode saca-los como stablecoins (USDC ou USDT) para um endereco de carteira externo. Use o campo `balance_account` definido como `USDCARD` para especificar o saldo de origem.
+
+<Card title="Referencia da API" icon="code" href="/api-reference/endpoint/post-v1-ramp-subaccountid-banking-withdrawals-stablecoin">
+  Veja a documentacao completa do endpoint
+</Card>
+
+### Requisicao
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -d '{
+    "amount": "2",
+    "stablecoin": "usdc",
+    "chain": "celo",
+    "balance_account": "USDCARD",
+    "address": "0x1f774D2e96806D5d95be371Da80F462Dd05f3f6A"
+  }'
+```
+
+**Campos da Requisicao:**
+- `amount` -- O valor em USD a ser sacado.
+- `stablecoin` -- A stablecoin a receber: `usdc` ou `usdt`.
+- `chain` -- A rede blockchain: `ethereum`, `polygon`, `solana`, `celo` ou `tron`.
+- `balance_account` -- Defina como `USDCARD` para sacar do saldo de cobranca por cartao.
+- `address` -- O endereco da carteira de destino na rede especificada.
+
+### Resposta
+
+```json
+{
+  "id": "0cc9a924-3185-4e44-b282-a4849cefb73e",
+  "amount": "2",
+  "currency": "USD",
+  "status": "pending",
+  "created_at": "2026-03-18T21:12:16.521Z",
+  "protocol": "usdc_trf",
+  "fee_amount": "0",
+  "fee_currency": "USD",
+  "chain": "celo",
+  "destination_address": "0x***6A",
+  "local_amount": "2",
+  "local_currency": "USD",
+  "net_amount": "2.00000000",
+  "rate": "1"
+}
+```
+
+**Campos Importantes da Resposta:**
+- `id` -- Identificador unico do saque.
+- `status` -- O status do saque (`pending`, depois `completed` ou `failed`).
+- `destination_address` -- Versao mascarada do endereco da carteira de destino.
+- `net_amount` -- O valor que sera enviado apos as taxas.
+- `fee_amount` / `fee_currency` -- Taxas da transacao aplicadas.
+
+## 4. Rastrear Status do Saque
+
+Monitore o saque via webhooks:
+
+- `withdrawal.status.completed` -- A transferencia de stablecoin foi confirmada on-chain.
+- `withdrawal.status.failed` -- O saque nao pode ser processado.
+
+Veja [Eventos de Saque](/pt/withdrawal-events) para detalhes completos do payload dos webhooks.
+
+## Exemplo Completo de Integracao
+
+Aqui esta o fluxo completo de cobranca por cartao, do deposito ao saque em stablecoin:
+
+<CodeGroup>
+```bash 1. Iniciar Deposito por Cartao
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -d '{
+    "channelId": "usd-card-channel-id-bullring-finance",
+    "amount": 50
+  }'
+```
+```bash 2. Sacar como USDC (apos deposito confirmado)
+curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals/stablecoin" \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -d '{
+    "amount": "50",
+    "stablecoin": "usdc",
+    "chain": "celo",
+    "balance_account": "USDCARD",
+    "address": "0x1f774D2e96806D5d95be371Da80F462Dd05f3f6A"
+  }'
+```
+</CodeGroup>
+
+## Erros Comuns
+
+- **Nao redirecionar para o link de pagamento:** O `paymentLink` deve ser apresentado ao cliente. O deposito nao sera concluido ate que o cliente pague atraves do widget de cartao.
+- **Conta de saldo errada:** Ao sacar fundos de cobranca por cartao, voce deve definir `balance_account` como `USDCARD`. Omitir este campo tentara sacar do saldo USD padrao.
+- **Saldo USDCARD insuficiente:** Certifique-se de que o deposito por cartao foi confirmado (via webhook) antes de iniciar um saque do saldo `USDCARD`.
+- **Rede e endereco incompativeis:** Sempre verifique se o endereco da carteira de destino corresponde a rede blockchain especificada. Enviar para a rede errada resultara em perda permanente de fundos.

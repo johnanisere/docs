@@ -1,0 +1,96 @@
+---
+title: "交易前估算"
+description: "在交易前计算汇率和费用。"
+---
+
+## 概述
+
+在跨境支付中，透明度至关重要。在发起存款或提款之前，您应始终获取当前汇率并估算交易费用。这确保您的用户清楚了解费用和结算金额。
+
+Bullring API 提供以下端点：
+1.  **获取实时汇率**，用于货币对。
+2.  **计算精确费用**，基于交易金额计算存款和提款费用。
+
+## 1. 获取汇率
+
+**端点：** `GET /v1/banking/rate`
+
+汇率是动态的，可能会波动。使用此端点获取源货币 (`from`) 和目标货币 (`to`) 之间的当前转换率。
+
+<Note>
+  此端点返回的汇率反映的是当时的市场汇率。为获得最准确的结算金额，您应在接近交易执行时刷新此汇率。
+</Note>
+
+### 示例请求
+
+获取 **USDC** 到 **NGN** 的汇率。
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/rate?from=usdc&to=ngn' \
+  --header 'x-api-key: <your_api_key>'
+```
+
+### 预期响应
+
+```json
+{
+  "from": "usdc",
+  "to": "ngn",
+  "rate": 1500.00
+}
+```
+
+[查看 API 参考](/api-reference/rates/conversion-rate)
+
+## 2. 计算费用
+
+**端点：**
+- `GET /v1/banking/withdrawal/fee`
+- `GET /v1/banking/deposit/fee`
+
+Bullring 的费用通常由交易金额的百分比和固定费用组合而成。费用结构取决于货币和交易类型（存款或提款）。
+
+### 理解响应
+费用计算端点返回详细明细：
+- **`amount`**：计算的总费用。
+- **`percentage`**：适用的百分比率。
+- **`flatFee`**：适用的固定费用金额。
+- **`grossAmount`**：所需总金额（本金 + 费用）。
+- **`netAmount`**：实际结算或收到的金额。
+
+### 示例：计算提款费用
+
+估算提取 **100,000 NGN** 的费用。
+
+```bash
+curl --request GET \
+  --url 'https://api.bullring.finance/v1/banking/withdrawal/fee?currency=ngn&amount=100000' \
+  --header 'x-api-key: <your_api_key>'
+```
+
+### 预期响应
+
+```json
+{
+  "amount": 550,                // 总费用 (500 + 50)
+  "currency": "NGN",
+  "percentage": 0.005,          // 0.5%
+  "flatFee": 50,                // 50 NGN 固定费用
+  "originalAmount": 100000,     // 请求金额
+  "netAmount": 100000,          // 用户希望收到的金额
+  "grossAmount": 100550         // 从余额中扣除的总额
+}
+```
+
+[查看 API 参考](/api-reference/fees/get-withdrawal-fee)
+
+## 常见错误
+
+<Warning>
+**汇率过期：** 不要长时间缓存汇率。汇率取决于市场，可能会变化。在向用户确认交易之前，请始终获取最新汇率。
+</Warning>
+
+1.  **混淆净额与总额：** 确保您理解 `netAmount`（收款人收到的金额）和 `grossAmount`（您支付的金额）之间的区别。如果您希望用户收到精确金额，请使用计算器确定所需的总金额。
+2.  **不支持的货币对：** 验证您请求的货币对是否受支持。请参阅[支持的货币](/zh/supported-currencies)。
+3.  **忽略最低限额：** 费用计算可能有效，但实际交易端点会执行最低和最高限额。通过 `GET /v1/ramp/banking/channels` 查看特定渠道限额。
