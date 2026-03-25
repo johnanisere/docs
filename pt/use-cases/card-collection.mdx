@@ -35,7 +35,8 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposi
   -H "x-api-key: SUA_CHAVE_DE_API" \
   -d '{
     "channelId": "usd-card-channel-id-bullring-finance",
-    "amount": 50
+    "amount": 50,
+    "redirectUrl": "https://yourapp.com/payment/complete"
   }'
 ```
 
@@ -153,7 +154,8 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposi
   -H "x-api-key: SUA_CHAVE_DE_API" \
   -d '{
     "channelId": "usd-card-channel-id-bullring-finance",
-    "amount": 50
+    "amount": 50,
+    "redirectUrl": "https://yourapp.com/payment/complete"
   }'
 ```
 ```bash 2. Sacar como USDC (apos deposito confirmado)
