@@ -810,313 +810,13 @@
         }
       }
     },
-    "/v1/ramp/subaccount/{subaccountId}/verification/tier-one": {
+    "/v1/ramp/subaccount/{subaccountId}/verification": {
       "post": {
         "tags": [
           "Verification"
         ],
-        "summary": "Tier One",
-        "description": "Submit information for Tier One verification for customer's country. The request body format varies based on the subaccount's currency.",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "oneOf": [
-                  {
-                    "type": "object",
-                    "title": "Other Countries",
-                    "description": "Other Countries Tier One Verification e.g Nigeria, Ghana, Zambia, etc.",
-                    "properties": {
-                      "first_name": {
-                        "type": "string",
-                        "example": "eli"
-                      },
-                      "last_name": {
-                        "type": "string",
-                        "example": "dan"
-                      },
-                      "date_of_birth": {
-                        "type": "string",
-                        "example": "24-05-1983"
-                      },
-                      "identification_number": {
-                        "type": "string",
-                        "description": "BVN, NIN can be passed to identification_number",
-                        "example": "22245678123"
-                      },
-                      "address": {
-                        "type": "object",
-                        "properties": {
-                          "street": {
-                            "type": "string",
-                            "example": "13, muilli street"
-                          },
-                          "city": {
-                            "type": "string",
-                            "example": "ikeja"
-                          },
-                          "state": {
-                            "type": "string",
-                            "example": "lagos"
-                          },
-                          "postal_code": {
-                            "type": "string",
-                            "example": "100001"
-                          },
-                          "country": {
-                            "type": "string",
-                            "example": "GH"
-                          }
-                        },
-                        "required": [
-                          "street",
-                          "city",
-                          "state",
-                          "postal_code",
-                          "country"
-                        ]
-                      },
-                      "phone": {
-                        "type": "object",
-                        "properties": {
-                          "phone_country_code": {
-                            "type": "string",
-                            "example": "+234"
-                          },
-                          "phone_number": {
-                            "type": "string",
-                            "example": "1234194590"
-                          }
-                        },
-                        "required": [
-                          "phone_country_code",
-                          "phone_number"
-                        ]
-                      }
-                    },
-                    "required": [
-                      "first_name",
-                      "last_name",
-                      "date_of_birth",
-                      "identification_number",
-                      "address",
-                      "phone"
-                    ]
-                  },
-                  {
-                    "type": "object",
-                    "title": "Brazil",
-                    "description": "Brazil (BRL) Tier One Verification",
-                    "properties": {
-                      "cpfNumber": {
-                        "type": "string",
-                        "description": "Brazilian CPF number for individual verification",
-                        "example": "12345678909"
-                      },
-                      "cnpjNumber": {
-                        "type": "string",
-                        "description": "Brazilian CNPJ number for business verification",
-                        "example": "12.345.678/0001-96"
-                      }
-                    },
-                    "oneOf": [
-                      {
-                        "required": [
-                          "cnpjNumber"
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              "examples": {
-                "Other Countries": {
-                  "summary": "Other Countries Tier One Verification Request",
-                  "value": {
-                    "first_name": "eli",
-                    "last_name": "dan",
-                    "date_of_birth": "24-05-1983",
-                    "identification_number": "22245678123",
-                    "address": {
-                      "street": "13, muilli street",
-                      "city": "ikeja",
-                      "state": "lagos",
-                      "postal_code": "100001",
-                      "country": "GH"
-                    },
-                    "phone": {
-                      "phone_country_code": "+234",
-                      "phone_number": "1234194590"
-                    }
-                  }
-                },
-                "Brazil": {
-                  "summary": "Brazil (BRL) Tier One Verification Request",
-                  "value": {
-                    "cpfNumber": "12345678909"
-                  }
-                },
-                "Brazil (CNPJ)": {
-                  "summary": "Brazil (BRL) Tier One Verification Request (CNPJ)",
-                  "value": {
-                    "cnpjNumber": "12.345.678/0001-96"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "subaccountId",
-            "in": "path",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a"
-            },
-            "required": true,
-            "description": "The unique identifier of the subaccount"
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Verification completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "verificationId": {
-                      "type": "string",
-                      "description": "Unique identifier for the verification"
-                    },
-                    "storeId": {
-                      "type": "string",
-                      "description": "Subaccount ID"
-                    },
-                    "status": {
-                      "type": "string",
-                      "description": "Verification status"
-                    },
-                    "verified": {
-                      "type": "boolean",
-                      "description": "Whether the verification was successful"
-                    },
-                    "processingTimeMs": {
-                      "type": "integer",
-                      "description": "Time taken to process the verification in milliseconds"
-                    },
-                    "createdAt": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "Verification creation timestamp"
-                    }
-                  }
-                },
-                "examples": {
-                  "Nigeria": {
-                    "summary": "Nigeria (NGN) Tier One Verification Response",
-                    "value": {
-                      "storeId": "c625ca4e-b125-47fd-b090-7c63f51c1630",
-                      "status": "approved",
-                      "verified": true,
-                      "verificationId": "tier1_verification_ngn_1763593659002_m0w0no",
-                      "processingTimeMs": 6,
-                      "createdAt": "2025-11-19T23:07:39.008Z"
-                    }
-                  },
-                  "Brazil": {
-                    "summary": "Brazil (BRL) Tier One Verification Response",
-                    "value": {
-                      "verificationId": "tier1_verification_1763596769729_ugxoky",
-                      "storeId": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
-                      "status": "APPROVED",
-                      "verified": true,
-                      "processingTimeMs": 35,
-                      "createdAt": "2025-11-19T23:59:29.764Z"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized - Invalid or missing API key",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Unauthorized",
-                  "message": "Invalid or missing API key"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden - Insufficient permissions",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Forbidden",
-                  "message": "You do not have permission to access this resource"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found - Subaccount not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "error": {
-                      "type": "string"
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  }
-                },
-                "example": {
-                  "error": "Not Found",
-                  "message": "Subaccount not found"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/ramp/subaccount/{subaccountId}/kyb": {
-      "post": {
-        "tags": [
-          "Verification"
-        ],
-        "summary": "Tier Two (Form)",
-        "description": "Submit information for Tier Two Know Your Business (KYB) or Know Your Customer (KYC) verification. This endpoint initiates the verification process and returns a URL to the verification form.",
+        "summary": "Get Verification Form",
+        "description": "Get the Know Your Customer/Business verification form URL.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1175,7 +875,7 @@
                   ]
                 },
                 "example": {
-                  "formUrl": "https://staging-verification.netlify.app/customer/94bb0a58-18cf-48f6-8c5a-44c621ae0c41"
+                  "formUrl": "https://in.sumsub.com/websdk/p/abc123xyz"
                 }
               }
             }
@@ -1849,8 +1549,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Add/Update Individual Information",
-        "description": "Add or update the KYC information for a tier two customer.",
+        "summary": "Add/Update Individual Information",
+        "description": "Add or update the KYC information for a  customer.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2268,8 +1968,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Get Individual Information",
-        "description": "Retrieve the tier two customer KYC information.",
+        "summary": "Get Individual Information",
+        "description": "Retrieve the  customer KYC information.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2504,8 +2204,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Submit Individual Information",
-        "description": "Submit the tier two customer information for verification.",
+        "summary": "Submit Individual Information",
+        "description": "Submit the  customer information for verification.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2787,8 +2487,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Add/Update Business Information",
-        "description": "Add or update the KYC information for a tier two business.",
+        "summary": "Add/Update Business Information",
+        "description": "Add or update the KYC information for a  business.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -3532,8 +3232,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Get Business Information",
-        "description": "Retrieve the tier two business KYC information.",
+        "summary": "Get Business Information",
+        "description": "Retrieve the  business KYC information.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -3959,8 +3659,8 @@
         "tags": [
           "Verification"
         ],
-        "summary": "Tier Two | Submit Business Information",
-        "description": "Submit the tier two business information for verification.",
+        "summary": "Submit Business Information",
+        "description": "Submit the  business information for verification.",
         "parameters": [
           {
             "name": "subaccountId",
