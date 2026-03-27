@@ -1695,16 +1695,23 @@
                       "type": "string"
                     },
                     "identifying_information": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "passport"
-                          ]
-                        },
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "type": {
+                            "type": "string",
+                            "enum": [
+                              "drivers_license",
+                              "matriculate_id",
+                              "military_id",
+                              "national_id",
+                              "passport",
+                              "permanent_residency_id",
+                              "state_or_provincial_id",
+                              "visa"
+                            ]
+                          },
                         "issuing_country": {
                           "type": "string",
                           "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
@@ -1920,7 +1927,17 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "drivers_license",
+                              "matriculate_id",
+                              "military_id",
+                              "national_id",
+                              "passport",
+                              "permanent_residency_id",
+                              "state_or_provincial_id",
+                              "visa"
+                            ]
                           },
                           "issuing_country": {
                             "type": "string",
@@ -2168,7 +2185,17 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "drivers_license",
+                              "matriculate_id",
+                              "military_id",
+                              "national_id",
+                              "passport",
+                              "permanent_residency_id",
+                              "state_or_provincial_id",
+                              "visa"
+                            ]
                           },
                           "issuing_country": {
                             "type": "string",
@@ -2443,7 +2470,17 @@
                         "type": "object",
                         "properties": {
                           "type": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "drivers_license",
+                              "matriculate_id",
+                              "military_id",
+                              "national_id",
+                              "passport",
+                              "permanent_residency_id",
+                              "state_or_provincial_id",
+                              "visa"
+                            ]
                           },
                           "issuing_country": {
                             "type": "string",
