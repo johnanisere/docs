@@ -67,6 +67,197 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposi
 2. **移动端集成：** 在应用内浏览器或 WebView 中打开 `paymentLink`。
 3. 客户在小组件上完成付款后，将被重定向回来，存款即确认完成。
 
+## 移动端集成
+
+对于移动应用，您可以在 WebView 中展示银行卡支付小组件。各平台的模式相同：通过后端发起存款，获取 `paymentLink`，然后在 WebView 中加载它。当客户完成付款并被重定向到您的 `redirectUrl` 时，检测导航变化并关闭 WebView。
+
+### 核心集成代码
+
+<CodeGroup>
+```javascript React Native (Expo)
+import { WebView } from 'react-native-webview';
+import { Modal, SafeAreaView, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+
+// 通过后端发起存款后，您会收到一个 paymentLink。
+// 在模态 WebView 中展示它：
+
+const COMPLETION_URL = 'https://yourapp.com/payment/complete'; // 必须与您的 redirectUrl 匹配
+
+function CardPaymentModal({ paymentUrl, visible, onClose, onPaymentComplete }) {
+  const handleNavigationChange = (navState) => {
+    // 检测小组件何时重定向到完成 URL
+    if (navState.url.startsWith(COMPLETION_URL)) {
+      onPaymentComplete();
+      onClose();
+    }
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 12, backgroundColor: '#f5f5f5' }}>
+          <TouchableOpacity onPress={onClose}>
+            <Text style={{ fontSize: 13, color: '#555' }}>取消</Text>
+          </TouchableOpacity>
+          <Text style={{ fontSize: 12, color: '#888' }}>安全支付</Text>
+          <View style={{ width: 50 }} />
+        </View>
+
+        <WebView
+          source={{ uri: paymentUrl }}
+          onNavigationStateChange={handleNavigationChange}
+          javaScriptEnabled
+          domStorageEnabled
+          startInLoadingState
+          renderLoading={() => (
+            <View style={{ position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+        />
+      </SafeAreaView>
+    </Modal>
+  );
+}
+```
+```swift Swift (iOS)
+import SwiftUI
+import WebKit
+
+struct CardPaymentView: UIViewRepresentable {
+    let paymentUrl: URL
+    let completionUrl: String // 必须与您的 redirectUrl 匹配
+    let onPaymentComplete: () -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(completionUrl: completionUrl, onPaymentComplete: onPaymentComplete)
+    }
+
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
+        webView.load(URLRequest(url: paymentUrl))
+        return webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {}
+
+    class Coordinator: NSObject, WKNavigationDelegate {
+        let completionUrl: String
+        let onPaymentComplete: () -> Void
+
+        init(completionUrl: String, onPaymentComplete: @escaping () -> Void) {
+            self.completionUrl = completionUrl
+            self.onPaymentComplete = onPaymentComplete
+        }
+
+        func webView(_ webView: WKWebView,
+                      decidePolicyFor navigationAction: WKNavigationAction,
+                      decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            // 检测小组件何时重定向到完成 URL
+            if let url = navigationAction.request.url,
+               url.absoluteString.hasPrefix(completionUrl) {
+                onPaymentComplete()
+                decisionHandler(.cancel)
+                return
+            }
+            decisionHandler(.allow)
+        }
+    }
+}
+
+// 用法：以 sheet 形式展示
+struct PaymentSheet: View {
+    let paymentUrl: URL
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationStack {
+            CardPaymentView(
+                paymentUrl: paymentUrl,
+                completionUrl: "https://yourapp.com/payment/complete",
+                onPaymentComplete: { dismiss() }
+            )
+            .navigationTitle("安全支付")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("取消") { dismiss() }
+                }
+            }
+        }
+    }
+}
+```
+```kotlin Android (Kotlin)
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+
+class CardPaymentActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_PAYMENT_URL = "payment_url"
+        // 必须与您的 redirectUrl 匹配
+        private const val COMPLETION_URL = "https://yourapp.com/payment/complete"
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val paymentUrl = intent.getStringExtra(EXTRA_PAYMENT_URL)
+            ?: return finish()
+
+        val webView = WebView(this).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+                    val url = request?.url?.toString() ?: return false
+                    // 检测小组件何时重定向到完成 URL
+                    if (url.startsWith(COMPLETION_URL)) {
+                        setResult(RESULT_OK)
+                        finish()
+                        return true
+                    }
+                    return false
+                }
+            }
+
+            loadUrl(paymentUrl)
+        }
+
+        setContentView(webView)
+    }
+}
+
+// 从您的 Activity 或 Fragment 启动：
+// val intent = Intent(this, CardPaymentActivity::class.java)
+//     .putExtra(CardPaymentActivity.EXTRA_PAYMENT_URL, paymentLink)
+// startActivityForResult(intent, REQUEST_CARD_PAYMENT)
+```
+</CodeGroup>
+
+### 工作原理
+
+1. 您的应用调用 Bullring API 发起银行卡存款并获取 `paymentLink`。
+2. 在 WebView 中打开 `paymentLink` -- 作为模态框（React Native）、sheet（SwiftUI）或新 Activity（Android）。
+3. 客户在托管小组件上完成付款。
+4. 小组件重定向到您的 `redirectUrl` -- 在 WebView 的导航代理/客户端中检测并关闭视图。
+5. 监听 `deposit.status.paid` webhook 以确认付款。
+
+<Card title="试用 React Native 示例" icon="mobile" href="https://snack.expo.dev/@johnaniserebullring/bullring-finance-card-collection?platform=ios">
+  打开交互式 Expo Snack 查看完整的移动端集成实例
+</Card>
+
 ## 2. 监听 Webhook 事件
 
 使用 webhook 实时跟踪银行卡存款状态：
