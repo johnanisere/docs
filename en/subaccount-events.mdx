@@ -30,16 +30,35 @@ Webhooks allow your application to receive real-time notifications when events h
 ```
 
 ### Subaccount Declined
-```json
+
+When a subaccount is declined, the payload includes a `failure_reason` and a boolean `can_resubmit` indicating if the user is allowed to try again.
+
+<CodeGroup>
+```json Can Resubmit
 {
-    "data": {
-        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
-        "email": "user@example.com",
-        "status": "declined"
-    },
-    "event": "subaccount.status.declined"
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "dafe+vps139@bullring.finance",
+    "status": "declined",
+    "failure_reason": "BAD_PROOF_OF_ADDRESS",
+    "can_resubmit": true
+  }
 }
 ```
+```json Cannot Resubmit
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "dafe+vps139@bullring.finance",
+    "status": "declined",
+    "failure_reason": "FORGERY",
+    "can_resubmit": false
+  }
+}
+```
+</CodeGroup>
 
 ### Subaccount In Review
 ```json

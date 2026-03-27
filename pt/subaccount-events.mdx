@@ -30,16 +30,35 @@ Os webhooks permitem que sua aplicação receba notificações em tempo real qua
 ```
 
 ### Subconta Recusada
-```json
+
+Quando uma subconta é recusada, o payload inclui um `failure_reason` (motivo da falha) e um booleano `can_resubmit` que indica se o usuário tem permissão para tentar novamente.
+
+<CodeGroup>
+```json Pode Reenviar
 {
-    "data": {
-        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
-        "email": "user@example.com",
-        "status": "declined"
-    },
-    "event": "subaccount.status.declined"
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "dafe+vps139@bullring.finance",
+    "status": "declined",
+    "failure_reason": "BAD_PROOF_OF_ADDRESS",
+    "can_resubmit": true
+  }
 }
 ```
+```json Não Pode Reenviar
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "dafe+vps139@bullring.finance",
+    "status": "declined",
+    "failure_reason": "FORGERY",
+    "can_resubmit": false
+  }
+}
+```
+</CodeGroup>
 
 ### Subconta em Análise
 ```json
