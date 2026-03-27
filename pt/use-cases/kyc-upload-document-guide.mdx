@@ -1,0 +1,81 @@
+---
+title: "Guia de Upload de Documentos KYC"
+description: "Amostras de documentos e links Cloudinary que acionam estados de KYC aprovado, reprovado com nova tentativa e reprovado final."
+---
+
+## Visao Geral
+
+Este guia lista tipos de documentos e arquivos de exemplo exatos para acionar resultados especificos de KYC para uma subconta.
+
+<Warning>
+Use estes arquivos como links do Cloudinary. Envie a URL diretamente onde sua integracao aceitar link de documento.
+</Warning>
+
+<Note>
+Voce pode usar quaisquer outros dados pessoais no payload da requisicao. O resultado deste guia e definido pelos arquivos de documento especificos abaixo.
+</Note>
+
+## Como Usar Estas Amostras
+
+1. Escolha o estado que voce quer testar.
+2. Use o(s) tipo(s) de documento e link(s) Cloudinary correspondentes desse estado.
+3. Envie cada URL como link de origem do documento no seu fluxo de upload KYC.
+4. Conclua as etapas normais de envio de verificacao.
+
+## 1. Aprovado
+
+Use estes arquivos quando quiser que a subconta passe na verificacao.
+
+### Passaporte
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg
+
+### Frente do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png
+
+### Verso do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png
+
+### Comprovante de Endereco
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg
+
+## 2. Reprovado (Pode Tentar Novamente)
+
+Use estes arquivos quando quiser um resultado reprovado que ainda permite reenvio.
+
+### Frente do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png
+
+### Verso do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png
+
+### Comprovante de Endereco
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg
+
+## 3. Reprovado (Final)
+
+Use estes arquivos quando quiser um resultado reprovado terminal (sem novas tentativas esperadas para esse envio).
+
+### Frente do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg
+
+### Verso do Documento de Identidade
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg
+
+### Comprovante de Endereco
+
+- https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg
+
+## Dicas de Teste
+
+- Mantenha o mapeamento correto dos tipos de documento (por exemplo, nao envie imagem de identidade como comprovante de endereco).
+- Reutilize os links Cloudinary exatos acima quando precisar de resultados previsiveis de teste de KYC.
+- Se seu formulario aceitar upload de arquivo ou URL, escolha URL e cole o link do Cloudinary.
