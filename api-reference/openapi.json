@@ -1855,7 +1855,13 @@
                         "type": "object",
                         "properties": {
                           "purpose": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "PROOF_OF_ACCOUNT_PURPOSE",
+                              "PROOF_OF_ADDRESS",
+                              "PROOF_OF_SOURCE_OF_FUNDS"
+                            ],
+                            "description": "Proof of address is required"
                           },
                           "file": {
                             "type": "string",
@@ -2097,7 +2103,13 @@
                         "type": "object",
                         "properties": {
                           "purpose": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "PROOF_OF_ACCOUNT_PURPOSE",
+                              "PROOF_OF_ADDRESS",
+                              "PROOF_OF_SOURCE_OF_FUNDS"
+                            ],
+                            "description": "Proof of address is required"
                           },
                           "file": {
                             "type": "string",
@@ -2369,7 +2381,13 @@
                         "type": "object",
                         "properties": {
                           "purpose": {
-                            "type": "string"
+                            "type": "string",
+                            "enum": [
+                              "PROOF_OF_ACCOUNT_PURPOSE",
+                              "PROOF_OF_ADDRESS",
+                              "PROOF_OF_SOURCE_OF_FUNDS"
+                            ],
+                            "description": "Proof of address is required"
                           },
                           "file": {
                             "type": "string",
