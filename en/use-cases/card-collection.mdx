@@ -67,6 +67,197 @@ After receiving the response, redirect or present the `paymentLink` to your cust
 2. **Mobile integration:** Open `paymentLink` in an in-app browser or WebView.
 3. Once the customer completes payment on the widget, they are redirected back and the deposit is confirmed.
 
+## Mobile Integration
+
+For mobile apps, you can present the card payment widget inside a WebView. The pattern is the same across platforms: initiate the deposit via your backend, receive the `paymentLink`, and load it in a WebView. When the customer completes payment and is redirected to your `redirectUrl`, detect the navigation change and close the WebView.
+
+### Key Integration Code
+
+<CodeGroup>
+```javascript React Native (Expo)
+import { WebView } from 'react-native-webview';
+import { Modal, SafeAreaView, View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
+
+// After initiating the deposit via your backend, you receive a paymentLink.
+// Present it in a WebView modal:
+
+const COMPLETION_URL = 'https://yourapp.com/payment/complete'; // Must match your redirectUrl
+
+function CardPaymentModal({ paymentUrl, visible, onClose, onPaymentComplete }) {
+  const handleNavigationChange = (navState) => {
+    // Detect when the widget redirects to your completion URL
+    if (navState.url.startsWith(COMPLETION_URL)) {
+      onPaymentComplete();
+      onClose();
+    }
+  };
+
+  return (
+    <Modal visible={visible} animationType="slide" onRequestClose={onClose}>
+      <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', padding: 12, backgroundColor: '#f5f5f5' }}>
+          <TouchableOpacity onPress={onClose}>
+            <Text style={{ fontSize: 13, color: '#555' }}>Cancel</Text>
+          </TouchableOpacity>
+          <Text style={{ fontSize: 12, color: '#888' }}>Secure Payment</Text>
+          <View style={{ width: 50 }} />
+        </View>
+
+        <WebView
+          source={{ uri: paymentUrl }}
+          onNavigationStateChange={handleNavigationChange}
+          javaScriptEnabled
+          domStorageEnabled
+          startInLoadingState
+          renderLoading={() => (
+            <View style={{ position: 'absolute', inset: 0, alignItems: 'center', justifyContent: 'center' }}>
+              <ActivityIndicator size="large" />
+            </View>
+          )}
+        />
+      </SafeAreaView>
+    </Modal>
+  );
+}
+```
+```swift Swift (iOS)
+import SwiftUI
+import WebKit
+
+struct CardPaymentView: UIViewRepresentable {
+    let paymentUrl: URL
+    let completionUrl: String // Must match your redirectUrl
+    let onPaymentComplete: () -> Void
+
+    func makeCoordinator() -> Coordinator {
+        Coordinator(completionUrl: completionUrl, onPaymentComplete: onPaymentComplete)
+    }
+
+    func makeUIView(context: Context) -> WKWebView {
+        let webView = WKWebView()
+        webView.navigationDelegate = context.coordinator
+        webView.load(URLRequest(url: paymentUrl))
+        return webView
+    }
+
+    func updateUIView(_ uiView: WKWebView, context: Context) {}
+
+    class Coordinator: NSObject, WKNavigationDelegate {
+        let completionUrl: String
+        let onPaymentComplete: () -> Void
+
+        init(completionUrl: String, onPaymentComplete: @escaping () -> Void) {
+            self.completionUrl = completionUrl
+            self.onPaymentComplete = onPaymentComplete
+        }
+
+        func webView(_ webView: WKWebView,
+                      decidePolicyFor navigationAction: WKNavigationAction,
+                      decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+            // Detect when the widget redirects to your completion URL
+            if let url = navigationAction.request.url,
+               url.absoluteString.hasPrefix(completionUrl) {
+                onPaymentComplete()
+                decisionHandler(.cancel)
+                return
+            }
+            decisionHandler(.allow)
+        }
+    }
+}
+
+// Usage: present as a sheet
+struct PaymentSheet: View {
+    let paymentUrl: URL
+    @Environment(\.dismiss) var dismiss
+
+    var body: some View {
+        NavigationStack {
+            CardPaymentView(
+                paymentUrl: paymentUrl,
+                completionUrl: "https://yourapp.com/payment/complete",
+                onPaymentComplete: { dismiss() }
+            )
+            .navigationTitle("Secure Payment")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+            }
+        }
+    }
+}
+```
+```kotlin Android (Kotlin)
+import android.annotation.SuppressLint
+import android.os.Bundle
+import android.webkit.WebResourceRequest
+import android.webkit.WebView
+import android.webkit.WebViewClient
+import androidx.appcompat.app.AppCompatActivity
+
+class CardPaymentActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_PAYMENT_URL = "payment_url"
+        // Must match your redirectUrl
+        private const val COMPLETION_URL = "https://yourapp.com/payment/complete"
+    }
+
+    @SuppressLint("SetJavaScriptEnabled")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        val paymentUrl = intent.getStringExtra(EXTRA_PAYMENT_URL)
+            ?: return finish()
+
+        val webView = WebView(this).apply {
+            settings.javaScriptEnabled = true
+            settings.domStorageEnabled = true
+
+            webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(
+                    view: WebView?,
+                    request: WebResourceRequest?
+                ): Boolean {
+                    val url = request?.url?.toString() ?: return false
+                    // Detect when the widget redirects to your completion URL
+                    if (url.startsWith(COMPLETION_URL)) {
+                        setResult(RESULT_OK)
+                        finish()
+                        return true
+                    }
+                    return false
+                }
+            }
+
+            loadUrl(paymentUrl)
+        }
+
+        setContentView(webView)
+    }
+}
+
+// Launch from your Activity or Fragment:
+// val intent = Intent(this, CardPaymentActivity::class.java)
+//     .putExtra(CardPaymentActivity.EXTRA_PAYMENT_URL, paymentLink)
+// startActivityForResult(intent, REQUEST_CARD_PAYMENT)
+```
+</CodeGroup>
+
+### How It Works
+
+1. Your app calls the Bullring API to initiate a card deposit and receives the `paymentLink`.
+2. Open the `paymentLink` in a WebView -- as a modal (React Native), sheet (SwiftUI), or new Activity (Android).
+3. The customer completes payment on the hosted widget.
+4. The widget redirects to your `redirectUrl` -- detect this in the WebView's navigation delegate/client and dismiss the view.
+5. Listen for the `deposit.status.paid` webhook to confirm the payment.
+
+<Card title="Try the React Native example" icon="mobile" href="https://snack.expo.dev/@johnaniserebullring/bullring-finance-card-collection?platform=ios">
+  Open the interactive Expo Snack to see the complete mobile integration in action
+</Card>
+
 ## 2. Listen for Webhook Events
 
 Track the status of the card deposit in real-time using webhooks:
