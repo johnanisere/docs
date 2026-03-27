@@ -202,6 +202,7 @@
               {
                 "group": "常见模式",
                 "pages": [
+                  "zh/use-cases/kyc-upload-document-guide",
                   "zh/use-cases/multi-currency-operations",
                   "zh/use-cases/onboarding",
                   "zh/use-cases/fiat-on-ramp",

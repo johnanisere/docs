@@ -1,0 +1,163 @@
+---
+title: "KYC 上传文件指南"
+description: "用于触发已通过、失败可重试、失败最终状态的文件样本与 Cloudinary 链接。"
+---
+
+## 概览
+
+本指南列出了可以触发不同 KYC 结果的文件类型与精确样本。
+
+<Warning>
+  请使用 Cloudinary 链接提交这些文件。在支持链接上传的字段中，直接粘贴 URL。
+</Warning>
+
+<Note>
+  你可以在请求中使用任意其他个人数据。此处结果主要由下方对应的文件样本决定。
+</Note>
+
+## 使用方法
+
+1. 选择你要测试的状态。
+2. 使用该状态对应的文件类型和 Cloudinary 链接。
+3. 复制下方代码块中的 URL，在 KYC 上传流程中作为文件来源链接提交。
+4. 按你的常规流程完成验证提交。
+
+---
+
+## 1. 已通过 (Approved)
+
+用于触发通过状态。
+
+### 护照
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg" alt="护照示例文件" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg)
+
+---
+
+### 身份证正面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png" alt="身份证正面示例文件" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615329/1128061-Germany-ID_front_dfdcek.png)
+
+---
+
+### 身份证反面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png" alt="身份证反面示例文件" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png)
+
+---
+
+### 地址证明
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg" alt="地址证明示例文件" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg)
+
+---
+
+## 2. 失败 (可重试)
+
+用于触发失败但允许再次提交的状态。
+
+### 身份证正面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png" alt="可重试失败身份证正面示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615330/f2dfedb-us-template-front_yyu8aq.png)
+
+---
+
+### 身份证反面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png" alt="可重试失败身份证反面示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/6c18515-us-template-back_gnyg1f.png)
+
+---
+
+### 地址证明
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg" alt="可重试失败地址证明示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/62343436-poa-krause-red_ogetn5.jpg)
+
+---
+
+## 3. 失败 (最终)
+
+用于触发终态失败（该次提交预期不再重试）。
+
+### 身份证正面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg" alt="最终失败身份证正面示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg)
+
+---
+
+### 身份证反面
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg" alt="最终失败身份证反面示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg)
+
+---
+
+### 地址证明
+
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg" alt="最终失败地址证明示例" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg
+```
+
+[下载](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg)
+
+---
+
+## 测试建议
+
+- 文件类型要与上传字段严格对应。
+- 需要稳定复现时，请使用本页的原始 Cloudinary 链接。
+- 如果页面支持文件上传和链接上传，请优先使用链接上传并粘贴 Cloudinary URL。

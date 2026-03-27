@@ -8,19 +8,21 @@ description: "Document samples and Cloudinary links that trigger approved, retry
 This guide lists document types and exact sample files you can use to trigger specific KYC outcomes for a subaccount.
 
 <Warning>
-Use these files as Cloudinary links. Submit the URL directly where your integration accepts a document link.
+  Use these files as Cloudinary links. Submit the URL directly where your integration accepts a document link.
 </Warning>
 
 <Note>
-You can use any personal data values you prefer in your request payloads. The outcome in this guide is driven by the specific document files linked below.
+  You can use any personal data values you prefer in your request payloads. The outcome is driven by the specific document files linked below.
 </Note>
 
 ## How to Use These Samples
 
 1. Pick the state you want to test.
 2. Use the matching document type(s) and Cloudinary link(s) from that state.
-3. Pass each URL as the document source link in your KYC upload flow.
+3. Copy the URL from the code block below each preview and paste it as the document source in your KYC upload flow.
 4. Complete your normal verification submission steps.
+
+---
 
 ## 1. Approved
 
@@ -28,19 +30,51 @@ Use these files when you want the subaccount to pass verification.
 
 ### Passport
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg" alt="Passport sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg)
+
+---
 
 ### ID Front
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png" alt="ID Front sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615329/1128061-Germany-ID_front_dfdcek.png)
+
+---
 
 ### ID Back
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png" alt="ID Back sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png)
+
+---
 
 ### Proof of Address
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg" alt="Proof of Address sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg)
+
+---
 
 ## 2. Failed (Can Retry)
 
@@ -48,15 +82,39 @@ Use these files when you want a failed verification result that still allows a r
 
 ### ID Front
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png" alt="ID Front retry sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615330/f2dfedb-us-template-front_yyu8aq.png
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615330/f2dfedb-us-template-front_yyu8aq.png)
+
+---
 
 ### ID Back
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png" alt="ID Back retry sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/6c18515-us-template-back_gnyg1f.png
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/6c18515-us-template-back_gnyg1f.png)
+
+---
 
 ### Proof of Address
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg" alt="Proof of Address retry sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/62343436-poa-krause-red_ogetn5.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/62343436-poa-krause-red_ogetn5.jpg)
+
+---
 
 ## 3. Failed (Final)
 
@@ -64,18 +122,42 @@ Use these files when you want a terminal failed verification result (no addition
 
 ### ID Front
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg" alt="ID Front final failed sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/a41a1712-Cyprus_Front_mrjrhd.jpg)
+
+---
 
 ### ID Back
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg" alt="ID Back final failed sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774615328/48d6543a-Cyprus_Back_fi2kpm.jpg)
+
+---
 
 ### Proof of Address
 
-- https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg
+<img src="https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg" alt="Proof of Address final failed sample" style={{ maxWidth: '40%' }} />
+
+```
+https://res.cloudinary.com/bullring-finance/image/upload/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg
+```
+
+[Download](https://res.cloudinary.com/bullring-finance/image/upload/fl_attachment/v1774567136/sumsub_ab5c326a3057dd552b214274ef834f29_cyy2eg.jpg)
+
+---
 
 ## Testing Tips
 
-- Keep document types mapped correctly (for example, do not send an ID image as proof of address).
+- Keep document types mapped correctly — do not send an ID image as proof of address.
 - Reuse the exact Cloudinary links above when you need deterministic KYC test outcomes.
 - If your form supports either file upload or URL input, choose URL input and paste the Cloudinary link.
