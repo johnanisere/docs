@@ -2884,77 +2884,139 @@
                 }
               },
               "example": {
-                "legal_name": "Bullring Finance 2",
-                "trade_name": "Anisere",
-                "description": "yfguy bhbiu",
-                "source_of_funds": "grants",
-                "business_type": "corporation",
-                "website": "bullring.finance",
+                "legal_name": "Acme Technology Corporation",
+                "trade_name": "Acme Tech",
+                "tax_number": "987-65-4321",
+                "registration_number": "CR-2024-001234",
+                "incorporation_date": "2020-06-15",
+                "description": "Leading provider of innovative technology solutions including software development, cloud services, and digital transformation consulting for enterprise clients",
+                "email": "contact@acmetech.com",
+                "website": "https://www.acmetech.com",
+                "source_of_funds": "sales_of_goods_and_services",
+                "business_type": "llc",
                 "registered_address": {
-                  "street_line_1": "1 Swallow Street",
-                  "street_line_2": "",
-                  "city": "birmingham",
-                  "subdivision": "EN",
-                  "postal_code": "B2 4AA",
-                  "country": "GBR"
+                  "street_line_1": "1234 Market Street",
+                  "street_line_2": "Suite 500",
+                  "city": "San Francisco",
+                  "subdivision": "CA",
+                  "postal_code": "94103",
+                  "country": "USA"
                 },
                 "physical_address": {
-                  "street_line_1": "1 Swallow Street",
-                  "street_line_2": "",
-                  "city": "birmingham",
-                  "subdivision": "EN",
-                  "postal_code": "B2 4AA",
-                  "country": "GBR"
+                  "street_line_1": "5678 Mission Boulevard",
+                  "street_line_2": "Building A, Floor 3",
+                  "city": "San Francisco",
+                  "subdivision": "CA",
+                  "postal_code": "94110",
+                  "country": "USA"
                 },
                 "identification": [
                   {
-                    "type": "crn",
-                    "number": "1760716",
-                    "issuing_country": "GBR",
-                    "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
-                    "image_back": ""
+                    "type": "ein",
+                    "number": "12-3456789",
+                    "issuing_country": "DEU",
+                    "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg",
+                    "image_back": null
                   }
                 ],
                 "is_dao": false,
                 "is_money_transmitter": false,
                 "business_industry": [
-                  "111150"
+                  "523999",
+                  "541511",
+                  "518210"
                 ],
-                "account_purpose": "payroll",
+                "account_purpose": "receive_payments_for_goods_and_services",
                 "ultimate_beneficial_owners": [
                   {
-                    "first_name": "John",
-                    "middle_name": "Omoniyi",
-                    "last_name": "Anisere",
-                    "birth_date": "1993-10-05T00:00:00.000Z",
-                    "email": "johnanisere@gmail.com",
+                    "first_name": "Sarah",
+                    "middle_name": "Elizabeth",
+                    "last_name": "Johnson",
+                    "birth_date": "1985-03-22",
+                    "email": "sarah.johnson@acmetech.com",
+                    "nationality": "US",
+                    "birth_country": "US",
                     "address": {
-                      "street_line_1": "1 Swallow Street",
-                      "street_line_2": "",
-                      "city": "birmingham",
-                      "subdivision": "EN",
-                      "postal_code": "B2 4AA",
-                      "country": "GBR"
+                      "street_line_1": "789 Oak Avenue",
+                      "street_line_2": "Apartment 12",
+                      "city": "Palo Alto",
+                      "subdivision": "CA",
+                      "postal_code": "94301",
+                      "country": "USA"
+                    },
+                    "identification": [
+                      {
+                        "type": "drivers_license",
+                        "number": "D1234567",
+                        "issuing_country": "US",
+                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png",
+                        "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg",
+                        "purpose": "PROOF_OF_ADDRESS",
+                        "description": "Recent utility bill showing residential address"
+                      }
+                    ],
+                    "has_ownership": true,
+                    "ownership_percentage": "65.5",
+                    "has_control": true,
+                    "is_signer": true,
+                    "title": "Chief Executive Officer"
+                  },
+                  {
+                    "first_name": "Michael",
+                    "middle_name": "Alexander",
+                    "last_name": "Chen",
+                    "birth_date": "1982-11-08",
+                    "email": "michael.chen@acmetech.com",
+                    "nationality": "US",
+                    "birth_country": "CN",
+                    "address": {
+                      "street_line_1": "456 Pine Street",
+                      "city": "Mountain View",
+                      "subdivision": "CA",
+                      "postal_code": "94040",
+                      "country": "USA"
                     },
                     "identification": [
                       {
                         "type": "passport",
-                        "number": "B50091752",
-                        "issuing_country": "NGA",
-                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
-                        "image_back": ""
+                        "number": "A36980303",
+                        "issuing_country": "US",
+                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
+                      },
+                      {
+                        "type": "ssn",
+                        "number": "322-73-0792",
+                        "issuing_country": "US"
+                      }
+                    ],
+                    "documents": [
+                      {
+                        "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg",
+                        "purpose": "PROOF_OF_ADDRESS",
+                        "description": "Recent utility bill showing residential address"
                       }
                     ],
                     "has_ownership": true,
-                    "has_control": true,
+                    "ownership_percentage": "34.5",
+                    "has_control": false,
                     "is_signer": true,
-                    "title": "CEO"
+                    "title": "Chief Technology Officer"
                   }
                 ],
-                "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
-                "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
-                "flow_of_funds_document": null,
-                "has_material_intermediary_ownership": false
+                "formation_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                "ownership_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                "flow_of_funds_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                "proof_of_address_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                "has_material_intermediary_ownership": false,
+                "expected_monthly_volume_usd": "250000",
+                "source_of_funds_description": "Primary revenue generated through enterprise software licensing agreements, recurring SaaS subscriptions, professional consulting services, and technology implementation projects for Fortune 500 clients",
+                "acting_as_intermediary": false,
+                "sumsub_share_kyc_token": "e"
               }
             }
           }
@@ -3657,83 +3719,161 @@
                 },
                 "example": {
                   "status": "not_started",
-                  "email": "johnanisere+15124@bullring.finance",
-                  "rejection_reasons": [],
-                  "endorsements": [],
-                  "created_at": "2026-01-12T16:28:42.790Z",
-                  "updated_at": "2026-01-12T16:28:42.825Z",
+                  "created_at": "2026-03-31T11:51:15.876Z",
+                  "updated_at": "2026-03-31T11:51:16.196Z",
+                  "sumsubStatus": null,
+                  "sumsubApplicantId": "69cbb534b67b5d47f799e99a",
+                  "sumsubVerifiedAt": null,
                   "type": "business",
-                  "legal_name": "Bullring Finance 2",
-                  "trade_name": "Anisere",
-                  "description": "yfguy bhbiu",
-                  "source_of_funds": "grants",
-                  "business_type": "corporation",
-                  "website": "bullring.finance",
+                  "legal_name": "Acme Technology Corporation",
+                  "registration_number": "CR-2024-001234",
+                  "incorporation_date": "2020-06-15",
+                  "trade_name": "Acme Tech",
+                  "description": "Leading provider of innovative technology solutions including software development, cloud services, and digital transformation consulting for enterprise clients",
+                  "source_of_funds": "sales_of_goods_and_services",
+                  "business_type": "llc",
+                  "website": "https://www.acmetech.com",
+                  "tax_number": "987-65-4321",
+                  "acting_as_intermediary": false,
                   "registered_address": {
-                    "street_line_1": "1 Swallow Street",
-                    "street_line_2": "",
-                    "city": "birmingham",
-                    "subdivision": "EN",
-                    "postal_code": "B2 4AA",
-                    "country": "GBR"
+                    "street_line_1": "1234 Market Street",
+                    "street_line_2": "Suite 500",
+                    "city": "San Francisco",
+                    "subdivision": "CA",
+                    "postal_code": "94103",
+                    "country": "USA"
                   },
                   "physical_address": {
-                    "street_line_1": "1 Swallow Street",
-                    "street_line_2": "",
-                    "city": "birmingham",
-                    "subdivision": "EN",
-                    "postal_code": "B2 4AA",
-                    "country": "GBR"
+                    "street_line_1": "5678 Mission Boulevard",
+                    "street_line_2": "Building A, Floor 3",
+                    "city": "San Francisco",
+                    "subdivision": "CA",
+                    "postal_code": "94110",
+                    "country": "USA"
                   },
                   "identification": [
                     {
-                      "type": "crn",
-                      "number": "1760716",
-                      "issuing_country": "GBR",
-                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169867/verification/2026-01-11/ofq7atduwn1bwvtvxrb1.png",
-                      "image_back": ""
+                      "type": "ein",
+                      "number": "12-3456789",
+                      "issuing_country": "DEU",
+                      "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg",
+                      "image_back": null
                     }
                   ],
                   "is_dao": false,
                   "is_money_transmitter": false,
                   "business_industry": [
-                    "111150"
+                    "523999",
+                    "541511",
+                    "518210"
                   ],
-                  "account_purpose": "payroll",
+                  "account_purpose": "receive_payments_for_goods_and_services",
                   "ultimate_beneficial_owners": [
                     {
-                      "first_name": "John",
-                      "middle_name": "Omoniyi",
-                      "last_name": "Anisere",
-                      "birth_date": "1993-10-05T00:00:00.000Z",
-                      "email": "johnanisere@gmail.com",
+                      "first_name": "Sarah",
+                      "middle_name": "Elizabeth",
+                      "last_name": "Johnson",
+                      "birth_date": "1985-03-22T00:00:00.000Z",
+                      "email": "sarah.johnson@acmetech.com",
+                      "nationality": "US",
+                      "birth_country": "US",
                       "address": {
-                        "street_line_1": "1 Swallow Street",
-                        "street_line_2": "",
-                        "city": "birmingham",
-                        "subdivision": "EN",
-                        "postal_code": "B2 4AA",
-                        "country": "GBR"
+                        "street_line_1": "789 Oak Avenue",
+                        "street_line_2": "Apartment 12",
+                        "city": "Palo Alto",
+                        "subdivision": "CA",
+                        "postal_code": "94301",
+                        "country": "USA"
+                      },
+                      "identification": [
+                        {
+                          "type": "drivers_license",
+                          "number": "D1234567",
+                          "issuing_country": "US",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png",
+                          "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png"
+                        }
+                      ],
+                      "documents": [
+                        {
+                          "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg",
+                          "purpose": "PROOF_OF_ADDRESS",
+                          "description": "Recent utility bill showing residential address"
+                        }
+                      ],
+                      "has_ownership": true,
+                      "ownership_percentage": "65.5",
+                      "has_control": true,
+                      "is_signer": true,
+                      "title": "Chief Executive Officer"
+                    },
+                    {
+                      "first_name": "Michael",
+                      "middle_name": "Alexander",
+                      "last_name": "Chen",
+                      "birth_date": "1982-11-08T00:00:00.000Z",
+                      "email": "michael.chen@acmetech.com",
+                      "nationality": "US",
+                      "birth_country": "CN",
+                      "address": {
+                        "street_line_1": "456 Pine Street",
+                        "city": "Mountain View",
+                        "subdivision": "CA",
+                        "postal_code": "94040",
+                        "country": "USA"
                       },
                       "identification": [
                         {
                           "type": "passport",
-                          "number": "B50091752",
-                          "issuing_country": "NGA",
-                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169918/verification/2026-01-11/mvwnlnpgvzrxuiyw0erl.png",
-                          "image_back": ""
+                          "number": "A36980303",
+                          "issuing_country": "US",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
+                        },
+                        {
+                          "type": "ssn",
+                          "number": "322-73-0792",
+                          "issuing_country": "US"
+                        }
+                      ],
+                      "documents": [
+                        {
+                          "file": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564646/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_1362390373.jpg",
+                          "purpose": "PROOF_OF_ADDRESS",
+                          "description": "Recent utility bill showing residential address"
                         }
                       ],
                       "has_ownership": true,
-                      "has_control": true,
+                      "ownership_percentage": "34.5",
+                      "has_control": false,
                       "is_signer": true,
-                      "title": "CEO"
+                      "title": "Chief Technology Officer"
                     }
                   ],
-                  "formation_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169962/verification/2026-01-11/qxxtzbtflevi7ipxcfkg.png",
-                  "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
-                  "flow_of_funds_document": null,
-                  "has_material_intermediary_ownership": false
+                  "formation_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                  "ownership_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                  "flow_of_funds_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                  "proof_of_address_document": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                  "has_material_intermediary_ownership": false,
+                  "expected_monthly_volume_usd": "250000",
+                  "source_of_funds_description": "Primary revenue generated through enterprise software licensing agreements, recurring SaaS subscriptions, professional consulting services, and technology implementation projects for Fortune 500 clients",
+                  "sumsub_share_kyc_token": "e",
+                  "documents": [
+                    {
+                      "purpose": "business_formation",
+                      "file": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                      "description": "Business formation document"
+                    },
+                    {
+                      "purpose": "shareholder_registry",
+                      "file": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                      "description": "Shareholder/ownership registry"
+                    },
+                    {
+                      "purpose": "PROOF_OF_ADDRESS",
+                      "file": "https://res.cloudinary.com/dgqsur6xy/image/upload/v1708994045/samples/cup-on-a-table.jpg",
+                      "description": "Proof of business address"
+                    }
+                  ]
                 }
               }
             }
