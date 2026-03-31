@@ -68,7 +68,7 @@
               {
                 "group": "Common Patterns",
                 "pages": [
-                  "en/use-cases/kyc-upload-document-guide",
+                  "en/use-cases/kyc-verification-document-guide",
                   "en/use-cases/multi-currency-operations",
                   "en/use-cases/onboarding",
                   "en/use-cases/fiat-on-ramp",
@@ -135,7 +135,7 @@
               {
                 "group": "Padrões Comuns",
                 "pages": [
-                  "pt/use-cases/kyc-upload-document-guide",
+                  "pt/use-cases/kyc-verification-document-guide",
                   "pt/use-cases/multi-currency-operations",
                   "pt/use-cases/onboarding",
                   "pt/use-cases/fiat-on-ramp",
@@ -202,7 +202,7 @@
               {
                 "group": "常见模式",
                 "pages": [
-                  "zh/use-cases/kyc-upload-document-guide",
+                  "zh/use-cases/kyc-verification-document-guide",
                   "zh/use-cases/multi-currency-operations",
                   "zh/use-cases/onboarding",
                   "zh/use-cases/fiat-on-ramp",
