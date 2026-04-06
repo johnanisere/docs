@@ -1829,30 +1829,30 @@
                       "salary",
                       "sale_of_assets_real_estate",
                       "savings",
-                        "someone_elses_funds"
-                      ]
-                    },
-                    "source_of_funds_description": {
-                      "type": "string"
-                    },
-                    "identifying_information": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "drivers_license",
-                              "matriculate_id",
-                              "military_id",
-                              "national_id",
-                              "passport",
-                              "permanent_residency_id",
-                              "state_or_provincial_id",
-                              "visa"
-                            ]
-                          },
+                      "someone_elses_funds"
+                    ]
+                  },
+                  "source_of_funds_description": {
+                    "type": "string"
+                  },
+                  "identifying_information": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "drivers_license",
+                            "matriculate_id",
+                            "military_id",
+                            "national_id",
+                            "passport",
+                            "permanent_residency_id",
+                            "state_or_provincial_id",
+                            "visa"
+                          ]
+                        },
                         "issuing_country": {
                           "type": "string",
                           "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
@@ -8491,27 +8491,27 @@
                   "address"
                 ]
               },
-                "examples": {
-                  "Standard Withdrawal": {
-                    "summary": "Standard stablecoin withdrawal",
-                    "value": {
-                      "amount": "12",
-                      "stablecoin": "usdt",
-                      "chain": "ethereum",
-                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
-                    }
-                  },
-                  "Card Collection Balance": {
-                    "summary": "Withdraw from card collection (USDCARD) balance",
-                    "value": {
-                      "amount": "50",
-                      "stablecoin": "usdc",
-                      "chain": "celo",
-                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-                      "balance_account": "USDCARD"
-                    }
+              "examples": {
+                "Standard Withdrawal": {
+                  "summary": "Standard stablecoin withdrawal",
+                  "value": {
+                    "amount": "12",
+                    "stablecoin": "usdt",
+                    "chain": "ethereum",
+                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+                  }
+                },
+                "Card Collection Balance": {
+                  "summary": "Withdraw from card collection (USDCARD) balance",
+                  "value": {
+                    "amount": "50",
+                    "stablecoin": "usdc",
+                    "chain": "celo",
+                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                    "balance_account": "USDCARD"
                   }
                 }
+              }
             }
           }
         },
@@ -9857,6 +9857,10 @@
                       "bank_code": {
                         "type": "string",
                         "description": "Required for `COP`."
+                      },
+                      "named_account": {
+                        "type": "boolean",
+                        "description": "Indicates if the onramp should be processed as a named account. If true, the onramp will be processed without requiring the user to provide additional information such as bank account details. This is only applicable for certain currencies(USD, EUR, and AED)."
                       }
                     },
                     "required": [
@@ -9907,7 +9911,8 @@
               "example": {
                 "from": {
                   "amount": 500,
-                  "currency": "BRL"
+                  "currency": "BRL",
+                  "named_account": false
                 },
                 "to": {
                   "asset": "USDC",
@@ -10126,6 +10131,10 @@
                       },
                       "currency": {
                         "type": "string"
+                      },
+                      "named_account": {
+                        "type": "boolean",
+                        "description": "Indicates if the onramp should be processed as a named account. If true, the onramp will be processed without requiring the user to provide additional information such as bank account details. This is only applicable for certain currencies(USD, EUR, and AED)."
                       }
                     },
                     "required": [
@@ -10170,7 +10179,8 @@
               "example": {
                 "from": {
                   "amount": 500,
-                  "currency": "BRL"
+                  "currency": "BRL",
+                  "named_account": false
                 },
                 "to": {
                   "asset": "STABLE_SATS",
