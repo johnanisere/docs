@@ -564,8 +564,32 @@
                       "format": "date-time",
                       "description": "Subaccount creation timestamp"
                     },
+                    "firstName": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "First name of the subaccount holder"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Last name of the subaccount holder"
+                    },
+                    "phone": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Phone number of the subaccount holder"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "Type of the subaccount",
+                      "enum": [
+                        "individual",
+                        "business"
+                      ]
+                    },
                     "kyc": {
                       "type": "object",
+                      "description": "KYC verification status across different countries",
                       "properties": {
                         "profiles": {
                           "type": "array",
@@ -573,10 +597,17 @@
                             "type": "object",
                             "properties": {
                               "country": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "ISO 3166-1 alpha-2 country code"
                               },
                               "status": {
-                                "type": "string"
+                                "type": "string",
+                                "description": "KYC verification status for this country",
+                                "enum": [
+                                  "pending",
+                                  "approved",
+                                  "rejected"
+                                ]
                               }
                             }
                           }
@@ -585,27 +616,73 @@
                     },
                     "capabilities": {
                       "type": "object",
+                      "description": "Available capabilities for this subaccount",
                       "properties": {
                         "currencies": {
                           "type": "object",
-                          "properties": {
-                            "USD": {
-                              "type": "object",
-                              "properties": {
-                                "canOnramp": {
+                          "description": "Per-currency capability details. Each key is a currency code.",
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "status": {
+                                "type": "string",
+                                "description": "Currency access status",
+                                "enum": [
+                                  "approved",
+                                  "locked",
+                                  "pending"
+                                ]
+                              },
+                              "canOnramp": {
+                                "type": "boolean",
+                                "description": "Whether the subaccount can convert crypto to this currency"
+                              },
+                              "canOfframp": {
+                                "type": "boolean",
+                                "description": "Whether the subaccount can convert this currency to crypto"
+                              },
+                              "canDeposit": {
+                                "type": "boolean",
+                                "description": "Whether the subaccount can receive deposits in this currency"
+                              },
+                              "canWithdraw": {
+                                "type": "boolean",
+                                "description": "Whether the subaccount can withdraw in this currency"
+                              },
+                              "requiredKyc": {
+                                "type": "string",
+                                "description": "Description of additional KYC required to unlock this currency"
+                              },
+                              "rails": {
+                                "type": "object",
+                                "description": "Available payment rails for this currency. Each key is a rail name and the value indicates availability.",
+                                "additionalProperties": {
                                   "type": "boolean"
-                                },
-                                "canOfframp": {
-                                  "type": "boolean"
-                                },
-                                "canDeposit": {
-                                  "type": "boolean"
-                                },
-                                "canWithdraw": {
-                                  "type": "boolean"
-                                },
-                                "requiredKyc": {
-                                  "type": "string"
+                                }
+                              },
+                              "requiredActions": {
+                                "type": "array",
+                                "description": "Actions the user must complete to unlock this currency",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "description": "Type of required action",
+                                      "enum": [
+                                        "kyc"
+                                      ]
+                                    },
+                                    "description": {
+                                      "type": "string",
+                                      "description": "Human-readable description of the required action"
+                                    },
+                                    "url": {
+                                      "type": "string",
+                                      "format": "uri",
+                                      "description": "URL to complete the required action"
+                                    }
+                                  }
                                 }
                               }
                             }
@@ -613,15 +690,15 @@
                         },
                         "assets": {
                           "type": "object",
-                          "properties": {
-                            "USDT": {
-                              "type": "object",
-                              "properties": {
-                                "networks": {
-                                  "type": "array",
-                                  "items": {
-                                    "type": "string"
-                                  }
+                          "description": "Supported crypto assets and their available networks. Each key is an asset symbol.",
+                          "additionalProperties": {
+                            "type": "object",
+                            "properties": {
+                              "networks": {
+                                "type": "array",
+                                "description": "Blockchain networks available for this asset",
+                                "items": {
+                                  "type": "string"
                                 }
                               }
                             }
@@ -632,14 +709,26 @@
                   }
                 },
                 "example": {
-                  "id": "878beae6-e2f5-40a5-b7bf-449c73924aaa",
-                  "email": "user1+15124@bullring.finance",
-                  "status": "created",
-                  "createdAt": "2026-01-12T13:09:58.033Z",
+                  "id": "a2e211aa-72d6-4ac2-a9ad-9bde8a77a3c3",
+                  "email": "johnanisere+9056@gmail.com",
+                  "status": "approved",
+                  "createdAt": "2025-07-18T17:46:05.150Z",
+                  "firstName": null,
+                  "lastName": null,
+                  "phone": null,
+                  "type": "individual",
                   "kyc": {
                     "profiles": [
                       {
-                        "country": "NG",
+                        "country": "GH",
+                        "status": "approved"
+                      },
+                      {
+                        "country": "ZM",
+                        "status": "approved"
+                      },
+                      {
+                        "country": "BR",
                         "status": "approved"
                       }
                     ]
@@ -647,87 +736,139 @@
                   "capabilities": {
                     "currencies": {
                       "USD": {
+                        "status": "locked",
                         "canOnramp": false,
                         "canOfframp": false,
                         "canDeposit": false,
                         "canWithdraw": false,
-                        "requiredKyc": "TIER_2"
+                        "requiredKyc": "Additional Verification required for USD operations",
+                        "rails": {
+                          "wire": false,
+                          "ach": false,
+                          "swift": false
+                        },
+                        "requiredActions": [
+                          {
+                            "type": "kyc",
+                            "description": "Complete verification",
+                            "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
+                          }
+                        ]
                       },
                       "NGN": {
+                        "status": "locked",
                         "canOnramp": false,
                         "canOfframp": false,
                         "canDeposit": false,
                         "canWithdraw": false,
-                        "requiredKyc": "TIER_1 NG"
+                        "requiredKyc": "Additional Verification required for NGN operations",
+                        "rails": {
+                          "banktransfer": false
+                        },
+                        "requiredActions": [
+                          {
+                            "type": "kyc",
+                            "description": "Complete verification",
+                            "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
+                          }
+                        ]
                       },
                       "BRL": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
+                        "status": "approved",
+                        "canOnramp": true,
+                        "canOfframp": true,
+                        "canDeposit": true,
+                        "canWithdraw": true,
+                        "rails": {
+                          "pix": true
+                        }
                       },
                       "EUR": {
+                        "status": "locked",
                         "canOnramp": false,
                         "canOfframp": false,
                         "canDeposit": false,
                         "canWithdraw": false,
-                        "requiredKyc": "TIER_2"
+                        "requiredKyc": "Additional Verification required for EUR operations",
+                        "rails": {
+                          "sepa": false
+                        },
+                        "requiredActions": [
+                          {
+                            "type": "kyc",
+                            "description": "Complete verification",
+                            "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
+                          }
+                        ]
                       },
                       "GHS": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
+                        "status": "approved",
+                        "canOnramp": true,
+                        "canOfframp": true,
+                        "canDeposit": true,
+                        "canWithdraw": true,
+                        "rails": {
+                          "momo": true
+                        }
                       },
                       "ZMW": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
+                        "status": "approved",
+                        "canOnramp": true,
+                        "canOfframp": true,
+                        "canDeposit": true,
+                        "canWithdraw": true,
+                        "rails": {
+                          "momo": true
+                        }
                       },
-                      "TZS": {
+                      "AED": {
+                        "status": "locked",
                         "canOnramp": false,
                         "canOfframp": false,
                         "canDeposit": false,
                         "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
+                        "requiredKyc": "Additional Verification required for AED operations",
+                        "rails": {
+                          "uaefts": false
+                        },
+                        "requiredActions": [
+                          {
+                            "type": "kyc",
+                            "description": "Complete verification",
+                            "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
+                          }
+                        ]
                       },
-                      "MXN": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "COP": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
-                      },
-                      "ARS": {
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "TIER_1 or higher"
+                      "USDCARD": {
+                        "status": "approved",
+                        "canOnramp": true,
+                        "canOfframp": true,
+                        "canDeposit": true,
+                        "canWithdraw": true,
+                        "rails": {}
                       }
                     },
                     "assets": {
                       "USDT": {
                         "networks": [
-                          "ETHEREUM",
-                          "SOLANA"
+                          "ETH",
+                          "SOL",
+                          "CELO"
                         ]
                       },
                       "USDC": {
                         "networks": [
-                          "ETHEREUM",
-                          "SOLANA"
+                          "ETH",
+                          "SOL",
+                          "CELO",
+                          "POLY"
+                        ]
+                      },
+                      "EURC": {
+                        "networks": [
+                          "ETH",
+                          "SOL",
+                          "CELO"
                         ]
                       },
                       "BTC": {
