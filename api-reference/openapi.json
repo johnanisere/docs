@@ -6687,6 +6687,12 @@
                       "account_number": {
                         "type": "string"
                       },
+                      "account_owner_type": {
+                        "enum": [
+                          "individual",
+                          "business"
+                        ]
+                      },
                       "routing_number": {
                         "type": "string"
                       },
@@ -6731,7 +6737,8 @@
                       "account_number",
                       "routing_number",
                       "country",
-                      "address"
+                      "address",
+                      "account_owner_type"
                     ]
                   },
                   {
@@ -6761,7 +6768,10 @@
                         "type": "string"
                       },
                       "account_owner_type": {
-                        "type": "string"
+                        "enum":[
+                          "individual",
+                          "business"
+                        ]
                       },
                       "first_name": {
                         "type": "string"
@@ -6773,6 +6783,9 @@
                         "type": "string"
                       },
                       "email": {
+                        "type": "string"
+                      },
+                      "iban": {
                         "type": "string"
                       }
                     },
