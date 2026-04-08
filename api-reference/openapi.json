@@ -6696,8 +6696,20 @@
                       "routing_number": {
                         "type": "string"
                       },
+                      "bic": {
+                        "type": "string",
+                        "description": "Required for international wires, optional for ACH and domestic wires"
+                      },
                       "country": {
                         "type": "string"
+                      },
+                      "payment_rail": {
+                        "type": "string",
+                        "enum": [
+                          "swift",
+                          "ach",
+                          "wire"
+                        ]
                       },
                       "address": {
                         "type": "object",
@@ -6759,7 +6771,8 @@
                         "type": "string"
                       },
                       "account_number": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "IBAN for EUR recipients"
                       },
                       "bic": {
                         "type": "string"
@@ -6768,9 +6781,17 @@
                         "type": "string"
                       },
                       "account_owner_type": {
-                        "enum":[
+                        "enum": [
                           "individual",
                           "business"
+                        ]
+                      },
+                      "payment_rail": {
+                        "type": "string",
+                        "enum": [
+                          "swift",
+                          "ach",
+                          "wire"
                         ]
                       },
                       "first_name": {
@@ -6785,8 +6806,37 @@
                       "email": {
                         "type": "string"
                       },
-                      "iban": {
-                        "type": "string"
+                      "address": {
+                        "type": "object",
+                        "properties": {
+                          "street_line_1": {
+                            "type": "string"
+                          },
+                          "street_line_2": {
+                            "type": "string"
+                          },
+                          "city": {
+                            "type": "string"
+                          },
+                          "state": {
+                            "type": "string"
+                          },
+                          "postal_code": {
+                            "type": "string"
+                          },
+                          "country": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "street_line_1",
+                          "city",
+                          "state",
+                          "postal_code",
+                          "country",
+                          "bic",
+                          "account_number"
+                        ]
                       }
                     },
                     "required": [
