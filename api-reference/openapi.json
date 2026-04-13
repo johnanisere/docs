@@ -282,24 +282,6 @@
                             "canOfframp": true,
                             "canDeposit": true,
                             "canWithdraw": true
-                          },
-                          "MXN": {
-                            "canOnramp": true,
-                            "canOfframp": true,
-                            "canDeposit": true,
-                            "canWithdraw": true
-                          },
-                          "COP": {
-                            "canOnramp": true,
-                            "canOfframp": true,
-                            "canDeposit": true,
-                            "canWithdraw": true
-                          },
-                          "ARS": {
-                            "canOnramp": true,
-                            "canOfframp": true,
-                            "canDeposit": true,
-                            "canWithdraw": true
                           }
                         },
                         "assets": {
@@ -371,24 +353,6 @@
                             "canWithdraw": false
                           },
                           "TZS": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
-                          "MXN": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
-                          "COP": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
-                          "ARS": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
@@ -5140,48 +5104,6 @@
                         "code": "GHS"
                       }
                     ]
-                  },
-                  "COP": {
-                    "channels": [
-                      {
-                        "id": "cop-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "COP",
-                        "status": "active",
-                        "channelType": "bank",
-                        "rampType": "deposit"
-                      }
-                    ],
-                    "networks": []
-                  },
-                  "MXN": {
-                    "channels": [
-                      {
-                        "id": "mxn-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "MXN",
-                        "status": "active",
-                        "channelType": "bank",
-                        "rampType": "deposit"
-                      }
-                    ],
-                    "networks": []
-                  },
-                  "ARS": {
-                    "channels": [
-                      {
-                        "id": "ars-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 0,
-                        "currency": "ARS",
-                        "status": "active",
-                        "channelType": "bank",
-                        "rampType": "deposit"
-                      }
-                    ],
-                    "networks": []
                   }
                 }
               }
@@ -5435,18 +5357,6 @@
                   "value": {
                     "channelId": "brl-channel-id-bullring-finance",
                     "amount": 100
-                  }
-                },
-                "MXN": {
-                  "summary": "MXN Deposit Request",
-                  "value": {
-                    "channelId": "mxn-channel-id-bullring-finance"
-                  }
-                },
-                "ARS": {
-                  "summary": "ARS Deposit Request",
-                  "value": {
-                    "channelId": "ars-channel-id-bullring-finance"
                   }
                 },
                 "USD (Card)": {
@@ -5855,31 +5765,6 @@
                       "rate": 5.36,
                       "expiresAt": "2025-11-21T15:32:04.000Z",
                       "createdAt": "2025-11-21T15:29:35.164Z"
-                    }
-                  },
-                  "MXN": {
-                    "summary": "MXN Response",
-                    "value": {
-                      "currency": "MXN",
-                      "bankInfo": {
-                        "id": "6527fe17-1c8b-473f-84dd-133538e9d3cc",
-                        "beneficiaryName": "mike dan",
-                        "clabe": "710969000000519618"
-                      },
-                      "channelId": "mxn-channel-id-bullring-finance"
-                    }
-                  },
-                  "ARS": {
-                    "summary": "ARS Response",
-                    "value": {
-                      "currency": "ARS",
-                      "bankInfo": {
-                        "id": "6336dacd-f0ee-4692-bf32-6dd2e9fca069",
-                        "cvu": "123456",
-                        "beneficiaryName": "Bullring Finance",
-                        "transferReference": "FDC95"
-                      },
-                      "channelId": "ars-channel-id-bullring-finance"
                     }
                   },
                   "USD (Card)": {
@@ -6935,117 +6820,6 @@
                       "phone_number",
                       "account_owner_name"
                     ]
-                  },
-                  {
-                    "title": "MXN",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "MXN"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "mxn_method": {
-                        "type": "string",
-                        "enum": [
-                          "spei",
-                          "debit_card",
-                          "phone_number"
-                        ]
-                      },
-                      "beneficiary": {
-                        "type": "string"
-                      },
-                      "clabe": {
-                        "type": "string"
-                      },
-                      "institution_code": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "mxn_method",
-                      "beneficiary",
-                      "clabe",
-                      "institution_code"
-                    ]
-                  },
-                  {
-                    "title": "ARS",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "ARS"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "recipient_name": {
-                        "type": "string"
-                      },
-                      "cvu": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "recipient_name",
-                      "cvu"
-                    ]
-                  },
-                  {
-                    "title": "COP",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "COP"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "cop_method": {
-                        "type": "string",
-                        "enum": [
-                          "pse",
-                          "ach"
-                        ]
-                      },
-                      "bank_account": {
-                        "type": "string"
-                      },
-                      "account_type": {
-                        "type": "string",
-                        "enum": [
-                          "1",
-                          "2"
-                        ],
-                        "description": "1-Checking, 2-Savings"
-                      },
-                      "bank_code": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "cop_method",
-                      "bank_account",
-                      "account_type",
-                      "bank_code"
-                    ]
                   }
                 ]
               },
@@ -7117,37 +6891,6 @@
                     "currency": "ZMW",
                     "phone_number": "+260241234567",
                     "account_owner_name": "test two"
-                  }
-                },
-                "MXN": {
-                  "summary": "MXN recipient example",
-                  "value": {
-                    "currency": "MXN",
-                    "alias": "My Mexican Bank Account",
-                    "mxn_method": "phone_number",
-                    "beneficiary": "Juan Pérez García",
-                    "clabe": "123456789123456789",
-                    "institution_code": "37006"
-                  }
-                },
-                "ARS": {
-                  "summary": "ARS recipient example",
-                  "value": {
-                    "currency": "ARS",
-                    "alias": "My Argentine Bank Account",
-                    "recipient_name": "Juan José Martinelli",
-                    "cvu": "1430001713001199250012"
-                  }
-                },
-                "COP": {
-                  "summary": "COP recipient example",
-                  "value": {
-                    "currency": "COP",
-                    "alias": "My Colombian Bank Account",
-                    "cop_method": "pse",
-                    "bank_account": "87654321",
-                    "account_type": "1",
-                    "bank_code": "064"
                   }
                 }
               }
@@ -7594,14 +7337,11 @@
             "name": "currency",
             "in": "path",
             "required": true,
-            "description": "The currency to get the banks for. Supported currencies: MXN, BRL, COP, ARS, NGN",
+            "description": "The currency to get the banks for. Supported currencies: BRL, NGN",
             "schema": {
               "type": "string",
               "enum": [
-                "MXN",
                 "BRL",
-                "COP",
-                "ARS",
                 "NGN"
               ]
             }
@@ -8193,93 +7933,6 @@
                       "amount",
                       "currency"
                     ]
-                  },
-                  {
-                    "title": "MXN",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "recipient_id": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "string"
-                      },
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "MXN"
-                        ]
-                      },
-                      "client_reference": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
-                      }
-                    },
-                    "required": [
-                      "recipient_id",
-                      "amount",
-                      "currency"
-                    ]
-                  },
-                  {
-                    "title": "COP",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "recipient_id": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "string"
-                      },
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "COP"
-                        ]
-                      },
-                      "client_reference": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
-                      }
-                    },
-                    "required": [
-                      "recipient_id",
-                      "amount",
-                      "currency"
-                    ]
-                  },
-                  {
-                    "title": "ARS",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "recipient_id": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "string"
-                      },
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "ARS"
-                        ]
-                      },
-                      "client_reference": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
-                      }
-                    },
-                    "required": [
-                      "recipient_id",
-                      "amount",
-                      "currency"
-                    ]
                   }
                 ]
               },
@@ -8337,33 +7990,6 @@
                     "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "10",
                     "currency": "GHS",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
-                  }
-                },
-                "MXN": {
-                  "summary": "MXN Withdrawal",
-                  "value": {
-                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
-                    "amount": "10",
-                    "currency": "MXN",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
-                  }
-                },
-                "COP": {
-                  "summary": "COP Withdrawal",
-                  "value": {
-                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
-                    "amount": "1000",
-                    "currency": "COP",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
-                  }
-                },
-                "ARS": {
-                  "summary": "ARS Withdrawal",
-                  "value": {
-                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
-                    "amount": "100",
-                    "currency": "ARS",
                     "client_reference": "123e4567-e89b-12d3-a456-426614174000"
                   }
                 }
