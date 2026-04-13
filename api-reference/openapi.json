@@ -173,9 +173,6 @@
                             "format": "date-time",
                             "description": "Subaccount creation timestamp"
                           },
-                          "verificationTier": {
-                            "type": "number"
-                          },
                           "kyc": {
                             "type": "object",
                             "properties": {
@@ -234,7 +231,6 @@
                       "email": "dafeengineer@gmail.com",
                       "status": "approved",
                       "createdAt": "2025-11-19T16:48:49.565Z",
-                      "verificationTier": 1,
                       "kyc": {
                         "profiles": [
                           {
@@ -249,8 +245,7 @@
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_2"
+                            "canWithdraw": false
                           },
                           "NGN": {
                             "canOnramp": true,
@@ -268,8 +263,7 @@
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_2"
+                            "canWithdraw": false
                           },
                           "GHS": {
                             "canOnramp": true,
@@ -344,71 +338,61 @@
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_2"
+                            "canWithdraw": false
                           },
                           "NGN": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 NG"
+                            "canWithdraw": false
                           },
                           "BRL": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "EUR": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_2"
+                            "canWithdraw": false
                           },
                           "GHS": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "ZMW": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "TZS": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "MXN": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "COP": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           },
                           "ARS": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
-                            "canWithdraw": false,
-                            "requiredKyc": "TIER_1 or higher"
+                            "canWithdraw": false
                           }
                         },
                         "assets": {
@@ -5287,7 +5271,7 @@
                   {
                     "type": "object",
                     "title": "NGN",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -5309,7 +5293,7 @@
                   {
                     "type": "object",
                     "title": "ZMW",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -5330,7 +5314,7 @@
                   {
                     "type": "object",
                     "title": "GHS",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -5351,7 +5335,7 @@
                   {
                     "type": "object",
                     "title": "USD",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -5364,7 +5348,7 @@
                   {
                     "type": "object",
                     "title": "EUR",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -5377,7 +5361,7 @@
                   {
                     "type": "object",
                     "title": "BRL",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "channelId": {
                         "type": "string"
@@ -6732,7 +6716,7 @@
                   {
                     "title": "BRL",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6752,7 +6736,7 @@
                   {
                     "title": "NGN",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6788,7 +6772,7 @@
                   {
                     "title": "USD",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6855,7 +6839,7 @@
                   {
                     "title": "EUR",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6907,7 +6891,7 @@
                   {
                     "title": "GHS",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6931,7 +6915,7 @@
                   {
                     "title": "ZMW",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6955,7 +6939,7 @@
                   {
                     "title": "MXN",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6995,7 +6979,7 @@
                   {
                     "title": "ARS",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -7022,7 +7006,7 @@
                   {
                     "title": "COP",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -7287,7 +7271,7 @@
                   "statusCode": 403,
                   "timestamp": "2025-11-25T02:42:56.154Z",
                   "error": "Error",
-                  "message": "You cannot add a bank account until your Tier 2 KYC verification is complete for the payment rails"
+                  "message": "You cannot add a bank account until your KYC verification is complete for the payment rails"
                 }
               }
             }
@@ -8033,7 +8017,7 @@
                   {
                     "title": "USD",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8065,7 +8049,7 @@
                   {
                     "title": "BRL",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8094,7 +8078,7 @@
                   {
                     "title": "EUR",
                     "type": "object",
-                    "description": "Requires approved Tier 2 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8126,7 +8110,7 @@
                   {
                     "title": "NGN",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8155,7 +8139,7 @@
                   {
                     "title": "ZMW",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8184,7 +8168,7 @@
                   {
                     "title": "GHS",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8213,7 +8197,7 @@
                   {
                     "title": "MXN",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8242,7 +8226,7 @@
                   {
                     "title": "COP",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8271,7 +8255,7 @@
                   {
                     "title": "ARS",
                     "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
+                    "description": "Requires approved KYC.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
