@@ -2732,7 +2732,7 @@
           "Verification"
         ],
         "summary": "Add/Update Business Information",
-        "description": "Add or update the KYC information for a  business.",
+        "description": "Add or update the KYC (Know Your Business) information for a business subaccount. This endpoint allows you to submit comprehensive business details including legal information, addresses, beneficial ownership, and supporting documents required for business verification.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2752,16 +2752,38 @@
                 "type": "object",
                 "properties": {
                   "legal_name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The official registered legal name of the business entity"
                   },
                   "trade_name": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "The trading name or brand name used by the business (also known as DBA - Doing Business As)"
+                  },
+                  "tax_number": {
+                    "type": "string",
+                    "description": "The primary tax identification number of the business"
+                  },
+                  "registration_number": {
+                    "type": "string",
+                    "description": "The business registration or incorporation number issued by the registering authority"
+                  },
+                  "incorporation_date": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "The date when the business was officially incorporated or registered (format: YYYY-MM-DD)"
                   },
                   "description": {
-                    "type": "string"
+                    "type": "string",
+                    "description": "A detailed description of the business activities, products, and services"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "The primary contact email address for the business"
                   },
                   "source_of_funds": {
                     "type": "string",
+                    "description": "The primary source from which the business receives its funds",
                     "enum": [
                       "business_loans",
                       "grants",
@@ -2779,6 +2801,7 @@
                   },
                   "business_type": {
                     "type": "string",
+                    "description": "The legal structure or type of the business entity",
                     "enum": [
                       "cooperative",
                       "corporation",
@@ -2790,19 +2813,25 @@
                     ]
                   },
                   "website": {
-                    "type": "string"
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The business website URL"
                   },
                   "registered_address": {
                     "type": "object",
+                    "description": "The official registered address of the business as filed with government authorities",
                     "properties": {
                       "street_line_1": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Primary street address line"
                       },
                       "street_line_2": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Secondary street address line (suite, floor, building, etc.)"
                       },
                       "city": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "City or town name"
                       },
                       "subdivision": {
                         "type": "string",
@@ -2819,15 +2848,19 @@
                   },
                   "physical_address": {
                     "type": "object",
+                    "description": "The actual physical location where the business operates (may differ from registered address)",
                     "properties": {
                       "street_line_1": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Primary street address line"
                       },
                       "street_line_2": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "Secondary street address line (suite, floor, building, etc.)"
                       },
                       "city": {
-                        "type": "string"
+                        "type": "string",
+                        "description": "City or town name"
                       },
                       "subdivision": {
                         "type": "string",
@@ -2844,6 +2877,7 @@
                   },
                   "identification": {
                     "type": "array",
+                    "description": "Array of business tax identification documents",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -2873,10 +2907,12 @@
                     }
                   },
                   "is_dao": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indicates whether the business is structured as a Decentralized Autonomous Organization (DAO)"
                   },
                   "is_money_transmitter": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indicates whether the business operates as a money services business or money transmitter"
                   },
                   "business_industry": {
                     "type": "array",
@@ -2887,6 +2923,7 @@
                   },
                   "account_purpose": {
                     "type": "string",
+                    "description": "The primary intended use of the Bullring account",
                     "enum": [
                       "charitable_donations",
                       "ecommerce_retail_payments",
@@ -2905,37 +2942,55 @@
                   },
                   "ultimate_beneficial_owners": {
                     "type": "array",
+                    "description": "Array of individuals who ultimately own or control the business (typically those with 25% or more ownership or significant control)",
                     "items": {
                       "type": "object",
                       "properties": {
                         "first_name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "First name of the beneficial owner"
                         },
                         "middle_name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Middle name of the beneficial owner"
                         },
                         "last_name": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "Last name of the beneficial owner"
                         },
                         "birth_date": {
                           "type": "string",
-                          "format": "date-time"
+                          "format": "date",
+                          "description": "Date of birth (format: YYYY-MM-DD)"
                         },
                         "email": {
                           "type": "string",
-                          "format": "email"
+                          "format": "email",
+                          "description": "Email address of the beneficial owner"
+                        },
+                        "nationality": {
+                          "type": "string",
+                          "description": "Two-letter ISO 3166-1 alpha-2 country code of the beneficial owner's nationality (e.g., \"US\" for United States)"
+                        },
+                        "birth_country": {
+                          "type": "string",
+                          "description": "Two-letter ISO 3166-1 alpha-2 country code of the beneficial owner's country of birth (e.g., \"CN\" for China)"
                         },
                         "address": {
                           "type": "object",
+                          "description": "Residential address of the beneficial owner",
                           "properties": {
                             "street_line_1": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Primary street address line"
                             },
                             "street_line_2": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "Secondary street address line (apartment, unit, etc.)"
                             },
                             "city": {
-                              "type": "string"
+                              "type": "string",
+                              "description": "City or town name"
                             },
                             "subdivision": {
                               "type": "string",
@@ -2952,48 +3007,89 @@
                         },
                         "identification": {
                           "type": "array",
+                          "description": "Array of identification documents for the beneficial owner",
                           "items": {
                             "type": "object",
                             "properties": {
                               "type": {
                                 "type": "string",
-                                "description": "The passport of the individual.",
+                                "description": "The type of identification document",
                                 "enum": [
-                                  "passport"
+                                  "passport",
+                                  "drivers_license",
+                                  "national_id",
+                                  "ssn"
                                 ]
                               },
                               "number": {
                                 "type": "string",
-                                "description": "The passport number of the individual."
+                                "description": "The identification document number"
                               },
                               "issuing_country": {
                                 "type": "string",
-                                "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
+                                "description": "Two-letter ISO 3166-1 alpha-2 country code for the issuing country (e.g., \"US\" for United States)"
                               },
                               "image_front": {
                                 "type": "string",
                                 "format": "uri",
-                                "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
+                                "description": "URL of the front image of the identification document. Supported formats: jpeg, jpg, png, heic, heif, pdf"
                               },
                               "image_back": {
                                 "type": "string",
                                 "format": "uri",
-                                "description": "Supported document formats are jpeg, jpg, png, heic, heif, pdf"
+                                "nullable": true,
+                                "description": "URL of the back image of the identification document (if applicable). Supported formats: jpeg, jpg, png, heic, heif, pdf"
+                              }
+                            }
+                          }
+                        },
+                        "documents": {
+                          "type": "array",
+                          "description": "Array of additional supporting documents for the beneficial owner (e.g., proof of address)",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "file": {
+                                "type": "string",
+                                "format": "uri",
+                                "description": "URL of the document file"
+                              },
+                              "purpose": {
+                                "type": "string",
+                                "description": "The purpose or type of document",
+                                "enum": [
+                                  "PROOF_OF_ADDRESS",
+                                  "BANK_STATEMENT",
+                                  "UTILITY_BILL",
+                                  "OTHER"
+                                ]
+                              },
+                              "description": {
+                                "type": "string",
+                                "description": "A brief description of the document contents"
                               }
                             }
                           }
                         },
                         "has_ownership": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates whether this individual has ownership stake in the business"
+                        },
+                        "ownership_percentage": {
+                          "type": "string",
+                          "description": "The percentage of ownership this individual holds in the business (e.g., \"55.5\" for 55.5%)"
                         },
                         "has_control": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates whether this individual has significant control or decision-making authority over the business"
                         },
                         "is_signer": {
-                          "type": "boolean"
+                          "type": "boolean",
+                          "description": "Indicates whether this individual is an authorized signatory for the business"
                         },
                         "title": {
-                          "type": "string"
+                          "type": "string",
+                          "description": "The job title or role of this individual within the business (e.g., \"Chief Executive Officer\", \"Director\")"
                         }
                       }
                     }
@@ -3019,13 +3115,31 @@
                     "nullable": true,
                     "description": "A document that proves the flow of funds for the business. Supported document formats are jpeg, jpg, png, heic, heif, pdf"
                   },
+                  "proof_of_address_document": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "A document that proves the business address (e.g., utility bill, lease agreement, bank statement). Supported document formats are jpeg, jpg, png, heic, heif, pdf"
+                  },
                   "has_material_intermediary_ownership": {
-                    "type": "boolean"
+                    "type": "boolean",
+                    "description": "Indicates whether any intermediary entities (e.g., holding companies, trusts) have material ownership in the business"
+                  },
+                  "expected_monthly_volume_usd": {
+                    "type": "string",
+                    "description": "The expected monthly transaction volume in USD (numeric string)"
+                  },
+                  "source_of_funds_description": {
+                    "type": "string",
+                    "description": "A detailed description of how the business generates its funds and revenue streams"
+                  },
+                  "acting_as_intermediary": {
+                    "type": "boolean",
+                    "description": "Indicates whether the business acts as an intermediary or facilitator for third-party transactions"
                   }
                 }
               },
               "example": {
-                "legal_name": "Acme Technology Corporation",
+                "legal_name": "Acme33 Technology Corporation",
                 "trade_name": "Acme Tech",
                 "tax_number": "987-65-4321",
                 "registration_number": "CR-2024-001234",
@@ -3055,7 +3169,7 @@
                   {
                     "type": "ein",
                     "number": "12-3456789",
-                    "issuing_country": "DEU",
+                    "issuing_country": "USA",
                     "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg",
                     "image_back": null
                   }
@@ -3092,6 +3206,11 @@
                         "issuing_country": "US",
                         "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png",
                         "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png"
+                      },
+                      {
+                        "type": "ssn",
+                        "number": "342-73-0792",
+                        "issuing_country": "US"
                       }
                     ],
                     "documents": [
@@ -3102,7 +3221,7 @@
                       }
                     ],
                     "has_ownership": true,
-                    "ownership_percentage": "65.5",
+                    "ownership_percentage": "55.5",
                     "has_control": true,
                     "is_signer": true,
                     "title": "Chief Executive Officer"
@@ -3143,7 +3262,7 @@
                       }
                     ],
                     "has_ownership": true,
-                    "ownership_percentage": "34.5",
+                    "ownership_percentage": "44.5",
                     "has_control": false,
                     "is_signer": true,
                     "title": "Chief Technology Officer"
@@ -3156,8 +3275,7 @@
                 "has_material_intermediary_ownership": false,
                 "expected_monthly_volume_usd": "250000",
                 "source_of_funds_description": "Primary revenue generated through enterprise software licensing agreements, recurring SaaS subscriptions, professional consulting services, and technology implementation projects for Fortune 500 clients",
-                "acting_as_intermediary": false,
-                "sumsub_share_kyc_token": "e"
+                "acting_as_intermediary": false
               }
             }
           }
