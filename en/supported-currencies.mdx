@@ -1,27 +1,37 @@
 ---
-title: "Supported Currencies"
+title: "Supported Currencies & Rails"
 description: "List of supported fiat and digital currencies"
 ---
 
-We support a wide range of fiat and digital currencies. Some of the major currencies include:
+We support a wide range of fiat and digital currencies across multiple payment rails.
 
 ### Fiat Currencies
 
-- **USD** (United States Dollar)
-- **EUR** (Euro)
-- **BRL** (Brazilian Real)
-- **MXN** (Mexican Peso)
-- **COP** (Columbian Peso)
-- **ARS** (Argentine Peso)
-- **NGN** (Nigerian Naira)
-- **GHS** (Ghana Cedi)
-- **ZMW** (Zambian Kwacha)
+| Currency | Code | Named Account* | Notes |
+|----------|------|----------------|-------|
+| **USD** | United States Dollar | ✓ | ACH, Wire, SWIFT |
+| **EUR** | Euro | | SEPA |
+| **GBP** | British Pound | ✓ | FPS |
+| **AED** | UAE Dirham | ✓ | UAEFTS |
+| **NGN** | Nigerian Naira | ✓ | NIBBS |
+| **GHS** | Ghana Cedi | | Mobile Money |
+| **ZMW** | Zambian Kwacha | | Mobile Money |
+| **CNY** | Chinese Yuan | | Bank Transfer |
+| **BRL** | Brazilian Real | | PIX |
+
+<Note>
+**Named Account**: Currencies with ✓ provide dedicated virtual account numbers (IBAN, sort code, or local equivalent) in your name for streamlined collections.
+
+**Mobile Money**: GHS and ZMW operate via mobile money networks; no bank account required.
+
+**Offramp only**: CNY and BRL support payouts and stablecoin-to-fiat conversion, but do not support deposits or balance holding.
+</Note>
 
 ### Stablecoins
 
 - **USDC** (USD Coin)
 - **USDT** (Tether)
-
+- **EURC** (Euro Coin)
 
 ### Cryptocurrencies
 
@@ -33,4 +43,7 @@ We support a wide range of fiat and digital currencies. Some of the major curren
 - **Ethereum Sepolia (Testnet)** (ETH-SEPOLIA)
 - **Solana Mainnet** (SOL)
 - **Solana Devnet (Testnet)** (SOL-DEVNET)
+- **Celo**
+- **Polygon**
+- **Tron**
 - **Lightning Network** (BTC)

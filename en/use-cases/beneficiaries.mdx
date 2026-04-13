@@ -5,8 +5,8 @@ description: "Manage recipients, send fiat payouts, and off-ramp to stablecoins.
 
 ## Overview
 
-You can withdraw funds from a subaccount's USD balance in two ways:
-1.  **Fiat Payouts:** Convert USD to local currency (e.g., NGN, BRL, EUR) and send it to a bank account.
+You can withdraw funds from a subaccount in two ways:
+1.  **Fiat Payouts:** Convert currency balances to local currency (e.g., NGN, BRL, EUR) and send it to a bank account.
 2.  **Stablecoin Off-ramp:** Withdraw USD as stablecoins (USDC/USDT) to an external crypto wallet.
 
 This guide covers validating recipients, creating beneficiaries, and initiating withdrawals.
@@ -86,7 +86,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recip
 
 **Endpoint:** `POST /v1/ramp/{subaccountId}/banking/withdrawals`
 
-Send funds from the subaccount's USD balance to the created recipient. The system will automatically convert the USD amount to the recipient's local currency.
+Send funds from the subaccount to the created recipient. The system will deduct the appropriate currency balance from the subaccount.
 
 ### Example: Withdraw to NGN Recipient
 
@@ -101,7 +101,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
   }'
 ```
 
-> **Note:** The `amount` field specifies the amount in the **destination currency** (e.g., NGN). The equivalent USD will be deducted from the subaccount.
+> **Note:** The `amount` field specifies the amount in the **destination currency** (e.g., NGN). The equivalent balance will be deducted from the subaccount's currency holdings.
 
 **Response:**
 
@@ -125,7 +125,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
 
 **Endpoint:** `POST /v1/ramp/{subaccountId}/banking/withdrawals/stablecoin`
 
-You can also withdraw the USD balance directly as stablecoins (USDC or USDT) to an external wallet address.
+You can also withdraw balances directly as stablecoins (USDC or USDT) to an external wallet address.
 
 ### Example: Withdraw USDT on Ethereum
 
@@ -162,8 +162,8 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
 
 1.  **Skipping Validation:** Failing to validate bank account details often leads to failed withdrawals and unnecessary delays.
 2.  **Incorrect Network:** When withdrawing stablecoins, ensure the `chain` matches the destination wallet (e.g., sending ERC-20 USDT to a TRC-20 address will result in loss of funds).
-3.  **Insufficient Balance:** Ensure the subaccount has enough USD balance to cover the withdrawal amount **plus fees**.
-4.  **Unverified KYC:** Withdrawals are only permitted for subaccounts with approved KYC.
+3.  **Insufficient Balance:** Ensure the subaccount has enough balance in the relevant currency to cover the withdrawal amount **plus fees**.
+4.  **Unverified subaccounts:** Withdrawals are only permitted for subaccounts with approved verification.
 
 ## Webhook Events
 

@@ -1,11 +1,11 @@
 ---
-title: "End-to-End User Onboarding"
+title: "Customer Onboarding"
 description: "Learn how to create and verify subaccounts."
 ---
 
 ## Overview
 
-This guide covers the complete flow for onboarding a new user (subaccount), including creation and KYC/KYB verification.
+This guide covers the complete flow for onboarding a new user (subaccount), including creation and verification.
 
 To onboard a new user, you must create a subaccount. This is the first step before they can deposit funds or perform any banking operations.
 
@@ -92,10 +92,15 @@ Once a subaccount is created, you can access the full suite of Bullring's financ
 
 ### 1. Verification (KYC/KYB)
 
-Before a subaccount can transact, they must verify their identity. There are 2 levels of KYC separated by country:
+Before a subaccount can transact, they must verify their identity. Verification is a single process where the documentation provided determines which currencies and payment rails the subaccount can access:
 
-- **Tier 1**: Grants access to all currencies except **USD** and **EUR**. This level is required to unlock **NGN** transactions.
-- **Tier 2**: Grants access to all currencies except **NGN**. This level is required to unlock **USD** and **EUR** transactions.
+- **Capability 1**: Access to USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via wire, ACH, and SWIFT rails.
+- **Capability 2**: Access to NGN (requires BVN), GHS, ZMW, BRL via local payment rails and mobile money.
+
+<Note>
+  Institutional accounts may receive enhanced rates, higher limits, and dedicated support.
+</Note>
+
 - [See Verification API](/api-reference/verification)
 
 ### 2. Deposits (On-Ramp)

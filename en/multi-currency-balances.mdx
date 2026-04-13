@@ -5,9 +5,9 @@ description: "Understanding how subaccounts manage multiple currency balances."
 
 ## Overview
 
-Bullring's multi-currency architecture allows each subaccount to hold balances in all supported fiat currencies simultaneously. This design enables seamless operations across different regions without needing multiple accounts.
+Bullring's multi-currency architecture allows each subaccount to hold balances in multiple fiat currencies simultaneously. Each currency is managed independently with its own balance. This design enables seamless operations across different regions without needing multiple accounts.
 
-- **Unified Subaccount**: A single subaccount manages accounts for USD, BRL, NGN, MXN, and other supported currencies.
+- **Multi-balance Subaccount**: A single subaccount manages separate balances for USD, EUR, GBP, NGN, and other supported currencies.
 - **Stablecoin Parity**: USD balances maintain a 1:1 parity with stablecoins (USDC, USDT), bridging the gap between fiat and crypto.
 - **Internal Conversion**: Convert funds between currencies internally without initiating external blockchain or bank transactions.
 
@@ -19,47 +19,31 @@ For a full list of available currencies, see [Supported Currencies](/en/supporte
 
 Each currency balance within a subaccount is isolated and tracked separately. There is no automatic conversion between currencies; balances update independently based on your specific deposit, withdrawal, and conversion actions.
 
-```mermaid
-graph TD
-    subgraph Subaccount
-        USD[USD Balance]
-        BRL[BRL Balance]
-        NGN[NGN Balance]
-        MXN[MXN Balance]
-    end
-    
-    style Subaccount fill:#f9f9f9,stroke:#333,stroke-width:2px
-```
-
 ### USD and Stablecoin Equivalence
 
 The USD balance in a Bullring subaccount operates with a 1:1 relationship to stablecoins. This feature allows for the seamless movement of funds between crypto rails and traditional fiat systems.
-
-```mermaid
-flowchart LR
-    USDC[USDC / USDT] -- Deposit --> USD[USD Balance]
-    USD -- Withdraw --> Stablecoins[USDC / USDT]
-    
-    style USD fill:#d4edda,stroke:#155724,stroke-width:2px
-```
 
 - **Deposits**: When you deposit USDC or USDT, your USD balance increases 1:1.
 - **Withdrawals**: When you withdraw funds as stablecoins, your USD balance decreases 1:1.
 
 This equivalence provides crypto-native users the ability to interact with fiat systems (like local bank payouts) without requiring a traditional bank account in the US.
 
-### KYC Requirements
+### Verification Requirements
 
 <Warning>
-  **Important**: Users must complete the appropriate KYC/KYB level for each currency they intend to use.
+  **Important**: Subaccounts must complete verification to access currency operations. The scope of currencies and payment methods available depends on the documentation provided during verification.
 </Warning>
 
-Different currencies and regions have distinct regulatory requirements. A subaccount verified for USD operations may need additional verification to transact in BRL or NGN.
+Bullring operates a single verification process that unlocks access to different currency corridors based on the completeness and type of documentation submitted:
 
-- **Verification Scope**: Verification is often per-region or per-currency family.
-- **Compliance**: Attempting to transact in a currency without the proper KYC status will result in an API error.
+- **Capability 1**: Access to USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via wire, ACH, and SWIFT rails.
+- **Capability 2**: Access to NGN (requires BVN), GHS, ZMW, BRL via local payment rails and mobile money.
 
-For details on how to verify subaccounts, refer to the [Onboarding](/en/use-cases/onboarding) guide.
+<Note>
+  Institutional accounts may have access to enhanced rates, higher limits, and dedicated support.
+</Note>
+
+For details on how to verify subaccounts, refer to the [Customer Onboarding](/en/use-cases/onboarding) guide.
 
 ## How to Use Multi-currency Balances
 

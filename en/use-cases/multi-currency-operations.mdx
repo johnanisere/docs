@@ -10,17 +10,15 @@ Bullring's multi-currency architecture allows each subaccount to hold balances i
 ### KYC Requirements
 
 <Warning>
-  **Important**: Users must complete the appropriate KYC/KYB level for each currency they intend to use.
+  **Important**: Subaccounts must complete verification to access currency operations. The scope of currencies and payment methods available depends on the documentation provided during verification.
 </Warning>
 
-Different currencies and regions have distinct regulatory requirements. A subaccount verified for USD operations may need additional verification to transact in BRL or NGN. Verification is often per-region or per-currency family. Attempting to transact in a currency without the proper KYC status will result in an API error.
-
-For details on how to verify subaccounts, refer to the [Onboarding](/en/use-cases/onboarding) guide.
+Bullring operates a single verification process that unlocks access to different currency corridors based on the completeness and type of documentation submitted. For details on how to verify subaccounts, refer to the [Customer Onboarding](/en/use-cases/onboarding) guide.
 
 ## Common Use Cases
 
 ### Cross-border Business Operations
-- Collect payments in local currencies (BRL, NGN, MXN)
+- Collect payments in local currencies (BRL, NGN, GHS)
 - Maintain reserves in multiple currencies
 - Convert to preferred currency when needed
 - Send payouts in recipients' local currencies
@@ -43,18 +41,6 @@ For details on how to verify subaccounts, refer to the [Onboarding](/en/use-case
 - Related: [Remittance](/en/use-cases/remittance)
 
 ## Multi-currency Workflow Example
-
-### End-to-End Flow
-
-```mermaid
-graph LR
-    A[User Deposits NGN] --> B[NGN Balance Increases]
-    B --> C[Convert NGN to USD]
-    C --> D[USD Balance Increases, NGN Decreases]
-    D --> E[Withdraw USD as USDC]
-    E --> F[USD Balance Decreases]
-    F --> G[USDC Sent to Wallet]
-```
 
 ### Step-by-step conceptual flow
 

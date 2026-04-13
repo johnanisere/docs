@@ -175,6 +175,6 @@ See [Deposit Events](/en/deposit-events) for payload details.
 ## Common Mistakes
 
 - **Incorrect Network:** Sending crypto assets on the wrong network (e.g., sending USDC via Polygon to an Ethereum address) will result in permanent loss of funds. Always verify the network.
-- **Unverified KYC:** All deposit methods require the subaccount to have approved KYC. Attempting to deposit into an unverified account will return an error.
+- **Unverified subaccounts:** All deposit methods require the subaccount to have approved verification. Attempting to deposit into an unverified account will return an error.
 - **Ignoring Limits:** Ensure the deposit amount is within the `min` and `max` limits specified in the `channels` response.
 - **Wrong Channel ID:** When making a fiat deposit, ensure you use the `channelId` corresponding to the correct currency and payment method.

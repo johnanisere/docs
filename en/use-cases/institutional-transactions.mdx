@@ -1,0 +1,86 @@
+---
+title: "Institutional Transactions"
+description: "Access OTC rates, power exchanges, and dedicated banking infrastructure for institutional clients."
+---
+
+## Overview
+
+Bullring provides institutional-grade conversion services for clients requiring large-volume currency exchanges, competitive OTC rates, and dedicated banking infrastructure. Institutional accounts benefit from enhanced rates, higher transaction limits, and priority support.
+
+## Features
+
+### OTC Rate via API
+
+Access over-the-counter (OTC) conversion rates directly through the API for large-volume currency exchanges. OTC rates provide better pricing than standard retail rates for significant transactions.
+
+**Benefits:**
+- Competitive pricing for high-volume conversions
+- Real-time rate quotes via API
+- Support for all currency corridors
+- Transparent fee structure
+
+**Endpoint:** [Get Conversion Quote](/api-reference/conversions/get-conversion-quote)
+
+### Power Exchanges
+
+Execute large-scale currency conversions efficiently across multiple corridors. The platform supports atomic, instant conversions between all supported fiat currencies.
+
+**Supported Conversion Corridors:**
+- USD ↔ EUR, GBP, AED, CNY, BRL, NGN, GHS, ZMW
+- EUR ↔ GBP, AED, NGN, GHS, ZMW
+- Cross-regional conversions (e.g., NGN → BRL, GHS → USD)
+
+**Use Cases:**
+- Treasury management across multiple markets
+- Foreign exchange hedging strategies
+- Multi-currency settlement for global platforms
+- Cross-border remittance infrastructure
+
+**Endpoint:** [Convert Currency](/api-reference/conversions/convert-currency)
+
+### Named Bank Accounts
+
+Institutional clients can access dedicated virtual account numbers in their name for streamlined collection and settlement in supported currencies.
+
+**Available for:**
+| Currency | Account Type | Notes |
+|----------|-------------|-------|
+| USD | ACH, Wire routing | Dedicated U.S. bank account details |
+| GBP | UK sort code + account number | FPS-enabled |
+| AED | IBAN | UAE banking system |
+| NGN | Nigerian bank account | Local bank transfer |
+
+**Benefits:**
+- Simplified collections from clients and partners
+- Faster settlement times
+- Improved reconciliation (funds arrive with your account name)
+- Enhanced credibility with counterparties
+
+**How to Access:**
+
+Contact your account manager or reach out to [developer@bullring.finance](mailto:developer@bullring.finance) to request named account provisioning for your institutional account.
+
+## Eligibility
+
+Institutional conversion features are available to:
+- Registered businesses with verified corporate documentation
+- High-volume clients exceeding minimum transaction thresholds
+- Platforms and exchanges requiring multi-currency infrastructure
+- Treasury and finance teams managing cross-border operations
+
+## Getting Started
+
+1. **Upgrade to Institutional Account**: Contact [developer@bullring.finance](mailto:developer@bullring.finance) to discuss institutional account requirements or [schedule a meeting](https://cal.com/team/bullringfinance/meeting).
+
+2. **Complete Enhanced Verification**: Provide corporate documentation and treasury authorization.
+
+3. **Request API Access**: Obtain institutional API credentials with enhanced rate limits.
+
+4. **Provision Named Accounts**: Request dedicated virtual account numbers for supported currencies.
+
+## Related Topics
+
+- [Multi-currency Operations](/en/use-cases/multi-currency-operations) - Managing multiple currency balances
+- [Pre-Transaction Estimates](/en/use-cases/rates-estimates) - Getting exchange rates and fees
+- [Supported Currencies](/en/supported-currencies) - Full list of available currencies
+- [Conversion API Reference](/api-reference/conversions/convert-currency) - Technical integration guide
