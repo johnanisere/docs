@@ -5,9 +5,9 @@ description: "Compreendendo como as subcontas gerenciam múltiplos saldos de moe
 
 ## Visão Geral
 
-A arquitetura multi-moedas da Bullring permite que cada subconta mantenha saldos em todas as moedas fiduciárias suportadas simultaneamente. Este design possibilita operações contínuas em diferentes regiões sem a necessidade de múltiplas contas.
+A arquitetura multi-moedas da Bullring permite que cada subconta mantenha saldos em múltiplas moedas fiduciárias simultaneamente. Cada moeda é gerenciada independentemente com seu próprio saldo. Este design possibilita operações contínuas em diferentes regiões sem a necessidade de múltiplas contas.
 
-- **Subconta Unificada**: Uma única subconta gerencia contas para USD, BRL, NGN, MXN e outras moedas suportadas.
+- **Subconta Multi-saldo**: Uma única subconta gerencia saldos separados para USD, EUR, GBP, NGN e outras moedas suportadas.
 - **Paridade com Stablecoins**: Os saldos em USD mantêm uma paridade de 1:1 com stablecoins (USDC, USDT), conectando o sistema fiduciário ao cripto.
 - **Conversão Interna**: Converta fundos entre moedas internamente sem iniciar transações externas de blockchain ou bancárias.
 
@@ -19,48 +19,31 @@ Para uma lista completa de moedas disponíveis, consulte [Moedas Suportadas](/pt
 
 Cada saldo de moeda dentro de uma subconta é isolado e rastreado separadamente. Não há conversão automática entre moedas; os saldos são atualizados independentemente com base em suas ações específicas de depósito, saque e conversão.
 
-```mermaid
-graph TD
-    subgraph Subconta
-        USD[Saldo USD]
-        BRL[Saldo BRL]
-        NGN[Saldo NGN]
-        MXN[Saldo MXN]
-    end
-
-    style Subconta fill:#f9f9f9,stroke:#333,stroke-width:2px
-```
-
 ### Equivalência entre USD e Stablecoins
 
 O saldo em USD em uma subconta Bullring opera com uma relação de 1:1 com stablecoins. Este recurso permite a movimentação contínua de fundos entre redes cripto e sistemas fiduciários tradicionais.
-
-```mermaid
-flowchart LR
-    USDC[USDC / USDT] -- Depósito --> USD[Saldo USD]
-    USD -- Saque --> Stablecoins[USDC / USDT]
-
-    style USD fill:#d4edda,stroke:#155724,stroke-width:2px
-```
 
 - **Depósitos**: Quando você deposita USDC ou USDT, seu saldo em USD aumenta na proporção de 1:1.
 - **Saques**: Quando você saca fundos como stablecoins, seu saldo em USD diminui na proporção de 1:1.
 
 Esta equivalência proporciona aos usuários nativos de cripto a capacidade de interagir com sistemas fiduciários (como pagamentos bancários locais) sem a necessidade de uma conta bancária tradicional nos EUA.
 
-### Requisitos de KYC
+### Requisitos de Verificação
 
 <Warning>
-  **Importante**: Os usuários devem completar o nível apropriado de KYC/KYB para
-  cada moeda que pretendem usar.
+  **Importante**: As subcontas devem completar a verificação para acessar operações de moeda. O escopo de moedas e métodos de pagamento disponíveis depende da documentação fornecida durante a verificação.
 </Warning>
 
-Diferentes moedas e regiões têm requisitos regulatórios distintos. Uma subconta verificada para operações em USD pode precisar de verificação adicional para transacionar em BRL ou NGN.
+A Bullring opera um único processo de verificação que desbloqueia acesso a diferentes corredores de moedas com base na completude e tipo de documentação submetida:
 
-- **Escopo de Verificação**: A verificação é frequentemente por região ou por família de moedas.
-- **Conformidade**: Tentar transacionar em uma moeda sem o status de KYC apropriado resultará em um erro de API.
+- **Capacidade 1**: Acesso a USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via trilhos wire, ACH e SWIFT.
+- **Capacidade 2**: Acesso a NGN (requer BVN), GHS, ZMW, BRL via trilhos de pagamento locais e mobile money.
 
-Para detalhes sobre como verificar subcontas, consulte o guia de [Integração](/pt/use-cases/onboarding).
+<Note>
+  Contas institucionais podem ter acesso a taxas aprimoradas, limites mais altos e suporte dedicado.
+</Note>
+
+Para detalhes sobre como verificar subcontas, consulte o guia de [Integração de Clientes](/pt/use-cases/onboarding).
 
 ## Como Usar Saldos Multi-moedas
 

@@ -151,7 +151,8 @@
                   "pt/use-cases/mass-payouts",
                   "pt/use-cases/crypto-offramp",
                   "pt/use-cases/collections-and-payouts",
-                  "pt/use-cases/card-collection"
+                  "pt/use-cases/card-collection",
+                  "pt/use-cases/institutional-transactions"
                 ]
               }
             ]
@@ -218,7 +219,8 @@
                   "zh/use-cases/mass-payouts",
                   "zh/use-cases/crypto-offramp",
                   "zh/use-cases/collections-and-payouts",
-                  "zh/use-cases/card-collection"
+                  "zh/use-cases/card-collection",
+                  "zh/use-cases/institutional-transactions"
                 ]
               }
             ]

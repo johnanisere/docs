@@ -10,19 +10,15 @@ A arquitetura multi-moedas da Bullring permite que cada subconta mantenha saldos
 ### Requisitos de KYC
 
 <Warning>
-  **Importante**: Os usuários devem completar o nível apropriado de KYC/KYB para
-  cada moeda que pretendem usar.
+  **Importante**: As subcontas devem completar a verificação para acessar operações com moedas. O escopo de moedas e métodos de pagamento disponíveis depende da documentação fornecida durante a verificação.
 </Warning>
 
-Diferentes moedas e regiões têm requisitos regulatórios distintos. Uma subconta verificada para operações em USD pode precisar de verificação adicional para transacionar em BRL ou NGN. A verificação é frequentemente por região ou por família de moedas. Tentar transacionar em uma moeda sem o status de KYC apropriado resultará em um erro de API.
-
-Para detalhes sobre como verificar subcontas, consulte o guia de [Integração](/pt/use-cases/onboarding).
+A Bullring opera um processo de verificação único que desbloqueia o acesso a diferentes corredores de moedas com base na completude e tipo de documentação submetida. Para detalhes sobre como verificar subcontas, consulte o guia de [Integração de Clientes](/pt/use-cases/onboarding).
 
 ## Casos de Uso Comuns
 
 ### Operações Comerciais Transfronteiriças
-
-- Coletar pagamentos em moedas locais (BRL, NGN, MXN)
+- Coletar pagamentos em moedas locais (BRL, NGN, GHS)
 - Manter reservas em múltiplas moedas
 - Converter para a moeda preferida quando necessário
 - Enviar pagamentos nas moedas locais dos destinatários
@@ -49,22 +45,9 @@ Para detalhes sobre como verificar subcontas, consulte o guia de [Integração](
 
 ## Exemplo de Fluxo Multi-moedas
 
-### Fluxo Ponta a Ponta
-
-```mermaid
-graph LR
-    A[Usuário Deposita NGN] --> B[Saldo NGN Aumenta]
-    B --> C[Converter NGN para USD]
-    C --> D[Saldo USD Aumenta, NGN Diminui]
-    D --> E[Sacar USD como USDC]
-    E --> F[Saldo USD Diminui]
-    F --> G[USDC Enviado para Carteira]
-```
-
 ### Fluxo conceitual passo a passo
 
 1. **Financiar a subconta** em qualquer moeda suportada via depósitos.
-
    - Link: [Depósitos e On-Ramping](/pt/use-cases/fiat-on-ramp)
 
 2. **Monitorar saldos** em todas as moedas na subconta.

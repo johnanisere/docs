@@ -1,0 +1,86 @@
+---
+title: "Transações Institucionais"
+description: "Acesse taxas OTC, conversões em larga escala e infraestrutura bancária dedicada para clientes institucionais."
+---
+
+## Visão Geral
+
+A Bullring fornece serviços de conversão de nível institucional para clientes que necessitam de câmbio de moedas em grande volume, taxas OTC competitivas e infraestrutura bancária dedicada. Contas institucionais se beneficiam de taxas aprimoradas, limites de transação mais altos e suporte prioritário.
+
+## Funcionalidades
+
+### Taxa OTC via API
+
+Acesse taxas de conversão over-the-counter (OTC) diretamente através da API para câmbio de moedas em grande volume. As taxas OTC oferecem melhor precificação do que as taxas de varejo padrão para transações significativas.
+
+**Benefícios:**
+- Precificação competitiva para conversões de alto volume
+- Cotações de taxas em tempo real via API
+- Suporte para todos os corredores de moedas
+- Estrutura de taxas transparente
+
+**Endpoint:** [Obter Cotação de Conversão](/api-reference/conversions/get-conversion-quote)
+
+### Conversões em Larga Escala
+
+Execute conversões de moedas em larga escala de forma eficiente em múltiplos corredores. A plataforma suporta conversões atômicas e instantâneas entre todas as moedas fiduciárias suportadas.
+
+**Corredores de Conversão Suportados:**
+- USD ↔ EUR, GBP, AED, CNY, BRL, NGN, GHS, ZMW
+- EUR ↔ GBP, AED, NGN, GHS, ZMW
+- Conversões inter-regionais (ex.: NGN → BRL, GHS → USD)
+
+**Casos de Uso:**
+- Gestão de tesouraria em múltiplos mercados
+- Estratégias de hedge cambial
+- Liquidação multi-moedas para plataformas globais
+- Infraestrutura de remessa transfronteiriça
+
+**Endpoint:** [Converter Moeda](/api-reference/conversions/convert-currency)
+
+### Contas Bancárias Nominativas
+
+Clientes institucionais podem acessar números de contas virtuais dedicados em seu nome para coleta e liquidação simplificadas em moedas suportadas.
+
+**Disponível para:**
+| Moeda | Tipo de Conta | Notas |
+|----------|-------------|-------|
+| USD | ACH, roteamento Wire | Detalhes de conta bancária dos EUA dedicados |
+| GBP | Código de classificação do Reino Unido + número de conta | Habilitado para FPS |
+| AED | IBAN | Sistema bancário dos EAU |
+| NGN | Conta bancária nigeriana | Transferência bancária local |
+
+**Benefícios:**
+- Coletas simplificadas de clientes e parceiros
+- Tempos de liquidação mais rápidos
+- Reconciliação aprimorada (fundos chegam com o nome da sua conta)
+- Credibilidade aprimorada com contrapartes
+
+**Como Acessar:**
+
+Entre em contato com seu gerente de conta ou envie um e-mail para [developer@bullring.finance](mailto:developer@bullring.finance) para solicitar o provisionamento de conta nominativa para sua conta institucional.
+
+## Elegibilidade
+
+As funcionalidades de conversão institucional estão disponíveis para:
+- Empresas registradas com documentação corporativa verificada
+- Clientes de alto volume que excedem os limites mínimos de transação
+- Plataformas e exchanges que requerem infraestrutura multi-moedas
+- Equipes de tesouraria e finanças gerenciando operações transfronteiriças
+
+## Como Começar
+
+1. **Atualizar para Conta Institucional**: Entre em contato com [developer@bullring.finance](mailto:developer@bullring.finance) para discutir os requisitos de conta institucional ou [agende uma reunião](https://cal.com/team/bullringfinance/meeting).
+
+2. **Completar Verificação Aprimorada**: Forneça documentação corporativa e autorização de tesouraria.
+
+3. **Solicitar Acesso à API**: Obtenha credenciais de API institucionais com limites de taxa aprimorados.
+
+4. **Provisionar Contas Nominativas**: Solicite números de contas virtuais dedicados para moedas suportadas.
+
+## Tópicos Relacionados
+
+- [Operações Multi-moedas](/pt/use-cases/multi-currency-operations) - Gerenciando múltiplos saldos de moedas
+- [Estimativas Pré-Transação](/pt/use-cases/rates-estimates) - Obtendo taxas de câmbio e tarifas
+- [Moedas Suportadas](/pt/supported-currencies) - Lista completa de moedas disponíveis
+- [Referência da API de Conversão](/api-reference/conversions/convert-currency) - Guia de integração técnica

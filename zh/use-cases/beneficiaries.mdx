@@ -5,8 +5,8 @@ description: "管理收款人，发送法币支付，以及出金到稳定币。
 
 ## 概述
 
-您可以通过两种方式从子账户的 USD 余额中提取资金：
-1.  **法币支付：** 将 USD 转换为当地货币（如 NGN、BRL、EUR）并发送到银行账户。
+您可以通过两种方式从子账户提取资金：
+1.  **法币支付：** 将货币余额转换为当地货币（如 NGN、BRL、EUR）并发送到银行账户。
 2.  **稳定币出金：** 将 USD 作为稳定币（USDC/USDT）提取到外部加密钱包。
 
 本指南涵盖验证收款人、创建受益人和发起提款。
@@ -86,7 +86,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recip
 
 **端点：** `POST /v1/ramp/{subaccountId}/banking/withdrawals`
 
-从子账户的 USD 余额向已创建的收款人发送资金。系统将自动将 USD 金额转换为收款人的当地货币。
+从子账户向已创建的收款人发送资金。系统将从子账户中扣除相应的货币余额。
 
 ### 示例：向 NGN 收款人提款
 
@@ -101,7 +101,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
   }'
 ```
 
-> **注意：** `amount` 字段指定的是**目标货币**的金额（如 NGN）。等值的 USD 将从子账户中扣除。
+> **注意：** `amount` 字段指定的是**目标货币**的金额（如 NGN）。等值余额将从子账户的货币持有中扣除。
 
 **响应：**
 
@@ -125,7 +125,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
 
 **端点：** `POST /v1/ramp/{subaccountId}/banking/withdrawals/stablecoin`
 
-您也可以将 USD 余额直接作为稳定币（USDC 或 USDT）提取到外部钱包地址。
+您也可以将余额直接作为稳定币（USDC 或 USDT）提取到外部钱包地址。
 
 ### 示例：在以太坊上提取 USDT
 
@@ -162,8 +162,8 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
 
 1.  **跳过验证：** 未验证银行账户详情通常会导致提款失败和不必要的延迟。
 2.  **网络错误：** 提取稳定币时，请确保 `chain` 与目标钱包匹配（例如，将 ERC-20 USDT 发送到 TRC-20 地址将导致资金丢失）。
-3.  **余额不足：** 确保子账户有足够的 USD 余额来支付提款金额**加上费用**。
-4.  **未完成 KYC：** 仅允许已通过 KYC 验证的子账户进行提款。
+3.  **余额不足：** 确保子账户有足够的相关货币余额来支付提款金额**加上费用**。
+4.  **未验证的子账户：** 仅允许已通过验证的子账户进行提款。
 
 ## Webhook 事件
 

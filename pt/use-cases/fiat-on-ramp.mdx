@@ -175,7 +175,7 @@ Veja [Eventos de Depósito](/pt/deposit-events) para detalhes do payload.
 ## Erros Comuns
 
 - **Rede Incorreta:** Enviar ativos cripto na rede errada (ex.: enviar USDC via Polygon para um endereço Ethereum) resultará em perda permanente de fundos. Sempre verifique a rede.
-- **KYC Não Verificado:** Todos os métodos de depósito requerem que a subconta tenha KYC aprovado. Tentar depositar em uma conta não verificada retornará um erro.
+- **Subcontas não verificadas:** Todos os métodos de depósito requerem que a subconta tenha verificação aprovada. Tentar depositar em uma conta não verificada retornará um erro.
 - **Ignorando Limites:** Certifique-se de que o valor do depósito está dentro dos limites `min` e `max` especificados na resposta de `channels`.
 - **ID de Canal Errado:** Ao fazer um depósito fiat, certifique-se de usar o `channelId` correspondente à moeda e método de pagamento corretos.
 

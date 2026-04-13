@@ -1,21 +1,31 @@
 ---
-title: "Moedas Suportadas"
+title: "Moedas e Trilhos Suportados"
 description: "Lista de moedas fiduciárias e digitais suportadas"
 ---
 
-Suportamos uma ampla variedade de moedas fiduciárias e digitais. Algumas das principais moedas incluem:
+Suportamos uma ampla variedade de moedas fiduciárias e digitais em múltiplos trilhos de pagamento.
 
 ### Moedas Fiduciárias
 
-- **USD** (Dólar Americano)
-- **EUR** (Euro)
-- **BRL** (Real Brasileiro)
-- **MXN** (Peso Mexicano)
-- **COP** (Peso Colombiano)
-- **ARS** (Peso Argentino)
-- **NGN** (Naira Nigeriana)
-- **GHS** (Cedi Ganês)
-- **ZMW** (Kwacha Zambiano)
+| Moeda | Código | Conta Nominal* | Notas |
+|----------|------|----------------|-------|
+| **USD** | Dólar Americano | ✓ | ACH, Wire, SWIFT |
+| **EUR** | Euro | | SEPA |
+| **GBP** | Libra Esterlina | ✓ | FPS |
+| **AED** | Dirham dos Emirados | ✓ | UAEFTS |
+| **NGN** | Naira Nigeriana | ✓ | NIBBS |
+| **GHS** | Cedi de Gana | | Mobile Money |
+| **ZMW** | Kwacha Zambiano | | Mobile Money |
+| **CNY** | Yuan Chinês | | Transferência Bancária |
+| **BRL** | Real Brasileiro | | PIX |
+
+<Note>
+**Conta Nominal**: Moedas com ✓ fornecem números de conta virtual dedicados (IBAN, código de agência ou equivalente local) em seu nome para coleções simplificadas.
+
+**Mobile Money**: GHS e ZMW operam via redes de mobile money; não é necessária conta bancária.
+
+**Apenas offramp**: CNY e BRL suportam pagamentos e conversão de stablecoin para fiat, mas não suportam depósitos ou manutenção de saldo.
+</Note>
 
 <Note>
 **Tempos de Liquidação**
@@ -33,7 +43,7 @@ Suportamos uma ampla variedade de moedas fiduciárias e digitais. Algumas das pr
 
 - **USDC** (USD Coin)
 - **USDT** (Tether)
-
+- **EURC** (Euro Coin)
 
 ### Criptomoedas
 
@@ -41,9 +51,10 @@ Suportamos uma ampla variedade de moedas fiduciárias e digitais. Algumas das pr
 
 ### Redes Suportadas
 
-- **Ethereum Mainnet** (ETH)
-- **Ethereum Sepolia (Testnet)** (ETH-SEPOLIA)
-- **Solana Mainnet** (SOL)
-- **Solana Devnet (Testnet)** (SOL-DEVNET)
-- **Lightning Network** (BTC)
+- **Ethereum Mainnet**
+- **Solana Mainnet**
+- **Celo**
+- **Polygon**
+- **Tron**
+- **Lightning Network**
 

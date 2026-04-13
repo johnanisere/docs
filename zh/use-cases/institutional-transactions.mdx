@@ -1,0 +1,86 @@
+---
+title: "机构交易"
+description: "为机构客户提供 OTC 汇率、强大的交易所和专用银行基础设施。"
+---
+
+## 概述
+
+Bullring 为需要大额货币兑换、具有竞争力的 OTC 汇率和专用银行基础设施的客户提供机构级转换服务。机构账户享有优惠费率、更高的交易限额和优先支持。
+
+## 功能
+
+### 通过 API 获取 OTC 汇率
+
+通过 API 直接访问场外交易 (OTC) 转换汇率，用于大额货币兑换。OTC 汇率为重大交易提供比标准零售汇率更优惠的价格。
+
+**优势：**
+- 大额转换的竞争性价格
+- 通过 API 获取实时汇率报价
+- 支持所有货币通道
+- 透明的费用结构
+
+**端点：** [获取转换报价](/api-reference/conversions/get-conversion-quote)
+
+### 强大的交易所
+
+高效执行跨多个通道的大规模货币转换。该平台支持所有支持的法定货币之间的原子、即时转换。
+
+**支持的转换通道：**
+- USD ↔ EUR、GBP、AED、CNY、BRL、NGN、GHS、ZMW
+- EUR ↔ GBP、AED、NGN、GHS、ZMW
+- 跨区域转换（例如 NGN → BRL、GHS → USD）
+
+**使用场景：**
+- 跨多个市场的财务管理
+- 外汇对冲策略
+- 全球平台的多币种结算
+- 跨境汇款基础设施
+
+**端点：** [货币转换](/api-reference/conversions/convert-currency)
+
+### 命名银行账户
+
+机构客户可以访问以其名义开设的专用虚拟账号，以简化支持货币的收款和结算。
+
+**可用于：**
+| 货币 | 账户类型 | 备注 |
+|----------|-------------|-------|
+| USD | ACH、电汇路由 | 专用美国银行账户详情 |
+| GBP | 英国分类代码 + 账号 | 支持 FPS |
+| AED | IBAN | 阿联酋银行系统 |
+| NGN | 尼日利亚银行账户 | 本地银行转账 |
+
+**优势：**
+- 简化来自客户和合作伙伴的收款
+- 更快的结算时间
+- 改善对账（资金以您的账户名称到达）
+- 提升与交易对手的可信度
+
+**如何访问：**
+
+联系您的客户经理或发送邮件至 [developer@bullring.finance](mailto:developer@bullring.finance)，为您的机构账户申请命名账户配置。
+
+## 资格
+
+机构转换功能适用于：
+- 已验证公司文档的注册企业
+- 超过最低交易门槛的大额客户
+- 需要多币种基础设施的平台和交易所
+- 管理跨境运营的财务和金融团队
+
+## 入门指南
+
+1. **升级为机构账户**：联系 [developer@bullring.finance](mailto:developer@bullring.finance) 讨论机构账户要求或[预约会议](https://cal.com/team/bullringfinance/meeting)。
+
+2. **完成增强验证**：提供公司文档和财务授权。
+
+3. **申请 API 访问**：获取具有增强速率限制的机构 API 凭证。
+
+4. **配置命名账户**：为支持的货币申请专用虚拟账号。
+
+## 相关主题
+
+- [多币种操作](/zh/use-cases/multi-currency-operations) - 管理多种货币余额
+- [交易前估算](/zh/use-cases/rates-estimates) - 获取汇率和费用
+- [支持的货币](/zh/supported-currencies) - 可用货币的完整列表
+- [转换 API 参考](/api-reference/conversions/convert-currency) - 技术集成指南
