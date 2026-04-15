@@ -1,6 +1,6 @@
 ---
 title: "Customer Onboarding"
-description: "Learn how to create and verify subaccounts."
+description: "Learn how to create and verify subaccounts, including status transitions, currency unlocking, and webhook events."
 ---
 
 ## Overview
@@ -86,16 +86,285 @@ curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
+---
+
+## Verification Status Lifecycle
+
+Understanding the status transitions helps you build robust verification flows and handle webhook events correctly.
+
+### Status Flow Diagram
+
+```
+┌─────────┐
+│ created │ ← Subaccount created
+└────┬────┘
+     │
+     ▼
+┌────────────┐
+│ incomplete │ ← Documents submitted but pending review
+└─────┬──────┘
+      │
+      ▼
+┌────────┐
+│ review │ ← Verification in progress
+└───┬────┘
+    │
+    ├─────────────┐
+    │             │
+    ▼             ▼
+┌──────────┐  ┌──────────┐
+│ approved │  │ declined │
+└──────────┘  └────┬─────┘
+                   │
+                   │ can_resubmit: true
+                   │
+                   ▼
+              ┌────────────┐
+              │ incomplete │ ← User can retry with new documents
+              └────────────┘
+```
+
+### Status Descriptions
+
+| Status | Description | Webhook Event | Next Steps |
+|--------|-------------|---------------|------------|
+| **created** | Subaccount exists but no verification submitted | `subaccount.status.created` | Submit verification documents |
+| **incomplete** | Documents submitted but missing information or rejected with retry allowed | None (or `subaccount.status.declined` with `can_resubmit: true`) | Review failure reason and resubmit |
+| **review** | Verification documents under review | `subaccount.status.review` | Wait for approval/decline |
+| **approved** | Verification successful, currencies unlocked | `subaccount.status.approved` | Full access to unlocked currencies |
+| **declined** | Verification rejected | `subaccount.status.declined` | Check `can_resubmit` flag and `failure_reason` |
+
+<Note>
+  When `declined` status includes `can_resubmit: false`, the subaccount cannot retry verification. This typically occurs for serious issues like document forgery.
+</Note>
+
+---
+
+## Individual vs Business Verification
+
+Bullring supports two verification types. The type you choose determines the required documents and the verification flow.
+
+### Individual Verification
+
+Individual verification is for personal accounts and follows a standard KYC (Know Your Customer) process.
+
+**Verification Type:** `"individual"`
+
+**Required Documents:**
+- Government-issued ID (passport, national ID card, or driver's license)
+- For two-sided IDs: both front and back images
+- Proof of address (utility bill, bank statement, or government letter dated within 3 months)
+
+**Typical Timeline:**
+- Submission → `review` status: Immediate
+- `review` → `approved`/`declined`: Minutes to hours (automated checks) or up to 24 hours (manual review)
+
+**Unlocks:**
+- Base currencies and payment rails (see Currency Unlocking section below)
+- Standard transaction limits
+
+### Business Verification
+
+Business verification is for corporate accounts and follows a KYB (Know Your Business) process with additional requirements.
+
+**Verification Type:** `"business"`
+
+**Required Documents:**
+- Business registration certificate
+- Articles of incorporation
+- Proof of business address
+- Ultimate Beneficial Owner (UBO) identification documents
+- Director/officer identification documents
+
+**Additional Status:**
+- `awaiting_ubo` - Specific to business verification when UBO information is pending
+
+**Typical Timeline:**
+- Submission → `review` status: Immediate
+- `review` → `approved`/`declined`: 1-3 business days (requires manual review)
+
+**Unlocks:**
+- Enhanced currencies and payment rails (see Currency Unlocking section below)
+- Higher transaction limits
+- Institutional features (dedicated support, enhanced rates)
+
+---
+
+## Currency & Rail Unlocking
+
+Different verification levels unlock different currencies and payment rails. As your subaccount progresses through verification, you'll receive webhook events and gain access to new capabilities.
+
+### Verification Levels
+
+**Base Verification (Individual/Standard KYC):**
+
+After completing individual verification, the following currencies become available:
+
+| Currency | Code | Payment Rails | Named Account | Notes |
+|----------|------|---------------|---------------|-------|
+| Nigerian Naira | NGN | NIBBS | ✓ | Instant settlement |
+| Ghana Cedi | GHS | Mobile Money | | Instant settlement |
+| Zambian Kwacha | ZMW | Mobile Money | | Instant settlement |
+| Brazilian Real | BRL | PIX | | Instant settlement, offramp only |
+
+**Enhanced Verification (Business/Additional Documentation):**
+
+After completing business verification or providing additional documentation, these currencies unlock:
+
+| Currency | Code | Payment Rails | Named Account | Settlement Time | Notes |
+|----------|------|---------------|---------------|-----------------|-------|
+| US Dollar | USD | ACH, Wire, SWIFT | ✓ | ACH: 1 day, Wire: 1 hour, SWIFT: 2-5 days | 1:1 parity with USDC/USDT |
+| Euro | EUR | SEPA | | Instant | |
+| British Pound | GBP | FPS | ✓ | Instant | |
+| UAE Dirham | AED | UAEFTS | ✓ | Instant | |
+| Chinese Yuan | CNY | Bank Transfer | | Varies | Offramp only |
+
+**Stablecoins & Cryptocurrencies:**
+
+Available after base verification on supported networks:
+- **USDC** (USD Coin) - Ethereum, Solana, Celo, Polygon, Tron
+- **USDT** (Tether) - Ethereum, Solana, Celo, Polygon, Tron
+- **EURC** (Euro Coin) - Ethereum, Solana, Celo, Polygon
+- **BTC** (Bitcoin) - Lightning Network
+
+### Webhook Events on Currency Unlock
+
+When a subaccount is approved, the `subaccount.status.approved` webhook includes the current verification level:
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+    "email": "customer@example.com",
+    "status": "approved"
+  }
+}
+```
+
+After approval, query the [Get Subaccount Balance](/api-reference/balances/get-balance) endpoint to see which currencies are unlocked with `canOnramp: true` and `canOfframp: true`.
+
+<Note>
+  For the complete list of supported currencies and their characteristics, see [Supported Currencies & Rails](/en/supported-currencies).
+</Note>
+
+---
+
+## Verification Webhook Events
+
+Bullring sends webhook events at each stage of the verification process. Configure your webhook endpoint to receive these events and update your application state accordingly.
+
+### Subaccount Created
+
+Sent immediately when a new subaccount is created, before any verification is submitted.
+
+```json
+{
+  "event": "subaccount.status.created",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "created"
+  }
+}
+```
+
+### Subaccount In Review
+
+Sent when verification documents are submitted and the review process begins.
+
+```json
+{
+  "event": "subaccount.status.review",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "review"
+  }
+}
+```
+
+### Subaccount Approved
+
+Sent when verification is successful. After receiving this event, currencies and payment rails are unlocked based on the verification level.
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
+    "email": "user@example.com",
+    "status": "approved"
+  }
+}
+```
+
+### Subaccount Declined (Can Retry)
+
+Sent when verification fails but the subaccount can resubmit documents. The `failure_reason` field explains what went wrong.
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "BAD_PROOF_OF_ADDRESS",
+    "can_resubmit": true
+  }
+}
+```
+
+**Common Retryable Failure Reasons:**
+- `BAD_PROOF_OF_ADDRESS` - Proof of address document is invalid or unreadable
+- `INCOMPLETE_DOCUMENT` - Document is missing required information
+- `POOR_IMAGE_QUALITY` - Document image quality is too low to verify
+- `EXPIRED_DOCUMENT` - Document has passed its expiration date
+- `DOCUMENT_MISMATCH` - Information on documents does not match
+
+### Subaccount Declined (Final)
+
+Sent when verification is permanently declined. The subaccount cannot retry verification.
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "FORGERY",
+    "can_resubmit": false
+  }
+}
+```
+
+**Common Terminal Failure Reasons:**
+- `FORGERY` - Document appears to be forged or tampered with
+- `BLACKLISTED` - Individual or entity is on a sanctions or watchlist
+- `FRAUDULENT_ACTIVITY` - Fraudulent activity detected
+- `DUPLICATE_ACCOUNT` - User already has an existing verified account
+
+<Note>
+  For complete webhook configuration instructions, including signature verification, see [Webhook Introduction](/en/webhook-intro) and [Subaccount Events](/en/subaccount-events).
+</Note>
+
+---
+
 ## Next Steps & Features
 
 Once a subaccount is created, you can access the full suite of Bullring's financial features for that user. Most of these operations require the subaccount to complete [Verification](/api-reference/verification).
 
 ### 1. Verification (KYC/KYB)
 
-Before a subaccount can transact, they must verify their identity. Verification is a single process where the documentation provided determines which currencies and payment rails the subaccount can access:
+Before a subaccount can transact, they must verify their identity. See the detailed sections above for:
+- [Verification Status Lifecycle](#verification-status-lifecycle) - Status transitions and webhook events
+- [Individual vs Business Verification](#individual-vs-business-verification) - Document requirements and timelines
+- [Currency & Rail Unlocking](#currency-rail-unlocking) - Which currencies unlock at each verification level
+- [Verification Webhook Events](#verification-webhook-events) - Complete webhook event reference
 
-- **Capability 1**: Access to USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via wire, ACH, and SWIFT rails.
-- **Capability 2**: Access to NGN (requires BVN), GHS, ZMW, BRL via local payment rails and mobile money.
+**For testing in staging environments**, use the [Customer Verification Document Guide](/en/use-cases/kyc-verification-document-guide) which provides specific document links that trigger approved, retryable failed, and final failed states.
 
 <Note>
   Institutional accounts may receive enhanced rates, higher limits, and dedicated support.
