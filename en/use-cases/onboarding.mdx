@@ -96,31 +96,31 @@ Understanding the status transitions helps you build robust verification flows a
 
 ```
 ┌─────────┐
-│ created │ ← Subaccount created
+│ created         │ ← Subaccount created
 └────┬────┘
      │
      ▼
 ┌────────────┐
-│ incomplete │ ← Documents submitted but pending review
+│ incomplete        │ ← Documents submitted but pending review
 └─────┬──────┘
       │
       ▼
 ┌────────┐
-│ review │ ← Verification in progress
+│ review        │ ← Verification in progress
 └───┬────┘
     │
     ├─────────────┐
     │             │
     ▼             ▼
 ┌──────────┐  ┌──────────┐
-│ approved │  │ declined │
+│ approved       │  │ declined       │
 └──────────┘  └────┬─────┘
                    │
                    │ can_resubmit: true
                    │
                    ▼
               ┌────────────┐
-              │ incomplete │ ← User can retry with new documents
+              │ incomplete        │ ← User can retry with new documents
               └────────────┘
 ```
 
@@ -157,7 +157,7 @@ Individual verification is for personal accounts and follows a standard KYC (Kno
 
 **Typical Timeline:**
 - Submission → `review` status: Immediate
-- `review` → `approved`/`declined`: Minutes to hours (automated checks) or up to 24 hours (manual review)
+- `review` → `approved`/`declined`: Less than 60 seconds (automated)
 
 **Unlocks:**
 - Base currencies and payment rails (see Currency Unlocking section below)
@@ -181,7 +181,7 @@ Business verification is for corporate accounts and follows a KYB (Know Your Bus
 
 **Typical Timeline:**
 - Submission → `review` status: Immediate
-- `review` → `approved`/`declined`: 1-3 business days (requires manual review)
+- `review` → `approved`/`declined`: Less than 60 seconds (automated)
 
 **Unlocks:**
 - Enhanced currencies and payment rails (see Currency Unlocking section below)
@@ -229,20 +229,14 @@ Available after base verification on supported networks:
 
 ### Webhook Events on Currency Unlock
 
-When a subaccount is approved, the `subaccount.status.approved` webhook includes the current verification level:
+When a subaccount is approved, the `subaccount.status.approved` webhook includes a detailed `capabilities` object that shows exactly which currencies, rails, and crypto assets are unlocked. See the [Subaccount Approved](#subaccount-approved) webhook section below for complete examples.
 
-```json
-{
-  "event": "subaccount.status.approved",
-  "data": {
-    "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
-    "email": "customer@example.com",
-    "status": "approved"
-  }
-}
-```
+The capabilities object includes:
+- **`kyc.profiles`**: List of approved countries (e.g., NG, GH, ZM, US, EU)
+- **`capabilities.currencies`**: Each currency's status (`approved`, `locked`, `partial`) and available operations
+- **`capabilities.assets`**: Crypto assets and their supported networks
 
-After approval, query the [Get Subaccount Balance](/api-reference/balances/get-balance) endpoint to see which currencies are unlocked with `canOnramp: true` and `canOfframp: true`.
+You can use this information directly from the webhook without needing to query additional endpoints.
 
 <Note>
   For the complete list of supported currencies and their characteristics, see [Supported Currencies & Rails](/en/supported-currencies).
@@ -286,18 +280,218 @@ Sent when verification documents are submitted and the review process begins.
 
 ### Subaccount Approved
 
-Sent when verification is successful. After receiving this event, currencies and payment rails are unlocked based on the verification level.
+Sent when verification is successful. The webhook includes a detailed `capabilities` object showing which currencies, rails, and assets are now available to the subaccount.
+
+#### Initial Approval (Base Verification)
+
+When a subaccount completes initial verification, they receive access to base currencies based on their approved KYC profiles:
 
 ```json
 {
   "event": "subaccount.status.approved",
   "data": {
-    "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
-    "email": "user@example.com",
-    "status": "approved"
+    "id": "b6fe2299-ffaf-4468-bffe-415e22038921",
+    "email": "contact@acmetech.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "NG",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "NGN": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "banktransfer": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "USD": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for USD operations",
+            "rails": {
+              "wire": false,
+              "ach": false,
+              "swift": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
   }
 }
 ```
+
+**Understanding Currency Status:**
+- **`approved`**: Full access - all operations enabled for this currency
+- **`locked`**: No access - additional verification required (see `requiredKyc` field)
+- **`partial`**: Limited access - some operations available, others restricted
+
+#### Enhanced Approval (Additional Verification)
+
+When a subaccount completes additional verification (e.g., for US/EU operations), they receive an updated webhook with newly unlocked currencies:
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "ac5ee406-3d18-4dd7-9e68-f3e06c6f906a",
+    "email": "customer@example.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "US",
+            "status": "approved"
+          },
+          {
+            "country": "EU",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "USD": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "wire": true,
+              "ach": false,
+              "swift": false
+            }
+          },
+          "EUR": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "sepa": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "NGN": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for NGN operations",
+            "rails": {
+              "banktransfer": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+<Note>
+  **Important**: Each time a subaccount gains approval for new countries/regions, you'll receive a new `subaccount.status.approved` webhook with updated capabilities. Store the latest capabilities object to determine which operations are available.
+</Note>
 
 ### Subaccount Declined (Can Retry)
 
