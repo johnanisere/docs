@@ -5,29 +5,233 @@ description: Real-time notifications related to subaccount status changes.
 
 Webhooks allow your application to receive real-time notifications when events happen in your Bullring account. Instead of polling the API, we will send an HTTP POST request to your configured URL.
 
-### Subaccount Approved
-```json
-{
-    "data": {
-        "id": "0480a605-03eb-4ab8-ae53-aac619cdce78",
-        "email": "user@example.com",
-        "status": "approved"
-    },
-    "event": "subaccount.status.approved"
-}
-```
-
 ### Subaccount Created
 ```json
 {
-    "data": {
-        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
-        "email": "user@example.com",
-        "status": "created"
-    },
-    "event": "subaccount.status.created"
+  "event": "subaccount.status.created",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "created"
+  }
 }
 ```
+
+### Subaccount In Review
+```json
+{
+  "event": "subaccount.status.review",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "review"
+  }
+}
+```
+
+### Subaccount Approved
+
+When a subaccount is approved, the webhook includes a detailed `capabilities` object showing which currencies, rails, and crypto assets are unlocked.
+
+<CodeGroup>
+```json Initial Approval (Base Verification)
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "b6fe2299-ffaf-4468-bffe-415e22038921",
+    "email": "contact@acmetech.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "NG",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "NGN": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "banktransfer": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "USD": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for USD operations",
+            "rails": {
+              "wire": false,
+              "ach": false,
+              "swift": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+```json Enhanced Approval (Additional Verification)
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "ac5ee406-3d18-4dd7-9e68-f3e06c6f906a",
+    "email": "customer@example.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "US",
+            "status": "approved"
+          },
+          {
+            "country": "EU",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "USD": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "wire": true,
+              "ach": false,
+              "swift": false
+            }
+          },
+          "EUR": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "sepa": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "NGN": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for NGN operations",
+            "rails": {
+              "banktransfer": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+</CodeGroup>
+
+**Currency Status Values:**
+- **`approved`**: Full access - all operations enabled
+- **`locked`**: No access - additional verification required
+- **`partial`**: Limited access - some operations/rails enabled
 
 ### Subaccount Declined
 
@@ -39,7 +243,7 @@ When a subaccount is declined, the payload includes a `failure_reason` and a boo
   "event": "subaccount.status.declined",
   "data": {
     "id": "7ae50606-4422-4b8d-8604-543686e4472d",
-    "email": "dafe+vps139@bullring.finance",
+    "email": "user@example.com",
     "status": "declined",
     "failure_reason": "BAD_PROOF_OF_ADDRESS",
     "can_resubmit": true
@@ -51,7 +255,7 @@ When a subaccount is declined, the payload includes a `failure_reason` and a boo
   "event": "subaccount.status.declined",
   "data": {
     "id": "7ae50606-4422-4b8d-8604-543686e4472d",
-    "email": "dafe+vps139@bullring.finance",
+    "email": "user@example.com",
     "status": "declined",
     "failure_reason": "FORGERY",
     "can_resubmit": false
@@ -59,15 +263,3 @@ When a subaccount is declined, the payload includes a `failure_reason` and a boo
 }
 ```
 </CodeGroup>
-
-### Subaccount In Review
-```json
-{
-    "data": {
-        "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
-        "email": "user@example.com",
-        "status": "review"
-    },
-    "event": "subaccount.status.review"
-}
-```

@@ -1,13 +1,13 @@
 ---
 title: "Integração de Clientes"
-description: "Aprenda como criar e verificar subcontas."
+description: "Aprenda como criar e verificar subcontas, incluindo transições de status, desbloqueio de moedas e eventos de webhook."
 ---
 
 ## Visão Geral
 
-Este guia cobre o fluxo completo para integrar um novo usuário (subconta), incluindo criação e verificação.
+Este guia abrange o fluxo completo para integrar um novo usuário (subconta), incluindo criação e verificação.
 
-Para integrar um novo usuário, você deve criar uma subconta. Este é o primeiro passo antes que eles possam depositar fundos ou realizar qualquer operação bancária.
+Para integrar um novo usuário, você deve criar uma subconta. Este é o primeiro passo antes que eles possam depositar fundos ou realizar quaisquer operações bancárias.
 
 ### Requisição
 
@@ -16,9 +16,9 @@ Para criar uma subconta, envie uma requisição `POST` para `/v1/ramp/subaccount
 ```bash
 curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
   -H "Content-Type: application/json" \
-  -H "x-api-key: SUA_CHAVE_DE_API" \
+  -H "x-api-key: YOUR_API_KEY" \
   -d '{
-    "email": "cliente@exemplo.com"
+    "email": "customer@example.com"
   }'
 ```
 
@@ -29,7 +29,7 @@ A API retornará os detalhes da subconta recém-criada, incluindo seu `id` únic
 ```json
 {
   "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
-  "email": "cliente@exemplo.com",
+  "email": "customer@example.com",
   "status": "created"
 }
 ```
@@ -40,12 +40,12 @@ Quando uma subconta é criada, você receberá um evento `subaccount.status.crea
 
 ```json
 {
-    "data": {
-        "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
-        "email": "cliente@exemplo.com",
-        "status": "created"
-    },
-    "event": "subaccount.status.created"
+  "data": {
+    "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739dabc",
+    "email": "customer@example.com",
+    "status": "created"
+  },
+  "event": "subaccount.status.created"
 }
 ```
 
@@ -56,8 +56,8 @@ Você pode verificar o saldo e o status de uma subconta a qualquer momento.
 ### Requisição
 
 ```bash
-curl https://api.bullring.finance/v1/ramp/subaccount/ID_DA_SUBCONTA \
-  -H "x-api-key: SUA_CHAVE_DE_API"
+curl https://api.bullring.finance/v1/ramp/subaccount/SUBACCOUNT_ID \
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
 ### Resposta
@@ -67,7 +67,7 @@ A resposta inclui o saldo atual e o status de verificação.
 ```json
 {
   "id": "6a0fd7af-181d-4c0f-b24b-b8cfb739d67a",
-  "email": "cliente@exemplo.com",
+  "email": "customer@example.com",
   "balance": "100.00000000",
   "balanceCurrency": "USD",
   "status": "approved",
@@ -83,51 +83,513 @@ Para visualizar todos os seus usuários, você pode recuperar uma lista paginada
 
 ```bash
 curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
-  -H "x-api-key: SUA_CHAVE_DE_API"
+  -H "x-api-key: YOUR_API_KEY"
 ```
 
-## Próximos Passos e Funcionalidades
+---
 
-Uma vez que uma subconta é criada, você pode acessar o conjunto completo de funcionalidades financeiras da Bullring para esse usuário. A maioria dessas operações requer que a subconta complete a [Verificação](/api-reference/verification).
+## Ciclo de Vida do Status de Verificação
+
+Compreender as transições de status ajuda você a construir fluxos de verificação robustos e lidar com eventos de webhook corretamente.
+
+### Diagrama de Fluxo de Status
+
+```
+┌─────────┐
+│ created         │ ← Subconta criada
+└────┬────┘
+     │
+     ▼
+┌────────────┐
+│ incomplete        │ ← Documentos enviados mas pendentes de revisão
+└─────┬──────┘
+      │
+      ▼
+┌────────┐
+│ review        │ ← Verificação em andamento
+└───┬────┘
+    │
+    ├─────────────┐
+    │             │
+    ▼             ▼
+┌──────────┐  ┌──────────┐
+│ approved       │  │ declined       │
+└──────────┘  └────┬─────┘
+                   │
+                   │ can_resubmit: true
+                   │
+                   ▼
+              ┌────────────┐
+              │ incomplete        │ ← Usuário pode tentar novamente com novos documentos
+              └────────────┘
+```
+
+### Descrições de Status
+
+| Status | Descrição | Evento de Webhook | Próximos Passos |
+|--------|-----------|-------------------|-----------------|
+| **created** | Subconta existe mas nenhuma verificação foi enviada | `subaccount.status.created` | Enviar documentos de verificação |
+| **incomplete** | Documentos enviados mas com informações faltando ou rejeitados com permissão para tentar novamente | Nenhum (ou `subaccount.status.declined` com `can_resubmit: true`) | Revisar motivo da falha e reenviar |
+| **review** | Documentos de verificação em análise | `subaccount.status.review` | Aguardar aprovação/recusa |
+| **approved** | Verificação bem-sucedida, moedas desbloqueadas | `subaccount.status.approved` | Acesso total às moedas desbloqueadas |
+| **declined** | Verificação rejeitada | `subaccount.status.declined` | Verificar flag `can_resubmit` e `failure_reason` |
+
+<Note>
+  Quando o status `declined` inclui `can_resubmit: false`, a subconta não pode tentar a verificação novamente. Isso normalmente ocorre para problemas sérios como falsificação de documentos.
+</Note>
+
+---
+
+## Verificação Individual vs Empresarial
+
+Bullring suporta dois tipos de verificação. O tipo que você escolhe determina os documentos necessários e o fluxo de verificação.
+
+### Verificação Individual
+
+A verificação individual é para contas pessoais e segue um processo KYC (Conheça Seu Cliente) padrão.
+
+**Tipo de Verificação:** `"individual"`
+
+**Documentos Necessários:**
+- Documento de identidade emitido pelo governo (passaporte, carteira de identidade nacional ou carteira de motorista)
+- Para documentos de dois lados: imagens da frente e do verso
+- Comprovante de endereço (conta de serviço público, extrato bancário ou carta do governo datada dentro de 3 meses)
+
+**Cronograma Típico:**
+- Envio → status `review`: Imediato
+- `review` → `approved`/`declined`: Menos de 60 segundos (automatizado)
+
+**Desbloqueios:**
+- Moedas base e rails de pagamento (veja a seção Desbloqueio de Moedas abaixo)
+- Limites de transação padrão
+
+### Verificação Empresarial
+
+A verificação empresarial é para contas corporativas e segue um processo KYB (Conheça Seu Negócio) com requisitos adicionais.
+
+**Tipo de Verificação:** `"business"`
+
+**Documentos Necessários:**
+- Certificado de registro empresarial
+- Contrato social
+- Comprovante de endereço empresarial
+- Documentos de identificação do Beneficiário Final Último (UBO)
+- Documentos de identificação de diretores/executivos
+
+**Status Adicional:**
+- `awaiting_ubo` - Específico para verificação empresarial quando a informação de UBO está pendente
+
+**Cronograma Típico:**
+- Envio → status `review`: Imediato
+- `review` → `approved`/`declined`: Menos de 60 segundos (automatizado)
+
+**Desbloqueios:**
+- Moedas aprimoradas e rails de pagamento (veja a seção Desbloqueio de Moedas abaixo)
+- Limites de transação mais altos
+- Recursos institucionais (suporte dedicado, taxas aprimoradas)
+
+---
+
+## Desbloqueio de Moedas e Rails
+
+Diferentes níveis de verificação desbloqueiam diferentes moedas e rails de pagamento. À medida que sua subconta progride pela verificação, você receberá eventos de webhook e ganhará acesso a novos recursos.
+
+### Níveis de Verificação
+
+**Verificação Base (Individual/KYC Padrão):**
+
+Após completar a verificação individual, as seguintes moedas ficam disponíveis:
+
+| Moeda | Código | Rails de Pagamento | Conta Nominal | Observações |
+|-------|--------|--------------------|--------------|----|
+| Naira Nigeriana | NGN | NIBBS | ✓ | Liquidação instantânea |
+| Cedi de Gana | GHS | Mobile Money | | Liquidação instantânea |
+| Kwacha Zambiano | ZMW | Mobile Money | | Liquidação instantânea |
+| Real Brasileiro | BRL | PIX | | Liquidação instantânea, apenas offramp |
+
+**Verificação Aprimorada (Empresarial/Documentação Adicional):**
+
+Após completar a verificação empresarial ou fornecer documentação adicional, estas moedas são desbloqueadas:
+
+| Moeda | Código | Rails de Pagamento | Conta Nominal | Tempo de Liquidação | Observações |
+|-------|--------|--------------------|--------------|--------------------|-------|
+| Dólar Americano | USD | ACH, Wire, SWIFT | ✓ | ACH: 1 dia, Wire: 1 hora, SWIFT: 2-5 dias | Paridade 1:1 com USDC/USDT |
+| Euro | EUR | SEPA | | Instantâneo | |
+| Libra Esterlina | GBP | FPS | ✓ | Instantâneo | |
+| Dirham dos Emirados Árabes | AED | UAEFTS | ✓ | Instantâneo | |
+| Yuan Chinês | CNY | Bank Transfer | | Varia | Apenas offramp |
+
+**Stablecoins e Criptomoedas:**
+
+Disponíveis após verificação base nas redes suportadas:
+- **USDC** (USD Coin) - Ethereum, Solana, Celo, Polygon, Tron
+- **USDT** (Tether) - Ethereum, Solana, Celo, Polygon, Tron
+- **EURC** (Euro Coin) - Ethereum, Solana, Celo, Polygon
+- **BTC** (Bitcoin) - Lightning Network
+
+### Eventos de Webhook no Desbloqueio de Moedas
+
+Quando uma subconta é aprovada, o webhook `subaccount.status.approved` inclui um objeto detalhado `capabilities` que mostra exatamente quais moedas, rails e ativos cripto estão desbloqueados. Veja a seção de webhook [Subconta Aprovada](#subconta-aprovada) abaixo para exemplos completos.
+
+O objeto capabilities inclui:
+- **`kyc.profiles`**: Lista de países aprovados (por exemplo, NG, GH, ZM, US, EU)
+- **`capabilities.currencies`**: Status de cada moeda (`approved`, `locked`, `partial`) e operações disponíveis
+- **`capabilities.assets`**: Ativos cripto e suas redes suportadas
+
+Você pode usar essas informações diretamente do webhook sem precisar consultar endpoints adicionais.
+
+<Note>
+  Para a lista completa de moedas suportadas e suas características, veja [Moedas e Rails Suportados](/en/supported-currencies).
+</Note>
+
+---
+
+## Eventos de Webhook de Verificação
+
+Bullring envia eventos de webhook em cada etapa do processo de verificação. Configure seu endpoint de webhook para receber esses eventos e atualizar o estado de sua aplicação adequadamente.
+
+### Subconta Criada
+
+Enviado imediatamente quando uma nova subconta é criada, antes de qualquer verificação ser enviada.
+
+```json
+{
+  "event": "subaccount.status.created",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "created"
+  }
+}
+```
+
+### Subconta em Revisão
+
+Enviado quando os documentos de verificação são enviados e o processo de revisão começa.
+
+```json
+{
+  "event": "subaccount.status.review",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "review"
+  }
+}
+```
+
+### Subconta Aprovada
+
+Enviado quando a verificação é bem-sucedida. O webhook inclui um objeto detalhado `capabilities` mostrando quais moedas, rails e ativos estão agora disponíveis para a subconta.
+
+#### Aprovação Inicial (Verificação Base)
+
+Quando uma subconta completa a verificação inicial, ela recebe acesso às moedas base com base em seus perfis KYC aprovados:
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "b6fe2299-ffaf-4468-bffe-415e22038921",
+    "email": "contact@acmetech.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "NG",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "NGN": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "banktransfer": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "USD": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for USD operations",
+            "rails": {
+              "wire": false,
+              "ach": false,
+              "swift": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**Entendendo o Status de Moeda:**
+- **`approved`**: Acesso total - todas as operações habilitadas para esta moeda
+- **`locked`**: Sem acesso - verificação adicional necessária (veja campo `requiredKyc`)
+- **`partial`**: Acesso limitado - algumas operações disponíveis, outras restritas
+
+#### Aprovação Aprimorada (Verificação Adicional)
+
+Quando uma subconta completa verificação adicional (por exemplo, para operações US/EU), ela recebe um webhook atualizado com moedas recém-desbloqueadas:
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "ac5ee406-3d18-4dd7-9e68-f3e06c6f906a",
+    "email": "customer@example.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "US",
+            "status": "approved"
+          },
+          {
+            "country": "EU",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "USD": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "wire": true,
+              "ach": false,
+              "swift": false
+            }
+          },
+          "EUR": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "sepa": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "NGN": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for NGN operations",
+            "rails": {
+              "banktransfer": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+<Note>
+  **Importante**: Cada vez que uma subconta obtém aprovação para novos países/regiões, você receberá um novo webhook `subaccount.status.approved` com capabilities atualizados. Armazene o objeto capabilities mais recente para determinar quais operações estão disponíveis.
+</Note>
+
+### Subconta Recusada (Pode Tentar Novamente)
+
+Enviado quando a verificação falha mas a subconta pode reenviar documentos. O campo `failure_reason` explica o que deu errado.
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "BAD_PROOF_OF_ADDRESS",
+    "can_resubmit": true
+  }
+}
+```
+
+**Motivos Comuns de Falha com Possibilidade de Nova Tentativa:**
+- `BAD_PROOF_OF_ADDRESS` - Documento de comprovante de endereço é inválido ou ilegível
+- `INCOMPLETE_DOCUMENT` - Documento está faltando informações necessárias
+- `POOR_IMAGE_QUALITY` - Qualidade da imagem do documento é muito baixa para verificar
+- `EXPIRED_DOCUMENT` - Documento passou da data de validade
+- `DOCUMENT_MISMATCH` - Informações nos documentos não correspondem
+
+### Subconta Recusada (Final)
+
+Enviado quando a verificação é permanentemente recusada. A subconta não pode tentar a verificação novamente.
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "FORGERY",
+    "can_resubmit": false
+  }
+}
+```
+
+**Motivos Comuns de Falha Terminal:**
+- `FORGERY` - Documento parece ser forjado ou adulterado
+- `BLACKLISTED` - Indivíduo ou entidade está em lista de sanções ou vigilância
+- `FRAUDULENT_ACTIVITY` - Atividade fraudulenta detectada
+- `DUPLICATE_ACCOUNT` - Usuário já possui uma conta verificada existente
+
+<Note>
+  Para instruções completas de configuração de webhook, incluindo verificação de assinatura, veja [Introdução a Webhooks](/en/webhook-intro) e [Eventos de Subconta](/en/subaccount-events).
+</Note>
+
+---
+
+## Próximos Passos e Recursos
+
+Uma vez que uma subconta é criada, você pode acessar o conjunto completo de recursos financeiros da Bullring para aquele usuário. A maioria dessas operações requer que a subconta complete a [Verificação](/api-reference/verification).
 
 ### 1. Verificação (KYC/KYB)
 
-Antes que uma subconta possa transacionar, ela deve verificar sua identidade. A verificação é um processo único onde a documentação fornecida determina quais moedas e trilhos de pagamento a subconta pode acessar:
+Antes que uma subconta possa transacionar, ela deve verificar sua identidade. Veja as seções detalhadas acima para:
+- [Ciclo de Vida do Status de Verificação](#ciclo-de-vida-do-status-de-verificação) - Transições de status e eventos de webhook
+- [Verificação Individual vs Empresarial](#verificação-individual-vs-empresarial) - Requisitos de documentos e cronogramas
+- [Desbloqueio de Moedas e Rails](#desbloqueio-de-moedas-e-rails) - Quais moedas são desbloqueadas em cada nível de verificação
+- [Eventos de Webhook de Verificação](#eventos-de-webhook-de-verificação) - Referência completa de eventos de webhook
 
-- **Capacidade 1**: Acesso a USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via trilhos wire, ACH e SWIFT.
-- **Capacidade 2**: Acesso a NGN (requer BVN), GHS, ZMW, BRL via trilhos de pagamento locais e mobile money.
+**Para testes em ambientes de homologação**, use o [Guia de Documentos de Verificação do Cliente](/en/use-cases/kyc-verification-document-guide) que fornece links de documentos específicos que acionam estados aprovados, falhas com nova tentativa permitida e falhas finais.
 
 <Note>
   Contas institucionais podem receber taxas aprimoradas, limites mais altos e suporte dedicado.
 </Note>
 
-- [Veja a API de Verificação](/api-reference/verification)
+- [Ver API de Verificação](/api-reference/verification)
 
 ### 2. Depósitos (On-Ramp)
 
-Subcontas podem adicionar fundos aos seus saldos usando vários métodos:
+Subcontas podem financiar seus saldos usando vários métodos:
 
-- **Fiat**: Transferências bancárias locais, Mobile Money (ex.: NGN, GHS, ZMW).
+- **Fiat**: Transferências bancárias locais, Mobile Money (por exemplo, NGN, GHS, ZMW).
 - **Cripto**: Transferências on-chain (ETH, SOL) ou Lightning Network (BTC).
-- [Veja a API de Depósitos](/api-reference/deposits/request-fiat-deposit)
+- [Ver API de Depósitos](/api-reference/deposits/request-fiat-deposit)
 
 ### 3. Saques (Off-Ramp)
 
 Subcontas podem sacar seus fundos para:
 
-- **Destinatários Fiat**: Transferências Wire (USD, EUR), PIX (BRL), Mobile Money.
+- **Destinatários Fiat**: Transferências wire (USD, EUR), PIX (BRL), Mobile Money.
 - **Carteiras Cripto**: Stablecoins (USDC, USDT) ou Bitcoin.
-- [Veja a API de Saques](/api-reference/withdrawals/withdraw-fiat)
+- [Ver API de Saques](/api-reference/withdrawals/withdraw-fiat)
 
-### 4. Gestão de Destinatários
+### 4. Gerenciamento de Destinatários
 
-Salve detalhes de beneficiários (contas bancárias, endereços cripto) para facilitar e tornar mais seguros os saques repetidos.
+Salve detalhes de beneficiários (contas bancárias, endereços cripto) para tornar saques repetidos mais fáceis e seguros.
 
-- [Veja a API de Destinatários](/api-reference/recipients/get-all-recipients)
+- [Ver API de Destinatários](/api-reference/recipients/get-all-recipients)
 
 ### 5. Taxas e Tarifas
 
-Verifique as taxas de conversão em tempo real e calcule as tarifas antes de iniciar transações para garantir transparência para seus usuários.
+Verifique taxas de conversão em tempo real e calcule tarifas antes de iniciar transações para garantir transparência para seus usuários.
 
-- [Veja a API de Taxas e Tarifas](/api-reference/rates/conversion-rate)
-
+- [Ver API de Taxas e Tarifas](/api-reference/rates/conversion-rate)

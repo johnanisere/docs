@@ -1,17 +1,17 @@
 ---
 title: "客户入驻"
-description: "了解如何创建和验证子账户。"
+description: "了解如何创建和验证子账户，包括状态转换、货币解锁和 webhook 事件。"
 ---
 
 ## 概述
 
-本指南涵盖新用户（子账户）入驻的完整流程，包括创建和验证。
+本指南涵盖了新用户（子账户）入驻的完整流程，包括创建和验证。
 
-要入驻新用户，您必须创建一个子账户。这是用户存入资金或执行任何银行操作之前的第一步。
+要入驻新用户，您必须创建一个子账户。这是他们能够存入资金或执行任何银行操作之前的第一步。
 
 ### 请求
 
-要创建子账户，请向 `/v1/ramp/subaccount` 发送 `POST` 请求，包含用户的电子邮件地址。
+要创建子账户，发送 `POST` 请求到 `/v1/ramp/subaccount` 并附带用户的电子邮件地址。
 
 ```bash
 curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
@@ -24,7 +24,7 @@ curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
 
 ### 响应
 
-API 将返回新创建的子账户详细信息，包括其唯一 `id`。
+API 将返回新创建的子账户详情，包括其唯一的 `id`。
 
 ```json
 {
@@ -36,7 +36,7 @@ API 将返回新创建的子账户详细信息，包括其唯一 `id`。
 
 ### Webhooks
 
-当子账户创建时，您将收到 `subaccount.status.created` 事件。
+当子账户被创建时，您将收到一个 `subaccount.status.created` 事件。
 
 ```json
 {
@@ -49,9 +49,9 @@ API 将返回新创建的子账户详细信息，包括其唯一 `id`。
 }
 ```
 
-## 查询子账户
+## 检索子账户
 
-您可以随时查看子账户的余额和状态。
+您可以随时检查子账户的余额和状态。
 
 ### 请求
 
@@ -62,7 +62,7 @@ curl https://api.bullring.finance/v1/ramp/subaccount/SUBACCOUNT_ID \
 
 ### 响应
 
-响应包含当前余额和验证状态。
+响应包括当前余额和验证状态。
 
 ```json
 {
@@ -77,7 +77,7 @@ curl https://api.bullring.finance/v1/ramp/subaccount/SUBACCOUNT_ID \
 
 ## 列出子账户
 
-要查看所有用户，您可以获取子账户的分页列表。
+要查看所有用户，您可以检索分页的子账户列表。
 
 ### 请求
 
@@ -86,47 +86,510 @@ curl "https://api.bullring.finance/v1/ramp/subaccounts?page=1" \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-## 后续步骤和功能
+---
 
-子账户创建后，您可以为该用户使用 Bullring 的全套金融功能。大多数操作要求子账户完成[身份验证](/api-reference/verification)。
+## 验证状态生命周期
 
-### 1. 身份验证 (KYC/KYB)
+了解状态转换有助于您构建健壮的验证流程并正确处理 webhook 事件。
 
-在子账户可以交易之前，必须验证其身份。验证是一个单一流程，提供的文档决定了子账户可以访问的货币和支付通道：
+### 状态流程图
 
-- **能力 1**：通过电汇、ACH 和 SWIFT 通道访问 USD、EUR、GBP、AED、CNY、BRL、GHS、ZMW。
-- **能力 2**：通过本地支付通道和移动支付访问 NGN（需要 BVN）、GHS、ZMW、BRL。
+```
+┌─────────┐
+│ created         │ ← 子账户已创建
+└────┬────┘
+     │
+     ▼
+┌────────────┐
+│ incomplete        │ ← 文档已提交但待审核
+└─────┬──────┘
+      │
+      ▼
+┌────────┐
+│ review        │ ← 验证进行中
+└───┬────┘
+    │
+    ├─────────────┐
+    │             │
+    ▼             ▼
+┌──────────┐  ┌──────────┐
+│ approved       │  │ declined       │
+└──────────┘  └────┬─────┘
+                   │
+                   │ can_resubmit: true
+                   │
+                   ▼
+              ┌────────────┐
+              │ incomplete        │ ← 用户可以用新文档重试
+              └────────────┘
+```
+
+### 状态描述
+
+| 状态 | 描述 | Webhook 事件 | 下一步 |
+|--------|-------------|---------------|------------|
+| **created** | 子账户存在但未提交验证 | `subaccount.status.created` | 提交验证文档 |
+| **incomplete** | 文档已提交但信息缺失或被拒绝（允许重试） | 无（或 `subaccount.status.declined` 附带 `can_resubmit: true`） | 查看失败原因并重新提交 |
+| **review** | 验证文档审核中 | `subaccount.status.review` | 等待批准/拒绝 |
+| **approved** | 验证成功，货币已解锁 | `subaccount.status.approved` | 完全访问已解锁的货币 |
+| **declined** | 验证被拒绝 | `subaccount.status.declined` | 检查 `can_resubmit` 标志和 `failure_reason` |
 
 <Note>
-  机构账户可能享有优惠费率、更高限额和专属支持。
+  当 `declined` 状态包含 `can_resubmit: false` 时，子账户无法重试验证。这通常发生在严重问题（如文档伪造）的情况下。
+</Note>
+
+---
+
+## 个人验证与企业验证
+
+Bullring 支持两种验证类型。您选择的类型决定了所需的文档和验证流程。
+
+### 个人验证
+
+个人验证适用于个人账户，遵循标准的 KYC（了解您的客户）流程。
+
+**验证类型：** `"individual"`
+
+**所需文档：**
+- 政府签发的身份证件（护照、国民身份证或驾驶执照）
+- 对于双面身份证：正反面图像
+- 地址证明（3 个月内的水电费账单、银行对账单或政府信函）
+
+**典型时间线：**
+- 提交 → `review` 状态：立即
+- `review` → `approved`/`declined`：少于 60 秒（自动化）
+
+**解锁：**
+- 基础货币和支付渠道（见下文货币解锁部分）
+- 标准交易限额
+
+### 企业验证
+
+企业验证适用于公司账户，遵循 KYB（了解您的企业）流程，并有额外要求。
+
+**验证类型：** `"business"`
+
+**所需文档：**
+- 企业注册证书
+- 公司章程
+- 企业地址证明
+- 最终受益所有人 (UBO) 身份证明文件
+- 董事/高级管理人员身份证明文件
+
+**额外状态：**
+- `awaiting_ubo` - 企业验证特有，当 UBO 信息待提供时
+
+**典型时间线：**
+- 提交 → `review` 状态：立即
+- `review` → `approved`/`declined`：少于 60 秒（自动化）
+
+**解锁：**
+- 增强货币和支付渠道（见下文货币解锁部分）
+- 更高的交易限额
+- 机构功能（专属支持、优惠汇率）
+
+---
+
+## 货币与渠道解锁
+
+不同的验证级别解锁不同的货币和支付渠道。随着您的子账户完成验证流程，您将收到 webhook 事件并获得新功能的访问权限。
+
+### 验证级别
+
+**基础验证（个人/标准 KYC）：**
+
+完成个人验证后，以下货币将可用：
+
+| 货币 | 代码 | 支付渠道 | 专用账户 | 备注 |
+|----------|------|---------------|---------------|-------|
+| 尼日利亚奈拉 | NGN | NIBBS | ✓ | 即时结算 |
+| 加纳塞地 | GHS | Mobile Money | | 即时结算 |
+| 赞比亚克瓦查 | ZMW | Mobile Money | | 即时结算 |
+| 巴西雷亚尔 | BRL | PIX | | 即时结算，仅限出金 |
+
+**增强验证（企业/额外文档）：**
+
+完成企业验证或提供额外文档后，这些货币将解锁：
+
+| 货币 | 代码 | 支付渠道 | 专用账户 | 结算时间 | 备注 |
+|----------|------|---------------|---------------|-----------------|-------|
+| 美元 | USD | ACH、Wire、SWIFT | ✓ | ACH：1 天，Wire：1 小时，SWIFT：2-5 天 | 与 USDC/USDT 1:1 等价 |
+| 欧元 | EUR | SEPA | | 即时 | |
+| 英镑 | GBP | FPS | ✓ | 即时 | |
+| 阿联酋迪拉姆 | AED | UAEFTS | ✓ | 即时 | |
+| 人民币 | CNY | Bank Transfer | | 不等 | 仅限出金 |
+
+**稳定币与加密货币：**
+
+基础验证后可在支持的网络上使用：
+- **USDC**（美元硬币）- Ethereum、Solana、Celo、Polygon、Tron
+- **USDT**（泰达币）- Ethereum、Solana、Celo、Polygon、Tron
+- **EURC**（欧元硬币）- Ethereum、Solana、Celo、Polygon
+- **BTC**（比特币）- Lightning Network
+
+### 货币解锁时的 Webhook 事件
+
+当子账户被批准时，`subaccount.status.approved` webhook 包含一个详细的 `capabilities` 对象，显示确切解锁的货币、渠道和加密资产。请参阅下面的[子账户已批准](#subaccount-approved) webhook 部分以获取完整示例。
+
+capabilities 对象包括：
+- **`kyc.profiles`**：已批准国家列表（例如 NG、GH、ZM、US、EU）
+- **`capabilities.currencies`**：每种货币的状态（`approved`、`locked`、`partial`）和可用操作
+- **`capabilities.assets`**：加密资产及其支持的网络
+
+您可以直接从 webhook 使用此信息，无需查询额外的端点。
+
+<Note>
+  有关支持的货币及其特性的完整列表，请参阅[支持的货币与渠道](/en/supported-currencies)。
+</Note>
+
+---
+
+## 验证 Webhook 事件
+
+Bullring 在验证过程的每个阶段发送 webhook 事件。配置您的 webhook 端点以接收这些事件并相应地更新您的应用程序状态。
+
+### 子账户已创建
+
+在创建新子账户后立即发送，在提交任何验证之前。
+
+```json
+{
+  "event": "subaccount.status.created",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "created"
+  }
+}
+```
+
+### 子账户审核中
+
+在提交验证文档并开始审核流程时发送。
+
+```json
+{
+  "event": "subaccount.status.review",
+  "data": {
+    "id": "7625a677-44e1-4b96-b0d0-ba86af1b93cc",
+    "email": "user@example.com",
+    "status": "review"
+  }
+}
+```
+
+### 子账户已批准
+
+在验证成功时发送。webhook 包含一个详细的 `capabilities` 对象，显示子账户现在可使用的货币、渠道和资产。
+
+#### 初始批准（基础验证）
+
+当子账户完成初始验证时，他们根据已批准的 KYC 配置文件获得基础货币的访问权限：
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "b6fe2299-ffaf-4468-bffe-415e22038921",
+    "email": "contact@acmetech.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "NG",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "NGN": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "banktransfer": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "USD": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for USD operations",
+            "rails": {
+              "wire": false,
+              "ach": false,
+              "swift": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+**理解货币状态：**
+- **`approved`**：完全访问 - 此货币的所有操作已启用
+- **`locked`**：无访问权限 - 需要额外验证（见 `requiredKyc` 字段）
+- **`partial`**：有限访问 - 某些操作可用，其他受限
+
+#### 增强批准（额外验证）
+
+当子账户完成额外验证（例如用于 US/EU 操作）时，他们会收到一个包含新解锁货币的更新 webhook：
+
+```json
+{
+  "event": "subaccount.status.approved",
+  "data": {
+    "id": "ac5ee406-3d18-4dd7-9e68-f3e06c6f906a",
+    "email": "customer@example.com",
+    "status": "approved",
+    "capabilities": {
+      "kyc": {
+        "profiles": [
+          {
+            "country": "US",
+            "status": "approved"
+          },
+          {
+            "country": "EU",
+            "status": "approved"
+          },
+          {
+            "country": "GH",
+            "status": "approved"
+          },
+          {
+            "country": "ZM",
+            "status": "approved"
+          }
+        ]
+      },
+      "capabilities": {
+        "currencies": {
+          "USD": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "wire": true,
+              "ach": false,
+              "swift": false
+            }
+          },
+          "EUR": {
+            "status": "partial",
+            "canOnramp": false,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "sepa": true
+            }
+          },
+          "GHS": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "ZMW": {
+            "status": "approved",
+            "canOnramp": true,
+            "canOfframp": true,
+            "canDeposit": true,
+            "canWithdraw": true,
+            "rails": {
+              "momo": true
+            }
+          },
+          "NGN": {
+            "status": "locked",
+            "canOnramp": false,
+            "canOfframp": false,
+            "canDeposit": false,
+            "canWithdraw": false,
+            "requiredKyc": "Additional Verification required for NGN operations",
+            "rails": {
+              "banktransfer": false
+            }
+          }
+        },
+        "assets": {
+          "USDT": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "USDC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA", "POLY-AMOY"]
+          },
+          "EURC": {
+            "networks": ["ETH-SEPOLIA", "SOL-DEVNET", "CELO-SEPOLIA"]
+          },
+          "BTC": {
+            "networks": ["LIGHTNING"]
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+<Note>
+  **重要**：每当子账户获得新国家/地区的批准时，您将收到一个新的 `subaccount.status.approved` webhook，其中包含更新的 capabilities。存储最新的 capabilities 对象以确定哪些操作可用。
+</Note>
+
+### 子账户已拒绝（可重试）
+
+在验证失败但子账户可以重新提交文档时发送。`failure_reason` 字段解释了出错原因。
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "BAD_PROOF_OF_ADDRESS",
+    "can_resubmit": true
+  }
+}
+```
+
+**常见可重试失败原因：**
+- `BAD_PROOF_OF_ADDRESS` - 地址证明文件无效或不可读
+- `INCOMPLETE_DOCUMENT` - 文件缺少必需信息
+- `POOR_IMAGE_QUALITY` - 文件图像质量太低无法验证
+- `EXPIRED_DOCUMENT` - 文件已过期
+- `DOCUMENT_MISMATCH` - 文件上的信息不匹配
+
+### 子账户已拒绝（最终）
+
+在验证被永久拒绝时发送。子账户无法重试验证。
+
+```json
+{
+  "event": "subaccount.status.declined",
+  "data": {
+    "id": "7ae50606-4422-4b8d-8604-543686e4472d",
+    "email": "user@example.com",
+    "status": "declined",
+    "failure_reason": "FORGERY",
+    "can_resubmit": false
+  }
+}
+```
+
+**常见终止失败原因：**
+- `FORGERY` - 文件似乎被伪造或篡改
+- `BLACKLISTED` - 个人或实体在制裁或监视名单上
+- `FRAUDULENT_ACTIVITY` - 检测到欺诈活动
+- `DUPLICATE_ACCOUNT` - 用户已有现有的已验证账户
+
+<Note>
+  有关完整的 webhook 配置说明（包括签名验证），请参阅 [Webhook 介绍](/en/webhook-intro)和[子账户事件](/en/subaccount-events)。
+</Note>
+
+---
+
+## 下一步与功能
+
+一旦创建了子账户，您就可以为该用户访问 Bullring 的全套金融功能。这些操作大多数需要子账户完成[验证](/api-reference/verification)。
+
+### 1. 验证（KYC/KYB）
+
+在子账户可以进行交易之前，他们必须验证身份。请参阅上面的详细部分：
+- [验证状态生命周期](#verification-status-lifecycle) - 状态转换和 webhook 事件
+- [个人验证与企业验证](#individual-vs-business-verification) - 文档要求和时间线
+- [货币与渠道解锁](#currency-rail-unlocking) - 每个验证级别解锁哪些货币
+- [验证 Webhook 事件](#verification-webhook-events) - 完整的 webhook 事件参考
+
+**对于在测试环境中进行测试**，请使用[客户验证文档指南](/en/use-cases/kyc-verification-document-guide)，该指南提供触发已批准、可重试失败和最终失败状态的特定文档链接。
+
+<Note>
+  机构账户可能会获得优惠汇率、更高的限额和专属支持。
 </Note>
 
 - [查看验证 API](/api-reference/verification)
 
 ### 2. 存款（入金）
 
-子账户可以使用多种方式为其余额充值：
+子账户可以使用各种方法为其余额充值：
 
-- **法币**：本地银行转账、移动支付（如 NGN、GHS、ZMW）。
-- **加密货币**：链上转账（ETH、SOL）或闪电网络（BTC）。
+- **法币**：本地银行转账、Mobile Money（例如 NGN、GHS、ZMW）。
+- **加密货币**：链上转账（ETH、SOL）或 Lightning Network（BTC）。
 - [查看存款 API](/api-reference/deposits/request-fiat-deposit)
 
-### 3. 提款（出金）
+### 3. 取款（出金）
 
 子账户可以将资金提取到：
 
-- **法币收款人**：电汇（USD、EUR）、PIX（BRL）、移动支付。
+- **法币收款人**：电汇（USD、EUR）、PIX（BRL）、Mobile Money。
 - **加密钱包**：稳定币（USDC、USDT）或比特币。
-- [查看提款 API](/api-reference/withdrawals/withdraw-fiat)
+- [查看取款 API](/api-reference/withdrawals/withdraw-fiat)
 
 ### 4. 收款人管理
 
-保存受益人详细信息（银行账户、加密地址），使重复提款更容易和更安全。
+保存受益人详情（银行账户、加密地址）以使重复取款更容易、更安全。
 
 - [查看收款人 API](/api-reference/recipients/get-all-recipients)
 
-### 5. 汇率和费用
+### 5. 汇率与费用
 
-在发起交易之前查看实时转换汇率和计算费用，确保对用户的透明度。
+在发起交易之前检查实时转换汇率并计算费用，以确保对用户的透明度。
 
-- [查看汇率和费用 API](/api-reference/rates/conversion-rate)
+- [查看汇率与费用 API](/api-reference/rates/conversion-rate)
