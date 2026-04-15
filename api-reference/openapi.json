@@ -6591,8 +6591,8 @@
         "tags": [
           "Recipients"
         ],
-        "summary": "Add Fiat Recipient",
-        "description": "Add a new fiat recipient for withdrawals. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
+        "summary": "Add Fiat / Onchain Recipient",
+        "description": "Add a new fiat or cryptocurrency recipient for withdrawals. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -6820,6 +6820,205 @@
                       "phone_number",
                       "account_owner_name"
                     ]
+                  },
+                  {
+                    "title": "MXN",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "MXN"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "mxn_method": {
+                        "type": "string",
+                        "enum": [
+                          "spei",
+                          "debit_card",
+                          "phone_number"
+                        ]
+                      },
+                      "beneficiary": {
+                        "type": "string"
+                      },
+                      "clabe": {
+                        "type": "string"
+                      },
+                      "institution_code": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "mxn_method",
+                      "beneficiary",
+                      "clabe",
+                      "institution_code"
+                    ]
+                  },
+                  {
+                    "title": "ARS",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "ARS"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "recipient_name": {
+                        "type": "string"
+                      },
+                      "cvu": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "recipient_name",
+                      "cvu"
+                    ]
+                  },
+                  {
+                    "title": "COP",
+                    "type": "object",
+                    "description": "Requires approved Tier 1 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "COP"
+                        ]
+                      },
+                      "alias": {
+                        "type": "string"
+                      },
+                      "cop_method": {
+                        "type": "string",
+                        "enum": [
+                          "pse",
+                          "ach"
+                        ]
+                      },
+                      "bank_account": {
+                        "type": "string"
+                      },
+                      "account_type": {
+                        "type": "string",
+                        "enum": [
+                          "1",
+                          "2"
+                        ],
+                        "description": "1-Checking, 2-Savings"
+                      },
+                      "bank_code": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "cop_method",
+                      "bank_account",
+                      "account_type",
+                      "bank_code"
+                    ]
+                  },
+                  {
+                    "title": "USDC",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "USDC"
+                        ],
+                        "description": "USDC recipient"
+                      },
+                      "wallet_address": {
+                        "type": "string",
+                        "description": "Cryptocurrency wallet address for USDC transfers"
+                      },
+                      "nick_name": {
+                        "type": "string",
+                        "description": "Nickname for the USDC wallet address"
+                      },
+                      "chain": {
+                        "type": "string",
+                        "enum": [
+                          "ethereum",
+                          "solana",
+                          "tron",
+                          "trx",
+                          "eth",
+                          "erc20",
+                          "sol",
+                          "polygon",
+                          "avax",
+                          "matic",
+                          "poly"
+                        ],
+                        "description": "The blockchain on which the USDC is held"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "wallet_address",
+                      "nick_name"
+                    ]
+                  },
+                    {
+                    "title": "USDT",
+                    "type": "object",
+                    "description": "Requires approved Tier 2 KYC.",
+                    "properties": {
+                      "currency": {
+                        "type": "string",
+                        "enum": [
+                          "USDC"
+                        ],
+                        "description": "USDC recipient"
+                      },
+                      "wallet_address": {
+                        "type": "string",
+                        "description": "Cryptocurrency wallet address for USDC transfers"
+                      },
+                      "nick_name": {
+                        "type": "string",
+                        "description": "Nickname for the USDC wallet address"
+                      },
+                      "chain": {
+                        "type": "string",
+                        "enum": [
+                          "ethereum",
+                          "solana",
+                          "tron",
+                          "trx",
+                          "eth",
+                          "erc20",
+                          "sol",
+                          "polygon",
+                          "avax",
+                          "matic",
+                          "poly"
+                        ],
+                        "description": "The blockchain on which the USDC is held"
+                      }
+                    },
+                    "required": [
+                      "currency",
+                      "wallet_address",
+                      "nick_name"
+                    ]
                   }
                 ]
               },
@@ -6968,6 +7167,18 @@
                       "is_verified": false,
                       "account_id": "+260241234567"
                     }
+                  },
+                  "USDC": {
+                    "summary": "USDC example",
+                    "value": {
+                      "id": "334e9024-28de-4247-9f01-d7c74163dd40",
+                      "account_owner_name": "test two",
+                      "active": true,
+                      "currency": "USDC",
+                      "is_verified": false,
+                      "account_id": "0x1234567890123456789012345678901234567890",
+                      "payment_rail": "ethereum"
+                    }
                   }
                 }
               }
@@ -7049,6 +7260,56 @@
               "type": "string"
             },
             "required": true
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "NGN",
+                "BRL",
+                "USD",
+                "EUR",
+                "GHS",
+                "ZMW",
+                "TZS",
+                "ARS",
+                "AED",
+                "MXN",
+                "ARS",
+                "COP",
+                "USDC",
+                "USDT",
+                "EURC"
+              ]
+            },
+            "required": false,
+            "description": "Filter recipients by currency"
+          },
+          {
+            "name": "payment_rail",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sepa",
+                "ach",
+                "wire",
+                "pse",
+                "celo",
+                "btc_lightning",
+                "xlm",
+                "stellar",
+                "avax",
+                "tron",
+                "solana",
+                "polygon",
+                "ethereum"
+              ]
+            },
+            "required": false,
+            "description": "Filter recipients by payment rail"
           }
         ],
         "responses": {
@@ -7718,7 +7979,8 @@
                   "active": true,
                   "currency": "BRL",
                   "is_verified": true,
-                  "account_id": "667.136.083-96"
+                  "account_id": "667.136.083-96",
+                  "payment_rail": "pix"
                 }
               }
             }
