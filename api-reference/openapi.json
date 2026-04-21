@@ -1777,30 +1777,29 @@
                       "salary",
                       "sale_of_assets_real_estate",
                       "savings",
-                        "someone_elses_funds"
-                      ]
-                    },
-                    "source_of_funds_description": {
-                      "type": "string"
-                    },
-                    "identifying_information": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "drivers_license",
-                              "matriculate_id",
-                              "military_id",
-                              "national_id",
-                              "passport",
-                              "permanent_residency_id",
-                              "state_or_provincial_id",
-                              "visa"
-                            ]
-                          },
+                      "someone_elses_funds"
+                    ]
+                  },
+                  "source_of_funds_description": {
+                    "type": "string"
+                  },
+                  "identifying_information": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "matriculate_id",
+                            "military_id",
+                            "national_id",
+                            "passport",
+                            "permanent_residency_id",
+                            "state_or_provincial_id",
+                            "visa"
+                          ]
+                        },
                         "issuing_country": {
                           "type": "string",
                           "description": "ISO alpha 3 country codes. See [ISO Alpha 3](https://www.iban.com/country-codes)"
@@ -2018,7 +2017,6 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "drivers_license",
                               "matriculate_id",
                               "military_id",
                               "national_id",
@@ -2276,7 +2274,6 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "drivers_license",
                               "matriculate_id",
                               "military_id",
                               "national_id",
@@ -2561,7 +2558,6 @@
                           "type": {
                             "type": "string",
                             "enum": [
-                              "drivers_license",
                               "matriculate_id",
                               "military_id",
                               "national_id",
@@ -2964,7 +2960,6 @@
                                 "description": "The type of identification document",
                                 "enum": [
                                   "passport",
-                                  "drivers_license",
                                   "national_id",
                                   "ssn"
                                 ]
@@ -3149,16 +3144,10 @@
                     },
                     "identification": [
                       {
-                        "type": "drivers_license",
-                        "number": "D1234567",
-                        "issuing_country": "US",
-                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png",
-                        "image_back": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/012e6a1-Germany-ID_back_mz3ebe.png"
-                      },
-                      {
                         "type": "ssn",
                         "number": "342-73-0792",
-                        "issuing_country": "US"
+                        "issuing_country": "US",
+                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png"
                       }
                     ],
                     "documents": [
@@ -3994,7 +3983,7 @@
                       },
                       "identification": [
                         {
-                          "type": "drivers_license",
+                          "type": "ssn",
                           "number": "D1234567",
                           "issuing_country": "US",
                           "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png",
@@ -4031,15 +4020,10 @@
                       },
                       "identification": [
                         {
-                          "type": "passport",
-                          "number": "A36980303",
-                          "issuing_country": "US",
-                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
-                        },
-                        {
                           "type": "ssn",
                           "number": "322-73-0792",
-                          "issuing_country": "US"
+                          "issuing_country": "US",
+                          "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
                         }
                       ],
                       "documents": [
@@ -6976,7 +6960,7 @@
                       "nick_name"
                     ]
                   },
-                    {
+                  {
                     "title": "USDT",
                     "type": "object",
                     "description": "Requires approved Tier 2 KYC.",
@@ -8481,27 +8465,27 @@
                   "address"
                 ]
               },
-                "examples": {
-                  "Standard Withdrawal": {
-                    "summary": "Standard stablecoin withdrawal",
-                    "value": {
-                      "amount": "12",
-                      "stablecoin": "usdt",
-                      "chain": "ethereum",
-                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
-                    }
-                  },
-                  "Card Collection Balance": {
-                    "summary": "Withdraw from card collection (USDCARD) balance",
-                    "value": {
-                      "amount": "50",
-                      "stablecoin": "usdc",
-                      "chain": "celo",
-                      "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-                      "balance_account": "USDCARD"
-                    }
+              "examples": {
+                "Standard Withdrawal": {
+                  "summary": "Standard stablecoin withdrawal",
+                  "value": {
+                    "amount": "12",
+                    "stablecoin": "usdt",
+                    "chain": "ethereum",
+                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+                  }
+                },
+                "Card Collection Balance": {
+                  "summary": "Withdraw from card collection (USDCARD) balance",
+                  "value": {
+                    "amount": "50",
+                    "stablecoin": "usdc",
+                    "chain": "celo",
+                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
+                    "balance_account": "USDCARD"
                   }
                 }
+              }
             }
           }
         },
