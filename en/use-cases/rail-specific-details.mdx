@@ -1,0 +1,48 @@
+---
+title: "Rail Specific Details"
+description: "Behaviors unique to each fiat rail supported by Bridge Orchestration."
+---
+
+As Bridge Orchestration continues to expand across global fiat rails, this document outlines behaviors unique to each rail.
+
+<AccordionGroup>
+  <Accordion title="USD / (ACH & Wire)" icon="dollar-sign">
+    * **Virtual accounts are fully permitted to receive the following transactions for non-US residents.**
+      1. First-party payments where you are sending USD from your bank, fintech app, or brokerage account
+      2. Third-party payment where a registered business sends USD from its bank account
+      3. Third-party payment from a family member's bank account, where you share a surname
+      4. Third-party Person-to-Person payment for an amount less than \$4,000
+    * **The following types of transactions are fully permitted to be received by virtual accounts for US residents.**
+      1. First-party payments where you are sending USD from your bank, fintech app, or brokerage account
+      2. Payroll payments from businesses
+      3. Third party payments in most states except for a New York, Pennsylvania, and Texas
+  </Accordion>
+</AccordionGroup>
+
+<AccordionGroup>
+  <Accordion title="EUR / SEPA" icon="euro-sign">
+    ### Onramps
+
+    * **Supported IBANs issued countries and territories:** Aland Islands, Albania, Andorra, Austria, Azores, Belgium, Bulgaria, Canary Islands, Ceuta, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, French Guiana, Germany, Gibraltar, Greece, Guadeloupe, Guernsey, Hungary, Iceland, Ireland, Isle of Man, Italy, Jersey, Latvia, Liechtenstein, Lithuania, Luxembourg, Madeira, Malta, Martinique, Mayotte, Melilla, Moldova, Monaco, Montenegro, Netherlands, North Macedonia, Norway, Poland, Portugal, Reunion, Romania, Saint Barthélemy, Saint Martin (French part), Saint Pierre and Miquelon, San Marino, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, United Kingdom, Vatican City.
+    * Volume Limits
+      * 1st Party Deposits: Unlimited
+      * 3rd Party Deposits
+        * From Individuals: *Contact Account Manager*
+        * From Businesses: Unlimited
+    * Transaction Limits
+      * Minimum: 1 EUR
+      * No maximum, transfers received over 1,000,000 EUR require use of the SEPA Credit payment rail (1 business day to complete).
+
+    ### Offramps
+
+    * **Supported IBANs issued countries and territories:** Aland Islands, Albania, Andorra, Austria, Azores, Belgium, Bulgaria, Canary Islands, Ceuta, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, French Guiana, Germany, Gibraltar, Greece, Guadeloupe, Guernsey, Hungary, Iceland, Ireland, Isle of Man, Italy, Jersey, Latvia, Liechtenstein, Lithuania, Luxembourg, Madeira, Malta, Martinique, Mayotte, Melilla, Moldova, Monaco, Montenegro, Netherlands, North Macedonia, Norway, Poland, Portugal, Reunion, Romania, Saint Barthélemy, Saint Martin (French part), Saint Pierre and Miquelon, San Marino, Serbia, Slovakia, Slovenia, Spain, Sweden, Switzerland, United Kingdom, Vatican City.
+    * Volume Limits
+      * 1st Party Withdrawals: Unlimited
+      * 3rd Party Withdrawals
+        * To Individuals: Unlimited
+        * To Businesses: Unlimited
+    * Transaction Limits
+      * Minimum: 1 EUR
+      * No maximum, transfers received over 1,000,000 EUR require use of the SEPA Credit payment rail (1 business day to complete).
+  </Accordion>
+</AccordionGroup>

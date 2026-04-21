@@ -68,12 +68,20 @@
               {
                 "group": "Common Patterns",
                 "pages": [
-                  "en/use-cases/kyc-verification-document-guide",
+                  {
+                    "group": "Customer Verification",
+                    "pages": [
+                      "en/use-cases/kyc-verification-document-guide",
+                      "en/use-cases/individual-id-numbers",
+                      "en/use-cases/business-id-numbers"
+                    ]
+                  },
                   "en/use-cases/multi-currency-operations",
                   "en/use-cases/onboarding",
                   "en/use-cases/fiat-on-ramp",
                   "en/use-cases/beneficiaries",
-                  "en/use-cases/rates-estimates"
+                  "en/use-cases/rates-estimates",
+                  "en/use-cases/rail-specific-details"
                 ]
               },
               {
@@ -136,12 +144,20 @@
               {
                 "group": "Padrões Comuns",
                 "pages": [
-                  "pt/use-cases/kyc-verification-document-guide",
+                  {
+                    "group": "Verificação do Cliente",
+                    "pages": [
+                      "pt/use-cases/kyc-verification-document-guide",
+                      "pt/use-cases/individual-id-numbers",
+                      "pt/use-cases/business-id-numbers"
+                    ]
+                  },
                   "pt/use-cases/multi-currency-operations",
                   "pt/use-cases/onboarding",
                   "pt/use-cases/fiat-on-ramp",
                   "pt/use-cases/beneficiaries",
-                  "pt/use-cases/rates-estimates"
+                  "pt/use-cases/rates-estimates",
+                  "pt/use-cases/rail-specific-details"
                 ]
               },
               {
@@ -204,12 +220,20 @@
               {
                 "group": "常见模式",
                 "pages": [
-                  "zh/use-cases/kyc-verification-document-guide",
+                  {
+                    "group": "客户验证",
+                    "pages": [
+                      "zh/use-cases/kyc-verification-document-guide",
+                      "zh/use-cases/individual-id-numbers",
+                      "zh/use-cases/business-id-numbers"
+                    ]
+                  },
                   "zh/use-cases/multi-currency-operations",
                   "zh/use-cases/onboarding",
                   "zh/use-cases/fiat-on-ramp",
                   "zh/use-cases/beneficiaries",
-                  "zh/use-cases/rates-estimates"
+                  "zh/use-cases/rates-estimates",
+                  "zh/use-cases/rail-specific-details"
                 ]
               },
               {

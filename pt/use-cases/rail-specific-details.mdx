@@ -1,0 +1,48 @@
+---
+title: "Detalhes Específicos de Rails"
+description: "Comportamentos exclusivos de cada rail fiduciário suportado pelo Bridge Orchestration."
+---
+
+À medida que o Bridge Orchestration continua a se expandir pelos rails fiduciários globais, este documento descreve os comportamentos exclusivos de cada rail.
+
+<AccordionGroup>
+  <Accordion title="USD / (ACH & Wire)" icon="dollar-sign">
+    * **Contas virtuais são totalmente permitidas para receber as seguintes transações para não residentes nos EUA.**
+      1. Pagamentos de primeira parte onde você está enviando USD do seu banco, aplicativo fintech ou conta de corretagem
+      2. Pagamento de terceiros onde uma empresa registrada envia USD de sua conta bancária
+      3. Pagamento de terceiros da conta bancária de um membro da família, onde vocês compartilham o sobrenome
+      4. Pagamento pessoa-a-pessoa de terceiros para um valor inferior a \$4.000
+    * **Os seguintes tipos de transações são totalmente permitidos para serem recebidos por contas virtuais para residentes nos EUA.**
+      1. Pagamentos de primeira parte onde você está enviando USD do seu banco, aplicativo fintech ou conta de corretagem
+      2. Pagamentos de folha de pagamento de empresas
+      3. Pagamentos de terceiros na maioria dos estados, exceto Nova York, Pensilvânia e Texas
+  </Accordion>
+</AccordionGroup>
+
+<AccordionGroup>
+  <Accordion title="EUR / SEPA" icon="euro-sign">
+    ### Onramps
+
+    * **Países e territórios com IBANs emitidos suportados:** Ilhas Aland, Albânia, Andorra, Áustria, Açores, Bélgica, Bulgária, Ilhas Canárias, Ceuta, Croácia, Chipre, República Tcheca, Dinamarca, Estônia, Finlândia, França, Guiana Francesa, Alemanha, Gibraltar, Grécia, Guadalupe, Guernsey, Hungria, Islândia, Irlanda, Ilha de Man, Itália, Jersey, Letônia, Liechtenstein, Lituânia, Luxemburgo, Madeira, Malta, Martinica, Mayotte, Melilla, Moldávia, Mônaco, Montenegro, Países Baixos, Macedônia do Norte, Noruega, Polônia, Portugal, Reunião, Romênia, São Bartolomeu, São Martinho (parte francesa), São Pedro e Miquelon, San Marino, Sérvia, Eslováquia, Eslovênia, Espanha, Suécia, Suíça, Reino Unido, Cidade do Vaticano.
+    * Limites de Volume
+      * Depósitos de 1ª Parte: Ilimitado
+      * Depósitos de 3ª Parte
+        * De Indivíduos: *Entre em contato com o Gerente de Conta*
+        * De Empresas: Ilimitado
+    * Limites de Transação
+      * Mínimo: 1 EUR
+      * Sem máximo, transferências recebidas acima de 1.000.000 EUR requerem uso do rail de pagamento SEPA Credit (1 dia útil para concluir).
+
+    ### Offramps
+
+    * **Países e territórios com IBANs emitidos suportados:** Ilhas Aland, Albânia, Andorra, Áustria, Açores, Bélgica, Bulgária, Ilhas Canárias, Ceuta, Croácia, Chipre, República Tcheca, Dinamarca, Estônia, Finlândia, França, Guiana Francesa, Alemanha, Gibraltar, Grécia, Guadalupe, Guernsey, Hungria, Islândia, Irlanda, Ilha de Man, Itália, Jersey, Letônia, Liechtenstein, Lituânia, Luxemburgo, Madeira, Malta, Martinica, Mayotte, Melilla, Moldávia, Mônaco, Montenegro, Países Baixos, Macedônia do Norte, Noruega, Polônia, Portugal, Reunião, Romênia, São Bartolomeu, São Martinho (parte francesa), São Pedro e Miquelon, San Marino, Sérvia, Eslováquia, Eslovênia, Espanha, Suécia, Suíça, Reino Unido, Cidade do Vaticano.
+    * Limites de Volume
+      * Retiradas de 1ª Parte: Ilimitado
+      * Retiradas de 3ª Parte
+        * Para Indivíduos: Ilimitado
+        * Para Empresas: Ilimitado
+    * Limites de Transação
+      * Mínimo: 1 EUR
+      * Sem máximo, transferências recebidas acima de 1.000.000 EUR requerem uso do rail de pagamento SEPA Credit (1 dia útil para concluir).
+  </Accordion>
+</AccordionGroup>
