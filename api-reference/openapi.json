@@ -1785,6 +1785,7 @@
                   },
                   "identifying_information": {
                     "type": "array",
+                    "description": "Array of identification documents. See [Accepted ID Documents by Country](/en/use-cases/individual-id-numbers) for country-specific requirements.",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -2011,6 +2012,7 @@
                     },
                     "identifying_information": {
                       "type": "array",
+                      "description": "Array of identification documents. See [Accepted ID Documents by Country](/en/use-cases/individual-id-numbers) for country-specific requirements.",
                       "items": {
                         "type": "object",
                         "properties": {
@@ -2268,6 +2270,7 @@
                     },
                     "identifying_information": {
                       "type": "array",
+                      "description": "Array of identification documents. See [Accepted ID Documents by Country](/en/use-cases/individual-id-numbers) for country-specific requirements.",
                       "items": {
                         "type": "object",
                         "properties": {
@@ -2552,6 +2555,7 @@
                     },
                     "identifying_information": {
                       "type": "array",
+                      "description": "Array of identification documents. See [Accepted ID Documents by Country](/en/use-cases/individual-id-numbers) for country-specific requirements.",
                       "items": {
                         "type": "object",
                         "properties": {
@@ -3583,6 +3587,41 @@
                   "ownership_document": "https://res.cloudinary.com/bullring-finance/image/upload/v1768169966/verification/2026-01-11/vlidzev2rladftq7a1td.png",
                   "flow_of_funds_document": null,
                   "has_material_intermediary_ownership": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid input data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "statusCode": {
+                      "type": "integer"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "path": {
+                      "type": "string"
+                    },
+                    "error": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "statusCode": 400,
+                  "timestamp": "2026-04-22T16:23:53.640Z",
+                  "path": "/v1/kyc/businesses/57b97754-ab53-4e6a-9ff6-78bcb17e8460",
+                  "error": "Bad Request",
+                  "message": "ultimate_beneficial_owners.1.identification.0.Social Security Number must be exactly 9 digits without dashes. Example: 123456789"
                 }
               }
             }
