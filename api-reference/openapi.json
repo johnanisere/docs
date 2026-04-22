@@ -2821,7 +2821,7 @@
                   },
                   "identification": {
                     "type": "array",
-                    "description": "Array of business tax identification documents",
+                    "description": "Array of business tax identification documents. See [Business ID Numbers](http://localhost:3000/en/use-cases/business-id-numbers) for accepted document types.",
                     "items": {
                       "type": "object",
                       "properties": {
@@ -2831,7 +2831,7 @@
                         },
                         "number": {
                           "type": "string",
-                          "description": "The tax identification Number of the company."
+                          "description": "The tax identification number of the company. For EIN and SSN, must be exactly 9 digits without dashes (e.g., 123456789)."
                         },
                         "issuing_country": {
                           "type": "string",
@@ -2951,7 +2951,7 @@
                         },
                         "identification": {
                           "type": "array",
-                          "description": "Array of identification documents for the beneficial owner",
+                          "description": "Array of identification documents for the beneficial owner. See [Individual ID Numbers](http://localhost:3000/en/use-cases/individual-id-numbers) for accepted document types.",
                           "items": {
                             "type": "object",
                             "properties": {
@@ -2966,7 +2966,7 @@
                               },
                               "number": {
                                 "type": "string",
-                                "description": "The identification document number"
+                                "description": "The identification document number. For SSN, must be exactly 9 digits without dashes (e.g., 123456789)."
                               },
                               "issuing_country": {
                                 "type": "string",
@@ -3111,7 +3111,7 @@
                 "identification": [
                   {
                     "type": "ein",
-                    "number": "12-3456789",
+                    "number": "123456789",
                     "issuing_country": "USA",
                     "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg",
                     "image_back": null
@@ -3145,7 +3145,7 @@
                     "identification": [
                       {
                         "type": "ssn",
-                        "number": "342-73-0792",
+                        "number": "342730792",
                         "issuing_country": "US",
                         "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774615329/1128061-Germany-ID_front_dfdcek.png"
                       }
@@ -3187,7 +3187,7 @@
                       },
                       {
                         "type": "ssn",
-                        "number": "322-73-0792",
+                        "number": "322730792",
                         "issuing_country": "US"
                       }
                     ],
@@ -3738,6 +3738,7 @@
                     },
                     "identification": {
                       "type": "array",
+                      "description": "Array of business tax identification documents. See [Business ID Numbers](http://localhost:3000/en/use-cases/business-id-numbers) for accepted document types.",
                       "items": {
                         "type": "object",
                         "properties": {
@@ -3747,7 +3748,7 @@
                           },
                           "number": {
                             "type": "string",
-                            "description": "The tax identification Number of the company."
+                            "description": "The tax identification number of the company. For EIN and SSN, must be exactly 9 digits without dashes (e.g., 123456789)."
                           },
                           "issuing_country": {
                             "type": "string",
@@ -3846,6 +3847,7 @@
                           },
                           "identification": {
                             "type": "array",
+                            "description": "Array of identification documents for the beneficial owner. See [Individual ID Numbers](http://localhost:3000/en/use-cases/individual-id-numbers) for accepted document types.",
                             "items": {
                               "type": "object",
                               "properties": {
@@ -3950,7 +3952,7 @@
                   "identification": [
                     {
                       "type": "ein",
-                      "number": "12-3456789",
+                      "number": "123456789",
                       "issuing_country": "DEU",
                       "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg",
                       "image_back": null
@@ -4021,7 +4023,7 @@
                       "identification": [
                         {
                           "type": "ssn",
-                          "number": "322-73-0792",
+                          "number": "322730792",
                           "issuing_country": "US",
                           "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
                         }
@@ -4260,22 +4262,23 @@
                         }
                       }
                     },
-                    "identification": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "type": {
-                            "type": "string",
-                            "description": "The passport of the individual.",
-                            "enum": [
-                              "passport"
-                            ]
-                          },
-                          "number": {
-                            "type": "string",
-                            "description": "The passport number of the individual."
-                          },
+                          "identification": {
+                            "type": "array",
+                            "description": "Array of identification documents for the beneficial owner. See [Individual ID Numbers](http://localhost:3000/en/use-cases/individual-id-numbers) for accepted document types.",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "description": "The passport of the individual.",
+                                  "enum": [
+                                    "passport"
+                                  ]
+                                },
+                                "number": {
+                                  "type": "string",
+                                  "description": "The passport number of the individual."
+                                },
                           "issuing_country": {
                             "type": "string",
                             "description": "three-letter ISO 3166-1 code for the country (e.g., \"NGA\" for Nigeria). See [ISO 3166-1](https://en.wikipedia.org/wiki/ISO_3166-1)"
