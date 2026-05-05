@@ -3184,12 +3184,6 @@
                     },
                     "identification": [
                       {
-                        "type": "passport",
-                        "number": "A36980303",
-                        "issuing_country": "US",
-                        "image_front": "https://res.cloudinary.com/bullring-finance/image/upload/v1774564645/kyc/customers/070e5803-a6cc-4290-96d8-bed3c7084b84/sumsub_69c5b51632aa86f6ed120536_855161797.jpg"
-                      },
-                      {
                         "type": "ssn",
                         "number": "322730792",
                         "issuing_country": "US"
