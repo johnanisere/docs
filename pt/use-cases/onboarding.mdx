@@ -204,7 +204,6 @@ Após completar a verificação individual, as seguintes moedas ficam disponíve
 |-------|--------|--------------------|--------------|----|
 | Naira Nigeriana | NGN | NIBBS | ✓ | Liquidação instantânea |
 | Cedi de Gana | GHS | Mobile Money | | Liquidação instantânea |
-| Kwacha Zambiano | ZMW | Mobile Money | | Liquidação instantânea |
 | Real Brasileiro | BRL | PIX | | Liquidação instantânea, apenas offramp |
 
 **Verificação Aprimorada (Empresarial/Documentação Adicional):**
@@ -214,7 +213,6 @@ Após completar a verificação empresarial ou fornecer documentação adicional
 | Moeda | Código | Rails de Pagamento | Conta Nominal | Tempo de Liquidação | Observações |
 |-------|--------|--------------------|--------------|--------------------|-------|
 | Dólar Americano | USD | ACH, Wire, SWIFT | ✓ | ACH: 1 dia, Wire: 1 hora, SWIFT: 2-5 dias | Paridade 1:1 com USDC/USDT |
-| Euro | EUR | SEPA | | Instantâneo | |
 | Libra Esterlina | GBP | FPS | ✓ | Instantâneo | |
 | Dirham dos Emirados Árabes | AED | UAEFTS | ✓ | Instantâneo | |
 | Yuan Chinês | CNY | Bank Transfer | | Varia | Apenas offramp |
@@ -332,16 +330,6 @@ Quando uma subconta completa a verificação inicial, ela recebe acesso às moed
               "momo": true
             }
           },
-          "ZMW": {
-            "status": "approved",
-            "canOnramp": true,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "momo": true
-            }
-          },
           "USD": {
             "status": "locked",
             "canOnramp": false,
@@ -427,27 +415,7 @@ Quando uma subconta completa verificação adicional (por exemplo, para operaç�
               "swift": false
             }
           },
-          "EUR": {
-            "status": "partial",
-            "canOnramp": false,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "sepa": true
-            }
-          },
           "GHS": {
-            "status": "approved",
-            "canOnramp": true,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "momo": true
-            }
-          },
-          "ZMW": {
             "status": "approved",
             "canOnramp": true,
             "canOfframp": true,
@@ -570,7 +538,7 @@ Antes que uma subconta possa transacionar, ela deve verificar sua identidade. Ve
 
 Subcontas podem financiar seus saldos usando vários métodos:
 
-- **Fiat**: Transferências bancárias locais, Mobile Money (por exemplo, NGN, GHS, ZMW).
+- **Fiat**: Transferências bancárias locais, Mobile Money (por exemplo, NGN, GHS).
 - **Cripto**: Transferências on-chain (ETH, SOL) ou Lightning Network (BTC).
 - [Ver API de Depósitos](/api-reference/deposits/request-fiat-deposit)
 
@@ -578,7 +546,7 @@ Subcontas podem financiar seus saldos usando vários métodos:
 
 Subcontas podem sacar seus fundos para:
 
-- **Destinatários Fiat**: Transferências wire (USD, EUR), PIX (BRL), Mobile Money.
+- **Destinatários Fiat**: Transferências wire (USD), PIX (BRL), Mobile Money.
 - **Carteiras Cripto**: Stablecoins (USDC, USDT) ou Bitcoin.
 - [Ver API de Saques](/api-reference/withdrawals/withdraw-fiat)
 

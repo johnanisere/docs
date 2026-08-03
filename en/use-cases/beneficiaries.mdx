@@ -6,7 +6,7 @@ description: "Manage recipients, send fiat payouts, and off-ramp to stablecoins.
 ## Overview
 
 You can withdraw funds from a subaccount in two ways:
-1.  **Fiat Payouts:** Convert currency balances to local currency (e.g., NGN, BRL, EUR) and send it to a bank account.
+1.  **Fiat Payouts:** Convert currency balances to local currency (e.g., NGN, BRL, USD) and send it to a bank account.
 2.  **Stablecoin Off-ramp:** Withdraw USD as stablecoins (USDC/USDT) to an external crypto wallet.
 
 This guide covers validating recipients, creating beneficiaries, and initiating withdrawals.
@@ -25,21 +25,12 @@ Before adding a recipient for fiat withdrawals, it is **crucial** to validate th
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/banking/ngn/validate" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "accountNumber": "0062881117",
     "bankCode": "270"
   }'
-```
-
-**Response:**
-
-```json
-{
-  "accountNumber": "0062881117",
-  "bankCode": "270"
-}
 ```
 
 [View API Reference](/api-reference/recipients/validate-ngn-recipient)
@@ -50,11 +41,41 @@ curl -X POST "https://api.bullring.finance/v1/banking/ngn/validate" \
 
 Once validated, save the details as a recipient. This recipient `id` will be used to initiate withdrawals.
 
+For USD named withdrawal use cases, create a business recipient. Business recipients are identified by `business_name`. The fields `beneficiary_date_of_formation`, `beneficiary_country_of_formation`, and `beneficiary_national_identification_number` are optional for recipient creation, but required if the recipient will be used for named withdrawal flows.
+
+### Example: Create USD Business Recipient for named withdrawal
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recipients" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "USD",
+    "bank_name": "JPMorgan Chase Bank",
+    "account_number": "123456789012",
+    "routing_number": "021000021",
+    "account_type": "CHECKING",
+    "business_name": "Recipient Company LLC",
+    "email": "finance@recipient-company.com",
+    "address": {
+      "street_line_1": "123 Market St",
+      "street_line_2": "Suite 400",
+      "city": "New York",
+      "state": "NY",
+      "postal_code": "10001",
+      "country": "US"
+    },
+    "beneficiary_date_of_formation": "2020-01-31",
+    "beneficiary_country_of_formation": "US",
+    "beneficiary_national_identification_number": "12-3456789"
+  }'
+```
+
 ### Example: Create NGN Recipient
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recipients" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "currency": "NGN",
@@ -66,20 +87,6 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recip
   }'
 ```
 
-**Response:**
-
-```json
-{
-  "id": "f4725e12-466f-49fd-89bd-899635f3f7f6",
-  "bank_name": "Access Bank",
-  "account_owner_name": "John Doe",
-  "last_4": "1117",
-  "active": true,
-  "account_id": "0062881117",
-  "currency": "NGN"
-}
-```
-
 [View API Reference](/api-reference/recipients/add-fiat-recipient)
 
 ## 3. Initiate Fiat Payout
@@ -88,11 +95,79 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recip
 
 Send funds from the subaccount to the created recipient. The system will deduct the appropriate currency balance from the subaccount.
 
+USD withdrawals can include `payment_rail` with `RTP`, `WIRE`, `SWIFT`, `SAME_DAY_ACH`, or `ACH`. Set `named_withdrawal` to `true` only for a USD named withdrawal. named withdrawal currently supports USD only, requires a business recipient identified by `business_name`, and requires the recipient to include `beneficiary_date_of_formation`, `beneficiary_country_of_formation`, and `beneficiary_national_identification_number`. named withdrawal supports only `WIRE` and `SWIFT`; `RTP`, `SAME_DAY_ACH`, and `ACH` remain supported only for non-named USD flows where applicable.
+
+### Example: Normal USD ACH Withdrawal
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+    "amount": "100.00",
+    "currency": "USD",
+    "payment_rail": "ACH",
+    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
+  }'
+```
+
+### Example: Normal USD RTP Withdrawal
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+    "amount": "100.00",
+    "currency": "USD",
+    "payment_rail": "RTP",
+    "client_reference": "123e4567-e89b-12d3-a456-426614174001"
+  }'
+```
+
+### Example: USD named withdrawal by WIRE
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+    "amount": "100.50",
+    "currency": "USD",
+    "payment_rail": "WIRE",
+    "named_withdrawal": true,
+    "origin_id": "unique-client-reference-001",
+    "client_reference": "invoice-1001",
+    "wire_message": "Payment for services"
+  }'
+```
+
+### Example: USD named withdrawal by SWIFT
+
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+    "amount": "100.50",
+    "currency": "USD",
+    "payment_rail": "SWIFT",
+    "named_withdrawal": true,
+    "origin_id": "unique-client-reference-002",
+    "client_reference": "invoice-1002",
+    "wire_message": "Payment for services"
+  }'
+```
+
 ### Example: Withdraw to NGN Recipient
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "account_id": "0062881117",
@@ -102,22 +177,6 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
 ```
 
 > **Note:** The `amount` field specifies the amount in the **destination currency** (e.g., NGN). The equivalent balance will be deducted from the subaccount's currency holdings.
-
-**Response:**
-
-```json
-{
-  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
-  "amount": "50",
-  "currency": "NGN",
-  "status": "pending",
-  "created_at": "2025-11-21T15:59:09.341Z",
-  "protocol": "wire",
-  "fee_amount": "0.50",
-  "fee_currency": "USD",
-  "rate": 1500.00
-}
-```
 
 [View API Reference](/api-reference/withdrawals/withdraw-fiat)
 
@@ -131,7 +190,7 @@ You can also withdraw balances directly as stablecoins (USDC or USDT) to an exte
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals/stablecoin" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "amount": "100",
@@ -141,27 +200,12 @@ curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withd
   }'
 ```
 
-**Response:**
-
-```json
-{
-  "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
-  "amount": "100.00",
-  "currency": "USD",
-  "status": "pending",
-  "chain": "ethereum",
-  "local_currency": "usdt",
-  "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-  "tx_hash": null
-}
-```
-
 [View API Reference](/api-reference/withdrawals/withdraw-stablecoin)
 
 ## Common Mistakes
 
 1.  **Skipping Validation:** Failing to validate bank account details often leads to failed withdrawals and unnecessary delays.
-2.  **Incorrect Network:** When withdrawing stablecoins, ensure the `chain` matches the destination wallet (e.g., sending ERC-20 USDT to a TRC-20 address will result in loss of funds).
+2.  **Incorrect Network:** When withdrawing stablecoins, ensure the `chain` matches the destination wallet.
 3.  **Insufficient Balance:** Ensure the subaccount has enough balance in the relevant currency to cover the withdrawal amount **plus fees**.
 4.  **Unverified subaccounts:** Withdrawals are only permitted for subaccounts with approved verification.
 

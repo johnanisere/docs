@@ -204,7 +204,6 @@ After completing individual verification, the following currencies become availa
 |----------|------|---------------|---------------|-------|
 | Nigerian Naira | NGN | NIBBS | ✓ | Instant settlement |
 | Ghana Cedi | GHS | Mobile Money | | Instant settlement |
-| Zambian Kwacha | ZMW | Mobile Money | | Instant settlement |
 | Brazilian Real | BRL | PIX | | Instant settlement, offramp only |
 
 **Enhanced Verification (Business/Additional Documentation):**
@@ -214,7 +213,6 @@ After completing business verification or providing additional documentation, th
 | Currency | Code | Payment Rails | Named Account | Settlement Time | Notes |
 |----------|------|---------------|---------------|-----------------|-------|
 | US Dollar | USD | ACH, Wire, SWIFT | ✓ | ACH: 1 day, Wire: 1 hour, SWIFT: 2-5 days | 1:1 parity with USDC/USDT |
-| Euro | EUR | SEPA | | Instant | |
 | British Pound | GBP | FPS | ✓ | Instant | |
 | UAE Dirham | AED | UAEFTS | ✓ | Instant | |
 | Chinese Yuan | CNY | Bank Transfer | | Varies | Offramp only |
@@ -332,16 +330,6 @@ When a subaccount completes initial verification, they receive access to base cu
               "momo": true
             }
           },
-          "ZMW": {
-            "status": "approved",
-            "canOnramp": true,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "momo": true
-            }
-          },
           "USD": {
             "status": "locked",
             "canOnramp": false,
@@ -427,27 +415,7 @@ When a subaccount completes additional verification (e.g., for US/EU operations)
               "swift": false
             }
           },
-          "EUR": {
-            "status": "partial",
-            "canOnramp": false,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "sepa": true
-            }
-          },
           "GHS": {
-            "status": "approved",
-            "canOnramp": true,
-            "canOfframp": true,
-            "canDeposit": true,
-            "canWithdraw": true,
-            "rails": {
-              "momo": true
-            }
-          },
-          "ZMW": {
             "status": "approved",
             "canOnramp": true,
             "canOfframp": true,
@@ -570,7 +538,7 @@ Before a subaccount can transact, they must verify their identity. See the detai
 
 Subaccounts can fund their balances using various methods:
 
-- **Fiat**: Local bank transfers, Mobile Money (e.g., NGN, GHS, ZMW).
+- **Fiat**: Local bank transfers, Mobile Money (e.g., NGN, GHS).
 - **Crypto**: On-chain transfers (ETH, SOL) or Lightning Network (BTC).
 - [See Deposits API](/api-reference/deposits/request-fiat-deposit)
 
@@ -578,7 +546,7 @@ Subaccounts can fund their balances using various methods:
 
 Subaccounts can withdraw their funds to:
 
-- **Fiat Recipients**: Wire transfers (USD, EUR), PIX (BRL), Mobile Money.
+- **Fiat Recipients**: Wire transfers (USD), PIX (BRL), Mobile Money.
 - **Crypto Wallets**: Stablecoins (USDC, USDT) or Bitcoin.
 - [See Withdrawals API](/api-reference/withdrawals/withdraw-fiat)
 

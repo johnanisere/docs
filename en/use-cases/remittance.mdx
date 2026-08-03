@@ -1,19 +1,19 @@
 ---
 title: "Cross-Border Remittance"
-description: "Receive local currency (NGN), hold USD, and pay out globally (EUR)."
+description: "Receive local currency (NGN), hold USD, and pay out globally."
 ---
 
 ## Overview
 
-This guide demonstrates how an exporter in Nigeria can receive payments in Nigerian Naira (NGN), automatically convert them to USD to hedge against devaluation, and subsequently pay suppliers in Europe using Euros (EUR).
+This guide demonstrates how an exporter in Nigeria can receive payments in Nigerian Naira (NGN), automatically convert them to USD to hedge against devaluation, and subsequently pay suppliers using a supported payout currency.
 
 ### Mental Model
 
 When using the Bullring API for this flow, think of it as a three-step pipeline:
 
-1.  **Inflow (On-Ramp):** You request a deposit instruction. The customer pays NGN to a local bank account. Bullring detects this and credits the subaccount in USD.
-2.  **Storage:** Funds are held in the subaccount in USD (Stablecoin).
-3.  **Outflow (Off-Ramp):** You define a beneficiary (Recipient) and initiate a withdrawal to them in their local currency (EUR).
+1. **Inflow (On-Ramp):** You request a deposit instruction. The customer pays NGN to a local bank account. Bullring detects this and credits the subaccount in USD.
+2. **Storage:** Funds are held in the subaccount in USD.
+3. **Outflow (Off-Ramp):** You define a recipient and initiate a withdrawal to them in their local currency.
 
 ## 1. Receive Funds (NGN)
 
@@ -24,7 +24,7 @@ Use the [Create Deposit](/api-reference/endpoint/post-v1-ramp-subaccountid-banki
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposits" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "channelId": "ngn-channel-id-bullring-finance",
@@ -36,8 +36,6 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/deposi
 </CodeGroup>
 
 ### Expected Response
-
-The API returns banking details that you should present to your customer.
 
 ```json
 {
@@ -57,25 +55,21 @@ The API returns banking details that you should present to your customer.
 
 Once the customer transfers the funds, the subaccount balance is credited in USD.
 
-## 2. Create Recipient (EUR)
+## 2. Create Recipient (GHS)
 
-Before paying your supplier, you must save their banking details as a Recipient.
+Before paying your supplier, save their payout details as a recipient.
 
 Use the [Create Recipient](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-recipients) endpoint.
 
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipients" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "currency": "EUR",
-    "account_owner_name": "European Supplier Ltd",
-    "bank_name": "Deutsche Bank",
-    "account_number": "DE89370400440532013000",
-    "bic": "DEUTDEBBXXX",
-    "country": "DE",
-    "account_owner_type": "company"
+    "currency": "GHS",
+    "phone_number": "+233241234567",
+    "account_owner_name": "Supplier Company"
   }'
 ```
 </CodeGroup>
@@ -85,30 +79,27 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/recipi
 ```json
 {
   "id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
-  "currency": "EUR",
-  "account_owner_name": "European Supplier Ltd",
-  "account_number": "DE89370400440532013000",
-  "bank_name": "Deutsche Bank",
+  "currency": "GHS",
+  "account_owner_name": "Supplier Company",
   "status": "active"
 }
 ```
 
-## 3. Pay Supplier (EUR)
+## 3. Pay Supplier (GHS)
 
-Finally, initiate the transfer to the recipient you just created. The USD balance in the subaccount will be converted to EUR.
+Finally, initiate the transfer to the recipient you just created.
 
 Use the [Create Withdrawal](/api-reference/endpoint/post-v1-ramp-subaccountid-banking-withdrawals) endpoint.
 
 <CodeGroup>
 ```bash cURL
 curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdrawals" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "external_account_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
+    "recipient_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
     "amount": "5000",
-    "currency": "EUR",
-    "sepa_message": "Invoice #INV-2024-001"
+    "currency": "GHS"
   }'
 ```
 </CodeGroup>
@@ -119,7 +110,7 @@ curl -X POST "https://api.bullring.finance/v1/ramp/{subaccountId}/banking/withdr
 {
   "id": "withdrawal-uuid-1234",
   "amount": "5000",
-  "currency": "EUR",
+  "currency": "GHS",
   "status": "processing",
   "created_at": "2024-01-01T12:00:00Z",
   "fee_amount": "5.00"

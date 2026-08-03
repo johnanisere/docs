@@ -5,27 +5,17 @@ description: "管理收款人，发送法币支付，以及出金到稳定币。
 
 ## 概述
 
-您可以通过两种方式从子账户提取资金：
-1.  **法币支付：** 将货币余额转换为当地货币（如 NGN、BRL、EUR）并发送到银行账户。
-2.  **稳定币出金：** 将 USD 作为稳定币（USDC/USDT）提取到外部加密钱包。
+您可以将子账户资金作为法币支付发送到银行账户，或作为稳定币提取到外部钱包。本指南涵盖验证、创建收款人和发起提款。
 
-本指南涵盖验证收款人、创建受益人和发起提款。
-
-## 1. 验证收款人信息（法币）
+## 1. 验证收款人信息
 
 **端点：** `POST /v1/banking/{currency}/validate`
 
-在为法币提款添加收款人之前，**务必**验证账户详情。这可确保账户存在，防止交易失败或资金丢失。
-
-<Note>
-  在尝试创建收款人之前，请始终验证账号和银行代码。
-</Note>
-
-### 示例：验证 NGN 账户
+在创建收款人之前验证银行信息，以减少提款失败。
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/banking/ngn/validate" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "accountNumber": "0062881117",
@@ -33,143 +23,114 @@ curl -X POST "https://api.bullring.finance/v1/banking/ngn/validate" \
   }'
 ```
 
-**响应：**
-
-```json
-{
-  "accountNumber": "0062881117",
-  "bankCode": "270"
-}
-```
-
-[查看 API 参考](/api-reference/recipients/validate-ngn-recipient)
-
 ## 2. 创建收款人
 
 **端点：** `POST /v1/ramp/{subaccountId}/banking/recipients`
 
-验证通过后，将详细信息保存为收款人。该收款人 `id` 将用于发起提款。
+验证后，将详情保存为收款人。收款人 `id` 将用于发起提款。
 
-### 示例：创建 NGN 收款人
+对于 USD named withdrawal 场景，请创建企业收款人。企业收款人通过 `business_name` 识别。`beneficiary_date_of_formation`、`beneficiary_country_of_formation` 和 `beneficiary_national_identification_number` 在创建收款人时是可选字段，但如果该收款人将用于 named withdrawal，则这些字段必填。
+
+### 示例：创建用于 named withdrawal 的 USD 企业收款人
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/recipients" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "currency": "NGN",
-    "account_number": "0062881117",
-    "account_owner_name": "John Doe",
-    "bank_code": "270",
-    "bank_name": "Access Bank",
-    "country": "NG"
+    "currency": "USD",
+    "bank_name": "JPMorgan Chase Bank",
+    "account_number": "123456789012",
+    "routing_number": "021000021",
+    "account_type": "CHECKING",
+    "business_name": "Recipient Company LLC",
+    "email": "finance@recipient-company.com",
+    "address": {
+      "street_line_1": "123 Market St",
+      "street_line_2": "Suite 400",
+      "city": "New York",
+      "state": "NY",
+      "postal_code": "10001",
+      "country": "US"
+    },
+    "beneficiary_date_of_formation": "2020-01-31",
+    "beneficiary_country_of_formation": "US",
+    "beneficiary_national_identification_number": "12-3456789"
   }'
 ```
-
-**响应：**
-
-```json
-{
-  "id": "f4725e12-466f-49fd-89bd-899635f3f7f6",
-  "bank_name": "Access Bank",
-  "account_owner_name": "John Doe",
-  "last_4": "1117",
-  "active": true,
-  "account_id": "0062881117",
-  "currency": "NGN"
-}
-```
-
-[查看 API 参考](/api-reference/recipients/add-fiat-recipient)
 
 ## 3. 发起法币支付
 
 **端点：** `POST /v1/ramp/{subaccountId}/banking/withdrawals`
 
-从子账户向已创建的收款人发送资金。系统将从子账户中扣除相应的货币余额。
+USD 提款可以包含 `payment_rail`，取值为 `RTP`、`WIRE`、`SWIFT`、`SAME_DAY_ACH` 或 `ACH`。仅对 USD named withdrawal 将 `named_withdrawal` 设置为 `true`。named withdrawal 目前仅支持 USD，要求使用通过 `business_name` 识别的企业收款人，并要求该收款人包含 `beneficiary_date_of_formation`、`beneficiary_country_of_formation` 和 `beneficiary_national_identification_number`。named withdrawal 仅支持 `WIRE` 和 `SWIFT`；`RTP`、`SAME_DAY_ACH` 和 `ACH` 仍仅在适用时支持 non-named USD 流程。
 
-### 示例：向 NGN 收款人提款
+### 示例：普通 USD ACH 提款
 
 ```bash
 curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "account_id": "0062881117",
-    "amount": "50",
-    "currency": "NGN"
+    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+    "amount": "100.00",
+    "currency": "USD",
+    "payment_rail": "ACH",
+    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
   }'
 ```
 
-> **注意：** `amount` 字段指定的是**目标货币**的金额（如 NGN）。等值余额将从子账户的货币持有中扣除。
-
-**响应：**
-
-```json
-{
-  "id": "856b896f-3f16-4f70-952d-ce1f65b28aaa",
-  "amount": "50",
-  "currency": "NGN",
-  "status": "pending",
-  "created_at": "2025-11-21T15:59:09.341Z",
-  "protocol": "wire",
-  "fee_amount": "0.50",
-  "fee_currency": "USD",
-  "rate": 1500.00
-}
-```
-
-[查看 API 参考](/api-reference/withdrawals/withdraw-fiat)
-
-## 4. 稳定币出金（加密提款）
-
-**端点：** `POST /v1/ramp/{subaccountId}/banking/withdrawals/stablecoin`
-
-您也可以将余额直接作为稳定币（USDC 或 USDT）提取到外部钱包地址。
-
-### 示例：在以太坊上提取 USDT
+### 示例：普通 USD RTP 提款
 
 ```bash
-curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals/stablecoin" \
-  -H "Authorization: Bearer <YOUR_API_KEY>" \
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "amount": "100",
-    "stablecoin": "usdt",
-    "chain": "ethereum",
-    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
+    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
+    "amount": "100.00",
+    "currency": "USD",
+    "payment_rail": "RTP",
+    "client_reference": "123e4567-e89b-12d3-a456-426614174001"
   }'
 ```
 
-**响应：**
+### 示例：通过 WIRE 的 USD named withdrawal
 
-```json
-{
-  "id": "acbad679-7fcf-44a5-be65-dfa27a824113",
-  "amount": "100.00",
-  "currency": "USD",
-  "status": "pending",
-  "chain": "ethereum",
-  "local_currency": "usdt",
-  "destinationAddress": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-  "tx_hash": null
-}
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+    "amount": "100.50",
+    "currency": "USD",
+    "payment_rail": "WIRE",
+    "named_withdrawal": true,
+    "origin_id": "unique-client-reference-001",
+    "client_reference": "invoice-1001",
+    "wire_message": "Payment for services"
+  }'
 ```
 
-[查看 API 参考](/api-reference/withdrawals/withdraw-stablecoin)
+### 示例：通过 SWIFT 的 USD named withdrawal
 
-## 常见错误
+```bash
+curl -X POST "https://api.bullring.finance/v1/ramp/<SUBACCOUNT_ID>/banking/withdrawals" \
+  -H "x-api-key: YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+    "amount": "100.50",
+    "currency": "USD",
+    "payment_rail": "SWIFT",
+    "named_withdrawal": true,
+    "origin_id": "unique-client-reference-002",
+    "client_reference": "invoice-1002",
+    "wire_message": "Payment for services"
+  }'
+```
 
-1.  **跳过验证：** 未验证银行账户详情通常会导致提款失败和不必要的延迟。
-2.  **网络错误：** 提取稳定币时，请确保 `chain` 与目标钱包匹配（例如，将 ERC-20 USDT 发送到 TRC-20 地址将导致资金丢失）。
-3.  **余额不足：** 确保子账户有足够的相关货币余额来支付提款金额**加上费用**。
-4.  **未验证的子账户：** 仅允许已通过验证的子账户进行提款。
+## 4. 稳定币出金
 
-## Webhook 事件
-
-监听 webhook 事件以实时跟踪提款状态。
-
--   `withdrawal.status.completed`：资金已成功到达目的地。
--   `withdrawal.status.failed`：提款无法处理。
-
-请参阅[提款事件](/zh/withdrawal-events)了解载荷详情。
+您也可以将余额直接作为稳定币提取到外部钱包。请参阅[稳定币提款](/api-reference/withdrawals/withdraw-stablecoin)。

@@ -259,19 +259,7 @@
                             "canDeposit": true,
                             "canWithdraw": true
                           },
-                          "EUR": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
                           "GHS": {
-                            "canOnramp": true,
-                            "canOfframp": true,
-                            "canDeposit": true,
-                            "canWithdraw": true
-                          },
-                          "ZMW": {
                             "canOnramp": true,
                             "canOfframp": true,
                             "canDeposit": true,
@@ -334,19 +322,7 @@
                             "canDeposit": false,
                             "canWithdraw": false
                           },
-                          "EUR": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
                           "GHS": {
-                            "canOnramp": false,
-                            "canOfframp": false,
-                            "canDeposit": false,
-                            "canWithdraw": false
-                          },
-                          "ZMW": {
                             "canOnramp": false,
                             "canOfframp": false,
                             "canDeposit": false,
@@ -731,35 +707,7 @@
                           "pix": true
                         }
                       },
-                      "EUR": {
-                        "status": "locked",
-                        "canOnramp": false,
-                        "canOfframp": false,
-                        "canDeposit": false,
-                        "canWithdraw": false,
-                        "requiredKyc": "Additional Verification required for EUR operations",
-                        "rails": {
-                          "sepa": false
-                        },
-                        "requiredActions": [
-                          {
-                            "type": "kyc",
-                            "description": "Complete verification",
-                            "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
-                          }
-                        ]
-                      },
                       "GHS": {
-                        "status": "approved",
-                        "canOnramp": true,
-                        "canOfframp": true,
-                        "canDeposit": true,
-                        "canWithdraw": true,
-                        "rails": {
-                          "momo": true
-                        }
-                      },
-                      "ZMW": {
                         "status": "approved",
                         "canOnramp": true,
                         "canOfframp": true,
@@ -786,14 +734,6 @@
                             "url": "https://in.sumsub.com/websdk/p/0k9A7pIrtmbDR4PD"
                           }
                         ]
-                      },
-                      "USDCARD": {
-                        "status": "approved",
-                        "canOnramp": true,
-                        "canOfframp": true,
-                        "canDeposit": true,
-                        "canWithdraw": true,
-                        "rails": {}
                       }
                     },
                     "assets": {
@@ -1639,7 +1579,7 @@
           "Verification"
         ],
         "summary": "Add/Update Individual Information",
-        "description": "Add or update the KYC information for a  customer.",
+        "description": "Add or update the KYC information for a customer.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2111,7 +2051,7 @@
           "Verification"
         ],
         "summary": "Get Individual Information",
-        "description": "Retrieve the  customer KYC information.",
+        "description": "Retrieve the customer KYC information.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -2378,7 +2318,7 @@
           "Verification"
         ],
         "summary": "Submit Individual Information",
-        "description": "Submit the  customer information for verification.",
+        "description": "Submit the customer information for verification.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -3627,7 +3567,7 @@
           "Verification"
         ],
         "summary": "Get Business Information",
-        "description": "Retrieve the  business KYC information.",
+        "description": "Retrieve the business KYC information.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -4129,7 +4069,7 @@
           "Verification"
         ],
         "summary": "Submit Business Information",
-        "description": "Submit the  business information for verification.",
+        "description": "Submit the business information for verification.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -4633,19 +4573,7 @@
                         "ghs": {
                           "type": "number"
                         },
-                        "zmw": {
-                          "type": "number"
-                        },
                         "tzs": {
-                          "type": "number"
-                        },
-                        "mxn": {
-                          "type": "number"
-                        },
-                        "cop": {
-                          "type": "number"
-                        },
-                        "ars": {
                           "type": "number"
                         }
                       }
@@ -4671,11 +4599,7 @@
                     "brl": 3091.904761,
                     "eur": 0,
                     "ghs": 20,
-                    "zmw": 50,
-                    "tzs": 0,
-                    "mxn": 0,
-                    "cop": 0,
-                    "ars": 0
+                    "tzs": 0
                   },
                   "businessName": "Grand Global Company",
                   "status": "created",
@@ -5025,56 +4949,6 @@
                       }
                     ]
                   },
-                  "ZMW": {
-                    "channels": [
-                      {
-                        "id": "zmw-otc-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 5000,
-                        "currency": "ZMW",
-                        "status": "active",
-                        "channelType": "otc",
-                        "rampType": "deposit"
-                      },
-                      {
-                        "id": "zmw-channel-id-bullring-finance",
-                        "max": 1500000000000000000,
-                        "min": 5000,
-                        "currency": "ZMW",
-                        "status": "active",
-                        "channelType": "momo",
-                        "rampType": "deposit"
-                      }
-                    ],
-                    "networks": [
-                      {
-                        "id": "zmw-network-id-bullring-finance",
-                        "name": "OTC (Over The Counter)",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "ZMW",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "zmw-otc-channel-id-bullring-finance"
-                        ],
-                        "code": "ZMW"
-                      },
-                      {
-                        "id": "zmw-network-id-bullring-finance",
-                        "name": "Mobile Money",
-                        "status": "active",
-                        "country": "US",
-                        "currency": "ZMW",
-                        "accountNumberType": "address",
-                        "countryAccountNumberType": "address",
-                        "channelIds": [
-                          "zmw-channel-id-bullring-finance"
-                        ],
-                        "code": "ZMW"
-                      }
-                    ]
-                  },
                   "GHS": {
                     "channels": [
                       {
@@ -5234,27 +5108,6 @@
                   },
                   {
                     "type": "object",
-                    "title": "ZMW",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "channelId": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "number"
-                      },
-                      "phoneNumber": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "channelId",
-                      "amount",
-                      "phoneNumber"
-                    ]
-                  },
-                  {
-                    "type": "object",
                     "title": "GHS",
                     "description": "Requires approved KYC.",
                     "properties": {
@@ -5289,19 +5142,6 @@
                   },
                   {
                     "type": "object",
-                    "title": "EUR",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "channelId": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "channelId"
-                    ]
-                  },
-                  {
-                    "type": "object",
                     "title": "BRL",
                     "description": "Requires approved KYC.",
                     "properties": {
@@ -5316,30 +5156,6 @@
                       "channelId",
                       "amount"
                     ]
-                  },
-                  {
-                    "type": "object",
-                    "title": "USD (Card)",
-                    "description": "Collect USD via card payment. Requires approved KYC. Returns a hosted payment link that redirects the customer to a card payment widget.",
-                    "properties": {
-                      "channelId": {
-                        "type": "string",
-                        "description": "The card deposit channel ID (e.g., usd-card-channel-id-bullring-finance)"
-                      },
-                      "amount": {
-                        "type": "number",
-                        "description": "The amount in USD to collect via card"
-                      },
-                      "redirectUrl": {
-                        "type": "string",
-                        "description": "The URL to redirect the customer to after completing or cancelling the card payment"
-                      }
-                    },
-                    "required": [
-                      "channelId",
-                      "amount",
-                      "redirectUrl"
-                    ]
                   }
                 ]
               },
@@ -5348,14 +5164,6 @@
                   "summary": "NGN Deposit Request",
                   "value": {
                     "channelId": "ngn-channel-id-bullring-finance"
-                  }
-                },
-                "ZMW": {
-                  "summary": "ZMW Deposit Request",
-                  "value": {
-                    "channelId": "zmw-channel-id-bullring-finance",
-                    "amount": 11.1,
-                    "phoneNumber": "260977373310"
                   }
                 },
                 "GHS": {
@@ -5377,14 +5185,6 @@
                   "value": {
                     "channelId": "brl-channel-id-bullring-finance",
                     "amount": 100
-                  }
-                },
-                "USD (Card)": {
-                  "summary": "USD Card Deposit Request",
-                  "value": {
-                    "channelId": "usd-card-channel-id-bullring-finance",
-                    "amount": 50,
-                    "redirectUrl": "https://yourapp.com/payment/complete"
                   }
                 }
               }
@@ -5449,36 +5249,6 @@
                               "type": "string"
                             }
                           }
-                        },
-                        "channelId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "title": "ZMW Response",
-                      "properties": {
-                        "status": {
-                          "type": "string"
-                        },
-                        "amount": {
-                          "type": "string"
-                        },
-                        "localAmount": {
-                          "type": "string"
-                        },
-                        "currency": {
-                          "type": "string"
-                        },
-                        "country": {
-                          "type": "string"
-                        },
-                        "rate": {
-                          "type": "string"
-                        },
-                        "localCurrency": {
-                          "type": "string"
                         },
                         "channelId": {
                           "type": "string"
@@ -5613,98 +5383,6 @@
                           "format": "date-time"
                         }
                       }
-                    },
-                    {
-                      "type": "object",
-                      "title": "MXN Response",
-                      "properties": {
-                        "currency": {
-                          "type": "string"
-                        },
-                        "bankInfo": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "beneficiaryName": {
-                              "type": "string"
-                            },
-                            "clabe": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "channelId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "title": "ARS Response",
-                      "properties": {
-                        "currency": {
-                          "type": "string"
-                        },
-                        "bankInfo": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "type": "string"
-                            },
-                            "cvu": {
-                              "type": "string"
-                            },
-                            "beneficiaryName": {
-                              "type": "string"
-                            },
-                            "transferReference": {
-                              "type": "string"
-                            }
-                          }
-                        },
-                        "channelId": {
-                          "type": "string"
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "title": "USD Card Response",
-                      "description": "Response for card collection deposits. Contains a hosted payment link.",
-                      "properties": {
-                        "status": {
-                          "type": "string",
-                          "description": "The deposit status (e.g., processing)"
-                        },
-                        "amount": {
-                          "type": "number",
-                          "description": "The deposit amount"
-                        },
-                        "currency": {
-                          "type": "string",
-                          "description": "The deposit currency (USD)"
-                        },
-                        "country": {
-                          "type": "string",
-                          "description": "The country code (US)"
-                        },
-                        "channelId": {
-                          "type": "string",
-                          "description": "The card channel ID used"
-                        },
-                        "id": {
-                          "type": "string",
-                          "format": "uuid",
-                          "description": "Unique deposit identifier"
-                        },
-                        "paymentLink": {
-                          "type": "string",
-                          "format": "uri",
-                          "description": "Hosted payment link that redirects the customer to the card payment widget"
-                        }
-                      }
                     }
                   ]
                 },
@@ -5720,19 +5398,6 @@
                         "bankAccountNumber": "8595061826"
                       },
                       "channelId": "ngn-channel-id-bullring-finance"
-                    }
-                  },
-                  "ZMW": {
-                    "summary": "ZMW Response",
-                    "value": {
-                      "status": "processing",
-                      "amount": "50.00000000",
-                      "localAmount": "50.00000000",
-                      "currency": "ZMW",
-                      "country": "ZM",
-                      "rate": "1.0000",
-                      "localCurrency": "ZMW",
-                      "channelId": "zmw-channel-id-bullring-finance"
                     }
                   },
                   "GHS": {
@@ -5785,18 +5450,6 @@
                       "rate": 5.36,
                       "expiresAt": "2025-11-21T15:32:04.000Z",
                       "createdAt": "2025-11-21T15:29:35.164Z"
-                    }
-                  },
-                  "USD (Card)": {
-                    "summary": "USD Card Response",
-                    "value": {
-                      "status": "processing",
-                      "amount": 50,
-                      "currency": "USD",
-                      "country": "US",
-                      "channelId": "usd-card-channel-id-bullring-finance",
-                      "id": "9b33f86e-f832-477c-bb26-71a9e0e73f18",
-                      "paymentLink": "https://merchant.vesicash.com/checkout/PY_7c81d7bde52b44908518e9acf"
                     }
                   }
                 }
@@ -6316,7 +5969,7 @@
               ]
             },
             "required": true,
-            "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
+            "description": " **Production:** `lightning`, `ETH`, `SOL`. **Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
           }
         ],
         "responses": {
@@ -6532,7 +6185,7 @@
                 },
                 "example": {
                   "error": "Bad Request",
-                  "message": "currency must be one of the following values: NGN, BRL, USD, EUR, GHS, ZMW, TZS, USDC, USDT, MXN, COP, ARS"
+                  "message": "currency must be one of the following values: NGN, BRL, USD, GHS, TZS, USDC, USDT"
                 }
               }
             }
@@ -6677,7 +6330,7 @@
                   {
                     "title": "USD",
                     "type": "object",
-                    "description": "Requires approved KYC.",
+                    "description": "Requires approved KYC. USD business recipients are identified by business_name. If the recipient will be used for named withdrawals, provide business_name plus beneficiary_date_of_formation, beneficiary_country_of_formation, and beneficiary_national_identification_number.",
                     "properties": {
                       "currency": {
                         "type": "string",
@@ -6729,68 +6382,43 @@
                           "postal_code",
                           "country"
                         ]
+                      },
+                      "business_name": {
+                        "type": "string",
+                        "description": "Business legal name. Business recipients are identified by business_name."
+                      },
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "beneficiary_date_of_formation": {
+                        "type": "string",
+                        "format": "date",
+                        "description": "Business formation date. Required if this recipient will be used for named withdrawals."
+                      },
+                      "beneficiary_country_of_formation": {
+                        "type": "string",
+                        "description": "Business country of formation. Required if this recipient will be used for named withdrawals."
+                      },
+                      "beneficiary_national_identification_number": {
+                        "type": "string",
+                        "description": "Business national identification or tax number. Required if this recipient will be used for named withdrawals."
+                      },
+                      "account_type": {
+                        "type": "string",
+                        "enum": [
+                          "CHECKING",
+                          "SAVINGS"
+                        ],
+                        "description": "USD bank account type when required for the recipient account."
                       }
                     },
                     "required": [
                       "currency",
-                      "account_owner_name",
                       "bank_name",
                       "account_number",
                       "routing_number",
-                      "country",
                       "address"
-                    ]
-                  },
-                  {
-                    "title": "EUR",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "EUR"
-                        ]
-                      },
-                      "account_owner_name": {
-                        "type": "string"
-                      },
-                      "bank_name": {
-                        "type": "string"
-                      },
-                      "account_number": {
-                        "type": "string"
-                      },
-                      "bic": {
-                        "type": "string"
-                      },
-                      "country": {
-                        "type": "string"
-                      },
-                      "account_owner_type": {
-                        "type": "string"
-                      },
-                      "first_name": {
-                        "type": "string"
-                      },
-                      "last_name": {
-                        "type": "string"
-                      },
-                      "business_name": {
-                        "type": "string"
-                      },
-                      "email": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "account_owner_name",
-                      "bank_name",
-                      "account_number",
-                      "bic",
-                      "country",
-                      "account_owner_type"
                     ]
                   },
                   {
@@ -6815,141 +6443,6 @@
                       "currency",
                       "phone_number",
                       "account_owner_name"
-                    ]
-                  },
-                  {
-                    "title": "ZMW",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "ZMW"
-                        ]
-                      },
-                      "phone_number": {
-                        "type": "string"
-                      },
-                      "account_owner_name": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "phone_number",
-                      "account_owner_name"
-                    ]
-                  },
-                  {
-                    "title": "MXN",
-                    "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "MXN"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "mxn_method": {
-                        "type": "string",
-                        "enum": [
-                          "spei",
-                          "debit_card",
-                          "phone_number"
-                        ]
-                      },
-                      "beneficiary": {
-                        "type": "string"
-                      },
-                      "clabe": {
-                        "type": "string"
-                      },
-                      "institution_code": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "mxn_method",
-                      "beneficiary",
-                      "clabe",
-                      "institution_code"
-                    ]
-                  },
-                  {
-                    "title": "ARS",
-                    "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "ARS"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "recipient_name": {
-                        "type": "string"
-                      },
-                      "cvu": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "recipient_name",
-                      "cvu"
-                    ]
-                  },
-                  {
-                    "title": "COP",
-                    "type": "object",
-                    "description": "Requires approved Tier 1 KYC.",
-                    "properties": {
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "COP"
-                        ]
-                      },
-                      "alias": {
-                        "type": "string"
-                      },
-                      "cop_method": {
-                        "type": "string",
-                        "enum": [
-                          "pse",
-                          "ach"
-                        ]
-                      },
-                      "bank_account": {
-                        "type": "string"
-                      },
-                      "account_type": {
-                        "type": "string",
-                        "enum": [
-                          "1",
-                          "2"
-                        ],
-                        "description": "1-Checking, 2-Savings"
-                      },
-                      "bank_code": {
-                        "type": "string"
-                      }
-                    },
-                    "required": [
-                      "currency",
-                      "cop_method",
-                      "bank_account",
-                      "account_type",
-                      "bank_code"
                     ]
                   },
                   {
@@ -7062,38 +6555,26 @@
                   }
                 },
                 "USD": {
-                  "summary": "USD recipient example",
+                  "summary": "USD business recipient for named withdrawals",
                   "value": {
                     "currency": "USD",
-                    "account_owner_name": "John Doe",
-                    "bank_name": "Bank of America",
-                    "account_number": "123456789013",
-                    "routing_number": "111000025",
-                    "country": "USA",
+                    "bank_name": "JPMorgan Chase Bank",
+                    "account_number": "123456789012",
+                    "routing_number": "021000021",
+                    "business_name": "Recipient Company LLC",
+                    "email": "finance@recipient-company.com",
                     "address": {
-                      "street_line_1": "123 Main St",
-                      "street_line_2": "Apt 4B",
+                      "street_line_1": "123 Market St",
+                      "street_line_2": "Suite 400",
                       "city": "New York",
                       "state": "NY",
                       "postal_code": "10001",
-                      "country": "USA"
-                    }
-                  }
-                },
-                "EUR": {
-                  "summary": "EUR recipient example",
-                  "value": {
-                    "currency": "EUR",
-                    "account_owner_name": "John Doe",
-                    "bank_name": "Bank of America",
-                    "account_number": "GB26PRTC00998500671076",
-                    "bic": "BANKGB2L",
-                    "country": "GBR",
-                    "account_owner_type": "individual",
-                    "first_name": "John",
-                    "last_name": "Doe",
-                    "business_name": "Acme Inc.",
-                    "email": "john@example.com"
+                      "country": "US"
+                    },
+                    "beneficiary_date_of_formation": "2020-01-31",
+                    "beneficiary_country_of_formation": "US",
+                    "beneficiary_national_identification_number": "12-3456789",
+                    "account_type": "CHECKING"
                   }
                 },
                 "GHS": {
@@ -7101,14 +6582,6 @@
                   "value": {
                     "currency": "GHS",
                     "phone_number": "+233241234567",
-                    "account_owner_name": "test two"
-                  }
-                },
-                "ZMW": {
-                  "summary": "ZMW recipient example",
-                  "value": {
-                    "currency": "ZMW",
-                    "phone_number": "+260241234567",
                     "account_owner_name": "test two"
                   }
                 }
@@ -7175,17 +6648,6 @@
                       "currency": "GHS",
                       "is_verified": false,
                       "account_id": "+233241234567"
-                    }
-                  },
-                  "ZMW": {
-                    "summary": "ZMW example",
-                    "value": {
-                      "id": "223d8913-17cd-4138-8e90-c6b63052cc39",
-                      "account_owner_name": "test two",
-                      "active": true,
-                      "currency": "ZMW",
-                      "is_verified": false,
-                      "account_id": "+260241234567"
                     }
                   },
                   "USDC": {
@@ -7290,15 +6752,9 @@
                 "NGN",
                 "BRL",
                 "USD",
-                "EUR",
                 "GHS",
-                "ZMW",
                 "TZS",
-                "ARS",
                 "AED",
-                "MXN",
-                "ARS",
-                "COP",
                 "USDC",
                 "USDT",
                 "EURC"
@@ -7681,7 +7137,7 @@
                     "code": "413"
                   },
                   {
-                    "name": "Abucoop  Microfinance Bank",
+                    "name": "Abucoop Microfinance Bank",
                     "code": "544"
                   },
                   {
@@ -7837,7 +7293,7 @@
                     "code": "749"
                   },
                   {
-                    "name": "Apple  Microfinance Bank",
+                    "name": "Apple Microfinance Bank",
                     "code": "502"
                   },
                   {
@@ -7873,7 +7329,7 @@
                     "code": "380"
                   },
                   {
-                    "name": "Atbu  Microfinance Bank",
+                    "name": "Atbu Microfinance Bank",
                     "code": "569"
                   },
                   {
@@ -7928,7 +7384,7 @@
                   "statusCode": 400,
                   "timestamp": "2025-12-30T10:20:52.254Z",
                   "error": "Bad Request",
-                  "message": "Invalid currency. Supported currencies: MXN, BRL, COP, ARS, NGN"
+                  "message": "Invalid currency. Supported currencies: BRL, NGN"
                 }
               }
             }
@@ -8030,7 +7486,7 @@
           "Withdrawals"
         ],
         "summary": "Withdraw Fiat",
-        "description": "Initiate a fiat withdrawal from a user's subaccount. The request body varies depending on the currency. All withdrawal requests require approved KYC.",
+        "description": "Initiate a fiat withdrawal from a user subaccount. The request body varies depending on the currency. Existing non-named withdrawal behavior is unchanged. USD withdrawals can include payment_rail. Named withdrawals currently support USD only, require a business recipient identified by business_name with beneficiary_date_of_formation, beneficiary_country_of_formation, and beneficiary_national_identification_number, and support only WIRE and SWIFT. RTP, SAME_DAY_ACH, and ACH remain supported only for non-named USD flows where applicable. All withdrawal requests require approved KYC.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -8039,7 +7495,7 @@
                   {
                     "title": "USD",
                     "type": "object",
-                    "description": "Requires approved KYC.",
+                    "description": "Requires approved KYC. payment_rail is USD-only and supports RTP, WIRE, SWIFT, SAME_DAY_ACH, and ACH. Set named_withdrawal to true only for USD named withdrawals. Named withdrawals require a business recipient identified by business_name and the recipient must include beneficiary_date_of_formation, beneficiary_country_of_formation, and beneficiary_national_identification_number. Named withdrawals support only WIRE and SWIFT. RTP, SAME_DAY_ACH, and ACH remain supported only for non-named USD flows where applicable.",
                     "properties": {
                       "recipient_id": {
                         "type": "string"
@@ -8058,8 +7514,26 @@
                       },
                       "client_reference": {
                         "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
+                        "description": "Optional client-provided reference for reconciliation."
+                      },
+                      "payment_rail": {
+                        "type": "string",
+                        "enum": [
+                          "RTP",
+                          "WIRE",
+                          "SWIFT",
+                          "SAME_DAY_ACH",
+                          "ACH"
+                        ],
+                        "description": "USD-only payment rail. For named withdrawals, only WIRE and SWIFT are supported. RTP, SAME_DAY_ACH, and ACH are for non-named USD flows where applicable."
+                      },
+                      "named_withdrawal": {
+                        "type": "boolean",
+                        "description": "Set to true for a USD named withdrawal. Named withdrawals require a business recipient with business_name and the three beneficiary fields, and support only WIRE and SWIFT."
+                      },
+                      "origin_id": {
+                        "type": "string",
+                        "description": "Optional unique client-provided reference for reconciliation."
                       }
                     },
                     "required": [
@@ -8098,38 +7572,6 @@
                     ]
                   },
                   {
-                    "title": "EUR",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "recipient_id": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "string"
-                      },
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "EUR"
-                        ]
-                      },
-                      "sepa_message": {
-                        "type": "string"
-                      },
-                      "client_reference": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
-                      }
-                    },
-                    "required": [
-                      "recipient_id",
-                      "amount",
-                      "currency"
-                    ]
-                  },
-                  {
                     "title": "NGN",
                     "type": "object",
                     "description": "Requires approved KYC.",
@@ -8144,35 +7586,6 @@
                         "type": "string",
                         "enum": [
                           "NGN"
-                        ]
-                      },
-                      "client_reference": {
-                        "type": "string",
-                        "format": "uuid",
-                        "description": "Optional unique identifier (UUID) for the withdrawal, used for idempotency and reconciliation. If not provided, a random UUID will be generated by the system."
-                      }
-                    },
-                    "required": [
-                      "recipient_id",
-                      "amount",
-                      "currency"
-                    ]
-                  },
-                  {
-                    "title": "ZMW",
-                    "type": "object",
-                    "description": "Requires approved KYC.",
-                    "properties": {
-                      "recipient_id": {
-                        "type": "string"
-                      },
-                      "amount": {
-                        "type": "string"
-                      },
-                      "currency": {
-                        "type": "string",
-                        "enum": [
-                          "ZMW"
                         ]
                       },
                       "client_reference": {
@@ -8220,13 +7633,14 @@
               },
               "examples": {
                 "USD": {
-                  "summary": "USD Withdrawal",
+                  "summary": "USD wire withdrawal",
                   "value": {
                     "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "1",
                     "currency": "USD",
                     "wire_message": "Payment for services",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
+                    "client_reference": "123e4567-e89b-12d3-a456-426614174000",
+                    "payment_rail": "WIRE"
                   }
                 },
                 "BRL": {
@@ -8235,16 +7649,6 @@
                     "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
                     "amount": "10",
                     "currency": "BRL",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
-                  }
-                },
-                "EUR": {
-                  "summary": "EUR Withdrawal",
-                  "value": {
-                    "recipient_id": "e1780b01-39d0-4c9c-89cf-27585d5b6004",
-                    "amount": "1",
-                    "currency": "EUR",
-                    "sepa_message": "Payment for services",
                     "client_reference": "123e4567-e89b-12d3-a456-426614174000"
                   }
                 },
@@ -8257,15 +7661,6 @@
                     "client_reference": "123e4567-e89b-12d3-a456-426614174000"
                   }
                 },
-                "ZMW": {
-                  "summary": "ZMW Withdrawal",
-                  "value": {
-                    "recipient_id": "f556899a-eea7-4a18-b9e8-6346823a9b06",
-                    "amount": "3",
-                    "currency": "ZMW",
-                    "client_reference": "123e4567-e89b-12d3-a456-426614174000"
-                  }
-                },
                 "GHS": {
                   "summary": "GHS Withdrawal",
                   "value": {
@@ -8273,6 +7668,54 @@
                     "amount": "10",
                     "currency": "GHS",
                     "client_reference": "123e4567-e89b-12d3-a456-426614174000"
+                  }
+                },
+                "USD_ACH": {
+                  "summary": "Normal USD ACH withdrawal",
+                  "value": {
+                    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+                    "amount": "100.50",
+                    "currency": "USD",
+                    "payment_rail": "ACH",
+                    "origin_id": "unique-client-reference-ach",
+                    "client_reference": "invoice-ach-1000"
+                  }
+                },
+                "USD_RTP": {
+                  "summary": "Normal USD RTP withdrawal",
+                  "value": {
+                    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+                    "amount": "100.50",
+                    "currency": "USD",
+                    "payment_rail": "RTP",
+                    "origin_id": "unique-client-reference-rtp",
+                    "client_reference": "invoice-rtp-1000"
+                  }
+                },
+                "USD_NAMED_WIRE": {
+                  "summary": "USD named withdrawal by WIRE",
+                  "value": {
+                    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+                    "amount": "100.50",
+                    "currency": "USD",
+                    "payment_rail": "WIRE",
+                    "named_withdrawal": true,
+                    "origin_id": "unique-client-reference-001",
+                    "client_reference": "invoice-1001",
+                    "wire_message": "Payment for services"
+                  }
+                },
+                "USD_NAMED_SWIFT": {
+                  "summary": "USD named withdrawal by SWIFT",
+                  "value": {
+                    "recipient_id": "RECIPIENT_ACCOUNT_UUID",
+                    "amount": "100.50",
+                    "currency": "USD",
+                    "payment_rail": "SWIFT",
+                    "named_withdrawal": true,
+                    "origin_id": "unique-client-reference-002",
+                    "client_reference": "invoice-1002",
+                    "wire_message": "Payment for services"
                   }
                 }
               }
@@ -8481,13 +7924,6 @@
                   "address": {
                     "type": "string"
                   },
-                  "balance_account": {
-                    "type": "string",
-                    "description": "The balance account to withdraw from. Use USDCARD to withdraw from the card collection balance. If omitted, defaults to the standard USD balance.",
-                    "enum": [
-                      "USDCARD"
-                    ]
-                  },
                   "client_reference": {
                     "type": "string",
                     "format": "uuid",
@@ -8509,16 +7945,6 @@
                     "stablecoin": "usdt",
                     "chain": "ethereum",
                     "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37"
-                  }
-                },
-                "Card Collection Balance": {
-                  "summary": "Withdraw from card collection (USDCARD) balance",
-                  "value": {
-                    "amount": "50",
-                    "stablecoin": "usdc",
-                    "chain": "celo",
-                    "address": "0x22ccb74a200d7b8094b72482edd46e23cbf3af37",
-                    "balance_account": "USDCARD"
                   }
                 }
               }
@@ -9019,7 +8445,7 @@
           "Offramp"
         ],
         "summary": "Initiate Offramp",
-        "description": "Convert crypto to fiat via offramp. This does not affect your Bullring balance.",
+        "description": "Convert crypto to fiat via offramp. This does not affect your Bullring balance. Existing non-named offramp behavior is unchanged. USD offramps can include payment_rail under to. Named withdrawals currently support USD offramps only, require a business recipient identified by business_name with beneficiary_date_of_formation, beneficiary_country_of_formation, and beneficiary_national_identification_number, and support only WIRE and SWIFT. RTP, SAME_DAY_ACH, and ACH remain supported only for non-named USD flows where applicable.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -9040,7 +8466,7 @@
                     "type": "object",
                     "properties": {
                       "chain": {
-                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`. **Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
@@ -9072,6 +8498,21 @@
                     "properties": {
                       "recipient_id": {
                         "type": "string"
+                      },
+                      "payment_rail": {
+                        "type": "string",
+                        "enum": [
+                          "RTP",
+                          "WIRE",
+                          "SWIFT",
+                          "SAME_DAY_ACH",
+                          "ACH"
+                        ],
+                        "description": "USD-only payment rail for offramps. For named withdrawals, only WIRE and SWIFT are supported. RTP, SAME_DAY_ACH, and ACH are for non-named USD flows where applicable."
+                      },
+                      "named_withdrawal": {
+                        "type": "boolean",
+                        "description": "Set to true for a USD named withdrawal offramp. Requires a business recipient with business_name and the three beneficiary fields, and supports only WIRE and SWIFT."
                       }
                     }
                   },
@@ -9081,17 +8522,60 @@
                   }
                 }
               },
-              "example": {
-                "from": {
-                  "chain": "SOL-DEVNET",
-                  "asset": "USDC",
-                  "amount": 10,
-                  "sender_address": "6FxHYG9TnJRg933piXUBu2R2mzB13htrNifX3NYU73it"
+              "examples": {
+                "USD_NON_NAMED": {
+                  "summary": "Normal non-named USD offramp",
+                  "value": {
+                    "from": {
+                      "chain": "ETH-SEPOLIA",
+                      "asset": "USDC",
+                      "amount": 100,
+                      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+                    },
+                    "to": {
+                      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+                      "currency": "USD",
+                      "payment_rail": "ACH"
+                    },
+                    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571619d"
+                  }
                 },
-                "to": {
-                  "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4"
+                "USD_NAMED_WIRE": {
+                  "summary": "USD named withdrawal offramp by WIRE",
+                  "value": {
+                    "from": {
+                      "chain": "ETH-SEPOLIA",
+                      "asset": "USDC",
+                      "amount": 1000,
+                      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+                    },
+                    "to": {
+                      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+                      "currency": "USD",
+                      "payment_rail": "WIRE",
+                      "named_withdrawal": true
+                    },
+                    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571620d"
+                  }
                 },
-                "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571619d"
+                "USD_NAMED_SWIFT": {
+                  "summary": "USD named withdrawal offramp by SWIFT",
+                  "value": {
+                    "from": {
+                      "chain": "ETH-SEPOLIA",
+                      "asset": "USDC",
+                      "amount": 1000,
+                      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+                    },
+                    "to": {
+                      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+                      "currency": "USD",
+                      "payment_rail": "SWIFT",
+                      "named_withdrawal": true
+                    },
+                    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571621d"
+                  }
+                }
               }
             }
           }
@@ -9248,7 +8732,7 @@
           "Offramp"
         ],
         "summary": "Get Offramp Quote",
-        "description": "Get a quote to offramp crypto to fiat. This does not affect your Bullring balance.",
+        "description": "Get a quote to offramp crypto to fiat. This does not affect your Bullring balance. Existing non-named offramp behavior is unchanged. USD offramps can include payment_rail under to. Named withdrawals currently support USD offramps only, require a business recipient identified by business_name with beneficiary_date_of_formation, beneficiary_country_of_formation, and beneficiary_national_identification_number, and support only WIRE and SWIFT. RTP, SAME_DAY_ACH, and ACH remain supported only for non-named USD flows where applicable.",
         "parameters": [
           {
             "name": "subaccountId",
@@ -9287,7 +8771,7 @@
                           "MATIC",
                           "SOL"
                         ],
-                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`. **Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
                       },
                       "amount": {
                         "type": "number",
@@ -9304,11 +8788,26 @@
                     "properties": {
                       "amount": {
                         "type": "number",
-                        "description": "The fiat amount to determine the quote.  if provided, the quote will be based on the provided amount. if provided, from.amount should not be provided."
+                        "description": "The fiat amount to determine the quote. if provided, the quote will be based on the provided amount. if provided, from.amount should not be provided."
                       },
                       "currency": {
                         "type": "string",
                         "description": "The fiat currency for the quote"
+                      },
+                      "payment_rail": {
+                        "type": "string",
+                        "enum": [
+                          "RTP",
+                          "WIRE",
+                          "SWIFT",
+                          "SAME_DAY_ACH",
+                          "ACH"
+                        ],
+                        "description": "USD-only payment rail for offramps. For named withdrawals, only WIRE and SWIFT are supported. RTP, SAME_DAY_ACH, and ACH are for non-named USD flows where applicable."
+                      },
+                      "named_withdrawal": {
+                        "type": "boolean",
+                        "description": "Set to true for a USD named withdrawal offramp. Requires a business recipient with business_name and the three beneficiary fields, and supports only WIRE and SWIFT."
                       }
                     },
                     "required": [
@@ -9321,14 +8820,50 @@
                   "to"
                 ]
               },
-              "example": {
-                "from": {
-                  "asset": "USDC",
-                  "chain": "ETH-SEPOLIA"
+              "examples": {
+                "USD_NON_NAMED": {
+                  "summary": "Normal non-named USD offramp quote",
+                  "value": {
+                    "from": {
+                      "asset": "USDC",
+                      "chain": "ETH-SEPOLIA"
+                    },
+                    "to": {
+                      "amount": 100,
+                      "currency": "USD",
+                      "payment_rail": "ACH"
+                    }
+                  }
                 },
-                "to": {
-                  "amount": 100,
-                  "currency": "BRL"
+                "USD_NAMED_WIRE": {
+                  "summary": "USD named withdrawal offramp quote by WIRE",
+                  "value": {
+                    "from": {
+                      "asset": "USDC",
+                      "chain": "ETH-SEPOLIA"
+                    },
+                    "to": {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "payment_rail": "WIRE",
+                      "named_withdrawal": true
+                    }
+                  }
+                },
+                "USD_NAMED_SWIFT": {
+                  "summary": "USD named withdrawal offramp quote by SWIFT",
+                  "value": {
+                    "from": {
+                      "asset": "USDC",
+                      "chain": "ETH-SEPOLIA"
+                    },
+                    "to": {
+                      "amount": 1000,
+                      "currency": "USD",
+                      "payment_rail": "SWIFT",
+                      "named_withdrawal": true
+                    }
+                  }
                 }
               }
             }
@@ -9862,11 +9397,11 @@
                       },
                       "payment_rail": {
                         "type": "string",
-                        "description": "Required for `COP`."
+                        "description": "Required for bank-transfer currencies when applicable."
                       },
                       "bank_code": {
                         "type": "string",
-                        "description": "Required for `COP`."
+                        "description": "Required for bank-transfer currencies when applicable."
                       }
                     },
                     "required": [
@@ -9887,7 +9422,7 @@
                       },
                       "chain": {
                         "type": "string",
-                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`. **Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`.",
                         "enum": [
                           "lightning",
                           "SOL-DEVNET",
@@ -10163,7 +9698,7 @@
                           "SOL",
                           "MATIC"
                         ],
-                        "description": " **Production:** `lightning`, `ETH`, `SOL`.\n\n**Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
+                        "description": " **Production:** `lightning`, `ETH`, `SOL`. **Staging:** `lightning`, `SOL-DEVNET`, `ETH-SEPOLIA`."
                       },
                       "amount": {
                         "type": "number",
@@ -11034,7 +10569,7 @@
                   "statusCode": 400,
                   "timestamp": "2025-11-21hdrawal/fee?currency=ngnn&amount=0.99",
                   "error": "Bad Request",
-                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW"
+                  "message": "Invalid or unsupported currency. Supported: USD, USDC, BRL, USDT, NGN, GHS"
                 }
               }
             }
@@ -11139,7 +10674,7 @@
                   "statusCode": 400,
                   "timestamp": "2025-11-21T00:41:55.962Z",
                   "error": "Bad Request",
-                  "message": "Invalid or unsupported currency. Supported: USD, EUR, USDC, BRL, USDT, NGN, GHS, ZMW"
+                  "message": "Invalid or unsupported currency. Supported: USD, USDC, BRL, USDT, NGN, GHS"
                 }
               }
             }

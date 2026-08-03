@@ -7,7 +7,7 @@ description: "Understanding how subaccounts manage multiple currency balances."
 
 Bullring's multi-currency architecture allows each subaccount to hold balances in multiple fiat currencies simultaneously. Each currency is managed independently with its own balance. This design enables seamless operations across different regions without needing multiple accounts.
 
-- **Multi-balance Subaccount**: A single subaccount manages separate balances for USD, EUR, GBP, NGN, and other supported currencies.
+- **Multi-balance Subaccount**: A single subaccount manages separate balances for USD, GBP, NGN, and other supported currencies.
 - **Stablecoin Parity**: USD balances maintain a 1:1 parity with stablecoins (USDC, USDT), bridging the gap between fiat and crypto.
 - **Internal Conversion**: Convert funds between currencies internally without initiating external blockchain or bank transactions.
 
@@ -36,8 +36,8 @@ This equivalence provides crypto-native users the ability to interact with fiat 
 
 Bullring operates a single verification process that unlocks access to different currency corridors based on the completeness and type of documentation submitted:
 
-- **Capability 1**: Access to USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via wire, ACH, and SWIFT rails.
-- **Capability 2**: Access to NGN (requires BVN), GHS, ZMW, BRL via local payment rails and mobile money.
+- **Capability 1**: Access to USD, GBP, AED, CNY, BRL, GHS via wire, ACH, and SWIFT rails.
+- **Capability 2**: Access to NGN (requires BVN), GHS, BRL via local payment rails and mobile money.
 
 <Note>
   Institutional accounts may have access to enhanced rates, higher limits, and dedicated support.

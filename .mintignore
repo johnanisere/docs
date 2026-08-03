@@ -1,0 +1,7 @@
+AGENTS.md
+.opencode/
+progress-ralph-*.txt
+ralph-*-session.log
+hitl-ralph-*.sh
+afk-ralph-*.sh
+opencode.json

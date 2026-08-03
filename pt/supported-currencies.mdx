@@ -10,26 +10,23 @@ Suportamos uma ampla variedade de moedas fiduciárias e digitais em múltiplos t
 | Moeda | Código | Conta Nominal* | Notas |
 |----------|------|----------------|-------|
 | **USD** | Dólar Americano | ✓ | ACH, Wire, SWIFT |
-| **EUR** | Euro | | SEPA |
 | **GBP** | Libra Esterlina | ✓ | FPS |
 | **AED** | Dirham dos Emirados | ✓ | UAEFTS |
 | **NGN** | Naira Nigeriana | ✓ | NIBBS |
 | **GHS** | Cedi de Gana | | Mobile Money |
-| **ZMW** | Kwacha Zambiano | | Mobile Money |
 | **CNY** | Yuan Chinês | | Transferência Bancária |
 | **BRL** | Real Brasileiro | | PIX |
 
 <Note>
 **Conta Nominal**: Moedas com ✓ fornecem números de conta virtual dedicados (IBAN, código de agência ou equivalente local) em seu nome para coleções simplificadas.
 
-**Mobile Money**: GHS e ZMW operam via redes de mobile money; não é necessária conta bancária.
+**Mobile Money**: GHS opera via redes de mobile money; não é necessária conta bancária.
 
 **Apenas offramp**: CNY e BRL suportam pagamentos e conversão de stablecoin para fiat, mas não suportam depósitos ou manutenção de saldo.
 </Note>
 
 <Note>
 **Tempos de Liquidação**
-- **SEPA**: Instantâneo
 - **ACH**: 1 dia útil
 - **Wire**: 1 hora
 - **SWIFT**: 2-5 dias úteis

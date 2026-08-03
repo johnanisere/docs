@@ -7,7 +7,7 @@ description: "Compreendendo como as subcontas gerenciam múltiplos saldos de moe
 
 A arquitetura multi-moedas da Bullring permite que cada subconta mantenha saldos em múltiplas moedas fiduciárias simultaneamente. Cada moeda é gerenciada independentemente com seu próprio saldo. Este design possibilita operações contínuas em diferentes regiões sem a necessidade de múltiplas contas.
 
-- **Subconta Multi-saldo**: Uma única subconta gerencia saldos separados para USD, EUR, GBP, NGN e outras moedas suportadas.
+- **Subconta Multi-saldo**: Uma única subconta gerencia saldos separados para USD, GBP, NGN e outras moedas suportadas.
 - **Paridade com Stablecoins**: Os saldos em USD mantêm uma paridade de 1:1 com stablecoins (USDC, USDT), conectando o sistema fiduciário ao cripto.
 - **Conversão Interna**: Converta fundos entre moedas internamente sem iniciar transações externas de blockchain ou bancárias.
 
@@ -36,8 +36,8 @@ Esta equivalência proporciona aos usuários nativos de cripto a capacidade de i
 
 A Bullring opera um único processo de verificação que desbloqueia acesso a diferentes corredores de moedas com base na completude e tipo de documentação submetida:
 
-- **Capacidade 1**: Acesso a USD, EUR, GBP, AED, CNY, BRL, GHS, ZMW via trilhos wire, ACH e SWIFT.
-- **Capacidade 2**: Acesso a NGN (requer BVN), GHS, ZMW, BRL via trilhos de pagamento locais e mobile money.
+- **Capacidade 1**: Acesso a USD, GBP, AED, CNY, BRL, GHS via trilhos wire, ACH e SWIFT.
+- **Capacidade 2**: Acesso a NGN (requer BVN), GHS, BRL via trilhos de pagamento locais e mobile money.
 
 <Note>
   Contas institucionais podem ter acesso a taxas aprimoradas, limites mais altos e suporte dedicado.

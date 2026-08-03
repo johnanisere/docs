@@ -92,7 +92,7 @@ Use built-in Mintlify JSX components where appropriate:
   camelCase variables, `SCREAMING_SNAKE_CASE` for constants.
 - Wrap multi-language examples in `<CodeGroup>`:
 
-```mdx
+````mdx
 <CodeGroup>
 ```bash cURL
 curl -X POST https://api.bullring.finance/v1/ramp/subaccount \
@@ -111,7 +111,7 @@ const response = await fetch("https://api.bullring.finance/v1/ramp/subaccount", 
 });
 ```
 </CodeGroup>
-```
+````
 
 ### Authentication in Examples
 

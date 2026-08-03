@@ -1,5 +1,5 @@
 {
-   "$schema": "https://mintlify.com/docs.json",
+  "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "Bullring Finance API Doc",
   "colors": {
@@ -8,7 +8,10 @@
     "dark": "#15803D"
   },
   "contextual": {
-    "options": ["copy", "view"]
+    "options": [
+      "copy",
+      "view"
+    ]
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -91,7 +94,6 @@
                   "en/use-cases/mass-payouts",
                   "en/use-cases/crypto-offramp",
                   "en/use-cases/collections-and-payouts",
-                  "en/use-cases/card-collection",
                   "en/use-cases/institutional-transactions"
                 ]
               }
@@ -142,10 +144,10 @@
             "tab": "Casos de Uso",
             "groups": [
               {
-                "group": "Padrões Comuns",
+                "group": "Padr\u00f5es Comuns",
                 "pages": [
                   {
-                    "group": "Verificação do Cliente",
+                    "group": "Verifica\u00e7\u00e3o do Cliente",
                     "pages": [
                       "pt/use-cases/kyc-verification-document-guide",
                       "pt/use-cases/individual-id-numbers",
@@ -167,14 +169,13 @@
                   "pt/use-cases/mass-payouts",
                   "pt/use-cases/crypto-offramp",
                   "pt/use-cases/collections-and-payouts",
-                  "pt/use-cases/card-collection",
                   "pt/use-cases/institutional-transactions"
                 ]
               }
             ]
           },
           {
-            "tab": "Referência da API",
+            "tab": "Refer\u00eancia da API",
             "openapi": "api-reference/openapi.json"
           }
         ]
@@ -183,10 +184,10 @@
         "language": "zh",
         "tabs": [
           {
-            "tab": "快速入门",
+            "tab": "\u5feb\u901f\u5165\u95e8",
             "groups": [
               {
-                "group": "快速入门",
+                "group": "\u5feb\u901f\u5165\u95e8",
                 "pages": [
                   "zh/introduction",
                   "zh/authentication",
@@ -194,7 +195,7 @@
                 ]
               },
               {
-                "group": "核心概念",
+                "group": "\u6838\u5fc3\u6982\u5ff5",
                 "pages": [
                   "zh/multi-currency-balances",
                   "zh/accounts",
@@ -202,7 +203,7 @@
                 ]
               },
               {
-                "group": "事件 (Webhooks)",
+                "group": "\u4e8b\u4ef6 (Webhooks)",
                 "pages": [
                   "zh/webhook-intro",
                   "zh/subaccount-events",
@@ -215,13 +216,13 @@
             ]
           },
           {
-            "tab": "使用场景",
+            "tab": "\u4f7f\u7528\u573a\u666f",
             "groups": [
               {
-                "group": "常见模式",
+                "group": "\u5e38\u89c1\u6a21\u5f0f",
                 "pages": [
                   {
-                    "group": "客户验证",
+                    "group": "\u5ba2\u6237\u9a8c\u8bc1",
                     "pages": [
                       "zh/use-cases/kyc-verification-document-guide",
                       "zh/use-cases/individual-id-numbers",
@@ -237,20 +238,19 @@
                 ]
               },
               {
-                "group": "使用场景",
+                "group": "\u4f7f\u7528\u573a\u666f",
                 "pages": [
                   "zh/use-cases/remittance",
                   "zh/use-cases/mass-payouts",
                   "zh/use-cases/crypto-offramp",
                   "zh/use-cases/collections-and-payouts",
-                  "zh/use-cases/card-collection",
                   "zh/use-cases/institutional-transactions"
                 ]
               }
             ]
           },
           {
-            "tab": "API 参考",
+            "tab": "API \u53c2\u8003",
             "openapi": "api-reference/openapi.json"
           }
         ]

@@ -4,7 +4,8 @@ description: "Convert crypto to cash instantly."
 ---
 
 ## Scenario
-A user wants to sell Bitcoin (via Lightning Network) and receive cash in their local bank account (e.g., Brazil PIX) immediately using a single streamlined flow.
+
+A user wants to sell crypto and receive cash in their local bank account using a single streamlined flow. Existing non-named offramp behavior is unchanged.
 
 ## Workflow
 
@@ -20,30 +21,17 @@ First, add the destination bank account as a beneficiary. This is where the fund
 curl --request POST \
   --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/beneficiaries \
   --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer <token>' \
+  --header 'x-api-key: YOUR_API_KEY' \
   --data '{
-  "account_id": "667.136.083-96",
-  "account_type": "cpf",
-  "currency": "BRL"
-}'
-```
-
-**Response:**
-
-```json
-{
-  "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-  "account_id": "667.136.083-96",
-  "account_type": "cpf",
-  "currency": "BRL",
-  "status": "active",
-  "created_at": "2025-11-25T12:00:00.000Z"
-}
+    "account_id": "667.136.083-96",
+    "account_type": "cpf",
+    "currency": "BRL"
+  }'
 ```
 
 ### 2. Initiate Crypto Offramp
 
-Initiate the offramp by specifying the recipient (beneficiary ID) and the amount in the destination currency. The API will generate a Lightning invoice that the user needs to pay.
+Initiate the offramp by specifying the recipient and the amount in the destination currency. The API will generate a payment instruction for the user.
 
 <Note>
   See the [Offramp Crypto](/api-reference/withdrawals/offramp-crypto) API reference for full details.
@@ -53,108 +41,123 @@ Initiate the offramp by specifying the recipient (beneficiary ID) and the amount
 curl --request POST \
   --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/initiate \
   --header 'Content-Type: application/json' \
-  --header 'Authorization: Bearer <token>' \
+  --header 'x-api-key: YOUR_API_KEY' \
   --data '{
-  "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-  "amount": 88
-}'
+    "recipient_id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
+    "amount": 88
+  }'
 ```
 
-**Response:**
+### 3. USD Offramps and named withdrawal
 
-```json
-{
-  "success": true,
-  "data": {
-    "id": "d79c9799-bb8e-4c17-9d5a-79fefa34484f",
-    "lightningInvoice": "lntbs190270n1p5jtvf2pp53pk7mdfvc9d8szp7m0kpym4q5j8axwy6zk7j8ylk03j6vn24cv6sdqqcqzpuxqzfvsp5phce46p7sk0dyejc2wnn0c0vcehdwa8p4fugj734rvy6eed7g2ds9qxpqysgqlas9q8el7l57vn7ht84tqha22c53s5797uqtv70lsn55xa9rhe53l0z2ashzeq9jcz54wkczzyqznqeunthfw4cnyjp3v2y7vha6yxspe0u76h",
-    "lightningInvoiceId": "d0abc66e-9ab3-43b7-bb07-09465a048d54",
-    "targetAmount": 88,
-    "targetCurrency": "brl",
-    "lightningAmount": 1656,
-    "lightningCurrency": "stablesats",
-    "exchangeRate": 0.18822915501882292,
-    "lightningFee": 0,
-    "withdrawalFee": 0.64,
-    "targetAmountReceivable": 87.34,
-    "totalFees": 0.64,
-    "bankAccount": {
-      "id": "343bb162-d0ae-46ef-a5bb-13505eb52c89",
-      "bankName": null,
-      "accountId": "667.136.083-96",
-      "currency": "BRL"
-    },
-    "expiresAt": null,
-    "status": "pending",
-    "createdAt": "2025-11-25T13:37:46.829Z"
-  },
-  "message": "Lightning invoice generated. Pay to receive funds in your bank account."
-}
-```
 
-**Key Response Fields:**
-- `lightningInvoice` - The Lightning invoice that the user needs to pay
-- `lightningAmount` - The amount of satoshis to pay
-- `targetAmountReceivable` - The amount the user will receive (after fees)
-- `totalFees` - Total fees charged for the transaction
+**Endpoint:** `POST /v2/ramp/{subaccountId}/banking/offramp/initiate`
 
-### 3. User Pays Lightning Invoice
+For USD offramps, the `to` object can include `payment_rail` with `RTP`, `WIRE`, `SWIFT`, `SAME_DAY_ACH`, or `ACH`. Set `named_withdrawal` to `true` only for a USD named withdrawal. named withdrawal currently supports USD offramps only, requires a business recipient identified by `business_name`, and requires the recipient to include `beneficiary_date_of_formation`, `beneficiary_country_of_formation`, and `beneficiary_national_identification_number`. named withdrawal supports only `WIRE` and `SWIFT`; `RTP`, `SAME_DAY_ACH`, and `ACH` remain supported only for non-named USD flows where applicable.
 
-The user pays the Lightning invoice using their Bitcoin Lightning wallet. Once the invoice is paid, Bullring automatically processes the withdrawal to the beneficiary's bank account.
+Use the quote endpoint (`POST /v2/ramp/{subaccountId}/banking/offramp/quote`) with the same `to.payment_rail` and `to.named_withdrawal` fields when you need pricing before initiating the offramp.
 
-### 4. Check Offramp Status
-
-You can check the status of the offramp transaction at any time using the offramp ID.
-
-<Note>
-  See the [Get Offramp Status](/api-reference/withdrawals/get-offramp-status) API reference for full details.
-</Note>
+### Example: Normal Non-named USD Offramp
 
 ```bash
-curl --request GET \
-  --url https://api.bullring.finance/v1/ramp/{subaccountId}/banking/offramp/{offrampId}/status \
-  --header 'Authorization: Bearer <token>'
+curl --request POST \
+  --url https://api.bullring.finance/v2/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "from": {
+      "chain": "ETH-SEPOLIA",
+      "asset": "USDC",
+      "amount": 100,
+      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    },
+    "to": {
+      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+      "currency": "USD",
+      "payment_rail": "ACH"
+    },
+    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571619d"
+  }'
 ```
 
-**Response:**
+### Example: USD named withdrawal Offramp by WIRE
 
-```json
-{
-  "success": true,
-  "data": {
-    "id": "6b32169e-c20e-49c9-aa7f-b73fe863c231",
-    "status": "pending",
-    "targetAmount": 12,
-    "targetCurrency": "brl",
-    "lightningAmount": 226,
-    "withdrawalId": null,
-    "invoicePaidAt": null,
-    "withdrawalInitiatedAt": null,
-    "completedAt": null,
-    "errorMessage": null,
-    "createdAt": "2025-11-25T13:48:02.667Z",
-    "updatedAt": "2025-11-25T13:48:02.667Z",
-    "lightningCurrency": "stablesats",
-    "exchangeRate": 0.18822916,
-    "lightningFee": 0,
-    "withdrawalFee": 0.11,
-    "targetAmountReceivable": 53.09,
-    "totalFees": 0.11
-  }
-}
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v2/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "from": {
+      "chain": "ETH-SEPOLIA",
+      "asset": "USDC",
+      "amount": 1000,
+      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    },
+    "to": {
+      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+      "currency": "USD",
+      "payment_rail": "WIRE",
+      "named_withdrawal": true
+    },
+    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571620d"
+  }'
 ```
 
-**Status Values:**
-- `pending` - Waiting for Lightning invoice to be paid
-- `processing` - Invoice paid, withdrawal being processed
-- `completed` - Funds successfully sent to beneficiary
-- `failed` - Transaction failed (see `errorMessage` for details)
+### Example: USD named withdrawal Offramp by SWIFT
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v2/ramp/{subaccountId}/banking/offramp/initiate \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "from": {
+      "chain": "ETH-SEPOLIA",
+      "asset": "USDC",
+      "amount": 1000,
+      "sender_address": "0x742d35Cc6634C0532925a3b844Bc454e4438f44e"
+    },
+    "to": {
+      "recipient_id": "39e4f180-b558-4346-bf5f-2ec9c6b444f4",
+      "currency": "USD",
+      "payment_rail": "SWIFT",
+      "named_withdrawal": true
+    },
+    "client_offramp_reference": "5a26b319-fc68-4ee2-83f2-19889571621d"
+  }'
+```
+
+### Example: Quote a USD named withdrawal Offramp
+
+```bash
+curl --request POST \
+  --url https://api.bullring.finance/v2/ramp/{subaccountId}/banking/offramp/quote \
+  --header 'Content-Type: application/json' \
+  --header 'x-api-key: YOUR_API_KEY' \
+  --data '{
+    "from": {
+      "asset": "USDC",
+      "chain": "ETH-SEPOLIA"
+    },
+    "to": {
+      "amount": 1000,
+      "currency": "USD",
+      "payment_rail": "WIRE",
+      "named_withdrawal": true
+    }
+  }'
+```
+
+## Status and Webhooks
+
+Track offramp status with `GET /v2/ramp/{subaccountId}/banking/offramp/{offrampId}` and listen for withdrawal webhook events to follow the final payout status.
 
 ## Advantages
 
 This streamlined offramp flow offers several benefits:
 
-- **Single API Call**: Generate the Lightning invoice and initiate the withdrawal in one request
-- **Automatic Processing**: Once the Lightning invoice is paid, the withdrawal is automatically processed
+- **Single API Call**: Generate payment instructions and initiate the withdrawal in one request
+- **Automatic Processing**: Once the crypto payment is received, the withdrawal is processed automatically
 - **Real-time Exchange Rates**: Get the current exchange rate and fees upfront
 - **Simple Integration**: No need to manage separate deposit and withdrawal flows
